@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: smp
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: dev
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: utf-8
+mybatis:
+#  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath:mybatis/mapper/*.xml
+  configLocation: classpath:mybatis/mybatis-config.xml
+pagehelper:
+  helperDialect: postgresql
+  reasonable: true
+  supportMethodsArguments: true
+  row-bounds-with-count: true
+  offset-as-page-num: true
+  page-size-zero: true
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:postgresql://172.17.118.239:5432/smp?charSet=utf-8
+    username: smp
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+    maximumPoolSize: 30
+    maxLifetime: 1800000
+#  redis:
+#    host: 172.17.118.238
+#    port: 6379
+logging:
+  config: classpath:logback.dev.xml
+
+---
+spring:
+  profiles: pro
+logging:
+  config: classpath:logback.pro.xml
+
+
+
+
