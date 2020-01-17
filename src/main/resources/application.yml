@@ -40,6 +40,13 @@ logging:
 ---
 spring:
   profiles: pro
+  datasource:
+    url: jdbc:postgresql://50.73.126.6:20003/szga_aqjg?charSet=utf-8&currentSchema=rpt
+    username: aqjg_os
+    password: Szgaos@123
+    driver-class-name: org.postgresql.Driver
+    maximumPoolSize: 30
+    maxLifetime: 1800000
 logging:
   config: classpath:logback.pro.xml
 
