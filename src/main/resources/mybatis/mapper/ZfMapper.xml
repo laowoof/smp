@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.ZfMapper">
+    <select id="CzfPersonNum" resultType="com.oceansoft.szga.smp.entity.CzfPersonNum" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        czwdzxzqh as czwdzxzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_czfrs
+</select>
+    <select id="CzfNum" resultType="com.oceansoft.szga.smp.entity.CzfNum" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_czfsl
+</select>
+    <select id="CzfImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        fldm as fldm,
+        flmc as flmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_czfzdr
+</select>
+    <select id="QzfPersonNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        czwdzxzqh as czwdzxzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_qzfrs
+</select>
+    <select id="QzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_qzfsl
+</select>
+    <select id="QzfDangerous" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        yhlxdm as yhlxdm,
+        yhlxmc as yhlxmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_qzfyhfx
+</select>
+    <select id="QzwImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_qzwzdr
+</select>
+    <select id="QzfImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        fldm as fldm,
+        flmc as flmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_qzfzdry
+</select>
+    <select id="DangeroursCzf" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_yhczfrs
+</select>
+    <select id="DangerCzfImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_yhczfzdr
+</select>
+    <select id="DangerQzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_yhqzfsj
+</select>
+
+    <select id="DangerTypeFx" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_yhdlfx
+</select>
+    <select id="notDangerType" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        yhlxdm as yhlxdm,
+        yhlxmc as yhlxmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_fzayh
+</select>
+    <select id="notDangerTypeSB" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        sbzs as sbzs,
+        sbwcs as sbwcs,
+        sbwwcs as sbwwcs
+    from
+        rpt_aqjg_qzf_fzayhsb
+</select>
+    <select id="notDangerTypeSJ" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqhdm as xzqhdm,
+        xzqhmc as xzqhmc,
+        fws as fws,
+        yhs as yhs,
+      zgs as zgs
+    from
+        rpt_aqjg_qzf_fzayhsj
+    </select>
+    <select id="floatingPopulationS" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        qhdm as qhdm,
+        qhmc as qhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_ldrklyds
+</select>
+    <select id="floatingPopulationShi" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        qhdm as qhdm,
+        qhmc as qhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_ldrklydshi
+</select>
+    <select id="floatingPopulationX" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        qhdm as qhdm,
+        qhmc as qhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_ldrklydx
+</select>
+    <select id="floatingPopulationAge" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        nld as nld,
+        sl as sl
+    from
+        rpt_aqjg_qzf_ldrknlfx
+</select>
+    <select id="floatingPopulationNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        nld as nld,
+        sl as sl
+    from
+        rpt_aqjg_qzf_ldrksl
+</select>
+    <select id="floatingPopulationTrueNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_ldrksys
+</select>
+    <select id="CzfImpXzqh" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        xzqhmc as xzqhmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_czfzdrs_xzqh
+</select>
+    <select id="Fzayhff" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        zsl as zsl,
+        wcsl as wcsl,
+        wwcsl as wwcsl
+    from
+        rpt_aqjg_qzf_fzayhff
+</select>
+    <select id="Fzayhrl" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        xzqh as xzqh,
+        zsl as zsl,
+        wcsl as wcsl,
+        wwcsl as wwcsl
+    from
+        rpt_aqjg_qzf_fzayhrl
+</select>
+</mapper>
