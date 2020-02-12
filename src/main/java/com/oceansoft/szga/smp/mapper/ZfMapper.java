@@ -19,183 +19,344 @@ public interface ZfMapper {
      * 出租房人数
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<CzfPersonNum> CzfPersonNum();
+    List<CzfPersonNum> czfPersonNum();
 
     /**
      * 出租房数量
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<CzfNum> CzfNum();
+    List<CzfNum> czfNum();
 
     /**
      * 出租房重点人
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<HashMap> CzfImpPerson();
+    List<HashMap> czfImpPerson();
     /**
      * 群租房人数
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
 
-    List<HashMap> QzfPersonNum();
+    List<HashMap> qzfPersonNum();
     /**
      * 出租房数量
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
 
-    List<HashMap> QzfNum();
+    List<HashMap> qzfNum();
     /**
      * 群租房隐患分析
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
 
-    List<HashMap> QzfDangerous();
+    List<HashMap> qzfDangerous();
 
     /**
      * 群租屋重点人
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
 
-    List<HashMap> QzwImpPerson();
+    List<HashMap> qzwImpPerson();
 
     /**
      * 群租房隐患分析
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
 
-    List<HashMap> QzfImpPerson();
+    List<HashMap> qzfImpPerson();
     /**
      * 群租房隐患分析
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
 
-    List<HashMap> DangeroursCzf();
+    List<HashMap> dangeroursCzf();
     /**
      * 隐患出租房重点人
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
 
-    List<HashMap> DangerCzfImpPerson();
+    List<HashMap> dangerCzfImpPerson();
 
 
     /**
      * 隐患群租房数量
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<HashMap> DangerQzfNum();
+    List<HashMap> dangerQzfNum();
 
     /**
      * 隐患大类分析
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<HashMap> DangerTypeFx();
+    List<HashMap> dangerTypeFx();
 
     /**
      *流动人口来源地 省
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
     List<HashMap> floatingPopulationS();
     /**
      *流动人口来源地 市
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
     List<HashMap> floatingPopulationShi();
     /**
      *流动人口来源地 县
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
     List<HashMap> floatingPopulationX();
     /**
      *流动人口年龄分析
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
     List<HashMap> floatingPopulationAge();
     /**
      *流动人口数量
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
     List<HashMap> floatingPopulationNum();
     /**
      *流动人口实有数
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
     List<HashMap> floatingPopulationTrueNum();
     /**
      *非治安隐患类型
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
     List<HashMap> notDangerType();
     /**
      *非治安隐患流程节点监测-上报情况
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<HashMap> notDangerTypeSB();
+    List<HashMap> notDangerTypeSb();
     /**
      *非治安隐患数据
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<HashMap> notDangerTypeSJ();
+    List<HashMap> notDangerTypeSj();
     /**
      * 出租房重点人 行政区划
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<HashMap> CzfImpXzqh();
+    List<HashMap> czfImpXzqh();
     /**
      * 非治安隐患分发
      * @author wzj
      * @date 2020/1/20
-     * @return
+     * @return 数据
      */
-    List<HashMap> Fzayhff();
+    List<HashMap> fzayhff();
     /**
      * 非治安隐患认领
      * @author wzj
-     * @date 2020/2、12
-     * @return
+     * @date 2020/2/12
+     * @return 数据
      */
-    List<HashMap> Fzayhrl();
+    List<HashMap> fzayhrl();
+    /**
+     * 非治安隐患审核
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> fzayhsh();
+    /**
+     * 非治安隐患整改
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> fzayhza();
+    /**
+     * 群租房区域流动人员数量
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> qyldrysl();
+    /**
+     * 群租房重点人人数-按行政区划
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> czfzdrrsXzqh();
+    /**
+     * 隐患出租房重点人人数-按行政区划
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> czfzdrrsZdlx();
+    /**
+     * 隐患出租房重点人人数-按重点类型
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhczfzdrLx();
+    /**
+     * 隐患出租屋数量
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhczwsj();
+    /**
+     * 数图-隐患房屋数量-按派出所分类
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhfwpcs();
+    /**
+     * 安全监管群租房隐患趋势
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhqs();
+    /**
+     * 隐患群租房人数
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhqzfrs();
+    /**
+     * 隐患群租房重点人人数-按行政区划
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> qzfzdrrsXzqh();
+    /**
+     * 隐患群租房重点人人数-按重点类型
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> qzfzdrrsZdlx();
+    /**
+     * 隐患群租房重点人员
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhqzfzdry();
+    /**
+     * 隐患群租重点人-按类型
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhqzfzdrLx();
+    /**
+     * 隐患群租屋数量
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhqzwsj();
+    /**
+     * 隐患群租屋重点人
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> yhqzwzdr();
+    /**
+     * 治安隐患类型
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> zayhlx();
+    /**
+     * 治安隐患数据
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> zayhsj();
+    /**
+     * 安全监管群租房治安隐患整改发现数量
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> zayhFxsl();
+    /**
+     * 安全监管群租房治安隐患整改未整改数量
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> zayhWzgsl();
+    /**
+     * 安全监管群租房治安隐患整改整改数量
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> zayhZgsl();
+    /**
+     * 重点人员数量
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> zdrysl();
+    /**
+     * 出租房重点人员
+     * @author wzj
+     * @date 2020/2/12
+     * @return 数据
+     */
+    List<HashMap> czfzdry();
 }

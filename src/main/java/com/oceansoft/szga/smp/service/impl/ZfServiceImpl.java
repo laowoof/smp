@@ -26,74 +26,74 @@ public class ZfServiceImpl implements ZfService
 
 
     @Override
-    public ApiResult CzfPersonNum() {
-        List<CzfPersonNum> czfPersonNums = zfMapper.CzfPersonNum();
+    public ApiResult czfPersonNum() {
+        List<CzfPersonNum> czfPersonNums = zfMapper.czfPersonNum();
         return new ApiResult().success(200,"返回数据",czfPersonNums);
     }
 
     @Override
-    public ApiResult CzfNum() {
-        List<CzfNum> czfNums = zfMapper.CzfNum();
+    public ApiResult czfNum() {
+        List<CzfNum> czfNums = zfMapper.czfNum();
         return new ApiResult().success(200,"返回数据",czfNums);
 
     }
 
     @Override
-    public ApiResult CzfImpPerson() {
-        List<HashMap> czfNums = zfMapper.CzfImpPerson();
+    public ApiResult czfImpPerson() {
+        List<HashMap> czfNums = zfMapper.czfImpPerson();
         return new ApiResult().success(200,"返回数据",czfNums);
     }
 
     @Override
-    public ApiResult QzfPersonNum() {
-        List<HashMap> qzfPersonNums = zfMapper.QzfPersonNum();
+    public ApiResult qzfPersonNum() {
+        List<HashMap> qzfPersonNums = zfMapper.qzfPersonNum();
         return new ApiResult().success(200,"返回数据",qzfPersonNums);
     }
 
     @Override
-    public ApiResult QzfNum() {
-        List<HashMap> qzfNum = zfMapper.QzfNum();
+    public ApiResult qzfNum() {
+        List<HashMap> qzfNum = zfMapper.qzfNum();
         return new ApiResult().success(200,"返回数据",qzfNum);
     }
 
     @Override
-    public ApiResult QzfDangerous() {
-        List<HashMap> qzfDanger = zfMapper.QzfDangerous();
+    public ApiResult qzfDangerous() {
+        List<HashMap> qzfDanger = zfMapper.qzfDangerous();
         return new ApiResult().success(200,"返回数据",qzfDanger);
     }
 
     @Override
-    public ApiResult QzwImpPerson() {
-        List<HashMap> qzwImpPerson = zfMapper.QzwImpPerson();
+    public ApiResult qzwImpPerson() {
+        List<HashMap> qzwImpPerson = zfMapper.qzwImpPerson();
         return new ApiResult().success(200,"返回数据",qzwImpPerson);
     }
     @Override
-    public ApiResult QzfImpPerson() {
-        List<HashMap> qzfImpPerson = zfMapper.QzfImpPerson();
+    public ApiResult qzfImpPerson() {
+        List<HashMap> qzfImpPerson = zfMapper.qzfImpPerson();
         return new ApiResult().success(200,"返回数据",qzfImpPerson);
     }
 
     @Override
-    public ApiResult QangerCzf() {
-        List<HashMap> dangerCzf = zfMapper.DangeroursCzf();
+    public ApiResult dangerCzf() {
+        List<HashMap> dangerCzf = zfMapper.dangeroursCzf();
         return new ApiResult().success(200,"返回数据",dangerCzf);
     }
 
     @Override
-    public ApiResult DangerCzfImpPerson() {
-        List<HashMap> dangerCzfImpPerson = zfMapper.DangerCzfImpPerson();
+    public ApiResult dangerCzfImpPerson() {
+        List<HashMap> dangerCzfImpPerson = zfMapper.dangerCzfImpPerson();
         return new ApiResult().success(200,"返回数据",dangerCzfImpPerson);
     }
 
     @Override
-    public ApiResult DangerQzfNum() {
-        List<HashMap> dangerQzfNum = zfMapper.DangerQzfNum();
+    public ApiResult dangerQzfNum() {
+        List<HashMap> dangerQzfNum = zfMapper.dangerQzfNum();
         return new ApiResult().success(200,"返回数据",dangerQzfNum);
     }
 
     @Override
-    public ApiResult DangerTypeFx() {
-        List<HashMap> dangerTypeFx = zfMapper.DangerTypeFx();
+    public ApiResult dangerTypeFx() {
+        List<HashMap> dangerTypeFx = zfMapper.dangerTypeFx();
         return new ApiResult().success(200,"返回数据",dangerTypeFx);
     }
     @Override
@@ -138,33 +138,168 @@ public class ZfServiceImpl implements ZfService
     }
 
     @Override
-    public ApiResult notDangerTypeSB() {
-        List<HashMap> notDangerTypeSB = zfMapper.notDangerTypeSB();
+    public ApiResult notDangerTypeSb() {
+        List<HashMap> notDangerTypeSB = zfMapper.notDangerTypeSb();
         return new ApiResult().success(200,"返回数据",notDangerTypeSB);
     }
 
     @Override
-    public ApiResult notDangerTypeSJ() {
-        List<HashMap> notDangerTypeSJ = zfMapper.notDangerTypeSJ();
+    public ApiResult notDangerTypeSj() {
+        List<HashMap> notDangerTypeSJ = zfMapper.notDangerTypeSj();
         return new ApiResult().success(200,"返回数据",notDangerTypeSJ);
     }
 
     @Override
-    public ApiResult CzfImpXzqh() {
-        List<HashMap> czfImpXzqh = zfMapper.CzfImpXzqh();
+    public ApiResult czfImpXzqh() {
+        List<HashMap> czfImpXzqh = zfMapper.czfImpXzqh();
         return new ApiResult().success(200,"返回数据",czfImpXzqh);
     }
 
     @Override
-    public ApiResult Fzayhff() {
-        List<HashMap> fzayhff = zfMapper.Fzayhff();
+    public ApiResult fzayhff() {
+        List<HashMap> fzayhff = zfMapper.fzayhff();
         return new ApiResult().success(200,"返回数据",fzayhff);
     }
 
     @Override
-    public ApiResult Fzayhrl() {
-        List<HashMap> fzayhrl = zfMapper.Fzayhrl();
+    public ApiResult fzayhrl() {
+        List<HashMap> fzayhrl = zfMapper.fzayhrl();
         return new ApiResult().success(200,"返回数据",fzayhrl);
     }
+    @Override
+    public ApiResult fzayhsh() {
+        List<HashMap> fzayhsh = zfMapper.fzayhsh();
+        return new ApiResult().success(200,"返回数据",fzayhsh);
+    }
+    @Override
+    public ApiResult fzayhza() {
+        List<HashMap> fzayhza = zfMapper.fzayhza();
+        return new ApiResult().success(200,"返回数据",fzayhza);
+    }
 
+    @Override
+    public ApiResult qyldrysl() {
+        List<HashMap> qyldrysl = zfMapper.qyldrysl();
+        return new ApiResult().success(200,"返回数据",qyldrysl);
+    }
+
+    @Override
+    public ApiResult czfzdrrsXzqh() {
+        List<HashMap> xzqh = zfMapper.czfzdrrsXzqh();
+        return new ApiResult().success(200,"返回数据",xzqh);
+    }
+
+    @Override
+    public ApiResult czfzdrrsZdlx() {
+        List<HashMap> zdlx = zfMapper.czfzdrrsZdlx();
+        return new ApiResult().success(200,"返回数据",zdlx);
+    }
+
+    @Override
+    public ApiResult yhczfzdrLx() {
+        List<HashMap> lx = zfMapper.yhczfzdrLx();
+        return new ApiResult().success(200,"返回数据",lx);
+    }
+
+    @Override
+    public ApiResult yhczwsj() {
+        List<HashMap> yhczwsj = zfMapper.yhczwsj();
+        return new ApiResult().success(200,"返回数据",yhczwsj);
+    }
+
+    @Override
+    public ApiResult yhfwpcs() {
+        List<HashMap> yhfwpcs = zfMapper.yhfwpcs();
+        return new ApiResult().success(200,"返回数据",yhfwpcs);
+    }
+
+    @Override
+    public ApiResult yhqs() {
+        List<HashMap> yhqs = zfMapper.yhqs();
+        return new ApiResult().success(200,"返回数据",yhqs);
+    }
+
+    @Override
+    public ApiResult yhqzfrs() {
+        List<HashMap> yhqzfrs = zfMapper.yhqzfrs();
+        return new ApiResult().success(200,"返回数据",yhqzfrs);
+    }
+
+    @Override
+    public ApiResult qzfzdrrsXzqh() {
+        List<HashMap> xzqh= zfMapper.qzfzdrrsXzqh();
+        return new ApiResult().success(200,"返回数据",xzqh);
+    }
+
+    @Override
+    public ApiResult qzfzdrrsZdlx() {
+        List<HashMap> zdlx = zfMapper.qzfzdrrsZdlx();
+        return new ApiResult().success(200,"返回数据",zdlx);
+    }
+
+    @Override
+    public ApiResult yhqzfzdry() {
+        List<HashMap> yhqzfzdry = zfMapper.yhqzfzdry();
+        return new ApiResult().success(200,"返回数据",yhqzfzdry);
+    }
+
+    @Override
+    public ApiResult yhqzfzdrLx() {
+        List<HashMap> yhqzfzdrLx = zfMapper.yhqzfzdrLx();
+        return new ApiResult().success(200,"返回数据",yhqzfzdrLx);
+    }
+
+    @Override
+    public ApiResult yhqzwsj() {
+        List<HashMap> yhqzwsj = zfMapper.yhqzwsj();
+        return new ApiResult().success(200,"返回数据",yhqzwsj);
+    }
+
+    @Override
+    public ApiResult yhqzwzdr() {
+        List<HashMap> yhqzwzdr = zfMapper.yhqzwzdr();
+        return new ApiResult().success(200,"返回数据",yhqzwzdr);
+    }
+
+    @Override
+    public ApiResult zayhlx() {
+        List<HashMap> zayhlx = zfMapper.zayhlx();
+        return new ApiResult().success(200,"返回数据",zayhlx);
+    }
+
+    @Override
+    public ApiResult zayhsj() {
+        List<HashMap> zayhsj = zfMapper.zayhsj();
+        return new ApiResult().success(200,"返回数据",zayhsj);
+    }
+
+    @Override
+    public ApiResult zayhFxsl() {
+        List<HashMap> zayhFxsl = zfMapper.zayhFxsl();
+        return new ApiResult().success(200,"返回数据",zayhFxsl);
+    }
+
+    @Override
+    public ApiResult zayhWzgsl() {
+        List<HashMap> zayhWzgsl = zfMapper.zayhWzgsl();
+        return new ApiResult().success(200,"返回数据",zayhWzgsl);
+    }
+
+    @Override
+    public ApiResult zayhZgsl() {
+        List<HashMap> zayhZgsl = zfMapper.zayhZgsl();
+        return new ApiResult().success(200,"返回数据",zayhZgsl);
+    }
+
+    @Override
+    public ApiResult zdrysl() {
+        List<HashMap> zdrysl = zfMapper.zdrysl();
+        return new ApiResult().success(200,"返回数据",zdrysl);
+    }
+
+    @Override
+    public ApiResult czfzdry() {
+        List<HashMap> czfzdry = zfMapper.czfzdry();
+        return new ApiResult().success(200,"返回数据",czfzdry);
+    }
 }
