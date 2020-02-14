@@ -104,8 +104,8 @@
     <select id="dangerTypeFx" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
+        yhlbdm as yhlbdm,
+        yhlbmc as yhlbmc,
         sl as sl
     from
         rpt_aqjg_qzf_yhdlfx
