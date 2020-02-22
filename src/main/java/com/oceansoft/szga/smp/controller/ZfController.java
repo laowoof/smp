@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *  出租房 出租屋
  * @author wzj
@@ -75,6 +79,60 @@ public class ZfController {
         ApiResult qzfNum = zfService.qzfNum();
         return qzfNum;
     }
+    /**
+     * @author wzj
+     *  群租房当月数据
+     * @return 数据
+     */
+    @GetMapping("qzfMonthNum")
+    public ApiResult qzfMonthNum(String time){
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormatMonth = new SimpleDateFormat("yyyy-MM");
+        time = simpleDateFormatMonth.format(c.getTime());
+        ApiResult qzfNum = zfService.qzfMonthData(time);
+        return qzfNum;
+    }
+
+    /**
+     * @author wzj
+     *  群租房上个月总数据
+     * @return 数据
+     */
+    @GetMapping("qzfMonthNum2")
+    public ApiResult qzfMonthTwoNum(String time){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
+        date = calendar.getTime();
+        String accDate = format.format(date);
+        ApiResult qzfNum = zfService.qzfMonthData(accDate);
+        return qzfNum;
+    }
+
+    /**
+     * @author wzj
+     *  群租房单个区域本月新增数量
+     * @return 数据
+     */
+    @GetMapping("addQzfNum")
+    public ApiResult addQzfNum(String xzqhmc){
+        ApiResult qzfNum = zfService.addQzfData2(xzqhmc);
+        return qzfNum;
+    }
+
+    /**
+     * @author wzj
+     *  群租房某天新增数量
+     * @return 数据
+     */
+    @GetMapping("addQzfNum3")
+    public ApiResult addQzfNum3(String num){
+        ApiResult qzfNum = zfService.addQzfData3(num);
+        return qzfNum;
+    }
+
 
     /**
      * @author wzj
@@ -86,6 +144,18 @@ public class ZfController {
         ApiResult qzfDanger = zfService.qzfDangerous();
         return qzfDanger;
     }
+
+    /**
+     * @author wzj
+     * 群租房隐患分析 非治安
+     * @return 数据
+     */
+    @GetMapping("qzfDanger2")
+    public ApiResult QzfDangerous2(){
+        ApiResult qzfDanger2 = zfService.qzfDangerous2();
+        return qzfDanger2;
+    }
+
 
     /**
      * @author wzj
@@ -145,6 +215,17 @@ public class ZfController {
 
     /**
      * @author wzj
+     * 隐患群租房单区数量
+     * @return 数据
+     */
+    @GetMapping("yhQzfTotleNum")
+    public ApiResult yhQzfTotleNum(String xzqhmc){
+        ApiResult totleNum = zfService.yhQzfTotleNum(xzqhmc);
+        return totleNum;
+    }
+
+    /**
+     * @author wzj
      * 隐患大类分析
      * @return 数据
      */
@@ -185,6 +266,63 @@ public class ZfController {
         ApiResult notDangerTypeSJ = zfService.notDangerTypeSj();
         return notDangerTypeSJ ;
     }
+    /**
+     * @author wzj
+     * 单独数据7/30
+     * @return 数据
+     */
+    @GetMapping("sigleData")
+    public ApiResult sigleData(String xzqhmc,String num){
+        ApiResult sigleData = zfService.sigleData(xzqhmc,num);
+        return sigleData ;
+    }
+
+    /**
+     * @author wzj
+     * 单区域数据
+     * @return 数据
+     */
+    @GetMapping("fzaYhNum")
+    public ApiResult fzaYhNum(String xzqhmc){
+        ApiResult num = zfService.fzaYhNum(xzqhmc);
+        return num;
+    }
+
+    /**
+     * @author wzj
+     * 非治安隐患数据统计
+     * @return 数据
+     */
+    @GetMapping("totleNum")
+    public ApiResult totleNum(String num){
+        System.err.println(num);
+        ApiResult totleNum = zfService.totleNum(num);
+        return totleNum ;
+    }
+    /**
+     * @author wzj
+     * 治安隐患数据统计
+     * @return 数据
+     */
+    @GetMapping("totleNum2")
+    public ApiResult totleNum2(String num){
+        System.err.println(num);
+        ApiResult totleNum2 = zfService.totleNum2(num);
+        return totleNum2;
+    }
+
+    /**
+     * @author wzj
+     * 治安隐患单区域数据统计
+     * @return 数据
+     */
+    @GetMapping("zaYhNum")
+    public ApiResult zaYhNum(String xzqhmc){
+        System.err.println(xzqhmc);
+        ApiResult num = zfService.zaYhNum(xzqhmc);
+        return num;
+    }
+
     /**
      * @author wzj
      * 流动人口来源地 省
@@ -279,6 +417,16 @@ public class ZfController {
     public ApiResult Fzayhsh(){
         ApiResult fzayhsh = zfService.fzayhsh();
         return fzayhsh;
+    }
+    /**
+     * @author wzj
+     *  非治安隐患认领
+     * @return 数据
+     */
+    @GetMapping("fzayhrl")
+    public ApiResult Fzayhrl() {
+        ApiResult fzayhrl = zfService.fzayhrl();
+        return fzayhrl;
     }
     /**
      * @author wzj

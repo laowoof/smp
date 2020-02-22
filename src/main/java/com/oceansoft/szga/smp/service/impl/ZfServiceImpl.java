@@ -7,8 +7,8 @@ import com.oceansoft.szga.smp.mapper.ZfMapper;
 import com.oceansoft.szga.smp.service.ZfService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *  出租房
@@ -17,8 +17,7 @@ import java.util.List;
  */
 
 @Service
-public class ZfServiceImpl implements ZfService
-{
+public class ZfServiceImpl implements ZfService {
 
     @Resource
     private ZfMapper zfMapper;
@@ -52,14 +51,50 @@ public class ZfServiceImpl implements ZfService
 
     @Override
     public ApiResult qzfNum() {
+
         List<HashMap> qzfNum = zfMapper.qzfNum();
         return new ApiResult().success(200,"返回数据",qzfNum);
+    }
+
+    @Override
+    public ApiResult qzfMonthData(String time) {
+        List<HashMap> qzfNum = zfMapper.qzfMonthData(time);
+        return new ApiResult().success(200,"返回数据",qzfNum);
+    }
+
+    @Override
+    public ApiResult addQzfData2(String xzqhmc) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        String time = sdf.format(calendar.getTime());
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
+        String time2 = sdf.format(calendar.getTime());
+        List<HashMap> qzfNum = zfMapper.addQzfData2(time,time2,xzqhmc);
+        return new ApiResult().success(200,"返回数据",qzfNum);
+    }
+
+    @Override
+    public ApiResult addQzfData3(String num) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String time = sdf.format(calendar.getTime());
+        calendar.set(Calendar.DATE,calendar.get(Calendar.DATE)-1);
+        String time2 = sdf.format(calendar.getTime());
+        Map<String,String> dmp = dataNum(num);
+        List<HashMap> sigleData = zfMapper.addQzfData3(dmp.get("time"),dmp.get("time2"));
+        return new ApiResult().success(200,"返回数据",dateData(sigleData,num,null));
     }
 
     @Override
     public ApiResult qzfDangerous() {
         List<HashMap> qzfDanger = zfMapper.qzfDangerous();
         return new ApiResult().success(200,"返回数据",qzfDanger);
+    }
+
+    @Override
+    public ApiResult qzfDangerous2() {
+        List<HashMap> qzfDanger2 = zfMapper.qzfDangerous2();
+        return new ApiResult().success(200,"返回数据",qzfDanger2);
     }
 
     @Override
@@ -88,6 +123,12 @@ public class ZfServiceImpl implements ZfService
     @Override
     public ApiResult dangerQzfNum() {
         List<HashMap> dangerQzfNum = zfMapper.dangerQzfNum();
+        return new ApiResult().success(200,"返回数据",dangerQzfNum);
+    }
+
+    @Override
+    public ApiResult yhQzfTotleNum(String xzqhmc) {
+        List<HashMap> dangerQzfNum = zfMapper.yhQzfTotleNum(xzqhmc);
         return new ApiResult().success(200,"返回数据",dangerQzfNum);
     }
 
@@ -147,6 +188,39 @@ public class ZfServiceImpl implements ZfService
     public ApiResult notDangerTypeSj() {
         List<HashMap> notDangerTypeSJ = zfMapper.notDangerTypeSj();
         return new ApiResult().success(200,"返回数据",notDangerTypeSJ);
+    }
+
+    @Override
+    public ApiResult sigleData(String xzqhmc,String num) {
+        Map<String,String> dmp = dataNum(num);
+        List<HashMap> sigleData = zfMapper.sigleData(dmp.get("time2"),dmp.get("time"),xzqhmc);
+        return new ApiResult().success(200,"返回数据",dateData(sigleData,num,xzqhmc));
+    }
+
+    @Override
+    public ApiResult fzaYhNum(String xzqhmc) {
+        List<HashMap> num = zfMapper.fzaYhNum(xzqhmc);
+        return new ApiResult().success(200,"返回数据",num);
+    }
+
+    @Override
+    public ApiResult totleNum(String num) {
+        Map<String,String> dmp = dataNum(num);
+        List<HashMap> totleNum = zfMapper.totleNum(dmp.get("time2"),dmp.get("time"));
+        return new ApiResult().success(200,"成功",dateData(totleNum,num,null));
+    }
+
+    @Override
+    public ApiResult totleNum2(String num) {
+        Map<String,String> dmp = dataNum(num);
+        List<HashMap> totleNum2 = zfMapper.totleNum2(dmp.get("time2"),dmp.get("time"));
+        return new ApiResult().success(200,"成功",dateData(totleNum2,num,null));
+    }
+
+    @Override
+    public ApiResult zaYhNum(String xzqhmc) {
+        List<HashMap> num = zfMapper.zaYhNum(xzqhmc);
+        return new ApiResult().success(200,"返回数据",num);
     }
 
     @Override
@@ -301,5 +375,80 @@ public class ZfServiceImpl implements ZfService
     public ApiResult czfzdry() {
         List<HashMap> czfzdry = zfMapper.czfzdry();
         return new ApiResult().success(200,"返回数据",czfzdry);
+    }
+
+    public List<HashMap> dateData(List<HashMap> list,String num,String xzqhmc){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<HashMap> dateList = new ArrayList<>();
+            for(int i=0;i<=Integer.valueOf(num);i++){
+                HashMap map = new HashMap<String,String>();
+                //设定一个基础为0的求和
+                String totleFws = "0";
+                String totleYhs = "0";
+                String totleZgs = "0";
+                String sum = "0";
+                //判断此时间是否在已经取出数据的list里存在
+                Iterator it = list.iterator();
+                while (it.hasNext()){
+                    HashMap has = (HashMap) it.next();
+                    if(has.get("tjrq").equals(sdf.format(calendar.getTime()))){
+                        if(xzqhmc != null){
+                        map.put("xzqhmc",has.get("xzqhmc").toString());
+                        }
+                        totleFws = has.get("totle_fws").toString();
+                        totleYhs = has.get("totle_yhs").toString();
+                        totleZgs = has.get("totle_zgs").toString();
+                        //如果有值 赋值完毕 跳出迭代器循环
+                        break;
+                    }
+                }
+                map.put("tjrq",sdf.format(calendar.getTime()));
+                map.put("totleFws",totleFws);
+                map.put("totleYhs",totleYhs);
+                map.put("totleZgs",totleZgs);
+                map.put("num",sum);
+                dateList.add(map);
+                calendar.add(Calendar.DATE,-1);
+            }
+        dateList.sort(new Comparator<Map>() {
+            @Override
+            public int compare(Map o1, Map o2) {
+                SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd");
+                int index1 = 0;
+                int index2 = 0;
+                try {
+                    Long cl1 = sdft.parse(String.valueOf(o1.get("tjrq"))).getTime();
+                    Long cl2 = sdft.parse(String.valueOf(o2.get("tjrq"))).getTime();
+                    if(cl1 > cl2){
+                        index1 =  1;
+                    }else{
+                        index2 =  1;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return index1-index2;
+            }
+        });
+        return dateList;
+    }
+
+    public Map<String,String> dataNum(String num){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String time = sdf.format(calendar.getTime());
+        String time2 =null;
+        if("6".equals(num)){
+            calendar.add(Calendar.DATE,-6);
+            time2 = sdf.format(calendar.getTime());
+        }else{
+            calendar.add(Calendar.DATE,-29);
+            time2 = sdf.format(calendar.getTime());
+        }
+        Map map = new HashMap<String,String>();
+        map.put("time",time);
+        map.put("time2",time2);
+        return map;
     }
 }

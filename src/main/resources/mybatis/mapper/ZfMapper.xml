@@ -46,6 +46,32 @@
     from
         rpt_aqjg_qzf_qzfsl
 </select>
+
+    <select id="qzfMonthData" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        SUM(sl)
+    FROM
+        rpt_aqjg_qzf_qzfsl
+    WHERE
+        tjrq like '%' || #{time} ||'%'
+</select>
+
+    <select id="addQzfData2" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+    (
+    (select sum(sl) as sl from RPT_AQJG_QZF_qzfsl where tjrq like '%' || #{time} ||'%' and xzqhmc = #{xzqhmc}) -
+    (select sum(sl) as sl2 from RPT_AQJG_QZF_qzfsl where tjrq like '%' || #{time2} ||'%' and xzqhmc = #{xzqhmc})
+    ) as num
+</select>
+
+    <select id="addQzfData3" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+    (
+    (select sum(sl) from RPT_AQJG_QZF_qzfsl where tjrq &lt;= #{time}) -
+    (select sum(sl) from RPT_AQJG_QZF_qzfsl where tjrq &lt;= #{time2})
+    ) as num
+</select>
+
     <select id="qzfDangerous" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
@@ -54,6 +80,18 @@
         sl as sl
     from
         rpt_aqjg_qzf_qzfyhfx
+        where yhlxdm between '11' and  '20' order by sl desc
+</select>
+
+    <select id="qzfDangerous2" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq as tjrq,
+        yhlxdm as yhlxdm,
+        yhlxmc as yhlxmc,
+        sl as sl
+    from
+        rpt_aqjg_qzf_qzfyhfx
+        where yhlxdm between '21' and  '28' order by sl desc
 </select>
     <select id="qzwImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -101,6 +139,15 @@
         rpt_aqjg_qzf_yhqzfsj
 </select>
 
+
+    <select id="yhQzfTotleNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        sum(sl)
+    from
+        rpt_aqjg_qzf_yhqzfsj
+        where  xzqhmc = #{xzqhmc}
+</select>
+
     <select id="dangerTypeFx" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
@@ -135,10 +182,67 @@
         xzqhmc as xzqhmc,
         fws as fws,
         yhs as yhs,
-      zgs as zgs
+        zgs as zgs
     from
         rpt_aqjg_qzf_fzayhsj
     </select>
+
+    <select id="fzaYhNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        sum(fws) as totle_fws,
+        sum(yhs) totle_yhs,
+        sum(zgs) as totle_zgs
+    from
+        rpt_aqjg_qzf_fzayhsj
+        where xzqhmc =#{xzqhmc}
+    </select>
+
+    <select id="sigleData" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+        xzqhdm,
+        xzqhmc,
+        fws as totle_fws,
+        yhs as totle_yhs,
+        zgs as totle_zgs
+    from
+        rpt_aqjg_qzf_fzayhsj
+        where xzqhmc =#{xzqhmc} and tjrq  between #{time} and #{time2} ORDER BY tjrq
+    </select>
+
+    <select id="totleNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+       sum(fws) totle_fws,
+       sum(yhs) totle_yhs,
+       sum(zgs) totle_zgs
+    from
+        rpt_aqjg_qzf_fzayhsj
+        where tjrq between #{time} and #{time2} group by tjrq ORDER BY tjrq ASC
+    </select>
+
+    <select id="totleNum2" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+       sum(fws) totle_fws,
+       sum(yhs) totle_yhs,
+       sum(zgs) totle_zgs
+    from
+        rpt_aqjg_qzf_zayhsj
+        where tjrq between #{time} and #{time2} group by tjrq ORDER BY tjrq ASC
+    </select>
+
+    <select id="zaYhNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+       sum(fws) totle_fws,
+       sum(yhs) totle_yhs,
+       sum(zgs) totle_zgs
+    from
+        rpt_aqjg_qzf_zayhsj
+        where xzqhmc = #{xzqhmc}
+    </select>
+
+
     <select id="floatingPopulationS" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,

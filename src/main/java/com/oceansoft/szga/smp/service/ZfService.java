@@ -2,6 +2,7 @@ package com.oceansoft.szga.smp.service;
 
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 
 /**
@@ -50,6 +51,33 @@ public interface ZfService {
      * @return  数据
      */
     ApiResult qzfNum();
+
+    /**
+     *  群租房数量
+     * @author  wzj
+     * @date  2020/2/17
+     * @return  数据
+     */
+    ApiResult qzfMonthData(@Param("time") String time);
+
+
+    /**
+     *  群租房数量 新增量
+     * @author  wzj
+     * @date  2020/2/20
+     * @return  数据
+     */
+    ApiResult addQzfData2(@Param("xzqhmd")String xzqhmc);
+
+    /**
+     *  群租房数量 某天新增数量
+     * @author  wzj
+     * @date  2020/2/22
+     * @return  数据
+     */
+    ApiResult addQzfData3(@Param("num") String num);
+
+
     /**
      *  群租房隐患分析
      * @author  wzj
@@ -57,6 +85,14 @@ public interface ZfService {
      * @return  数据
      */
     ApiResult qzfDangerous();
+
+    /**
+     *  群租房隐患分析 非治安
+     * @author  wzj
+     * @date  2020/2/19
+     * @return  数据
+     */
+    ApiResult qzfDangerous2();
     /**
      *  群租屋重点人
      * @author  wzj
@@ -95,6 +131,14 @@ public interface ZfService {
      * @return  数据
      */
     ApiResult dangerQzfNum();
+
+    /**
+     *  隐患群租房d单区数量
+     * @author  wzj
+     * @date  2020/2/20
+     * @return  数据
+     */
+    ApiResult yhQzfTotleNum(@Param("xzqhmc")String xzqhmc);
 
     /**
      *  隐患大类分析
@@ -169,6 +213,46 @@ public interface ZfService {
      * @return 数据
      */
     ApiResult notDangerTypeSj();
+
+    /**
+     * 单独数据7/30
+     * @author  wzj
+     * @date  2020/2/19
+     * @return 数据
+     */
+    ApiResult sigleData(String xzqhmc,String num);
+
+    /**
+     * 单独数据
+     * @author  wzj
+     * @date  2020/2/19
+     * @return 数据
+     */
+    ApiResult fzaYhNum(String xzqhmc);
+
+    /**
+     * 非治安隐患数据统计
+     * @author  wzj
+     * @date  2020/2/18
+     * @return 数据
+     */
+    ApiResult totleNum(String num);
+    /**
+     * 非治安隐患数据统计
+     * @author  wzj
+     * @date  2020/2/19
+     * @return 数据
+     */
+    ApiResult totleNum2(String num);
+
+    /**
+     * 非治安隐患单区域数据统计
+     * @author  wzj
+     * @date  2020/2/20
+     * @return 数据
+     */
+    ApiResult zaYhNum(String xzqhmc);
+
     /**
      * 出租房重点人 行政区划
      * @author  wzj

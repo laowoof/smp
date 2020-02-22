@@ -3,6 +3,7 @@ package com.oceansoft.szga.smp.mapper;
 import com.oceansoft.szga.smp.entity.CzfNum;
 import com.oceansoft.szga.smp.entity.CzfPersonNum;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.repository.query.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,14 @@ public interface ZfMapper {
      */
 
     List<HashMap> qzfDangerous();
+    /**
+     * 群租房隐患分析 非治安
+     * @author wzj
+     * @date 2020/2/19
+     * @return 数据
+     */
+
+    List<HashMap> qzfDangerous2();
 
     /**
      * 群租屋重点人
@@ -101,10 +110,44 @@ public interface ZfMapper {
     /**
      * 隐患群租房数量
      * @author wzj
+     * @date 2020/2/17
+     * @return 数据
+     */
+    List<HashMap> qzfMonthData(@Param("time") String time);
+
+    /**
+     * 隐患群租房数量 本月
+     * @author wzj
+     * @date 2020/2/20
+     * @return 数据
+     */
+
+    List<HashMap> addQzfData2(@Param("time") String time,@Param("time2") String time2,@Param("xzqhmc")String xzqhmc);
+
+    /**
+     * 隐患群租房数量 某天新增数量
+     * @author wzj
+     * @date 2020/2/22
+     * @return 数据
+     */
+
+    List<HashMap> addQzfData3(@Param("time") String time,@Param("time2") String time2);
+
+    /**
+     * 隐患群租房数量
+     * @author wzj
      * @date 2020/1/20
      * @return 数据
      */
     List<HashMap> dangerQzfNum();
+
+    /**
+     * 隐患群租房单区数量
+     * @author wzj
+     * @date 2020/2/20
+     * @return 数据
+     */
+    List<HashMap> yhQzfTotleNum(@Param("xzqhmc")String xzqhmc);
 
     /**
      * 隐患大类分析
@@ -177,6 +220,45 @@ public interface ZfMapper {
      * @return 数据
      */
     List<HashMap> notDangerTypeSj();
+    /**
+     * 单独数据
+     * @author wzj
+     * @date 2020/2/19
+     * @return 数据
+     */
+    List<HashMap> sigleData(@Param("time")String time,@Param("time2")String time2,@Param("xzqhmc")String xzqhmc);
+
+    /**
+     * 单独数据
+     * @author wzj
+     * @date 2020/2/20
+     * @return 数据
+     */
+    List<HashMap> fzaYhNum(@Param("xzqhmc")String xzqhmc);
+
+    /**
+     *非治安隐患数据统计
+     * @author wzj
+     * @date 2020/2/18
+     * @return 数据
+     */
+    List<HashMap> totleNum(@Param("time")String time,@Param("time2")String time2);
+
+    /**
+     *治安隐患数据统计
+     * @author wzj
+     * @date 2020/2/19
+     * @return 数据
+     */
+    List<HashMap> totleNum2(@Param("time")String time,@Param("time2")String time2);
+    /**
+     *治安隐患单区域数据统计
+     * @author wzj
+     * @date 2020/2/20
+     * @return 数据
+     */
+    List<HashMap> zaYhNum(@Param("xzqhmc")String xzqhmc );
+
     /**
      * 出租房重点人 行政区划
      * @author wzj
