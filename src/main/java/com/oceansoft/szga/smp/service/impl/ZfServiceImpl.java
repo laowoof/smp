@@ -387,7 +387,6 @@ public class ZfServiceImpl implements ZfService {
                 String totleFws = "0";
                 String totleYhs = "0";
                 String totleZgs = "0";
-                String sum = "0";
                 //判断此时间是否在已经取出数据的list里存在
                 Iterator it = list.iterator();
                 while (it.hasNext()){
@@ -407,7 +406,6 @@ public class ZfServiceImpl implements ZfService {
                 map.put("totleFws",totleFws);
                 map.put("totleYhs",totleYhs);
                 map.put("totleZgs",totleZgs);
-                map.put("num",sum);
                 dateList.add(map);
                 calendar.add(Calendar.DATE,-1);
             }
