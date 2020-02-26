@@ -116,6 +116,31 @@ public interface ZfMapper {
     List<HashMap> qzfMonthData(@Param("time") String time);
 
     /**
+     * 根据区域获取区域内的群租房总数量
+     * @author wzj
+     * @date 2020/2/25
+     * @return 数据
+     */
+    List<HashMap> qzfAreaNum(@Param("xzqhmc") String xzqhmc,@Param("time") String time);
+
+
+    /**
+     * 根据区域获取区域内的每天新增量
+     * @author wzj
+     * @date 2020/2/25
+     * @return 数据
+     */
+    List<HashMap> qzfAreaAddNum(@Param("xzqhmc") String xzqhmc,@Param("time") String time);
+
+    /**
+     * 获取每一天的总数量
+     * @author wzj
+     * @date 2020/2/25
+     * @return 数据
+     */
+    List<HashMap> qzfTotleNum(@Param("time") String time);
+
+    /**
      * 隐患群租房数量 本月
      * @author wzj
      * @date 2020/2/20

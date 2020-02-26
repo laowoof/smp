@@ -95,6 +95,39 @@ public class ZfController {
 
     /**
      * @author wzj
+     *  根绝区域获取群租房的区域总数量
+     * @return 数据
+     */
+    @GetMapping("qzfAreaTotleNum")
+    public ApiResult qzfAreaNum(String xzqhmc,String num){
+        ApiResult qzfNum = zfService.qzfAreaNum(xzqhmc,num);
+        return qzfNum;
+    }
+
+    /**
+     * @author wzj
+     *  根绝区域获取群租房的区域新增数量
+     * @return 数据
+     */
+    @GetMapping("qzfAreaAddNum")
+    public ApiResult qzfAreaAddNum(String xzqhmc,String num){
+        ApiResult qzfNum = zfService.qzfAreaAddNum(xzqhmc,num);
+        return qzfNum;
+    }
+
+    /**
+     * @author wzj
+     *  获取每一天的总数量
+     * @return 数据
+     */
+    @GetMapping("qzfTotleNum")
+    public ApiResult qzfTotleNum(String num){
+        ApiResult qzfNum = zfService.qzfTotleNum(num);
+        return qzfNum;
+    }
+
+    /**
+     * @author wzj
      *  群租房上个月总数据
      * @return 数据
      */

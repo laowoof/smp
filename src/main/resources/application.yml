@@ -34,8 +34,8 @@ spring:
 #  redis:
 #    host: 172.17.118.238
 #    port: 6379
-logging:
-  config: classpath:logback.dev.xml
+#logging:
+#  config: classpath:logback.dev.xml
 
 ---
 spring:

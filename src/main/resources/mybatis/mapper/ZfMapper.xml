@@ -47,6 +47,33 @@
         rpt_aqjg_qzf_qzfsl
 </select>
 
+    <select id="qzfAreaNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        sum(sl) as totle_fws
+    from
+        rpt_aqjg_qzf_qzfsl
+    where
+        xzqhmc =#{xzqhmc} and tjrq &lt;= #{time}
+</select>
+
+    <select id="qzfAreaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        sum(sl) as totle_fws
+    from
+        rpt_aqjg_qzf_qzfsl
+    where
+        xzqhmc =#{xzqhmc} and tjrq &lt;= #{time}
+</select>
+
+    <select id="qzfTotleNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        sum(sl) as totle_fws
+    from
+        rpt_aqjg_qzf_qzfsl
+    where
+        tjrq &lt;=#{time}
+</select>
+
     <select id="qzfMonthData" resultType="java.util.HashMap" parameterType="java.util.List">
     SELECT
         SUM(sl)

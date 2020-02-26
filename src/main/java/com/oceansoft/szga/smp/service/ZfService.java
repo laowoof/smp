@@ -60,6 +60,29 @@ public interface ZfService {
      */
     ApiResult qzfMonthData(@Param("time") String time);
 
+    /**
+     *  根据区域获取区域内的群租房总数量
+     * @author  wzj
+     * @date  2020/2/25
+     * @return  数据
+     */
+    ApiResult qzfAreaNum(@Param("xzqhmc") String xzqhmc,@Param("num") String num);
+
+    /**
+     *  根据区域获取区域内的每天新增量
+     * @author  wzj
+     * @date  2020/2/25
+     * @return  数据
+     */
+    ApiResult qzfAreaAddNum(@Param("xzqhmc") String xzqhmc,@Param("num") String num);
+
+    /**
+     *  获取每一天的总数量
+     * @author  wzj
+     * @date  2020/2/25
+     * @return  数据
+     */
+    ApiResult qzfTotleNum(@Param("num")String num);
 
     /**
      *  群租房数量 新增量

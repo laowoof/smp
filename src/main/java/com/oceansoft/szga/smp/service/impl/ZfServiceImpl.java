@@ -63,6 +63,62 @@ public class ZfServiceImpl implements ZfService {
     }
 
     @Override
+    public ApiResult qzfAreaNum(String xzqhmc,String num) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<String> list = new ArrayList<String>();
+        list.add(sdf.format(calendar.getTime()));
+        for(int i=0;i<Integer.valueOf(num);i++){
+            calendar.add(Calendar.DATE,-1);
+            list.add(sdf.format(calendar.getTime()));
+        }
+        List dataList = new ArrayList();
+        for(int i=0;i<list.size();i++){
+            String time = list.get(i);
+            List<HashMap> qzfNum = zfMapper.qzfAreaNum(xzqhmc,time);
+            dataList.add(qzfNum);
+        }
+        return new ApiResult().success(200,"返回数据",dataList);
+    }
+
+    @Override
+    public ApiResult qzfAreaAddNum(String xzqhmc, String num) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<String> list = new ArrayList<String>();
+        list.add(sdf.format(calendar.getTime()));
+        for(int i=0;i<Integer.valueOf(num);i++){
+            calendar.add(Calendar.DATE,-1);
+            list.add(sdf.format(calendar.getTime()));
+        }
+        List dataList = new ArrayList();
+        for(int i=0;i<list.size();i++){
+            String time = list.get(i);
+            List<HashMap> qzfNum = zfMapper.qzfAreaAddNum(xzqhmc,time);
+            dataList.add(qzfNum);
+        }
+        return new ApiResult().success(200,"返回数据",dataList);
+    }
+
+    @Override
+    public ApiResult qzfTotleNum(String num) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<String> list = new ArrayList<String>();
+        list.add(sdf.format(calendar.getTime()));
+        for(int i=0;i<Integer.valueOf(num);i++){
+            calendar.add(Calendar.DATE,-1);
+            list.add(sdf.format(calendar.getTime()));
+        }
+        List dataList = new ArrayList();
+        for(int i=0;i<list.size();i++){
+            List<HashMap> qzfNum = zfMapper.qzfTotleNum(list.get(i));
+            dataList.add(qzfNum);
+        }
+        return new ApiResult().success(200,"返回数据",dataList);
+    }
+
+    @Override
     public ApiResult addQzfData2(String xzqhmc) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
@@ -75,11 +131,11 @@ public class ZfServiceImpl implements ZfService {
 
     @Override
     public ApiResult addQzfData3(String num) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String time = sdf.format(calendar.getTime());
-        calendar.set(Calendar.DATE,calendar.get(Calendar.DATE)-1);
-        String time2 = sdf.format(calendar.getTime());
+//        Calendar calendar = Calendar.getInstance();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        String time = sdf.format(calendar.getTime());
+//        calendar.set(Calendar.DATE,calendar.get(Calendar.DATE)-1);
+//        String time2 = sdf.format(calendar.getTime());
         Map<String,String> dmp = dataNum(num);
         List<HashMap> sigleData = zfMapper.addQzfData3(dmp.get("time"),dmp.get("time2"));
         return new ApiResult().success(200,"返回数据",dateData(sigleData,num,null));
