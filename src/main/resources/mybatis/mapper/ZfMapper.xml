@@ -259,6 +259,19 @@
         where xzqhmc =#{xzqhmc} and tjrq  between #{time} and #{time2} ORDER BY tjrq
     </select>
 
+    <select id="findDataByName" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+        xzqhdm,
+        xzqhmc,
+        fws as totle_fws,
+        yhs as totle_yhs,
+        zgs as totle_zgs
+    from
+        rpt_aqjg_qzf_zayhsj
+        where xzqhmc =#{xzqhmc} and tjrq  between #{time} and #{time2} ORDER BY tjrq
+    </select>
+
     <select id="totleNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,

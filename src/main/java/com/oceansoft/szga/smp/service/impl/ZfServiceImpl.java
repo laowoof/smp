@@ -272,6 +272,13 @@ public class ZfServiceImpl implements ZfService {
     }
 
     @Override
+    public ApiResult findDataByName(String xzqhmc, String num) {
+        Map<String,String> dmp = dataNum(num);
+        List<HashMap> data = zfMapper.sigleData(dmp.get("time2"),dmp.get("time"),xzqhmc);
+        return new ApiResult().success(200,"成功",dateData(data,num,xzqhmc));
+    }
+
+    @Override
     public ApiResult fzaYhNum(String xzqhmc) {
         List<HashMap> num = zfMapper.fzaYhNum(xzqhmc);
         return new ApiResult().success(200,"返回数据",num);

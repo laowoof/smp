@@ -324,7 +324,7 @@ public class ZfController {
 
     /**
      * @author wzj
-     * 单独数据7/30
+     * 单独数据7/30 非治安近几日数据
      * @return 数据
      */
     @GetMapping("sigleData")
@@ -335,7 +335,18 @@ public class ZfController {
 
     /**
      * @author wzj
-     * 单区域数据
+     * 单独数据 治安近7/30日数据
+     * @return 数据
+     */
+    @GetMapping("findDataByName")
+    public ApiResult findDataByName(String xzqhmc,String num){
+        ApiResult data = zfService.findDataByName(xzqhmc,num);
+        return data ;
+    }
+
+    /**
+     * @author wzj
+     * 单区域数据 非治安
      * @return 数据
      */
     @GetMapping("fzaYhNum")
@@ -351,7 +362,6 @@ public class ZfController {
      */
     @GetMapping("totleNum")
     public ApiResult totleNum(String num){
-        System.err.println(num);
         ApiResult totleNum = zfService.totleNum(num);
         return totleNum ;
     }
@@ -362,7 +372,6 @@ public class ZfController {
      */
     @GetMapping("totleNum2")
     public ApiResult totleNum2(String num){
-        System.err.println(num);
         ApiResult totleNum2 = zfService.totleNum2(num);
         return totleNum2;
     }
@@ -374,7 +383,6 @@ public class ZfController {
      */
     @GetMapping("zaYhNum")
     public ApiResult zaYhNum(String xzqhmc){
-        System.err.println(xzqhmc);
         ApiResult num = zfService.zaYhNum(xzqhmc);
         return num;
     }

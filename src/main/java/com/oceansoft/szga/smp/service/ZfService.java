@@ -262,12 +262,21 @@ public interface ZfService {
     ApiResult fzasjDesc();
 
     /**
-     * 单独数据7/30
+     * 非治安近日天数数据7/30
      * @author  wzj
      * @date  2020/2/19
      * @return 数据
      */
     ApiResult sigleData(String xzqhmc,String num);
+
+
+    /**
+     * 治安近日天数数据
+     * @author  wzj
+     * @date  2020/2/27
+     * @return 数据
+     */
+    ApiResult findDataByName(String xzqhmc,String num);
 
     /**
      * 单独数据

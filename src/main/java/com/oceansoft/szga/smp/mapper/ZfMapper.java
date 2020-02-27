@@ -282,6 +282,14 @@ public interface ZfMapper {
     /**
      * 单独数据
      * @author wzj
+     * @date 2020/2/27
+     * @return 数据
+     */
+    List<HashMap> findDataByName(@Param("time")String time,@Param("time2")String time2,@Param("xzqhmc")String xzqhmc);
+
+    /**
+     * 单独数据
+     * @author wzj
      * @date 2020/2/20
      * @return 数据
      */
