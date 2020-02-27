@@ -49,6 +49,17 @@ public class ZfController {
 
     /**
      * @author wzj
+     * 出租房数量降序
+     * @return 数据
+     */
+    @GetMapping("czfNumDesc")
+    public ApiResult czfNumDesc(){
+        ApiResult<CzfPersonNum> czfNumDesc = zfService.czfNumDesc();
+        return czfNumDesc;
+    }
+
+    /**
+     * @author wzj
      *  出租房重点人
      * @return 数据
      */
@@ -299,6 +310,18 @@ public class ZfController {
         ApiResult notDangerTypeSJ = zfService.notDangerTypeSj();
         return notDangerTypeSJ ;
     }
+
+    /**
+     * @author wzj
+     * 非治安隐患数据处理 排序 百分比
+     * @return 数据
+     */
+    @GetMapping("fzasjDesc")
+    public ApiResult fzasjDesc() {
+        ApiResult fzasjDesc = zfService.fzasjDesc();
+        return fzasjDesc;
+    }
+
     /**
      * @author wzj
      * 单独数据7/30
@@ -408,6 +431,17 @@ public class ZfController {
     @GetMapping("num")
     public ApiResult floatingPopulationNum(){
         ApiResult num = zfService.floatingPopulationNum();
+        return num;
+    }
+
+    /**
+     * @author wzj
+     * 流动人口数量降序
+     * @return 数据
+     */
+    @GetMapping("findNumDesc")
+    public ApiResult findNumDesc(){
+        ApiResult num = zfService.findNumDesc();
         return num;
     }
 
@@ -631,6 +665,17 @@ public class ZfController {
         ApiResult zayhsj = zfService.zayhsj();
         return zayhsj;
     }
+    /**
+     * @author wzj
+     * 治安隐患数据 整体排序  百分比
+     * @return 数据
+     */
+    @GetMapping("zayhsjDesc")
+    public ApiResult zayhsjDesc(){
+        ApiResult zayhsj = zfService.zayhsjDesc();
+        return zayhsj;
+    }
+
     /**
      * @author wzj
      * 安全监管群租房治安隐患整改发现数量

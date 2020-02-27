@@ -30,6 +30,14 @@ public interface ZfService {
     ApiResult czfNum();
 
     /**
+     *  出租房数量降序
+     * @author  wzj
+     * @date  2020/2/26
+     * @return  数据
+     */
+    ApiResult czfNumDesc();
+
+    /**
      *  出租房重点人员
      * @author  wzj
      * @date  2020/1/19
@@ -208,6 +216,14 @@ public interface ZfService {
     ApiResult floatingPopulationNum();
 
     /**
+     *流动人口总量降序
+     * @author wzj
+     * @date 2020/2/26
+     * @return 数据
+     */
+    ApiResult findNumDesc();
+
+    /**
      *流动人口实有数
      * @author wzj
      * @date 2020/1/20
@@ -236,6 +252,14 @@ public interface ZfService {
      * @return 数据
      */
     ApiResult notDangerTypeSj();
+
+    /**
+     * 非治安隐患数据
+     * @author  wzj
+     * @date  2020/1/19
+     * @return 数据
+     */
+    ApiResult fzasjDesc();
 
     /**
      * 单独数据7/30
@@ -423,6 +447,15 @@ public interface ZfService {
      * @return 数据
      */
     ApiResult zayhsj();
+
+    /**
+     * 治安隐患数据 整体排序  百分比
+     * @author  wzj
+     * @date  2020/2/26
+     * @return 数据
+     */
+    ApiResult zayhsjDesc();
+
     /**
      * 安全监管群租房治安隐患整改发现数量
      * @author  wzj

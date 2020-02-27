@@ -19,6 +19,16 @@
     from
         rpt_aqjg_qzf_czfsl
 </select>
+
+    <select id="czfNumDesc" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        xzqhmc,
+        sum(sl) as totleNum
+    from
+        rpt_aqjg_qzf_czfsl
+    group by xzqhmc order by totleNum desc
+</select>
+
     <select id="czfImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
@@ -214,6 +224,18 @@
         rpt_aqjg_qzf_fzayhsj
     </select>
 
+    <select id="fzasjDesc" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        xzqhmc,
+        sum(fws) totle_fws,
+        sum(zgs) totle_zgs,
+        sum(yhs) totle_yhs,
+        ceiling(sum(zgs)/sum(yhs)*100)
+    from
+        rpt_aqjg_qzf_fzayhsj
+        GROUP BY xzqhmc ORDER BY totle_yhs
+    </select>
+
     <select id="fzaYhNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         sum(fws) as totle_fws,
@@ -315,6 +337,16 @@
     from
         rpt_aqjg_qzf_ldrksl
 </select>
+
+    <select id="findNumDesc" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        xzqhmc,
+        sum(sl) as totleNum
+    from
+        rpt_aqjg_qzf_ldrksl
+    group by xzqhmc order by totleNum desc
+</select>
+
     <select id="floatingPopulationTrueNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
@@ -523,6 +555,19 @@
     from
         rpt_aqjg_qzf_zayhsj
 </select>
+
+    <select id="zayhsjDesc" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        xzqhmc,
+        sum(fws) as totleFws,
+        sum(yhs) as totleYhs,
+        sum(zgs) as totleZgs,
+        ceiling(sum(zgs)/sum(yhs)*100) as percent
+    from
+        rpt_aqjg_qzf_zayhsj
+    group by xzqhmc order by totleYhs
+</select>
+
     <select id="zayhFxsl" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,

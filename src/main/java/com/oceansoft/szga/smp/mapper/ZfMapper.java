@@ -33,6 +33,14 @@ public interface ZfMapper {
     List<CzfNum> czfNum();
 
     /**
+     * 出租房数量降序
+     * @author wzj
+     * @date 2020/2/26
+     * @return 数据
+     */
+    List<CzfNum> czfNumDesc();
+
+    /**
      * 出租房重点人
      * @author wzj
      * @date 2020/1/20
@@ -217,6 +225,15 @@ public interface ZfMapper {
      * @return 数据
      */
     List<HashMap> floatingPopulationNum();
+
+    /**
+     *流动人口总量降序
+     * @author wzj
+     * @date 2020/2/26
+     * @return 数据
+     */
+    List<HashMap> findNumDesc();
+
     /**
      *流动人口实有数
      * @author wzj
@@ -245,6 +262,15 @@ public interface ZfMapper {
      * @return 数据
      */
     List<HashMap> notDangerTypeSj();
+
+    /**
+     *非治安隐患数据处理，排序 百分比
+     * @author wzj
+     * @date 2020/2/26
+     * @return 数据
+     */
+    List<HashMap> fzasjDesc();
+
     /**
      * 单独数据
      * @author wzj
@@ -431,6 +457,15 @@ public interface ZfMapper {
      * @return 数据
      */
     List<HashMap> zayhsj();
+
+    /**
+     * 治安隐患数据排序
+     * @author wzj
+     * @date 2020/2/26
+     * @return 数据
+     */
+    List<HashMap> zayhsjDesc();
+
     /**
      * 安全监管群租房治安隐患整改发现数量
      * @author wzj

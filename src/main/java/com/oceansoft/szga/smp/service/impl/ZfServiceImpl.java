@@ -38,6 +38,12 @@ public class ZfServiceImpl implements ZfService {
     }
 
     @Override
+    public ApiResult czfNumDesc() {
+        List<CzfNum> czfNumDesc = zfMapper.czfNumDesc();
+        return new ApiResult().success(200,"成功",czfNumDesc);
+    }
+
+    @Override
     public ApiResult czfImpPerson() {
         List<HashMap> czfNums = zfMapper.czfImpPerson();
         return new ApiResult().success(200,"返回数据",czfNums);
@@ -224,6 +230,12 @@ public class ZfServiceImpl implements ZfService {
     }
 
     @Override
+    public ApiResult findNumDesc() {
+        List<HashMap> num = zfMapper.findNumDesc();
+        return new ApiResult().success(200,"成功",num);
+    }
+
+    @Override
     public ApiResult floatingPopulationTrueNum() {
         List<HashMap> floatTrueNum = zfMapper.floatingPopulationTrueNum();
         return new ApiResult().success(200,"返回数据",floatTrueNum);
@@ -244,6 +256,12 @@ public class ZfServiceImpl implements ZfService {
     public ApiResult notDangerTypeSj() {
         List<HashMap> notDangerTypeSJ = zfMapper.notDangerTypeSj();
         return new ApiResult().success(200,"返回数据",notDangerTypeSJ);
+    }
+
+    @Override
+    public ApiResult fzasjDesc() {
+        List<HashMap> data = zfMapper.fzasjDesc();
+        return new ApiResult().success(200,"成功",data);
     }
 
     @Override
@@ -400,6 +418,12 @@ public class ZfServiceImpl implements ZfService {
     @Override
     public ApiResult zayhsj() {
         List<HashMap> zayhsj = zfMapper.zayhsj();
+        return new ApiResult().success(200,"返回数据",zayhsj);
+    }
+
+    @Override
+    public ApiResult zayhsjDesc() {
+        List<HashMap> zayhsj = zfMapper.zayhsjDesc();
         return new ApiResult().success(200,"返回数据",zayhsj);
     }
 
