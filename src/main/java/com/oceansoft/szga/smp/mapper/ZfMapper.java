@@ -22,7 +22,7 @@ public interface ZfMapper {
      * @date 2020/1/20
      * @return 数据
      */
-    List<CzfPersonNum> czfPersonNum();
+    List<HashMap> czfPersonNum();
 
     /**
      * 出租房数量
@@ -30,7 +30,7 @@ public interface ZfMapper {
      * @date 2020/1/20
      * @return 数据
      */
-    List<CzfNum> czfNum();
+    List<HashMap> czfNum(@Param("tjrq")String tjrq);
 
     /**
      * 出租房数量降序
@@ -38,7 +38,7 @@ public interface ZfMapper {
      * @date 2020/2/26
      * @return 数据
      */
-    List<CzfNum> czfNumDesc();
+    List<HashMap> czfNumDesc(@Param("tjrq")String tjrq);
 
     /**
      * 出租房重点人
@@ -62,7 +62,17 @@ public interface ZfMapper {
      * @return 数据
      */
 
-    List<HashMap> qzfNum();
+    List<HashMap> qzfNum(@Param("tjrq") String tjrq);
+
+    /**
+     * 出租房数量
+     * @author wzj
+     * @date 2020/3/5
+     * @return 数据
+     */
+
+    List<HashMap> nearQzfNum(@Param("time") String time,@Param("time2")String time2);
+
     /**
      * 群租房隐患分析
      * @author wzj
@@ -70,7 +80,7 @@ public interface ZfMapper {
      * @return 数据
      */
 
-    List<HashMap> qzfDangerous();
+    List<HashMap> qzfDangerous(@Param("tjrq") String tjrq);
     /**
      * 群租房隐患分析 非治安
      * @author wzj
@@ -78,7 +88,7 @@ public interface ZfMapper {
      * @return 数据
      */
 
-    List<HashMap> qzfDangerous2();
+    List<HashMap> qzfDangerous2(@Param("tjrq") String tjrq);
 
     /**
      * 群租屋重点人
@@ -87,7 +97,7 @@ public interface ZfMapper {
      * @return 数据
      */
 
-    List<HashMap> qzwImpPerson();
+    List<HashMap> qzwImpPerson(@Param("tjrq")String tjrq);
 
     /**
      * 群租房隐患分析
@@ -96,7 +106,7 @@ public interface ZfMapper {
      * @return 数据
      */
 
-    List<HashMap> qzfImpPerson();
+    List<HashMap> qzfImpPerson(@Param("tjrq")String tjrq);
     /**
      * 群租房隐患分析
      * @author wzj
@@ -129,7 +139,7 @@ public interface ZfMapper {
      * @date 2020/2/25
      * @return 数据
      */
-    List<HashMap> qzfAreaNum(@Param("xzqhmc") String xzqhmc,@Param("time") String time);
+    List<HashMap> qzfAreaNum(@Param("xzqhmc") String xzqhmc,@Param("time") String time,@Param("time2")String time2);
 
 
     /**
@@ -157,6 +167,16 @@ public interface ZfMapper {
 
     List<HashMap> addQzfData2(@Param("time") String time,@Param("time2") String time2,@Param("xzqhmc")String xzqhmc);
 
+
+    /**
+     * 区域新增群租房
+     * @author wzj
+     * @date 2020/3/5
+     * @return 数据
+     */
+
+    List<HashMap> areaAddNum(@Param("time2") String time2,@Param("time") String time);
+
     /**
      * 隐患群租房数量 某天新增数量
      * @author wzj
@@ -172,7 +192,7 @@ public interface ZfMapper {
      * @date 2020/1/20
      * @return 数据
      */
-    List<HashMap> dangerQzfNum();
+    List<HashMap> dangerQzfNum(@Param("tjrq")String tjrq);
 
     /**
      * 隐患群租房单区数量
@@ -180,7 +200,15 @@ public interface ZfMapper {
      * @date 2020/2/20
      * @return 数据
      */
-    List<HashMap> yhQzfTotleNum(@Param("xzqhmc")String xzqhmc);
+    List<HashMap> yhQzfTotleNum(@Param("tjrq")String tjrq);
+
+    /**
+     * 隐患群租房
+     * @author wzj
+     * @date 2020/2/20
+     * @return 数据
+     */
+    List<HashMap> nearYhQzf(@Param("time")String time,@Param("time2")String time2);
 
     /**
      * 隐患大类分析
@@ -188,7 +216,7 @@ public interface ZfMapper {
      * @date 2020/1/20
      * @return 数据
      */
-    List<HashMap> dangerTypeFx();
+    List<HashMap> dangerTypeFx(@Param("tjrq")String tjrq);
 
     /**
      *流动人口来源地 省
@@ -224,7 +252,7 @@ public interface ZfMapper {
      * @date 2020/1/20
      * @return 数据
      */
-    List<HashMap> floatingPopulationNum();
+    List<HashMap> floatingPopulationNum(@Param("tjrq") String tjrq);
 
     /**
      *流动人口总量降序
@@ -254,22 +282,22 @@ public interface ZfMapper {
      * @date 2020/1/20
      * @return 数据
      */
-    List<HashMap> notDangerTypeSb();
+    List<HashMap> notDangerTypeSb(@Param("tjrq")String tjrq);
     /**
      *非治安隐患数据
      * @author wzj
      * @date 2020/1/20
      * @return 数据
      */
-    List<HashMap> notDangerTypeSj();
+    List<HashMap> notDangerTypeSj(@Param("tjrq")String tjrq);
 
     /**
-     *非治安隐患数据处理，排序 百分比
+     *非治安隐患数据 区县
      * @author wzj
-     * @date 2020/2/26
+     * @date 2020/3/4
      * @return 数据
      */
-    List<HashMap> fzasjDesc();
+    List<HashMap> fZaSj(@Param("tjrq")String tjrq);
 
     /**
      * 单独数据
@@ -316,7 +344,7 @@ public interface ZfMapper {
      * @date 2020/2/20
      * @return 数据
      */
-    List<HashMap> zaYhNum(@Param("xzqhmc")String xzqhmc );
+    List<HashMap> zaYhNum(@Param("tjrq")String tjrq );
 
     /**
      * 出租房重点人 行政区划
@@ -331,21 +359,21 @@ public interface ZfMapper {
      * @date 2020/1/20
      * @return 数据
      */
-    List<HashMap> fzayhff();
+    List<HashMap> fzayhff(@Param("tjrq")String tjrq);
     /**
      * 非治安隐患认领
      * @author wzj
      * @date 2020/2/12
      * @return 数据
      */
-    List<HashMap> fzayhrl();
+    List<HashMap> fzayhrl(@Param("tjrq")String tjrq);
     /**
      * 非治安隐患审核
      * @author wzj
      * @date 2020/2/12
      * @return 数据
      */
-    List<HashMap> fzayhsh();
+    List<HashMap> fzayhsh(@Param("tjrq")String tjrq);
     /**
      * 非治安隐患整改
      * @author wzj
@@ -359,7 +387,7 @@ public interface ZfMapper {
      * @date 2020/2/12
      * @return 数据
      */
-    List<HashMap> qyldrysl();
+    List<HashMap> qyldrysl(@Param("tjrq")String tjrq);
     /**
      * 群租房重点人人数-按行政区划
      * @author wzj
@@ -387,7 +415,7 @@ public interface ZfMapper {
      * @date 2020/2/12
      * @return 数据
      */
-    List<HashMap> yhczwsj();
+    List<HashMap> yhczwsj(@Param("tjrq")String tjrq);
     /**
      * 数图-隐患房屋数量-按派出所分类
      * @author wzj
@@ -401,7 +429,8 @@ public interface ZfMapper {
      * @date 2020/2/12
      * @return 数据
      */
-    List<HashMap> yhqs();
+    List<HashMap> yhqs(@Param("time")String time,@Param("time2")String time2);
+
     /**
      * 隐患群租房人数
      * @author wzj
@@ -464,15 +493,31 @@ public interface ZfMapper {
      * @date 2020/2/12
      * @return 数据
      */
-    List<HashMap> zayhsj();
+    List<HashMap> zayhsj(@Param("tjrq")String tjrq);
 
     /**
-     * 治安隐患数据排序
+     * 非治安 治安隐患数据
      * @author wzj
-     * @date 2020/2/26
+     * @date 2020/3/4
      * @return 数据
      */
-    List<HashMap> zayhsjDesc();
+    List<HashMap> yhsData(@Param("tjrq")String tjrq);
+
+    /**
+     * 非治安 隐患数据 近期
+     * @author wzj
+     * @date 2020/3/6
+     * @return 数据
+     */
+    List<HashMap> nearYhsData(@Param("time")String time,@Param("time2")String time2);
+
+    /**
+     * 非治安 隐患数据 单区域 近期
+     * @author wzj
+     * @date 2020/3/6
+     * @return 数据
+     */
+    List<HashMap> singleAreaData(@Param("time")String time,@Param("time2")String time2,@Param("xzqhmc")String xzqhmc);
 
     /**
      * 安全监管群租房治安隐患整改发现数量

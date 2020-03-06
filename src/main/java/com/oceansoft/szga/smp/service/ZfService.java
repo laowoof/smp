@@ -61,6 +61,14 @@ public interface ZfService {
     ApiResult qzfNum();
 
     /**
+     *  隐患群租房数量
+     * @author  wzj
+     * @date  2020/3/5
+     * @return  数据
+     */
+    ApiResult nearQzfNum(String num);
+
+    /**
      *  群租房数量
      * @author  wzj
      * @date  2020/2/17
@@ -99,6 +107,14 @@ public interface ZfService {
      * @return  数据
      */
     ApiResult addQzfData2(@Param("xzqhmd")String xzqhmc);
+
+    /**
+     * 区域新增群租房
+     * @author wzj
+     * @date 2020/3/5
+     * @return 数据
+     */
+    ApiResult areaAddNum();
 
     /**
      *  群租房数量 某天新增数量
@@ -169,7 +185,15 @@ public interface ZfService {
      * @date  2020/2/20
      * @return  数据
      */
-    ApiResult yhQzfTotleNum(@Param("xzqhmc")String xzqhmc);
+    ApiResult yhQzfTotleNum();
+
+    /**
+     *  隐患群租房数量
+     * @author  wzj
+     * @date  2020/3/5
+     * @return  数据
+     */
+    ApiResult nearYhQzf(String num);
 
     /**
      *  隐患大类分析
@@ -256,10 +280,10 @@ public interface ZfService {
     /**
      * 非治安隐患数据
      * @author  wzj
-     * @date  2020/1/19
+     * @date  2020/3/4
      * @return 数据
      */
-    ApiResult fzasjDesc();
+    ApiResult fZaSj();
 
     /**
      * 非治安近日天数数据7/30
@@ -307,7 +331,7 @@ public interface ZfService {
      * @date  2020/2/20
      * @return 数据
      */
-    ApiResult zaYhNum(String xzqhmc);
+    ApiResult zaYhNum();
 
     /**
      * 出租房重点人 行政区划
@@ -392,7 +416,7 @@ public interface ZfService {
      * @date  2020/1/20
      * @return 数据
      */
-    ApiResult yhqs();
+    ApiResult yhqs(String num);
     /**
      * 隐患群租房人数
      * @author  wzj
@@ -458,12 +482,28 @@ public interface ZfService {
     ApiResult zayhsj();
 
     /**
-     * 治安隐患数据 整体排序  百分比
-     * @author  wzj
-     * @date  2020/2/26
+     * 非治安 治安隐患数据
+     * @author wzj
+     * @date 2020/3/4
      * @return 数据
      */
-    ApiResult zayhsjDesc();
+    ApiResult yhsData();
+
+    /**
+     * 非治安隐患数据 近期
+     * @author wzj
+     * @date 2020/3/6
+     * @return 数据
+     */
+    ApiResult nearYhsData(String num);
+
+    /**
+     * 非治安隐患数据 近期  单区域 7/30
+     * @author wzj
+     * @date 2020/3/6
+     * @return 数据
+     */
+    ApiResult singleAreaData(String xzqhmc,String num);
 
     /**
      * 安全监管群租房治安隐患整改发现数量

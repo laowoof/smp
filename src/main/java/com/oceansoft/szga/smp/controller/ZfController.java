@@ -91,6 +91,28 @@ public class ZfController {
         return qzfNum;
     }
     /**
+     * 近期内群租房户数量
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("nearYhQzf")
+    public ApiResult nearYhQzf(String num){
+        ApiResult nearYhQzf = zfService.nearYhQzf(num);
+        return nearYhQzf;
+    }
+
+    /**
+     * 近期内群隐患数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("nearQzfNum")
+    public ApiResult nearQzfNum(String num){
+        ApiResult qzfNum = zfService.nearQzfNum(num);
+        return qzfNum;
+    }
+
+    /**
      * @author wzj
      *  群租房当月数据
      * @return 数据
@@ -163,6 +185,17 @@ public class ZfController {
     @GetMapping("addQzfNum")
     public ApiResult addQzfNum(String xzqhmc){
         ApiResult qzfNum = zfService.addQzfData2(xzqhmc);
+        return qzfNum;
+    }
+
+    /**
+     * @author wzj
+     *  群租房单区域本月新增数量
+     * @return 数据
+     */
+    @GetMapping("areaAddNum")
+    public ApiResult areaAddNum(){
+        ApiResult qzfNum = zfService.areaAddNum();
         return qzfNum;
     }
 
@@ -263,8 +296,8 @@ public class ZfController {
      * @return 数据
      */
     @GetMapping("yhQzfTotleNum")
-    public ApiResult yhQzfTotleNum(String xzqhmc){
-        ApiResult totleNum = zfService.yhQzfTotleNum(xzqhmc);
+    public ApiResult yhQzfTotleNum(){
+        ApiResult totleNum = zfService.yhQzfTotleNum();
         return totleNum;
     }
 
@@ -313,14 +346,15 @@ public class ZfController {
 
     /**
      * @author wzj
-     * 非治安隐患数据处理 排序 百分比
+     * 非治安隐患数据  按照区县排序
      * @return 数据
      */
-    @GetMapping("fzasjDesc")
-    public ApiResult fzasjDesc() {
-        ApiResult fzasjDesc = zfService.fzasjDesc();
-        return fzasjDesc;
+    @GetMapping("fZaSj")
+    public ApiResult fZaSj(){
+        ApiResult fZaSj = zfService.fZaSj();
+        return fZaSj ;
     }
+
 
     /**
      * @author wzj
@@ -382,8 +416,8 @@ public class ZfController {
      * @return 数据
      */
     @GetMapping("zaYhNum")
-    public ApiResult zaYhNum(String xzqhmc){
-        ApiResult num = zfService.zaYhNum(xzqhmc);
+    public ApiResult zaYhNum(){
+        ApiResult num = zfService.zaYhNum();
         return num;
     }
 
@@ -579,8 +613,8 @@ public class ZfController {
      * @return 数据
      */
     @GetMapping("yhqs")
-    public ApiResult yhqs(){
-        ApiResult yhqs = zfService.yhqs();
+    public ApiResult yhqs(String num){
+        ApiResult yhqs = zfService.yhqs(num);
         return yhqs;
     }
     /**
@@ -673,15 +707,41 @@ public class ZfController {
         ApiResult zayhsj = zfService.zayhsj();
         return zayhsj;
     }
+
     /**
+     * 非治安 治安隐患数据
      * @author wzj
-     * 治安隐患数据 整体排序  百分比
+     * @date 2020/3/4
      * @return 数据
      */
-    @GetMapping("zayhsjDesc")
-    public ApiResult zayhsjDesc(){
-        ApiResult zayhsj = zfService.zayhsjDesc();
-        return zayhsj;
+    @GetMapping("yhsData")
+    public ApiResult yhsData(){
+        ApiResult yhsData = zfService.yhsData();
+        return yhsData;
+    }
+
+    /**
+     * 非治安 隐患数据  近期内 7、30
+     * @author wzj
+     * @date 2020/3/6
+     * @return 数据
+     */
+    @GetMapping("nearYhsData")
+    public ApiResult nearYhsData(String num){
+        ApiResult data = zfService.nearYhsData(num);
+        return data;
+    }
+
+    /**
+     * 非治安 隐患数据 单区域 近期内 7、30
+     * @author wzj
+     * @date 2020/3/6
+     * @return 数据
+     */
+    @GetMapping("singleAreaData")
+    public ApiResult singleAreaData(String xzqhmc,String num){
+        ApiResult data = zfService.singleAreaData(xzqhmc,num);
+        return data;
     }
 
     /**

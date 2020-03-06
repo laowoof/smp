@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oceansoft.szga.smp.mapper.ZfMapper">
-    <select id="czfPersonNum" resultType="com.oceansoft.szga.smp.entity.CzfPersonNum" parameterType="java.util.List">
+    <select id="czfPersonNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
         czwdzxzqh as czwdzxzqh,
@@ -10,23 +10,28 @@
     from
         rpt_aqjg_qzf_czfrs
 </select>
-    <select id="czfNum" resultType="com.oceansoft.szga.smp.entity.CzfNum" parameterType="java.util.List">
+    <select id="czfNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
+        tjrq,
+        xzqh,
+        xzqhmc,
+        sl
+        from
         rpt_aqjg_qzf_czfsl
+        where
+        tjrq =#{tjrq}
 </select>
 
     <select id="czfNumDesc" resultType="java.util.HashMap" parameterType="java.util.List">
     select
+        tjrq,
+        xzqh,
         xzqhmc,
-        sum(sl) as totleNum
+        sl
     from
         rpt_aqjg_qzf_czfsl
-    group by xzqhmc order by totleNum desc
+    where
+        tjrq =#{tjrq} order by sl desc
 </select>
 
     <select id="czfImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -49,21 +54,40 @@
 </select>
     <select id="qzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
+        tjrq,
+        xzqh,
+        xzqhmc,
         sl as sl
     from
         rpt_aqjg_qzf_qzfsl
+    where
+        tjrq =#{tjrq}
+</select>
+
+    <select id="nearQzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+        sum(sl) as totle_fws,
+        sum(sl) as totle_yhs,
+        sum(sl) as totle_zgs
+    from
+        rpt_aqjg_qzf_qzfsl
+    where
+        tjrq between #{time} and #{time2} GROUP BY tjrq ORDER BY tjrq ASC
 </select>
 
     <select id="qzfAreaNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        sum(sl) as totle_fws
+        tjrq,
+        xzqh,
+        xzqhmc,
+        sl as totle_fws,
+        sl as totle_yhs,
+        sl as totle_zgs
     from
         rpt_aqjg_qzf_qzfsl
     where
-        xzqhmc =#{xzqhmc} and tjrq &lt;= #{time}
+        tjrq between #{time} and #{time2} and xzqhmc =#{xzqhmc}
 </select>
 
     <select id="qzfAreaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -101,6 +125,18 @@
     ) as num
 </select>
 
+    <select id="areaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select * from (
+    select qxmc.xzqhmc,(jt.sl-zt.sl) AS addNum from (
+        (select xzqhmc from rpt_aqjg_qzf_qzfsl GROUP BY xzqhmc) as qxmc
+        LEFT JOIN
+       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time2}) as jt on qxmc.xzqhmc = jt.xzqhmc
+        LEFT JOIN
+       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time}) as zt on qxmc.xzqhmc = zt.xzqhmc
+    )GROUP BY qxmc.xzqhmc,addNum
+        ) foo ORDER BY xzqhmc ASC
+</select>
+
     <select id="addQzfData3" resultType="java.util.HashMap" parameterType="java.util.List">
     select
     (
@@ -111,24 +147,26 @@
 
     <select id="qzfDangerous" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        yhlxdm as yhlxdm,
-        yhlxmc as yhlxmc,
-        sl as sl
+        tjrq,
+        yhlxdm,
+        yhlxmc,
+        sl
     from
         rpt_aqjg_qzf_qzfyhfx
-        where yhlxdm between '11' and  '20' order by sl desc
+    where
+        tjrq =#{tjrq} and yhlxdm between '11' and  '20' order by sl desc
 </select>
 
     <select id="qzfDangerous2" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        yhlxdm as yhlxdm,
-        yhlxmc as yhlxmc,
-        sl as sl
+        tjrq,
+        yhlxdm,
+        yhlxmc,
+        sl
     from
         rpt_aqjg_qzf_qzfyhfx
-        where yhlxdm between '21' and  '28' order by sl desc
+    where
+        tjrq =#{tjrq} and yhlxdm between '21' and  '28' order by sl desc
 </select>
     <select id="qzwImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -138,15 +176,19 @@
         sl as sl
     from
         rpt_aqjg_qzf_qzwzdr
+    where
+        tjrq =#{tjrq}
 </select>
     <select id="qzfImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        fldm as fldm,
-        flmc as flmc,
-        sl as sl
+        tjrq,
+        fldm,
+        flmc,
+        sl
     from
         rpt_aqjg_qzf_qzfzdry
+    where
+        tjrq =#{tjrq}
 </select>
     <select id="dangeroursCzf" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -168,22 +210,41 @@
 </select>
     <select id="dangerQzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
+        tjrq,
+        xzqh,
+        xzqhmc,
         sl as sl
     from
         rpt_aqjg_qzf_yhqzfsj
+    where
+        tjrq =#{tjrq}
 </select>
 
 
     <select id="yhQzfTotleNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        sum(sl)
+        tjrq,
+        xzqh,
+        xzqhmc,
+        sl
     from
         rpt_aqjg_qzf_yhqzfsj
-        where  xzqhmc = #{xzqhmc}
+    where
+        tjrq =#{tjrq} order by xzqhmc
 </select>
+
+    <select id="nearYhQzf" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+        sum(sl) as totle_fws,
+        sum(sl) as totle_yhs,
+        sum(sl) as totle_zgs
+    from
+        rpt_aqjg_qzf_yhqzfsj
+    where
+        tjrq between #{time} and #{time2} GROUP BY tjrq ORDER BY tjrq ASC
+</select>
+
 
     <select id="dangerTypeFx" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -193,6 +254,8 @@
         sl as sl
     from
         rpt_aqjg_qzf_yhdlfx
+    where
+        tjrq=#{tjrq}
 </select>
     <select id="notDangerType" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -205,35 +268,43 @@
 </select>
     <select id="notDangerTypeSb" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        sbzs as sbzs,
-        sbwcs as sbwcs,
-        sbwwcs as sbwwcs
+        tjrq,
+        sbzs,
+        sbwcs,
+        sbwwcs
     from
         rpt_aqjg_qzf_fzayhsb
+    where
+        tjrq =#{tjrq}
 </select>
     <select id="notDangerTypeSj" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        xzqhdm as xzqhdm,
-        xzqhmc as xzqhmc,
-        fws as fws,
-        yhs as yhs,
-        zgs as zgs
+        tjrq,
+        xzqhdm,
+        xzqhmc,
+        fws,
+        yhs,
+        zgs,
+        ceiling(zgs/yhs*100) as percent
     from
         rpt_aqjg_qzf_fzayhsj
+    where
+        tjrq =#{tjrq} order by yhs
     </select>
 
-    <select id="fzasjDesc" resultType="java.util.HashMap" parameterType="java.util.List">
+    <select id="fZaSj" resultType="java.util.HashMap" parameterType="java.util.List">
     select
+        tjrq,
+        xzqhdm,
         xzqhmc,
-        sum(fws) totle_fws,
-        sum(zgs) totle_zgs,
-        sum(yhs) totle_yhs,
-        ceiling(sum(zgs)/sum(yhs)*100)
+        fws,
+        yhs,
+        zgs,
+        ceiling(zgs/yhs*100) as percent
     from
         rpt_aqjg_qzf_fzayhsj
-        GROUP BY xzqhmc ORDER BY totle_yhs
+    where
+        tjrq =#{tjrq} order by xzqhmc
     </select>
 
     <select id="fzaYhNum" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -296,12 +367,17 @@
 
     <select id="zaYhNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-       sum(fws) totle_fws,
-       sum(yhs) totle_yhs,
-       sum(zgs) totle_zgs
+      tjrq,
+      xzqhdm,
+      xzqhmc,
+      fws,
+      yhs,
+      zgs,
+      ceiling(zgs/yhs*100) as percent
     from
         rpt_aqjg_qzf_zayhsj
-        where xzqhmc = #{xzqhmc}
+    where
+        tjrq =#{tjrq} order by xzqhmc
     </select>
 
 
@@ -342,13 +418,15 @@
 </select>
     <select id="floatingPopulationNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        nld as nld,
-        sl as sl
+        tjrq,
+        xzqh,
+        xzqhmc,
+        nld,
+        sl
     from
         rpt_aqjg_qzf_ldrksl
+    where
+        tjrq=#{tjrq}
 </select>
 
     <select id="findNumDesc" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -387,6 +465,8 @@
         wwcsl as wwcsl
     from
         rpt_aqjg_qzf_fzayhff
+    where
+        tjrq =#{tjrq}
 </select>
     <select id="fzayhrl" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -397,16 +477,20 @@
         wwcsl as wwcsl
     from
         rpt_aqjg_qzf_fzayhrl
+    where
+        tjrq =#{tjrq}
 </select>
     <select id="fzayhsh" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        zsl as zsl,
-        wcsl as wcsl,
-        wwcsl as wwcsl
+        tjrq,
+        xzqh,
+        zsl,
+        wcsl,
+        wwcsl
     from
         rpt_aqjg_qzf_fzayhsh
+    where
+        tjrq =#{tjrq}
 </select>
     <select id="fzayhza" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -420,12 +504,14 @@
 </select>
     <select id="qyldrysl" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        ldrysl as ldrysl
+        tjrq,
+        xzqh,
+        xzqhmc,
+        ldrysl
     from
         rpt_aqjg_qzf_qyldrysl
+    where
+        tjrq=#{tjrq} order by ldrysl desc
 </select>
     <select id="czfzdrrsXzqh" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -462,6 +548,8 @@
         sl as sl
     from
         rpt_aqjg_qzf_yhczwsj
+    where
+        tjrq =#{tjrq}
 </select>
     <select id="yhfwpcs" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -477,15 +565,18 @@
 </select>
     <select id="yhqs" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        zayh_fxsl as zayh_fxsl,
-        zayh_zgsl as zayh_zgsl,
-        fzayh_fxsl as fzayh_fxsl,
-        fzayh_tssl as fzayh_tssl,
-        fzayh_zgsl as fzayh_zgsl
+        tjrq,
+        zayh_fxsl,
+        zayh_zgsl,
+        fzayh_fxsl,
+        fzayh_tssl,
+        fzayh_zgsl
     from
         rpt_aqjg_qzf_yhqs
+    where
+        tjrq  between #{time} and #{time2} ORDER BY tjrq
 </select>
+
     <select id="yhqzfrs" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
@@ -559,26 +650,57 @@
 </select>
     <select id="zayhsj" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        xzqhdm as xzqhdm,
-        xzqhmc as xzqhmc,
-        fws as fws,
-        yhs as yhs,
-        zgs as zgs
+        tjrq,
+        xzqhdm,
+        xzqhmc,
+        fws,
+        yhs,
+        zgs,
+        ceiling(zgs/yhs*100) as percent
     from
         rpt_aqjg_qzf_zayhsj
+    where
+    tjrq =#{tjrq} order by yhs
 </select>
 
-    <select id="zayhsjDesc" resultType="java.util.HashMap" parameterType="java.util.List">
+    <select id="nearYhsData" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        xzqhmc,
-        sum(fws) as totleFws,
-        sum(yhs) as totleYhs,
-        sum(zgs) as totleZgs,
-        ceiling(sum(zgs)/sum(yhs)*100) as percent
+        tjrq,
+        sum(fzayh_fxsl) as totle_fws,
+        sum(fzayh_tssl) as totle_yhs,
+        sum(fzayh_zgsl) as totle_zgs
     from
-        rpt_aqjg_qzf_zayhsj
-    group by xzqhmc order by totleYhs
+        rpt_aqjg_qzf_yhqs
+    where
+        tjrq between #{time} and #{time2} group by tjrq ORDER BY tjrq
+</select>
+
+    <select id="singleAreaData" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+        fzayh_fxsl as totle_fws,
+        fzayh_tssl as totle_yhs,
+        fzayh_zgsl as totle_zgs
+    from
+        rpt_aqjg_qzf_yhqs
+    where
+        tjrq between #{time} and #{time2} AND xzqhmc = #{xzqhmc} order by tjrq
+</select>
+
+    <select id="yhsData" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+        xzqhmc,
+        zayh_fxsl,
+        zayh_zgsl,
+        fzayh_fxsl,
+        fzayh_tssl,
+        fzayh_zgsl,
+        ceiling(fzayh_zgsl/fzayh_fxsl*100) as percent
+    from
+        rpt_aqjg_qzf_yhqs
+    where
+    tjrq =#{tjrq} order by xzqhmc
 </select>
 
     <select id="zayhFxsl" resultType="java.util.HashMap" parameterType="java.util.List">
