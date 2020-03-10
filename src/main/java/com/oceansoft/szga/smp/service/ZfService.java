@@ -240,6 +240,14 @@ public interface ZfService {
     ApiResult floatingPopulationNum();
 
     /**
+     *流动人口数量
+     * @author wzj
+     * @date 2020/3/9
+     * @return 数据
+     */
+    ApiResult ldryFxData();
+
+    /**
      *流动人口总量降序
      * @author wzj
      * @date 2020/2/26

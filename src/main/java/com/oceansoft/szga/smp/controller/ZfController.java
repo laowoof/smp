@@ -250,7 +250,7 @@ public class ZfController {
      * 群租房重点人员
      * @return 数据
      */
-    @GetMapping("qzfImpPerson")
+    @GetMapping("qzfImpPersondangerQzfNum")
     public ApiResult QzfImpPerson(){
         ApiResult qzfImpPerson = zfService.qzfImpPerson();
         return qzfImpPerson;
@@ -473,6 +473,17 @@ public class ZfController {
     @GetMapping("num")
     public ApiResult floatingPopulationNum(){
         ApiResult num = zfService.floatingPopulationNum();
+        return num;
+    }
+
+    /**
+     * @author wzj
+     * 流动人口数量分析
+     * @return 数据
+     */
+    @GetMapping("ldryFx")
+    public ApiResult ldryFxData(){
+        ApiResult num = zfService.ldryFxData();
         return num;
     }
 

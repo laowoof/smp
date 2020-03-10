@@ -276,6 +276,15 @@ public class ZfServiceImpl implements ZfService {
     }
 
     @Override
+    public ApiResult ldryFxData() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = zfMapper.ldryFxData(tjrq);
+        return new ApiResult().success(200,"返回数据",data);
+    }
+
+    @Override
     public ApiResult findNumDesc() {
         List<HashMap> num = zfMapper.findNumDesc();
         return new ApiResult().success(200,"成功",num);

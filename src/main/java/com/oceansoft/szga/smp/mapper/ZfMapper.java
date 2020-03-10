@@ -255,6 +255,14 @@ public interface ZfMapper {
     List<HashMap> floatingPopulationNum(@Param("tjrq") String tjrq);
 
     /**
+     *流动人口数量
+     * @author wzj
+     * @date 2020/3/9
+     * @return 数据
+     */
+    List<HashMap> ldryFxData(@Param("tjrq") String tjrq);
+
+    /**
      *流动人口总量降序
      * @author wzj
      * @date 2020/2/26

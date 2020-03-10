@@ -248,14 +248,12 @@
 
     <select id="dangerTypeFx" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq as tjrq,
-        yhlbdm as yhlbdm,
-        yhlbmc as yhlbmc,
-        sl as sl
+        sum(sl) as num,
+        yhlbmc
     from
         rpt_aqjg_qzf_yhdlfx
     where
-        tjrq=#{tjrq}
+       yhlbmc is not null and  tjrq=#{tjrq} group by yhlbmc order by num
 </select>
     <select id="notDangerType" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -418,6 +416,16 @@
 </select>
     <select id="floatingPopulationNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
+        nld,
+        sum(sl) as totleNum
+    from
+        rpt_aqjg_qzf_ldrksl
+    where
+        tjrq=#{tjrq} group by nld order by nld
+</select>
+
+    <select id="ldryFxData" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
         tjrq,
         xzqh,
         xzqhmc,
@@ -426,7 +434,7 @@
     from
         rpt_aqjg_qzf_ldrksl
     where
-        tjrq=#{tjrq}
+        tjrq=#{tjrq} ORDER BY xzqhmc,nld
 </select>
 
     <select id="findNumDesc" resultType="java.util.HashMap" parameterType="java.util.List">
