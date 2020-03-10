@@ -250,7 +250,7 @@ public class ZfController {
      * 群租房重点人员
      * @return 数据
      */
-    @GetMapping("qzfImpPersondangerQzfNum")
+    @GetMapping("qzfImpPerson")
     public ApiResult QzfImpPerson(){
         ApiResult qzfImpPerson = zfService.qzfImpPerson();
         return qzfImpPerson;
