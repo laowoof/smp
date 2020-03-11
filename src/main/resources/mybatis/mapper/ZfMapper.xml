@@ -154,7 +154,7 @@
     from
         rpt_aqjg_qzf_qzfyhfx
     where
-        tjrq =#{tjrq} and yhlxdm between '11' and  '20' order by sl desc
+        tjrq =#{tjrq} and yhlxdm like '%10%' ORDER BY sl
 </select>
 
     <select id="qzfDangerous2" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -166,7 +166,7 @@
     from
         rpt_aqjg_qzf_qzfyhfx
     where
-        tjrq =#{tjrq} and yhlxdm between '21' and  '28' order by sl desc
+        tjrq =#{tjrq} and yhlxdm not like '%10%' ORDER BY sl
 </select>
     <select id="qzwImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -574,15 +574,25 @@
     <select id="yhqs" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,
-        zayh_fxsl,
-        zayh_zgsl,
-        fzayh_fxsl,
-        fzayh_tssl,
-        fzayh_zgsl
+        sum(fzayh_fxsl) as totle_fws,
+        sum(fzayh_tssl) as totle_yhs,
+        sum(fzayh_zgsl) as totle_zgs
     from
         rpt_aqjg_qzf_yhqs
     where
-        tjrq  between #{time} and #{time2} ORDER BY tjrq
+        tjrq  between #{time} and #{time2} GROUP BY tjrq  ORDER BY tjrq
+</select>
+
+    <select id="yhqs2" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+        sum(zayh_fxsl) as totle_yhs,
+        sum(zayh_fxsl) as totle_fws,
+        sum(zayh_zgsl) as totle_zgs
+    from
+        rpt_aqjg_qzf_yhqs
+    where
+        tjrq  between #{time} and #{time2} GROUP BY tjrq  ORDER BY tjrq
 </select>
 
     <select id="yhqzfrs" resultType="java.util.HashMap" parameterType="java.util.List">

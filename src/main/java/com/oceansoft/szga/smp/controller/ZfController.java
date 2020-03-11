@@ -620,7 +620,7 @@ public class ZfController {
     }
     /**
      * @author wzj
-     * 数图-隐患房屋数量-按派出所分类
+     * 隐患数据   非治安
      * @return 数据
      */
     @GetMapping("yhqs")
@@ -628,6 +628,17 @@ public class ZfController {
         ApiResult yhqs = zfService.yhqs(num);
         return yhqs;
     }
+    /**
+     * @author wzj
+     * 隐患数据   治安
+     * @return 数据
+     */
+    @GetMapping("yhqs2")
+    public ApiResult yhqs2(String num){
+        ApiResult yhqs2 = zfService.yhqs2(num);
+        return yhqs2;
+    }
+
     /**
      * @author wzj
      * 隐患群租房人数

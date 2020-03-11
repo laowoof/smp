@@ -425,6 +425,15 @@ public interface ZfService {
      * @return 数据
      */
     ApiResult yhqs(String num);
+
+    /**
+     * 安全监管群租房隐患趋势
+     * @author  wzj
+     * @date  2020/3/11
+     * @return 数据
+     */
+    ApiResult yhqs2(String num);
+
     /**
      * 隐患群租房人数
      * @author  wzj

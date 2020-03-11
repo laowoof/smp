@@ -454,7 +454,14 @@ public class ZfServiceImpl implements ZfService {
     public ApiResult yhqs(String num) {
         Map<String,String> dmp = dataNum(num);
         List<HashMap> yhqs = zfMapper.yhqs(dmp.get("time2"),dmp.get("time"));
-        return new ApiResult().success(200,"返回数据",yhqs);
+        return new ApiResult().success(200,"返回数据",dateData(yhqs,num,null));
+    }
+
+    @Override
+    public ApiResult yhqs2(String num) {
+        Map<String,String> dmp = dataNum(num);
+        List<HashMap> yhqs2 = zfMapper.yhqs2(dmp.get("time2"),dmp.get("time"));
+        return new ApiResult().success(200,"返回数据",dateData(yhqs2,num,null));
     }
 
     @Override

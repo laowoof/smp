@@ -431,6 +431,7 @@ public interface ZfMapper {
      * @return 数据
      */
     List<HashMap> yhfwpcs();
+
     /**
      * 安全监管群租房隐患趋势
      * @author wzj
@@ -438,6 +439,14 @@ public interface ZfMapper {
      * @return 数据
      */
     List<HashMap> yhqs(@Param("time")String time,@Param("time2")String time2);
+
+    /**
+     * 安全监管群租房隐患趋势
+     * @author wzj
+     * @date 2020/3/11
+     * @return 数据
+     */
+    List<HashMap> yhqs2(@Param("time")String time,@Param("time2")String time2);
 
     /**
      * 隐患群租房人数
