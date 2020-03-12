@@ -21,13 +21,6 @@ public class ZfServiceImpl implements ZfService {
     private ZfMapper zfMapper;
 
 
-
-    @Override
-    public ApiResult czfPersonNum() {
-        List<HashMap> czfPersonNums = zfMapper.czfPersonNum();
-        return new ApiResult().success(200,"返回数据",czfPersonNums);
-    }
-
     @Override
     public ApiResult czfNum() {
         Calendar calendar = Calendar.getInstance();
@@ -47,17 +40,6 @@ public class ZfServiceImpl implements ZfService {
         return new ApiResult().success(200,"成功",czfNumDesc);
     }
 
-    @Override
-    public ApiResult czfImpPerson() {
-        List<HashMap> czfNums = zfMapper.czfImpPerson();
-        return new ApiResult().success(200,"返回数据",czfNums);
-    }
-
-    @Override
-    public ApiResult qzfPersonNum() {
-        List<HashMap> qzfPersonNums = zfMapper.qzfPersonNum();
-        return new ApiResult().success(200,"返回数据",qzfPersonNums);
-    }
 
     @Override
     public ApiResult qzfNum() {
@@ -88,53 +70,6 @@ public class ZfServiceImpl implements ZfService {
         return new ApiResult().success(200,"返回数据",dateData(qzfAreaNum,num,xzqhmc));
     }
 
-    @Override
-    public ApiResult qzfAreaAddNum(String xzqhmc, String num) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        List<String> list = new ArrayList<String>();
-        list.add(sdf.format(calendar.getTime()));
-        for(int i=0;i<Integer.valueOf(num);i++){
-            calendar.add(Calendar.DATE,-1);
-            list.add(sdf.format(calendar.getTime()));
-        }
-        List dataList = new ArrayList();
-        for(int i=0;i<list.size();i++){
-            String time = list.get(i);
-            List<HashMap> qzfNum = zfMapper.qzfAreaAddNum(xzqhmc,time);
-            dataList.add(qzfNum);
-        }
-        return new ApiResult().success(200,"返回数据",dataList);
-    }
-
-    @Override
-    public ApiResult qzfTotleNum(String num) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        List<String> list = new ArrayList<String>();
-        list.add(sdf.format(calendar.getTime()));
-        for(int i=0;i<Integer.valueOf(num);i++){
-            calendar.add(Calendar.DATE,-1);
-            list.add(sdf.format(calendar.getTime()));
-        }
-        List dataList = new ArrayList();
-        for(int i=0;i<list.size();i++){
-            List<HashMap> qzfNum = zfMapper.qzfTotleNum(list.get(i));
-            dataList.add(qzfNum);
-        }
-        return new ApiResult().success(200,"返回数据",dataList);
-    }
-
-    @Override
-    public ApiResult addQzfData2(String xzqhmc) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-        String time = sdf.format(calendar.getTime());
-        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
-        String time2 = sdf.format(calendar.getTime());
-        List<HashMap> qzfNum = zfMapper.addQzfData2(time,time2,xzqhmc);
-        return new ApiResult().success(200,"返回数据",qzfNum);
-    }
 
     @Override
     public ApiResult areaAddNum() {
@@ -149,17 +84,6 @@ public class ZfServiceImpl implements ZfService {
         return new ApiResult().success(200,"成功",areaAddNum);
     }
 
-    @Override
-    public ApiResult addQzfData3(String num) {
-//        Calendar calendar = Calendar.getInstance();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        String time = sdf.format(calendar.getTime());
-//        calendar.set(Calendar.DATE,calendar.get(Calendar.DATE)-1);
-//        String time2 = sdf.format(calendar.getTime());
-        Map<String,String> dmp = dataNum(num);
-        List<HashMap> sigleData = zfMapper.addQzfData3(dmp.get("time"),dmp.get("time2"));
-        return new ApiResult().success(200,"返回数据",dateData(sigleData,num,null));
-    }
 
     @Override
     public ApiResult qzfDangerous() {
@@ -197,17 +121,6 @@ public class ZfServiceImpl implements ZfService {
         return new ApiResult().success(200,"返回数据",qzfImpPerson);
     }
 
-    @Override
-    public ApiResult dangerCzf() {
-        List<HashMap> dangerCzf = zfMapper.dangeroursCzf();
-        return new ApiResult().success(200,"返回数据",dangerCzf);
-    }
-
-    @Override
-    public ApiResult dangerCzfImpPerson() {
-        List<HashMap> dangerCzfImpPerson = zfMapper.dangerCzfImpPerson();
-        return new ApiResult().success(200,"返回数据",dangerCzfImpPerson);
-    }
 
     @Override
     public ApiResult dangerQzfNum() {
@@ -242,29 +155,6 @@ public class ZfServiceImpl implements ZfService {
         List<HashMap> dangerTypeFx = zfMapper.dangerTypeFx(tjrq);
         return new ApiResult().success(200,"返回数据",dangerTypeFx);
     }
-    @Override
-    public ApiResult floatingPopulationS() {
-        List<HashMap> floatPrivate = zfMapper.floatingPopulationS();
-        return new ApiResult().success(200,"返回数据",floatPrivate);
-    }
-
-    @Override
-    public ApiResult floatingPopulationShi() {
-        List<HashMap> floatCity = zfMapper.floatingPopulationS();
-        return new ApiResult().success(200,"返回数据",floatCity);
-    }
-
-    @Override
-    public ApiResult floatingPopulationX() {
-        List<HashMap> floatArea = zfMapper.floatingPopulationX();
-        return new ApiResult().success(200,"返回数据",floatArea);
-    }
-
-    @Override
-    public ApiResult floatingPopulationAge() {
-        List<HashMap> floatAge = zfMapper.floatingPopulationAge();
-        return new ApiResult().success(200,"返回数据",floatAge);
-    }
 
     @Override
     public ApiResult floatingPopulationNum() {
@@ -284,22 +174,6 @@ public class ZfServiceImpl implements ZfService {
         return new ApiResult().success(200,"返回数据",data);
     }
 
-    @Override
-    public ApiResult findNumDesc() {
-        List<HashMap> num = zfMapper.findNumDesc();
-        return new ApiResult().success(200,"成功",num);
-    }
-
-    @Override
-    public ApiResult floatingPopulationTrueNum() {
-        List<HashMap> floatTrueNum = zfMapper.floatingPopulationTrueNum();
-        return new ApiResult().success(200,"返回数据",floatTrueNum);
-    }
-    @Override
-    public ApiResult notDangerType() {
-        List<HashMap> notDangerType = zfMapper.notDangerType();
-        return new ApiResult().success(200,"返回数据",notDangerType);
-    }
 
     @Override
     public ApiResult notDangerTypeSb() {
@@ -372,12 +246,6 @@ public class ZfServiceImpl implements ZfService {
     }
 
     @Override
-    public ApiResult czfImpXzqh() {
-        List<HashMap> czfImpXzqh = zfMapper.czfImpXzqh();
-        return new ApiResult().success(200,"返回数据",czfImpXzqh);
-    }
-
-    @Override
     public ApiResult fzayhff() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -418,36 +286,12 @@ public class ZfServiceImpl implements ZfService {
     }
 
     @Override
-    public ApiResult czfzdrrsXzqh() {
-        List<HashMap> xzqh = zfMapper.czfzdrrsXzqh();
-        return new ApiResult().success(200,"返回数据",xzqh);
-    }
-
-    @Override
-    public ApiResult czfzdrrsZdlx() {
-        List<HashMap> zdlx = zfMapper.czfzdrrsZdlx();
-        return new ApiResult().success(200,"返回数据",zdlx);
-    }
-
-    @Override
-    public ApiResult yhczfzdrLx() {
-        List<HashMap> lx = zfMapper.yhczfzdrLx();
-        return new ApiResult().success(200,"返回数据",lx);
-    }
-
-    @Override
     public ApiResult yhczwsj() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> yhczwsj = zfMapper.yhczwsj(tjrq);
         return new ApiResult().success(200,"返回数据",yhczwsj);
-    }
-
-    @Override
-    public ApiResult yhfwpcs() {
-        List<HashMap> yhfwpcs = zfMapper.yhfwpcs();
-        return new ApiResult().success(200,"返回数据",yhfwpcs);
     }
 
     @Override
@@ -462,54 +306,6 @@ public class ZfServiceImpl implements ZfService {
         Map<String,String> dmp = dataNum(num);
         List<HashMap> yhqs2 = zfMapper.yhqs2(dmp.get("time2"),dmp.get("time"));
         return new ApiResult().success(200,"返回数据",dateData(yhqs2,num,null));
-    }
-
-    @Override
-    public ApiResult yhqzfrs() {
-        List<HashMap> yhqzfrs = zfMapper.yhqzfrs();
-        return new ApiResult().success(200,"返回数据",yhqzfrs);
-    }
-
-    @Override
-    public ApiResult qzfzdrrsXzqh() {
-        List<HashMap> xzqh= zfMapper.qzfzdrrsXzqh();
-        return new ApiResult().success(200,"返回数据",xzqh);
-    }
-
-    @Override
-    public ApiResult qzfzdrrsZdlx() {
-        List<HashMap> zdlx = zfMapper.qzfzdrrsZdlx();
-        return new ApiResult().success(200,"返回数据",zdlx);
-    }
-
-    @Override
-    public ApiResult yhqzfzdry() {
-        List<HashMap> yhqzfzdry = zfMapper.yhqzfzdry();
-        return new ApiResult().success(200,"返回数据",yhqzfzdry);
-    }
-
-    @Override
-    public ApiResult yhqzfzdrLx() {
-        List<HashMap> yhqzfzdrLx = zfMapper.yhqzfzdrLx();
-        return new ApiResult().success(200,"返回数据",yhqzfzdrLx);
-    }
-
-    @Override
-    public ApiResult yhqzwsj() {
-        List<HashMap> yhqzwsj = zfMapper.yhqzwsj();
-        return new ApiResult().success(200,"返回数据",yhqzwsj);
-    }
-
-    @Override
-    public ApiResult yhqzwzdr() {
-        List<HashMap> yhqzwzdr = zfMapper.yhqzwzdr();
-        return new ApiResult().success(200,"返回数据",yhqzwzdr);
-    }
-
-    @Override
-    public ApiResult zayhlx() {
-        List<HashMap> zayhlx = zfMapper.zayhlx();
-        return new ApiResult().success(200,"返回数据",zayhlx);
     }
 
     @Override
@@ -568,11 +364,6 @@ public class ZfServiceImpl implements ZfService {
         return new ApiResult().success(200,"返回数据",zdrysl);
     }
 
-    @Override
-    public ApiResult czfzdry() {
-        List<HashMap> czfzdry = zfMapper.czfzdry();
-        return new ApiResult().success(200,"返回数据",czfzdry);
-    }
 
     public List<HashMap> dateData(List<HashMap> list,String num,String xzqhmc){
         Calendar calendar = Calendar.getInstance();

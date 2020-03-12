@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oceansoft.szga.smp.mapper.ZfMapper">
-    <select id="czfPersonNum" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        czwdzxzqh as czwdzxzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_czfrs
-</select>
     <select id="czfNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,
@@ -34,24 +25,6 @@
         tjrq =#{tjrq} order by sl desc
 </select>
 
-    <select id="czfImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        fldm as fldm,
-        flmc as flmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_czfzdr
-</select>
-    <select id="qzfPersonNum" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        czwdzxzqh as czwdzxzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_qzfrs
-</select>
     <select id="qzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,
@@ -90,24 +63,6 @@
         tjrq between #{time} and #{time2} and xzqhmc =#{xzqhmc}
 </select>
 
-    <select id="qzfAreaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        sum(sl) as totle_fws
-    from
-        rpt_aqjg_qzf_qzfsl
-    where
-        xzqhmc =#{xzqhmc} and tjrq &lt;= #{time}
-</select>
-
-    <select id="qzfTotleNum" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        sum(sl) as totle_fws
-    from
-        rpt_aqjg_qzf_qzfsl
-    where
-        tjrq &lt;=#{time}
-</select>
-
     <select id="qzfMonthData" resultType="java.util.HashMap" parameterType="java.util.List">
     SELECT
         SUM(sl)
@@ -115,14 +70,6 @@
         rpt_aqjg_qzf_qzfsl
     WHERE
         tjrq like '%' || #{time} ||'%'
-</select>
-
-    <select id="addQzfData2" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-    (
-    (select sum(sl) as sl from RPT_AQJG_QZF_qzfsl where tjrq like '%' || #{time} ||'%' and xzqhmc = #{xzqhmc}) -
-    (select sum(sl) as sl2 from RPT_AQJG_QZF_qzfsl where tjrq like '%' || #{time2} ||'%' and xzqhmc = #{xzqhmc})
-    ) as num
 </select>
 
     <select id="areaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -135,14 +82,6 @@
        (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time}) as zt on qxmc.xzqhmc = zt.xzqhmc
     )GROUP BY qxmc.xzqhmc,addNum
         ) foo ORDER BY xzqhmc ASC
-</select>
-
-    <select id="addQzfData3" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-    (
-    (select sum(sl) from RPT_AQJG_QZF_qzfsl where tjrq &lt;= #{time}) -
-    (select sum(sl) from RPT_AQJG_QZF_qzfsl where tjrq &lt;= #{time2})
-    ) as num
 </select>
 
     <select id="qzfDangerous" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -190,24 +129,7 @@
     where
         tjrq =#{tjrq}
 </select>
-    <select id="dangeroursCzf" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhczfrs
-</select>
-    <select id="dangerCzfImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhczfzdr
-</select>
+
     <select id="dangerQzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,
@@ -255,15 +177,7 @@
     where
        yhlbmc is not null and  tjrq=#{tjrq} group by yhlbmc order by num
 </select>
-    <select id="notDangerType" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        yhlxdm as yhlxdm,
-        yhlxmc as yhlxmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_fzayh
-</select>
+
     <select id="notDangerTypeSb" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,
@@ -378,42 +292,6 @@
         tjrq =#{tjrq} order by xzqhmc
     </select>
 
-
-    <select id="floatingPopulationS" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        qhdm as qhdm,
-        qhmc as qhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_ldrklyds
-</select>
-    <select id="floatingPopulationShi" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        qhdm as qhdm,
-        qhmc as qhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_ldrklydshi
-</select>
-    <select id="floatingPopulationX" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        qhdm as qhdm,
-        qhmc as qhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_ldrklydx
-</select>
-    <select id="floatingPopulationAge" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        nld as nld,
-        sl as sl
-    from
-        rpt_aqjg_qzf_ldrknlfx
-</select>
     <select id="floatingPopulationNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         nld,
@@ -437,33 +315,6 @@
         tjrq=#{tjrq} ORDER BY xzqhmc,nld
 </select>
 
-    <select id="findNumDesc" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        xzqhmc,
-        sum(sl) as totleNum
-    from
-        rpt_aqjg_qzf_ldrksl
-    group by xzqhmc order by totleNum desc
-</select>
-
-    <select id="floatingPopulationTrueNum" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_ldrksys
-</select>
-    <select id="czfImpXzqh" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_czfzdrs_xzqh
-</select>
     <select id="fzayhff" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
@@ -521,33 +372,7 @@
     where
         tjrq=#{tjrq} order by ldrysl desc
 </select>
-    <select id="czfzdrrsXzqh" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhczfzdrrs_xzqh
-</select>
-    <select id="czfzdrrsZdlx" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        zdrylx as zdrylx,
-        zdrylxmc as zdrylxmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhczfzdrrs_zdlx
-</select>
-    <select id="yhczfzdrLx" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        fldm as fldm,
-        flmc as flmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhczfzdr_lx
-</select>
+
     <select id="yhczwsj" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq as tjrq,
@@ -559,18 +384,7 @@
     where
         tjrq =#{tjrq}
 </select>
-    <select id="yhfwpcs" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqhdm as xzqhdm,
-        xzqhmc as xzqhmc,
-        pcsdm as pcsdm,
-        pcsmc as pcsmc,
-        yhsl as yhsl,
-        yhfws as yhfws
-    from
-        rpt_aqjg_qzf_yhfwpcs
-</select>
+
     <select id="yhqs" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,
@@ -595,77 +409,6 @@
         tjrq  between #{time} and #{time2} GROUP BY tjrq  ORDER BY tjrq
 </select>
 
-    <select id="yhqzfrs" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhqzfrs
-</select>
-    <select id="qzfzdrrsXzqh" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhqzfzdrrs_xzqh
-</select>
-    <select id="qzfzdrrsZdlx" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        zdrylx as zdrylx,
-        zdrylxmc as zdrylxmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhqzfzdrrs_zdlx
-</select>
-    <select id="yhqzfzdry" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        fldm as fldm,
-        flmc as flmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhqzfzdry
-</select>
-    <select id="yhqzfzdrLx" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        fldm as fldm,
-        flmc as flmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhqzfzdr_lx
-</select>
-    <select id="yhqzwsj" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhqzwsj
-</select>
-    <select id="yhqzwzdr" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        xzqh as xzqh,
-        xzqhmc as xzqhmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_yhqzwzdr
-</select>
-    <select id="zayhlx" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq as tjrq,
-        yhlxdm as yhlxdm,
-        yhlxmc as yhlxmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_zayhlx
-</select>
     <select id="zayhsj" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,
@@ -754,13 +497,5 @@
         sl as sl
     from
         rpt_aqjg_qzf_zdrysl
-</select>
-    <select id="czfzdry" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        fldm as fldm,
-        flmc as flmc,
-        sl as sl
-    from
-        rpt_aqjg_qzf_czfzdry
 </select>
 </mapper>

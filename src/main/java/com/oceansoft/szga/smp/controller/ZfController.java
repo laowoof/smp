@@ -24,18 +24,6 @@ public class ZfController {
     @Autowired
     private ZfService zfService;
 
-
-    /**
-     * @author wzj
-     * 出租房人数
-     * @return 数据
-     */
-    @GetMapping("czfPersonNum")
-    public ApiResult czfPersonNum(){
-        ApiResult<CzfPersonNum> czfPersonNum = zfService.czfPersonNum();
-        return czfPersonNum;
-    }
-
     /**
      * @author wzj
      * 出租房数量
@@ -56,28 +44,6 @@ public class ZfController {
     public ApiResult czfNumDesc(){
         ApiResult<CzfPersonNum> czfNumDesc = zfService.czfNumDesc();
         return czfNumDesc;
-    }
-
-    /**
-     * @author wzj
-     *  出租房重点人
-     * @return 数据
-     */
-    @GetMapping("czfImp")
-    public ApiResult CzfImpPerson(){
-        ApiResult czfImpPerson = zfService.czfImpPerson();
-        return czfImpPerson;
-    }
-
-    /**
-     * @author wzj
-     *  群租房重点人员
-     * @return 数据
-     */
-    @GetMapping("qzf")
-    public ApiResult QzfPersonNum(){
-        ApiResult qzfPersonNum = zfService.qzfPersonNum();
-        return qzfPersonNum;
     }
 
     /**
@@ -139,28 +105,6 @@ public class ZfController {
 
     /**
      * @author wzj
-     *  根绝区域获取群租房的区域新增数量
-     * @return 数据
-     */
-    @GetMapping("qzfAreaAddNum")
-    public ApiResult qzfAreaAddNum(String xzqhmc,String num){
-        ApiResult qzfNum = zfService.qzfAreaAddNum(xzqhmc,num);
-        return qzfNum;
-    }
-
-    /**
-     * @author wzj
-     *  获取每一天的总数量
-     * @return 数据
-     */
-    @GetMapping("qzfTotleNum")
-    public ApiResult qzfTotleNum(String num){
-        ApiResult qzfNum = zfService.qzfTotleNum(num);
-        return qzfNum;
-    }
-
-    /**
-     * @author wzj
      *  群租房上个月总数据
      * @return 数据
      */
@@ -179,17 +123,6 @@ public class ZfController {
 
     /**
      * @author wzj
-     *  群租房单个区域本月新增数量
-     * @return 数据
-     */
-    @GetMapping("addQzfNum")
-    public ApiResult addQzfNum(String xzqhmc){
-        ApiResult qzfNum = zfService.addQzfData2(xzqhmc);
-        return qzfNum;
-    }
-
-    /**
-     * @author wzj
      *  群租房单区域本月新增数量
      * @return 数据
      */
@@ -198,18 +131,6 @@ public class ZfController {
         ApiResult qzfNum = zfService.areaAddNum();
         return qzfNum;
     }
-
-    /**
-     * @author wzj
-     *  群租房某天新增数量
-     * @return 数据
-     */
-    @GetMapping("addQzfNum3")
-    public ApiResult addQzfNum3(String num){
-        ApiResult qzfNum = zfService.addQzfData3(num);
-        return qzfNum;
-    }
-
 
     /**
      * @author wzj
@@ -258,29 +179,6 @@ public class ZfController {
 
     /**
      * @author wzj
-     *  隐患出租房人数
-     * @return 数据
-     */
-    @GetMapping("dangerCzf")
-    public ApiResult dangerCzf(){
-        ApiResult dangerCzf = zfService.dangerCzf();
-        return dangerCzf;
-    }
-
-    /**
-     * @author wzj
-     * @date 2020/1/20
-     * 隐患出租房重点人
-     * @return 数据
-     */
-    @GetMapping("dangerCzfImp")
-    public ApiResult DangerCzfImpPerson(){
-        ApiResult dangerCzfImp = zfService.dangerCzfImpPerson();
-        return dangerCzfImp;
-    }
-
-    /**
-     * @author wzj
      * 隐患群租房数量
      * @return 数据
      */
@@ -310,16 +208,6 @@ public class ZfController {
     public ApiResult DangerTypeFx(){
         ApiResult dangerTypeFx = zfService.dangerTypeFx();
         return dangerTypeFx;
-    }
-    /**
-     * @author wzj
-     * 非治安隐患类型
-     * @return 数据
-     */
-    @GetMapping("notDangerType")
-    public ApiResult notDangerType(){
-        ApiResult notDangerTypes = zfService.notDangerType();
-        return notDangerTypes ;
     }
 
     /**
@@ -423,50 +311,6 @@ public class ZfController {
 
     /**
      * @author wzj
-     * 流动人口来源地 省
-     * @return 数据
-     */
-    @GetMapping("provice")
-    public ApiResult floatingPopulationS(){
-        ApiResult provices = zfService.floatingPopulationS();
-        return provices;
-    }
-
-    /**
-     * @author wzj
-     * 流动人口来源地 市
-     * @return 数据
-     */
-    @GetMapping("city")
-    public ApiResult floatingPopulationShi(){
-        ApiResult citys = zfService.floatingPopulationShi();
-        return citys;
-    }
-
-    /**
-     * @author wzj
-     *  流动人口来源地 县
-     * @return 数据
-     */
-    @GetMapping("area")
-    public ApiResult floatingPopulationX(){
-        ApiResult areas = zfService.floatingPopulationX();
-        return areas;
-    }
-
-    /**
-     * @author wzj
-     *  流动人口年龄分析
-     * @return 数据
-     */
-    @GetMapping("age")
-    public ApiResult floatingPopulationAge(){
-        ApiResult ages = zfService.floatingPopulationAge();
-        return ages;
-    }
-
-    /**
-     * @author wzj
      * 流动人口数量
      * @return 数据
      */
@@ -487,37 +331,6 @@ public class ZfController {
         return num;
     }
 
-    /**
-     * @author wzj
-     * 流动人口数量降序
-     * @return 数据
-     */
-    @GetMapping("findNumDesc")
-    public ApiResult findNumDesc(){
-        ApiResult num = zfService.findNumDesc();
-        return num;
-    }
-
-    /**
-     * @author wzj
-     * 流动人口实有数
-     * @return 数据
-     */
-    @GetMapping("trueNum")
-    public ApiResult floatingPopulationTrueNum(){
-        ApiResult nums = zfService.floatingPopulationTrueNum();
-        return nums;
-    }
-    /**
-     * @author wzj
-     *  出租房重点人 行政区划
-     * @return 数据
-     */
-    @GetMapping("czfImpXzqh")
-    public ApiResult CzfImpXzqh(){
-        ApiResult czfImpXzqh = zfService.czfImpXzqh();
-        return czfImpXzqh;
-    }
     /**
      * @author wzj
      *  非治安隐患分发
@@ -568,36 +381,7 @@ public class ZfController {
         ApiResult qyldrysl = zfService.qyldrysl();
         return qyldrysl;
     }
-    /**
-     * @author wzj
-     * 隐患出租房重点人人数-按行政区划
-     * @return 数据
-     */
-    @GetMapping("czfzdrrs-xzqh")
-    public ApiResult CzfzdrrsXzqh(){
-        ApiResult xzqh = zfService.czfzdrrsXzqh();
-        return xzqh;
-    }
-    /**
-     * @author wzj
-     *  隐患出租房重点人人数-按重点类型
-     * @return 数据
-     */
-    @GetMapping("czfzdrrs-zdlx")
-    public ApiResult CzfzdrrsZdlx(){
-        ApiResult zdlx = zfService.czfzdrrsZdlx();
-        return zdlx;
-    }
-    /**
-     * @author wzj
-     * 隐患出租重点人-按类型
-     * @return 数据
-     */
-    @GetMapping("yhczfzdr-lx")
-    public ApiResult YhczfzdrLx(){
-        ApiResult lx = zfService.yhczfzdrLx();
-        return lx;
-    }
+
     /**
      * @author wzj
      * 隐患出租屋数量
@@ -608,16 +392,7 @@ public class ZfController {
         ApiResult yhczwsj = zfService.yhczwsj();
         return yhczwsj;
     }
-    /**
-     * @author wzj
-     * 数图-隐患房屋数量-按派出所分类
-     * @return 数据
-     */
-    @GetMapping("yhfwpcs")
-    public ApiResult Yhfwpcs(){
-        ApiResult yhfwpcs = zfService.yhfwpcs();
-        return yhfwpcs;
-    }
+
     /**
      * @author wzj
      * 隐患数据   非治安
@@ -639,86 +414,6 @@ public class ZfController {
         return yhqs2;
     }
 
-    /**
-     * @author wzj
-     * 隐患群租房人数
-     * @return 数据
-     */
-    @GetMapping("yhqzfrs")
-    public ApiResult yhqzfrs(){
-        ApiResult yhqzfrs = zfService.yhqzfrs();
-        return yhqzfrs;
-    }
-    /**
-     * @author wzj
-     * 隐患群租房重点人人数-按行政区划
-     * @return 数据
-     */
-    @GetMapping("qzfzdrrs-xzqh")
-    public ApiResult qzfzdrrsXzqh(){
-        ApiResult xzqh = zfService.qzfzdrrsXzqh();
-        return xzqh;
-    }
-    /**
-     * @author wzj
-     * 隐患群租房重点人人数-按重点类型
-     * @return 数据
-     */
-    @GetMapping("qzfzdrrs-zdlx")
-    public ApiResult qzfzdrrsZdlx(){
-        ApiResult zdlx = zfService.qzfzdrrsZdlx();
-        return zdlx;
-    }
-    /**
-     * @author wzj
-     * 隐患群租房重点人员
-     * @return 数据
-     */
-    @GetMapping("yhqzfzdry")
-    public ApiResult yhqzfzdry(){
-        ApiResult yhqzfzdry = zfService.yhqzfzdry();
-        return yhqzfzdry;
-    }
-    /**
-     * @author wzj
-     * 隐患群租重点人-按类型
-     * @return 数据
-     */
-    @GetMapping("yhqzfzdr-lx")
-    public ApiResult yhqzfzdrLx(){
-        ApiResult yhqzfzdrLx = zfService.yhqzfzdrLx();
-        return yhqzfzdrLx;
-    }
-    /**
-     * @author wzj
-     * 隐患群租屋数量
-     * @return 数据
-     */
-    @GetMapping("yhqzwsj")
-    public ApiResult yhqzwsj(){
-        ApiResult yhqzwsj = zfService.yhqzwsj();
-        return yhqzwsj;
-    }
-    /**
-     * @author wzj
-     * 隐患群租屋重点人
-     * @return 数据
-     */
-    @GetMapping("yhqzwzdr")
-    public ApiResult yhqzwzdr(){
-        ApiResult yhqzwzdr = zfService.yhqzwzdr();
-        return yhqzwzdr;
-    }
-    /**
-     * @author wzj
-     * 治安隐患类型
-     * @return 数据
-     */
-    @GetMapping("zayhlx")
-    public ApiResult zayhlx(){
-        ApiResult zayhlx = zfService.zayhlx();
-        return zayhlx;
-    }
     /**
      * @author wzj
      * 治安隐患数据
@@ -805,15 +500,5 @@ public class ZfController {
     public ApiResult zdrysl(){
         ApiResult zdrysl = zfService.zdrysl();
         return zdrysl;
-    }
-    /**
-     * @author wzj
-     * 出租房重点人员
-     * @return 数据
-     */
-    @GetMapping("czfzdry")
-    public ApiResult czfzdry(){
-        ApiResult czfzdry = zfService.czfzdry();
-        return czfzdry;
     }
 }

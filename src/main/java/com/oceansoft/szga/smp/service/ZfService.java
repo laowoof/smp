@@ -13,13 +13,6 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ZfService {
-    /**
-     *  出租房人数
-     * @author  wzj
-     * @date  2020/1/19
-     * @return  数据
-     */
-    ApiResult czfPersonNum();
 
     /**
      *  出租房数量
@@ -37,21 +30,6 @@ public interface ZfService {
      */
     ApiResult czfNumDesc();
 
-    /**
-     *  出租房重点人员
-     * @author  wzj
-     * @date  2020/1/19
-     * @return  数据
-     */
-    ApiResult czfImpPerson();
-
-    /**
-     *  群租房人数
-     * @author  wzj
-     * @date  2020/1/19
-     * @return  数据
-     */
-    ApiResult qzfPersonNum();
     /**
      *  群租房数量
      * @author  wzj
@@ -85,44 +63,12 @@ public interface ZfService {
     ApiResult qzfAreaNum(@Param("xzqhmc") String xzqhmc,@Param("num") String num);
 
     /**
-     *  根据区域获取区域内的每天新增量
-     * @author  wzj
-     * @date  2020/2/25
-     * @return  数据
-     */
-    ApiResult qzfAreaAddNum(@Param("xzqhmc") String xzqhmc,@Param("num") String num);
-
-    /**
-     *  获取每一天的总数量
-     * @author  wzj
-     * @date  2020/2/25
-     * @return  数据
-     */
-    ApiResult qzfTotleNum(@Param("num")String num);
-
-    /**
-     *  群租房数量 新增量
-     * @author  wzj
-     * @date  2020/2/20
-     * @return  数据
-     */
-    ApiResult addQzfData2(@Param("xzqhmd")String xzqhmc);
-
-    /**
      * 区域新增群租房
      * @author wzj
      * @date 2020/3/5
      * @return 数据
      */
     ApiResult areaAddNum();
-
-    /**
-     *  群租房数量 某天新增数量
-     * @author  wzj
-     * @date  2020/2/22
-     * @return  数据
-     */
-    ApiResult addQzfData3(@Param("num") String num);
 
 
     /**
@@ -156,20 +102,6 @@ public interface ZfService {
      */
     ApiResult qzfImpPerson();
 
-    /**
-     *  隐患出租房人数
-     * @author  wzj
-     * @date  2020/1/19
-     * @return  数据
-     */
-    ApiResult dangerCzf();
-
-    /**
-     *  隐患出租房重点人
-     * @author  wzj
-     * @date  2020/1/19
-     */
-    ApiResult dangerCzfImpPerson();
 
     /**
      *  隐患群租房数量
@@ -202,34 +134,7 @@ public interface ZfService {
      * @return  数据
      */
     ApiResult dangerTypeFx();
-    /**
-     *流动人口来源地 省
-     * @author wzj
-     * @date 2020/1/20
-     * @return 数据
-     */
-    ApiResult floatingPopulationS();
-    /**
-     *流动人口来源地 市
-     * @author wzj
-     * @date 2020/1/20
-     * @return 数据
-     */
-    ApiResult floatingPopulationShi();
-    /**
-     *流动人口来源地 县
-     * @author wzj
-     * @date 2020/1/20
-     * @return 数据
-     */
-    ApiResult floatingPopulationX();
-    /**
-     *流动人口年龄分析
-     * @author wzj
-     * @date 2020/1/20
-     * @return 数据
-     */
-    ApiResult floatingPopulationAge();
+
 
     /**
      *流动人口数量
@@ -247,28 +152,7 @@ public interface ZfService {
      */
     ApiResult ldryFxData();
 
-    /**
-     *流动人口总量降序
-     * @author wzj
-     * @date 2020/2/26
-     * @return 数据
-     */
-    ApiResult findNumDesc();
 
-    /**
-     *流动人口实有数
-     * @author wzj
-     * @date 2020/1/20
-     * @return 数据
-     */
-    ApiResult floatingPopulationTrueNum();
-    /**
-     * 非治安隐患类型
-     * @author  wzj
-     * @date  2020/1/19
-     * @return 数据
-     */
-    ApiResult notDangerType();
     /**
      * 非治安隐患流程节点监测-上报情况
      * @author  wzj
@@ -342,13 +226,6 @@ public interface ZfService {
     ApiResult zaYhNum();
 
     /**
-     * 出租房重点人 行政区划
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult czfImpXzqh();
-    /**
      * 非治安隐患分发
      * @author  wzj
      * @date  2020/1/20
@@ -383,27 +260,8 @@ public interface ZfService {
      * @return 数据
      */
     ApiResult qyldrysl();
-    /**
-     * 隐患出租房重点人人数-按行政区划
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult czfzdrrsXzqh();
-    /**
-     * 隐患出租房重点人人数-按重点类型
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult czfzdrrsZdlx();
-    /**
-     * 隐患出租重点人-按类型
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult yhczfzdrLx();
+
+
     /**
      * 隐患出租屋数量
      * @author  wzj
@@ -411,13 +269,7 @@ public interface ZfService {
      * @return 数据
      */
     ApiResult yhczwsj();
-    /**
-     * 数图-隐患房屋数量-按派出所分类
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult yhfwpcs();
+
     /**
      * 安全监管群租房隐患趋势
      * @author  wzj
@@ -434,62 +286,6 @@ public interface ZfService {
      */
     ApiResult yhqs2(String num);
 
-    /**
-     * 隐患群租房人数
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult yhqzfrs();
-    /**
-     * 隐患群租房重点人人数-按行政区划
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult qzfzdrrsXzqh();
-    /**
-     * 隐患群租房重点人人数-按重点类型
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult qzfzdrrsZdlx();
-    /**
-     * 隐患群租房重点人员
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult yhqzfzdry();
-    /**
-     * 隐患群租重点人-按类型
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult yhqzfzdrLx();
-    /**
-     * 隐患群租屋数量
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult yhqzwsj();
-    /**
-     * 隐患群租屋重点人
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult yhqzwzdr();
-    /**
-     * 治安隐患类型
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult zayhlx();
     /**
      * 治安隐患数据
      * @author  wzj
@@ -529,6 +325,7 @@ public interface ZfService {
      * @return 数据
      */
     ApiResult zayhFxsl();
+
     /**
      * 安全监管群租房治安隐患整改未整改数量
      * @author  wzj
@@ -550,12 +347,6 @@ public interface ZfService {
      * @return 数据
      */
     ApiResult zdrysl();
-    /**
-     * 出租房重点人员
-     * @author  wzj
-     * @date  2020/1/20
-     * @return 数据
-     */
-    ApiResult czfzdry();
+
 }
 
