@@ -85,27 +85,23 @@
 </select>
 
     <select id="qzfDangerous" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq,
-        yhlxdm,
-        yhlxmc,
-        sl
-    from
-        rpt_aqjg_qzf_qzfyhfx
-    where
-        tjrq =#{tjrq} and yhlxdm like '%10%' ORDER BY sl
+    SELECT
+		 a.yhlxmc,
+		 sum(a.sl) AS sl
+		 FROM
+		    (SELECT	tjrq, yhlxmc,sl from rpt_aqjg_qzf_qzfyhfx where tjrq =#{tjrq} AND
+		    yhlxdm like '10%') a
+        GROUP BY yhlxmc ORDER BY sl DESC
 </select>
 
     <select id="qzfDangerous2" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        tjrq,
-        yhlxdm,
-        yhlxmc,
-        sl
-    from
-        rpt_aqjg_qzf_qzfyhfx
-    where
-        tjrq =#{tjrq} and yhlxdm not like '%10%' ORDER BY sl
+      SELECT
+		 a.yhlxmc,
+		 sum(a.sl) AS sl
+		 FROM
+		    (SELECT	tjrq, yhlxmc,sl from rpt_aqjg_qzf_qzfyhfx where tjrq =#{tjrq} AND
+		    yhlxdm NOT like '10%') a
+        GROUP BY yhlxmc ORDER BY sl DESC
 </select>
     <select id="qzwImpPerson" resultType="java.util.HashMap" parameterType="java.util.List">
     select
