@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.NbMapper">
+
+   <select id="test" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        tjrq,
+        xzqh,
+        xzqhmc,
+        sl
+        from
+        rpt_aqjg_nb_test
+        where
+        tjrq =#{tjrq} order by sl desc
+</select>
+    <select id="totleNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        sum(dwsl)
+        from
+        rpt_aqjg_zdmb_lzfxtj_sydwsl
+        where
+        tjrq =#{tjrq}
+</select>
+    <select id="totleNumBySl" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        jbdjdm,
+        jbdjmc,
+        sum(dwsl) sl
+        from
+        rpt_aqjg_zdmb_lzfxtj_sydwsl
+        where
+        tjrq =#{tjrq} and jbdjdm in ('1','2','3','7','8','9') GROUP BY jbdjmc,jbdjdm ORDER BY sl
+</select>
+    <select id="findDataByJj" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        a.tjrq,
+        a.ssfjmc,
+        a.num,
+        ceiling(a.num/b.totleNum*100) as percent
+    from
+        (select tjrq,ssfjmc,sum(dwsl) num from rpt_aqjg_zdmb_lzfxtj_sydwsl where tjrq =#{tjrq} GROUP BY ssfjmc,tjrq ORDER BY ssfjmc) as a
+    LEFT JOIN
+        (SELECT tjrq,sum(dwsl) totleNum from rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq =#{tjrq} GROUP BY tjrq) b
+    on
+        a.tjrq = b.tjrq ORDER BY a.ssfjmc
+</select>
+    <select id="findDataByZd" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        a.tjrq,
+        a.totleNum,
+        b.ssfjmc,
+        b.jbdjdm,
+        b.jbdjmc,
+        b.sl,
+        ceiling(b.sl/a.totleNum*100) as percent
+    from
+    (SELECT tjrq,sum(dwsl) as totleNum from rpt_aqjg_zdmb_lzfxtj_sydwsl  where tjrq =#{tjrq} and jbdjdm in ('1','2','3','8') GROUP BY tjrq) a
+     LEFT JOIN
+    (select tjrq,ssfjmc,jbdjdm,jbdjmc,sum(dwsl) sl from rpt_aqjg_zdmb_lzfxtj_sydwsl  where tjrq =#{tjrq} and jbdjdm in ('1','2','3','8') GROUP BY jbdjmc,jbdjdm,tjrq,ssfjmc ORDER BY ssfjmc,jbdjdm) b
+    on a.tjrq = b.tjrq
+</select>
+    <select id="findDataByOrder" resultType="java.util.HashMap" parameterType="java.util.List">
+   SELECT
+   b.tjrq,
+   b.ssfjmc,
+   b.zd,
+   a.totleNum,
+   ceiling(b.zd/a.totleNum*100) as percent FROM
+    (SELECT  tjrq,ssfjmc,sum(dwsl) as totleNum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq =#{tjrq} GROUP BY tjrq,ssfjmc) a
+    LEFT JOIN
+    (SELECT tjrq,ssfjmc,sum(dwsl) AS zd FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq =#{tjrq} and jbdjdm in ('1','2','3','8') GROUP BY tjrq,ssfjmc ORDER BY zd DESC) b
+    on a.ssfjmc = b.ssfjmc
+    ORDER BY totleNum desc
+</select>
+    <select id="findDataByLimit" resultType="java.util.HashMap" parameterType="java.util.List">
+  SELECT
+      case when position('分局' in a.sspcsmc) > 0 then split_part(a.sspcsmc, '分局', 2) else split_part(a.sspcsmc, '公安局', 2) end sspcsmc,
+      b.zd,
+      a.totleNum,
+      ceiling(b.zd/a.totleNum*100) as percent
+    FROM
+      (SELECT sspcsmc,sum(dwsl) as totleNum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq =#{tjrq} AND ssfjmc like '%' || #{name} ||'%' GROUP BY sspcsmc) a
+    left JOIN
+      (SELECT sspcsmc,sum(dwsl) as zd FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq =#{tjrq} AND jbdjdm in ('1','2','3','8') and ssfjmc like '%' || #{name} ||'%' GROUP BY sspcsmc) b
+    on a.sspcsmc = b.sspcsmc
+    ORDER BY totleNum DESC LIMIT 10
+</select>
+    <select id="findNumByJcsl" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        jclxmc,
+        sum(jcsl)
+    FROM
+        rpt_aqjg_zdmb_lzfxtj_jcsl
+    WHERE
+        tjrq =#{tjrq} GROUP BY jclxmc ORDER BY jclxmc
+</select>
+    <select id="findNumByYhsl" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        sum(yhsl)
+    FROM
+        rpt_aqjg_zdmb_lzfxtj_yhsl
+    WHERE
+        tjrq =#{tjrq}
+</select>
+    <select id="findDataByFx" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        a.jbdjdm,
+        a.jbdjmc,
+        a.dwsl,
+        a.yhsl,
+        ceiling(a.dwsl/(a.dwsl + a.yhsl)*100) dwPer,
+        ceiling(a.yhsl/(a.dwsl + a.yhsl)*100) yhPer
+    FROM
+    (SELECT jbdjdm,jbdjmc,sum(yhdwsl) dwsl, sum(yhsl) yhsl FROM "rpt_aqjg_zdmb_lzfxtj_yhsl" WHERE   tjrq=#{tjrq} AND jbdjdm IN ('1','2','3','8') GROUP BY jbdjdm,jbdjmc) a
+</select>
+    <select id="findDataByNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        jbdjdm,
+        jbdjmc,
+        sum(yhdwsl) dwsl,
+        sum(yhsl) yhsl
+    FROM
+        "rpt_aqjg_zdmb_lzfxtj_yhsl"
+    WHERE
+    tjrq=#{tjrq} AND jbdjdm in('1','2','3','8','9') GROUP BY jbdjdm,jbdjmc order by dwsl DESC
+</select>
+    <select id="findDataByZz" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        ssfjmc,
+        sum(jcsl)
+    FROM
+        "rpt_aqjg_zdmb_lzfxtj_jcsl"
+    WHERE
+        tjrq=#{tjrq} AND dwlx='重要设施' AND jclxmc='专项检查' GROUP BY ssfjmc ORDER BY sum DESC
+</select>
+    <select id="findDataByZzLinit" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end sspcsmc,
+        sum(jcsl)
+    FROM
+        "rpt_aqjg_zdmb_lzfxtj_jcsl"
+    WHERE
+        tjrq=#{tjrq} and ssfjmc like '%' || #{name} ||'%' and dwlx='重要设施' AND jclxmc='专项检查' GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
+</select>
+    <select id="findDataByZzOne" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        ssfjmc,
+        ssfjdm,
+        sum(dwsl)
+       FROM
+         "rpt_aqjg_zdmb_lzfxtj_sydwsl"
+       WHERE
+        tjrq =#{tjrq} and jbdjdm ='1' GROUP BY ssfjmc,ssfjdm ORDER BY ssfjmc
+</select>
+    <select id="findNumByZyss" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        sum(dwsl)
+       FROM
+         "rpt_aqjg_zdmb_zysssl"
+       WHERE
+        tjrq =#{tjrq}
+</select>
+    <select id="findNumByCyry" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        qy,
+        jbdj,
+        jbdjmc,
+        zddwcyrys
+       FROM
+         rpt_aqjg_zdmb_zddwtj
+       WHERE
+        tjrq =#{tjrq} and jbdj='1'
+</select>
+    <select id="findNumByZd" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        sum(zdgcdws)
+       FROM
+         rpt_aqjg_zdmb_hdgctj
+       WHERE
+        tjrq =#{tjrq}
+</select>
+    <select id="findNumByScaq" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        sum(tjsl)
+       FROM
+         rpt_aqjg_zdmb_scaqsglatj
+       WHERE
+        tjrq =#{tjrq}
+</select>
+    <select id="findNumByYhcls" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        sum(yhcldwsl)
+       FROM
+         rpt_aqjg_zdmb_yhdwtj
+       WHERE
+        tjrq =#{tjrq}
+</select>
+    <select id="findNumBySsFx" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        lbmc,
+        sum(dwsl)
+       FROM
+         rpt_aqjg_zdmb_zysssl
+       WHERE
+        tjrq =#{tjrq} group by lbmc
+</select>
+    <select id="findDataZySsLimit" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        ssfjmc,
+        sum(dwsl) as num
+       FROM
+         rpt_aqjg_zdmb_zysssl
+       WHERE
+        tjrq =#{tjrq} group by ssfjmc order by num desc
+</select>
+    <select id="findDataZySsPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end sspcsmc,
+        sum(dwsl) as num
+       FROM
+         rpt_aqjg_zdmb_zysssl
+       WHERE
+        tjrq =#{tjrq} and ssfjmc like '%' || #{name} ||'%'  group by sspcsmc order by num desc limit 10
+</select>
+    <select id="findDataYhFx" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+        ssfjmc,
+        sum(yhdwsl) as num
+       FROM
+         rpt_aqjg_zdmb_lzfxtj_yhsl
+       WHERE
+        tjrq =#{tjrq} group by ssfjmc order by num desc
+</select>
+    <select id="findDataYhFxPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+    case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end sspcsmc,
+    sum(yhdwsl) as num
+    FROM
+    rpt_aqjg_zdmb_lzfxtj_yhsl
+    WHERE
+    tjrq =#{tjrq} and ssfjmc like '%' || #{name} ||'%'  group by sspcsmc order by num desc limit 10
+</select>
+</mapper>

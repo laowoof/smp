@@ -1,0 +1,276 @@
+package com.oceansoft.szga.smp.controller;
+
+
+import com.oceansoft.szga.smp.config.domain.ApiResult;
+import com.oceansoft.szga.smp.service.NbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * 内保
+ * @author  wzj
+ * @date 2020/3/13
+ *
+ */
+@RestController
+@RequestMapping({"nb"})
+public class NbController {
+    @Autowired
+    private NbService nbService;
+
+
+
+    /**
+     * 内保测试
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("test")
+    public ApiResult test(){
+        ApiResult qzfNum = nbService.test();
+        return qzfNum;
+    }
+
+
+    /**
+     * 企事业单位监管总数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("totleNum")
+    public ApiResult totleNum(){
+        ApiResult totleNum = nbService.totleNum();
+        return totleNum;
+    }
+
+    /**
+     * 重点监测单位总数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("totleNumBySl")
+    public ApiResult totleNumBySl(){
+        ApiResult totleNum = nbService.totleNumBySl();
+        return totleNum;
+    }
+    /**
+     * 企事业单位数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByJj")
+    public ApiResult findDataByJj(){
+        ApiResult num = nbService.findDataByJj();
+        return num;
+    }
+    /**
+     * 重点单位 省，市，区县，占比数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByZd")
+    public ApiResult findDataByZd(){
+        ApiResult data = nbService.findDataByZd();
+        return data;
+    }
+    /**
+     * 履历分析 单位登记量排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByOrder")
+    public ApiResult findDataByOrder(){
+        ApiResult data = nbService.findDataByOrder();
+        return data;
+    }
+    /**
+     * 履历分析 单位登记量排名 详情派出所前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByLimit")
+    public ApiResult findDataByLimit(String name){
+        ApiResult data = nbService.findDataByLimit(name);
+        return data;
+    }
+
+    /**
+     * 履历分析 单位登记量排名 详情派出所前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByJcsl")
+    public ApiResult findNumByJcsl(){
+        ApiResult data = nbService.findNumByJcsl();
+        return data;
+    }
+
+    /**
+     * 隐患发现数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByYhsl")
+    public ApiResult findNumByYhsl(){
+        ApiResult data = nbService.findNumByYhsl();
+        return data;
+    }
+    /**
+     * 隐患单位数量分析
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByFx")
+    public ApiResult findDataByFx(){
+        ApiResult data = nbService.findDataByFx();
+        return data;
+    }
+    /**
+     * 重点单位隐患数量
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByNum")
+    public ApiResult findDataByNum(){
+        ApiResult data = nbService.findDataByNum();
+        return data;
+    }
+    /**
+     * 重要设施专项检查量排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByZz")
+    public ApiResult findDataByZz(){
+        ApiResult data = nbService.findDataByZz();
+        return data;
+    }
+    /**
+     * 重要设施专项检查量排名 派出所排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByZzLinit")
+    public ApiResult findDataByZzLinit(String name){
+        ApiResult data = nbService.findDataByZzLinit(name);
+        return data;
+    }
+    /**
+     * 全面分析重点单位 省
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByZzOne")
+    public ApiResult findDataByZzOne(){
+        ApiResult data = nbService.findDataByZzOne();
+        return data;
+    }
+
+    /**
+     * 重点设施监管总数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZyss")
+    public ApiResult findNumByZyss(){
+        ApiResult data = nbService.findNumByZyss();
+        return data;
+    }
+
+    /**
+     * 重点单位从业人员导入数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByCyry")
+    public ApiResult findNumByCyry(){
+        ApiResult data = nbService.findNumByCyry();
+        return data;
+    }
+
+    /**
+     *  “铸盾”工程单位数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZd")
+    public ApiResult findNumByZd(){
+        ApiResult data = nbService.findNumByZd();
+        return data;
+    }
+
+    /**
+     *  生产安全事故立案数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByScaq")
+    public ApiResult findNumByScaq(){
+        ApiResult data = nbService.findNumByScaq();
+        return data;
+    }
+    /**
+     *  全面分析 隐患处理数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByYhcls")
+    public ApiResult findNumByYhcls(){
+        ApiResult data = nbService.findNumByYhcls();
+        return data;
+    }
+
+    /**
+     *  全面分析-重要设施分析
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumBySsFx")
+    public ApiResult findNumBySsFx(){
+        ApiResult data = nbService.findNumBySsFx();
+        return data;
+    }
+
+    /**
+     *  履历分析-重要设施登记量排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataZySsLimit")
+    public ApiResult findDataZySsLimit(){
+        ApiResult data = nbService.findDataZySsLimit();
+        return data;
+    }
+    /**
+     *  履历分析-重要设施登记量排名 派出所前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataZySsPcs")
+    public ApiResult findDataZySsPcs(String name){
+        ApiResult data = nbService.findDataZySsPcs(name);
+        return data;
+    }
+    /**
+     *  履历分析-隐患发现量排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataYhFx")
+    public ApiResult findDataYhFx(){
+        ApiResult data = nbService.findDataYhFx();
+        return data;
+    }
+    /**
+     *  履历分析-隐患发现量排名 前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataYhFxPcs")
+    public ApiResult findDataYhFxPcs(String name){
+        ApiResult data = nbService.findDataYhFxPcs(name);
+        return data;
+    }
+}
