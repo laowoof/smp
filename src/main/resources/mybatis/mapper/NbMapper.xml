@@ -240,4 +240,106 @@
     WHERE
     tjrq =#{tjrq} and ssfjmc like '%' || #{name} ||'%'  group by sspcsmc order by num desc limit 10
 </select>
+    <select id="findDataJctjCg" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            ssfxjname,
+            sum(cgjc_qypcssl) as cgnum
+        FROM
+            rpt_aqjg_zdmb_aqjctj_pcs
+        WHERE tjrq =#{tjrq} GROUP BY ssfxjname order by cgnum desc
+</select>
+    <select id="findDataJctjCgPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+    case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
+        cgjc_qypcssl
+    FROM
+    rpt_aqjg_zdmb_aqjctj_pcs
+    WHERE
+    tjrq =#{tjrq} and ssfxjname like '%' || #{name} ||'%'  group by sspcsname,cgjc_qypcssl order by cgjc_qypcssl desc limit 10
+</select>
+    <select id="findDataJctjZx" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            ssfxjname,
+            sum(zxjc_qypcssl) as zxnum
+        FROM
+            rpt_aqjg_zdmb_aqjctj_pcs
+        WHERE tjrq =#{tjrq} GROUP BY ssfxjname order by zxnum desc
+</select>
+    <select id="findDataJctjZxPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+    case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
+        zxjc_qypcssl
+    FROM
+    rpt_aqjg_zdmb_aqjctj_pcs
+    WHERE
+    tjrq =#{tjrq} and ssfxjname like '%' || #{name} ||'%'  group by sspcsname,zxjc_qypcssl order by zxjc_qypcssl desc limit 10
+</select>
+    <select id="findDataJctjQs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            ssfxjname,
+            sum(qsjc_qypcssl) as qsnum
+        FROM
+            rpt_aqjg_zdmb_aqjctj_pcs
+        WHERE tjrq =#{tjrq} GROUP BY ssfxjname order by qsnum desc
+</select>
+    <select id="findDataJctjQsPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+    case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
+        qsjc_qypcssl
+    FROM
+    rpt_aqjg_zdmb_aqjctj_pcs
+    WHERE
+    tjrq =#{tjrq} and ssfxjname like '%' || #{name} ||'%'  group by sspcsname,qsjc_qypcssl order by qsjc_qypcssl desc limit 10
+</select>
+    <select id="findDataJctjZd" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            ssfxjname,
+            sum(zdjc_qypcssl) as zdnum
+        FROM
+            rpt_aqjg_zdmb_aqjctj_pcs
+        WHERE tjrq =#{tjrq} GROUP BY ssfxjname order by zdnum desc
+</select>
+    <select id="findDataJctjZdPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+    case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
+        zdjc_qypcssl
+    FROM
+    rpt_aqjg_zdmb_aqjctj_pcs
+    WHERE
+    tjrq =#{tjrq} and ssfxjname like '%' || #{name} ||'%'  group by sspcsname,zdjc_qypcssl order by zdjc_qypcssl desc limit 10
+</select>
+    <select id="findDataJctjWzg" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            ssfxjname,
+            sum(dwsl1)
+        FROM
+            rpt_aqjg_zdmb_aqjctj_pcs
+        WHERE tjrq =#{tjrq} GROUP BY ssfxjname order by sum desc
+</select>
+    <select id="findDataJctjWzgPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+    case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
+        dwsl1
+    FROM
+    rpt_aqjg_zdmb_aqjctj_pcs
+    WHERE
+    tjrq =#{tjrq} and ssfxjname like '%' || #{name} ||'%'  group by sspcsname,dwsl1 order by dwsl1 desc limit 10
+</select>
+    <select id="findDataJctjZg" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            ssfxjname,
+            (sum(dwsl1)+sum(dwsl)) as num
+        FROM
+            rpt_aqjg_zdmb_aqjctj_pcs
+        WHERE tjrq =#{tjrq} GROUP BY ssfxjname order by num desc
+</select>
+    <select id="findDataJctjZgPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+    case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
+        (dwsl+dwsl1) as num
+    FROM
+    rpt_aqjg_zdmb_aqjctj_pcs
+    WHERE
+    tjrq =#{tjrq} and ssfxjname=#{name}  group by sspcsname,dwsl,dwsl1 order by num desc limit 10
+</select>
 </mapper>

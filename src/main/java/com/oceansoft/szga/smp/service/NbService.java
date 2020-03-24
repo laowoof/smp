@@ -161,6 +161,7 @@ public interface NbService {
      *  履历分析-重要设施登记量排名 派出所前10
      * @author wzj
      * @date 2020/3/23
+     * @param name
      * @return
      */
     ApiResult findDataZySsPcs(String name);
@@ -175,8 +176,100 @@ public interface NbService {
      *  履历分析-隐患发现量排名 派出所前10
      * @author wzj
      * @date 2020/3/23
+     * @param name
      * @return
      */
     ApiResult findDataYhFxPcs(String name);
+    /**
+     *  履历分析-重点单位常规检查排名
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findDataJctjCg();
+    /**
+     *  履历分析-常规检查 派出所前10
+     * @author wzj
+     * @date 2020/3/24
+     * @param name
+     * @return
+     */
+    ApiResult findDataJctjCgPcs(String name);
+    /**
+     *  履历分析-重点单位专项检查排名
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findDataJctjZx();
+    /**
+     *  履历分析-常规检查 派出所前10
+     * @author wzj
+     * @date 2020/3/24
+     * @param name
+     * @return
+     */
+    ApiResult findDataJctjZxPcs(String name);
+    /**
+     *  履历分析-重点单位缺省检查排名
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findDataJctjQs();
+    /**
+     *  履历分析-缺省检查 派出所前10
+     * @author wzj
+     * @date 2020/3/24
+     * @param name
+     * @return
+     */
+    ApiResult findDataJctjQsPcs(String name);
+    /**
+     *  履历分析-主动单位缺省检查排名
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findDataJctjZd();
+    /**
+     *  履历分析-主动检查 派出所前10
+     * @author wzj
+     * @date 2020/3/24
+     * @param name
+     * @return
+     */
+    ApiResult findDataJctjZdPcs(String name);
+    /**
+     *  履历分析-未整改排名
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findDataJctjWzg();
+    /**
+     *  履历分析-未整改排名 派出所前10
+     * @author wzj
+     * @date 2020/3/24
+     * @param name
+     * @return
+     */
+    ApiResult findDataJctjWzgPcs(String name);
+    /**
+     *  履历分析-整改排名
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findDataJctjZg();
+
+    /**
+     *  履历分析-整改排名 派出所前10
+     * @author wzj
+     * @date 2020/3/24
+     * @param name
+     * @return
+     */
+    ApiResult findDataJctjZgPcs(String name);
 }
 

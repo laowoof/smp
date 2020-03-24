@@ -191,4 +191,100 @@ public interface NbMapper {
      * @return
      **/
     List<HashMap> findDataYhFxPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    /**
+     *  履历分析-重点单位常规检查排名
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findDataJctjCg(@Param("tjrq") String tjrq);
+
+    /**
+     *  履历分析-常规检查区域派出所 前10
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @param name
+     * @return
+     **/
+    List<HashMap> findDataJctjCgPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    /**
+     *  履历分析-专项检查排名
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findDataJctjZx(@Param("tjrq") String tjrq);
+
+    /**
+     *  履历分析-专项检查区域派出所 前10
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @param name
+     * @return
+     **/
+    List<HashMap> findDataJctjZxPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    /**
+     *  履历分析-缺省检查排名
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findDataJctjQs(@Param("tjrq") String tjrq);
+
+    /**
+     *  履历分析-缺省检查区域派出所 前10
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @param name
+     * @return
+     **/
+    List<HashMap> findDataJctjQsPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    /**
+     *  履历分析-主动检查排名
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findDataJctjZd(@Param("tjrq") String tjrq);
+
+    /**
+     *  履历分析-主动检查区域派出所 前10
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @param name
+     * @return
+     **/
+    List<HashMap> findDataJctjZdPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    /**
+     *  履历分析-未整改量排名
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findDataJctjWzg(@Param("tjrq") String tjrq);
+
+    /**
+     *  履历分析-未整改量区域派出所 前10
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @param name
+     * @return
+     **/
+    List<HashMap> findDataJctjWzgPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    /**
+     *  履历分析-整改量排名
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findDataJctjZg(@Param("tjrq") String tjrq);
+
+    /**
+     *  履历分析-整改量区域派出所 前10
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @param name
+     * @return
+     **/
+    List<HashMap> findDataJctjZgPcs(@Param("tjrq") String tjrq,@Param("name")String name);
     }

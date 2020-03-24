@@ -273,4 +273,126 @@ public class NbController {
         ApiResult data = nbService.findDataYhFxPcs(name);
         return data;
     }
+    /**
+     *  履历分析-重点单位常规检查排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjCg")
+    public ApiResult findDataJctjCg(){
+        ApiResult data = nbService.findDataJctjCg();
+        return data;
+    }
+    /**
+     *  履历分析-常规检查 派出所 前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjCgPcs")
+    public ApiResult findDataJctjCgPcs(String name){
+        ApiResult data = nbService.findDataJctjCgPcs(name);
+        return data;
+    }
+
+    /**
+     *  履历分析-重点单位专项检排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjZx")
+    public ApiResult findDataJctjZx(){
+        ApiResult data = nbService.findDataJctjZx();
+        return data;
+    }
+    /**
+     *  履历分析-专项检查 派出所 前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjZxPcs")
+    public ApiResult findDataJctjZxPcs(String name){
+        ApiResult data = nbService.findDataJctjZxPcs(name);
+        return data;
+    }
+    /**
+     *  履历分析-缺省单位专项检排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjQs")
+    public ApiResult findDataJctjQs(){
+        ApiResult data = nbService.findDataJctjQs();
+        return data;
+    }
+    /**
+     *  履历分析-缺省检查 派出所 前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjQsPcs")
+    public ApiResult findDataJctjQsPcs(String name){
+        ApiResult data = nbService.findDataJctjQsPcs(name);
+        return data;
+    }
+    /**
+     *  履历分析-缺省单位专项检排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjZd")
+    public ApiResult findDataJctjZd(){
+        ApiResult data = nbService.findDataJctjZd();
+        return data;
+    }
+    /**
+     *  履历分析-缺省检查 派出所 前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjZdPcs")
+    public ApiResult findDataJctjZdPcs(String name){
+        ApiResult data = nbService.findDataJctjZdPcs(name);
+        return data;
+    }
+
+    /**
+     *  履历分析-未整改排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjWzg")
+    public ApiResult findDataJctjWzg(){
+        ApiResult data = nbService.findDataJctjWzg();
+        return data;
+    }
+    /**
+     *  履历分析-未整改 派出所 前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjWzgPcs")
+    public ApiResult findDataJctjWzgPcs(String name){
+        ApiResult data = nbService.findDataJctjWzgPcs(name);
+        return data;
+    }
+    /**
+     *  履历分析-整改排名
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjZg")
+    public ApiResult findDataJctjZg(){
+        ApiResult data = nbService.findDataJctjZg();
+        return data;
+    }
+    /**
+     *  履历分析-整改 派出所 前10
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataJctjZgPcs")
+    public ApiResult findDataJctjZgPcs(String name){
+        ApiResult data = nbService.findDataJctjZgPcs(name);
+        return data;
+    }
 }

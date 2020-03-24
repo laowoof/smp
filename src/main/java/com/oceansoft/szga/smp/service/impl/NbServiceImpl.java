@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- *  出租房
+ *  内保
  * @author wzj
  * @date 2019/1/19
  */
@@ -81,11 +81,8 @@ public class NbServiceImpl implements NbService {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
-        if("虎丘".equals(name)){
-            name = "高新区";
-        }
-        List<HashMap> data = nbMapper.findDataByLimit(tjrq,name);
-        return new ApiResult().success(200, "成功", data);
+        List<HashMap> data = nbMapper.findDataByLimit(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功", removeData(data));
     }
 
     @Override
@@ -164,11 +161,8 @@ public class NbServiceImpl implements NbService {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
-        if("虎丘".equals(name)){
-            name = "高新区";
-        }
-        List<HashMap> data = nbMapper.findDataByZzLinit(tjrq,name);
-        return new ApiResult().success(200, "成功",data);
+        List<HashMap> data = nbMapper.findDataByZzLinit(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
     }
 
     @Override
@@ -259,11 +253,8 @@ public class NbServiceImpl implements NbService {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
-        if("虎丘".equals(name)){
-            name = "高新区";
-        }
-        List<HashMap> data = nbMapper.findDataZySsPcs(tjrq,name);
-        return new ApiResult().success(200, "成功",data);
+        List<HashMap> data = nbMapper.findDataZySsPcs(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
     }
 
     @Override
@@ -280,11 +271,116 @@ public class NbServiceImpl implements NbService {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
-        if("虎丘".equals(name)){
-            name = "高新区";
-        }
-        List<HashMap> data = nbMapper.findDataYhFxPcs(tjrq,name);
-        return new ApiResult().success(200, "成功",data);
+        List<HashMap> data = nbMapper.findDataYhFxPcs(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjCg() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjCg(tjrq);
+        return new ApiResult().success(200, "成功",changeData2(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjCgPcs(String name) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjCgPcs(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjZx() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjZx(tjrq);
+        return new ApiResult().success(200, "成功",changeData2(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjZxPcs(String name) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjZxPcs(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjQs() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjQs(tjrq);
+        return new ApiResult().success(200, "成功",changeData2(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjQsPcs(String name) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjQsPcs(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjZd() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjZd(tjrq);
+        return new ApiResult().success(200, "成功",changeData2(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjZdPcs(String name) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjZdPcs(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjWzg() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjWzg(tjrq);
+        return new ApiResult().success(200, "成功",changeData2(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjWzgPcs(String name) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjWzgPcs(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjZg() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjZg(tjrq);
+        return new ApiResult().success(200, "成功",changeData2(data));
+    }
+
+    @Override
+    public ApiResult findDataJctjZgPcs(String name) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findDataJctjZgPcs(tjrq,changeName(name));
+        return new ApiResult().success(200, "成功",removeData(data));
     }
 
     public List<HashMap> changeData(List<HashMap> list){
@@ -300,5 +396,66 @@ public class NbServiceImpl implements NbService {
             }
         }
         return list;
+    }
+
+    public List<HashMap> changeData2(List<HashMap> list){
+        String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
+        String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
+        for(HashMap map : list){
+            for(int i=0; i<oldList.length; i++){
+                //判断是否集合里存在此名字
+                if(map.get("ssfxjname").equals(oldList[i])) {
+                    map.put("ssfxjname", newList[i]);
+                    break;
+                }
+            }
+        }
+        return list;
+    }
+    public List<HashMap> removeData(List<HashMap> list){
+        for(HashMap map :list) {
+            if ("".equals(map.get("sspcsname"))) {
+                list.remove(map);
+                break;
+            }
+        }
+        return list;
+    }
+
+    public String changeName(String name){
+        if("吴中区".equals(name)){
+            name = "吴中分局";
+        }
+        if("吴江区".equals(name)){
+            name = "吴江区局";
+        }
+        if("姑苏区".equals(name)){
+            name = "姑苏分局";
+        }
+        if("度假区".equals(name)){
+            name = "度假区分局";
+        }
+        if("相城区".equals(name)){
+            name = "相城分局";
+        }
+        if("常熟市".equals(name)){
+            name = "常熟市局";
+        }
+        if("张家港市".equals(name)){
+            name = "张家港市局";
+        }
+        if("太仓市".equals(name)){
+            name = "太仓市局";
+        }
+        if("昆山市".equals(name)){
+            name = "昆山市局";
+        }
+        if("虎丘区".equals(name)){
+            name = "高新区分局";
+        }
+        if("工业园区".equals(name)){
+            name = "园区分局";
+        }
+        return name;
     }
 }
