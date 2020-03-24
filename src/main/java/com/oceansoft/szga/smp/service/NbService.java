@@ -271,5 +271,26 @@ public interface NbService {
      * @return
      */
     ApiResult findDataJctjZgPcs(String name);
+    /**
+     *  隐患分析-隐患上报数
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findNumByGllx();
+    /**
+     *  隐患分析- 当场整改，责令限期整改并处警告，责令限期整改
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findNumByGljc();
+    /**
+     *  隐患分析- 复查
+     * @author wzj
+     * @date 2020/3/24
+     * @return
+     */
+    ApiResult findNumByFc();
 }
 

@@ -395,4 +395,34 @@ public class NbController {
         ApiResult data = nbService.findDataJctjZgPcs(name);
         return data;
     }
+    /**
+     *  隐患分析-隐患上报数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByGllx")
+    public ApiResult findNumByGllx(){
+        ApiResult data = nbService.findNumByGllx();
+        return data;
+    }
+    /**
+     *  隐患分析- 当场整改，责令限期整改并处警告，责令限期整改
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByGljc")
+    public ApiResult findNumByGljc(){
+        ApiResult data = nbService.findNumByGljc();
+        return data;
+    }
+    /**
+     *  隐患分析- 复查
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByFc")
+    public ApiResult findNumByFc(){
+        ApiResult data = nbService.findNumByFc();
+        return data;
+    }
 }

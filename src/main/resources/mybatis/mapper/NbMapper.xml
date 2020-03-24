@@ -342,4 +342,30 @@
     WHERE
     tjrq =#{tjrq} and ssfxjname=#{name}  group by sspcsname,dwsl,dwsl1 order by num desc limit 10
 </select>
+    <select id="findNumByGllx" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+            tjrq=#{tjrq} AND gllx='1'
+</select>
+    <select id="findNumByGljc" resultType="java.util.HashMap" parameterType="java.util.List">
+       SELECT
+            gljcjg,
+            gljcjgmc,
+            sum(sl)
+       FROM
+            rpt_aqjg_zdmb_yhcllctj
+       WHERE
+            tjrq=#{tjrq} AND gllx='1' AND gljcjg in('1','2','3')  GROUP BY gljcjg,gljcjgmc ORDER BY gljcjg
+</select>
+    <select id="findNumByFc" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+            tjrq=#{tjrq} AND gllx='1' and jclx='4'
+</select>
 </mapper>

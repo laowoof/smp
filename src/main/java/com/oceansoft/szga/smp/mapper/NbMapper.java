@@ -287,4 +287,25 @@ public interface NbMapper {
      * @return
      **/
     List<HashMap> findDataJctjZgPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    /**
+     *  隐患分析-隐患上报数
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByGllx(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 当场整改，责令限期整改并处警告，责令限期整改
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByGljc(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 复查
+     * @date  2020/3/24
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByFc(@Param("tjrq") String tjrq);
     }

@@ -383,6 +383,44 @@ public class NbServiceImpl implements NbService {
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
+    @Override
+    public ApiResult findNumByGllx() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByGllx(tjrq);
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByGljc() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByGljc(tjrq);
+        for(HashMap map :data) {
+            HashMap<String,String> has = new HashMap<>();
+            has.put("gljcjg","3");
+            has.put("gljcjgmc","责令限期整改并处警告");
+            has.put("sum","0");
+            String dm = "3";
+            if (!dm.equals(map.get("gljcjg"))) {
+                data.add(has);
+                break;
+            }
+        }
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByFc() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByFc(tjrq);
+        return new ApiResult().success(200, "成功",data);
+    }
+
     public List<HashMap> changeData(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
