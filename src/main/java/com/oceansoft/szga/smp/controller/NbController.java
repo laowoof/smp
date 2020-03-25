@@ -425,4 +425,104 @@ public class NbController {
         ApiResult data = nbService.findNumByFc();
         return data;
     }
+    /**
+     *  隐患分析- 复查  未完成量
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByFcWwcl")
+    public ApiResult findNumByFcWwcl(){
+        ApiResult data = nbService.findNumByFcWwcl();
+        return data;
+    }
+    /**
+     *  隐患分析- 复查  未完成量原因
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByFcJcjg")
+    public ApiResult findNumByFcJcjg(){
+        ApiResult data = nbService.findNumByFcJcjg();
+        return data;
+    }
+    /**
+     *  隐患分析- 复查审批  未完成量
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByFcspWwcl")
+    public ApiResult findNumByFcspWwcl(){
+        ApiResult data = nbService.findNumByFcspWwcl();
+        return data;
+    }
+    /**
+     *  隐患分析- 复查审批  罚款
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByFcspFk")
+    public ApiResult findNumByFcspFk(){
+        ApiResult data = nbService.findNumByFcspFk();
+        return data;
+    }
+    /**
+     *  隐患分析- 复查审批  协调解决
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByFcspXt")
+    public ApiResult findNumByFcspXt(){
+        ApiResult data = nbService.findNumByFcspXt();
+        return data;
+    }
+    /**
+     *  隐患分析- 隐患处置  隐患处置 当场整改
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByCzDczg")
+    public ApiResult findNumByCzDczg(){
+        ApiResult data = nbService.findNumByCzDczg();
+        return data;
+    }
+    /**
+     *  隐患分析- 隐患处置  整改完成数
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByCzZgwcs")
+    public ApiResult findNumByCzZgwcs(){
+        ApiResult data = nbService.findNumByCzZgwcs();
+        return data;
+    }
+    /**
+     *  隐患分析- 隐患处置  未完成量
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByCzWwcs")
+    public ApiResult findNumByCzWwcs(){
+        ApiResult data = nbService.findNumByCzWwcs();
+        return data;
+    }
+    /**
+     *  重点单位分析-重点单位占比分析-所有区域数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZddw")
+    public ApiResult findNumByZddw(){
+        ApiResult data = nbService.findNumByZddw();
+        return data;
+    }
+    /**
+     *  重点单位分析-重点单位占比分析-top5
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZddwLimit")
+    public ApiResult findNumByZddwLimit(){
+        ApiResult data = nbService.findNumByZddwLimit();
+        return data;
+    }
 }

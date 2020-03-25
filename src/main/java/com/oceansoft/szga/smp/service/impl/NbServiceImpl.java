@@ -421,6 +421,142 @@ public class NbServiceImpl implements NbService {
         return new ApiResult().success(200, "成功",data);
     }
 
+    @Override
+    public ApiResult findNumByFcWwcl() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByFcWwcl(tjrq);
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByFcJcjg() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByFcJcjg(tjrq);
+        for(HashMap map :data) {
+            HashMap<String,String> has = new HashMap<>();
+            has.put("gljcjg","100");
+            has.put("gljcjgmc","因客观原因整改未达到规定要求");
+            has.put("sum","0");
+            String dm = "100";
+            if (!dm.equals(map.get("gljcjg"))) {
+                data.add(has);
+                break;
+            }
+        }
+        for(HashMap map2 :data) {
+            HashMap<String,String> has2 = new HashMap<>();
+            has2.put("gljcjg","200");
+            has2.put("gljcjgmc","无正当理由整改未达到规定要求");
+            has2.put("sum","0");
+            String dm2 ="200";
+            if (!dm2.equals(map2.get("gljcjg"))) {
+                data.add(has2);
+                break;
+            }
+        }
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByFcspWwcl() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByFcspWwcl(tjrq);
+        for(HashMap map :data) {
+            HashMap<String,String> has = new HashMap<>();
+            has.put("jclx","4");
+            has.put("sum","0");
+            String dm = "4";
+            if (!dm.equals(map.get("jclx"))) {
+                data.add(has);
+                break;
+            }
+        }
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByFcspFk() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByFcspFk(tjrq);
+        if(data.size() == 0){
+            HashMap<String,String> has = new HashMap<>();
+            has.put("gljcjg","201");
+            has.put("gljcjgmc","罚款");
+            has.put("sum","0");
+            data.add(has);
+        }
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByFcspXt() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByFcspXt(tjrq);
+        if(data.size() == 0){
+            HashMap<String,String> has = new HashMap<>();
+            has.put("gljcjg","101");
+            has.put("gljcjgmc","协调解决");
+            has.put("sum","0");
+            data.add(has);
+        }
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByCzDczg() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByCzDczg(tjrq);
+        return new ApiResult().success(200, "成功",addData(data,tjrq));
+    }
+
+    @Override
+    public ApiResult findNumByCzZgwcs() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByCzZgwcs(tjrq);
+        return new ApiResult().success(200, "成功",addData(data,tjrq));
+    }
+
+    @Override
+    public ApiResult findNumByCzWwcs() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByCzWwcs(tjrq);
+        return new ApiResult().success(200, "成功",addData(data,tjrq));
+    }
+
+    @Override
+    public ApiResult findNumByZddw() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByZddw(tjrq);
+        return new ApiResult().success(200, "成功",changeData3(data));
+    }
+
+    @Override
+    public ApiResult findNumByZddwLimit() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tjrq = sdf.format(calendar.getTime());
+        List<HashMap> data = nbMapper.findNumByZddwLimit(tjrq);
+        return new ApiResult().success(200, "成功",changeData3(data));
+    }
+
     public List<HashMap> changeData(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
@@ -444,6 +580,20 @@ public class NbServiceImpl implements NbService {
                 //判断是否集合里存在此名字
                 if(map.get("ssfxjname").equals(oldList[i])) {
                     map.put("ssfxjname", newList[i]);
+                    break;
+                }
+            }
+        }
+        return list;
+    }
+    public List<HashMap> changeData3(List<HashMap> list){
+        String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
+        String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
+        for(HashMap map : list){
+            for(int i=0; i<oldList.length; i++){
+                //判断是否集合里存在此名字
+                if(map.get("qy").equals(oldList[i])) {
+                    map.put("qy", newList[i]);
                     break;
                 }
             }
@@ -495,5 +645,15 @@ public class NbServiceImpl implements NbService {
             name = "园区分局";
         }
         return name;
+    }
+
+    public List<HashMap> addData(List<HashMap> list,String tjrq){
+        if(list.size() == 0){
+            HashMap<String,String> has = new HashMap<>();
+            has.put("tjrq",tjrq);
+            has.put("sum","0");
+            list.add(has);
+        }
+        return list;
     }
 }

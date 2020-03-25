@@ -292,5 +292,76 @@ public interface NbService {
      * @return
      */
     ApiResult findNumByFc();
+    /**
+     *  隐患分析- 复查未完成量
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByFcWwcl();
+
+    /**
+     *  隐患分析- 复查未完成量 原因
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByFcJcjg();
+    /**
+     *  隐患分析- 复查审批未完成量
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByFcspWwcl();
+    /**
+     *  隐患分析- 复查审批  罚款
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByFcspFk();
+    /**
+     *  隐患分析- 复查审批  协调
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByFcspXt();
+    /**
+     *  隐患分析- 隐患处置 当场整改
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByCzDczg();
+    /**
+     *  隐患分析- 隐患处置 整改完成数
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByCzZgwcs();
+    /**
+     *  隐患分析- 隐患处置 未完成量
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByCzWwcs();
+    /**
+     *  重点单位分析-重点单位占比分析-所有区域数据
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByZddw();
+    /**
+     *  重点单位分析-重点单位占比分析-top5
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByZddwLimit();
 }
 

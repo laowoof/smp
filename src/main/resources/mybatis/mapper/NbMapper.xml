@@ -348,7 +348,7 @@
         FROM
             rpt_aqjg_zdmb_yhcllctj
         WHERE
-            tjrq=#{tjrq} AND gllx='1'
+            tjrq=#{tjrq} AND gllx='1' and glbm like '%2%'
 </select>
     <select id="findNumByGljc" resultType="java.util.HashMap" parameterType="java.util.List">
        SELECT
@@ -358,7 +358,7 @@
        FROM
             rpt_aqjg_zdmb_yhcllctj
        WHERE
-            tjrq=#{tjrq} AND gllx='1' AND gljcjg in('1','2','3')  GROUP BY gljcjg,gljcjgmc ORDER BY gljcjg
+            tjrq=#{tjrq} AND gllx='1' AND gljcjg in('1','2','3') and glbm like '%2%' GROUP BY gljcjg,gljcjgmc ORDER BY gljcjg
 </select>
     <select id="findNumByFc" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
@@ -368,4 +368,99 @@
         WHERE
             tjrq=#{tjrq} AND gllx='1' and jclx='4'
 </select>
+    <select id="findNumByFcWwcl" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+            tjrq=#{tjrq} AND gllx='1' and jclx='4' and clzt != '6'
+</select>
+    <select id="findNumByFcJcjg" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            gljcjg,
+            gljcjgmc,
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+         tjrq=#{tjrq} AND gllx='1' AND jclx='4' AND  glbm like '%2%' AND gljcjg in ('100','200','300')
+         group by gljcjg,gljcjgmc
+</select>
+    <select id="findNumByFcspWwcl" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            jclx,
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE tjrq=#{tjrq} AND gllx='1' AND jclx='4' AND clzt='3' GROUP BY jclx
+</select>
+    <select id="findNumByFcspFk" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            gljcjg,
+            gljcjgmc,
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+        tjrq=#{tjrq} AND gllx='1' AND jclx='4' and glbm like '%2%' and gljcjg='101' GROUP BY gljcjg,gljcjgmc
+</select>
+    <select id="findNumByFcspXt" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            gljcjg,
+            gljcjgmc,
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+        tjrq=#{tjrq} AND gllx='1' AND jclx='4' and glbm like '%2%' and gljcjg='201' GROUP BY gljcjg,gljcjgmc
+</select>
+    <select id="findNumByCzDczg" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            tjrq,
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+             tjrq=#{tjrq} AND gllx='1' and jclx !='4' and clzt = '6' AND gljcjg='1' group by tjrq
+    </select>
+    <select id="findNumByCzZgwcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            tjrq,
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+             tjrq=#{tjrq} AND gllx='1' and jclx ='4' and clzt = '6' AND gljcjg in('0',NULL) group by tjrq
+    </select>
+    <select id="findNumByCzWwcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            tjrq,
+            sum(sl)
+        FROM
+            rpt_aqjg_zdmb_yhcllctj
+        WHERE
+             tjrq=#{tjrq} AND gllx='1' and jclx ='4' and clzt = '6' AND gljcjg  not in ('0',NULL) group by tjrq
+    </select>
+    <select id="findNumByZddw" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            qy,
+            sum(zddwsl)
+        FROM
+            rpt_aqjg_zdmb_zddwtj
+        WHERE
+         tjrq=#{tjrq} AND jbdj in('1','2','3','8') GROUP BY qy ORDER BY sum desc
+    </select>
+    <select id="findNumByZddwLimit" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            a.qy,
+            a.num,
+            b.sum
+        FROM
+            (SELECT qy, sum(zddwsl) num FROM "rpt_aqjg_zdmb_zddwtj" WHERE tjrq=#{tjrq} AND jbdj in('1','2','3','8') GROUP BY qy) a
+                LEFT JOIN
+            (SELECT qy, sum(zddwsl) sum  FROM "rpt_aqjg_zdmb_zddwtj" WHERE tjrq=#{tjrq}  GROUP BY qy) b
+                ON a.qy = b.qy
+            ORDER BY num desc LIMIT 5
+    </select>
 </mapper>

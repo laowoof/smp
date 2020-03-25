@@ -308,4 +308,75 @@ public interface NbMapper {
      * @return
      **/
     List<HashMap> findNumByFc(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 复查  未完成量
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByFcWwcl(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 复查  未完成量 原因
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByFcJcjg(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 复查审批  未完成量
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByFcspWwcl(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 复查审批 罚款
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByFcspFk(@Param("tjrq") String tjrq);
+
+    /**
+     *  隐患分析- 复查审批 协调解决
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByFcspXt(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 隐患处置 当场整改
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByCzDczg(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 隐患处置 整改完成数
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByCzZgwcs(@Param("tjrq") String tjrq);
+    /**
+     *  隐患分析- 隐患处置 未完成量
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByCzWwcs(@Param("tjrq") String tjrq);
+    /**
+     *  重点单位分析-重点单位占比分析-所有区域数据
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByZddw(@Param("tjrq") String tjrq);
+    /**
+     *  重点单位分析-重点单位占比分析-top5
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByZddwLimit(@Param("tjrq") String tjrq);
     }
