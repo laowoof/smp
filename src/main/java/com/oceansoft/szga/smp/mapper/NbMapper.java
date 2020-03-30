@@ -1,11 +1,12 @@
 package com.oceansoft.szga.smp.mapper;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author wzj
@@ -110,10 +111,9 @@ public interface NbMapper {
     /**
      * 全面分析重点单位 省
      * @date  2020/3/20
-     * @param tjrq 日期
      * @return
      **/
-    List<HashMap> findDataByZzOne(@Param("tjrq") String tjrq);
+    List<HashMap> findDataByZzOne();
 
     /**
      * 重点设施监管总数
@@ -379,4 +379,107 @@ public interface NbMapper {
      * @return
      **/
     List<HashMap> findNumByZddwLimit(@Param("tjrq") String tjrq);
+    /**
+     *  重点单位分析-隐患数量态势-全市 年份
+     * @date  2020/3/25
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByYhYear(@Param("tjrq") String tjrq);
+    /**
+     *  重要设施分析-重要设施新增分析
+     * @date  2020/3/26
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByZyssFx(@Param("tjrq") String tjrq);
+
+    /**
+     *  重要设施分析-重要设施新增分析  种类
+     * @date  2020/3/27
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByZyssFxZl(HashMap map);
+
+    /**
+     *  重要设施分析-重要设施新增分析  总量
+     * @date  2020/3/26
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findNumByZyssTotle(@Param("tjrq") String tjrq);
+
+    /**
+     *  重要设施分析-重点单位占比分析 等级
+     * @date  2020/3/27
+     * @param map
+     * @return
+     **/
+    List<HashMap> findNumByDj(HashMap map);
+
+    /**
+     *  重要设施分析-重点单位占比分析 种类
+     * @date  2020/3/27
+     * @param map
+     * @return
+     **/
+    List<HashMap> findNumByZddwZl(HashMap map);
+
+    /**
+     *  重要设施分析-重点单位营业状态监测 默认年份
+     * @date  2020/3/26
+     * @param tjrq 日期
+     * @return
+     **/
+    List<HashMap> findDataByZddwYear(@Param("tjrq") String tjrq);
+    /**
+     *  重要设施分析-重点单位营业状态监测 默认月份
+     * @date  2020/3/27
+     * @param tjrq 日期
+     * @param nf
+     * @return
+     **/
+    List<HashMap> findDataByZddwMonth(@Param("tjrq") String tjrq,@Param("nf")String nf);
+    /**
+     *  重要设施分析-重点单位营业状态监测 地区选择 月份
+     * @date  2020/3/27
+     * @param map
+     * @return
+     **/
+    List<HashMap> findNumByZddwJcMonth(HashMap map);
+    /**
+     *  全面分析企事业单位  种类选择
+     * @date  2020/3/30
+     * @param map
+     * @return
+     **/
+    List<HashMap> findNumByQmQsyLx(HashMap map);
+    /**
+     *  全面分析重要设施
+     * @date  2020/3/30
+     * @return
+     **/
+    List<HashMap> findNumByQmZyss();
+
+    /**
+     *  全面分析重要设施  种类选择
+     * @date  2020/3/30
+     * @param map
+     * @return
+     **/
+    List<HashMap> findNumByQmZyssZl(HashMap map);
+
+    /**
+     *  全面分析 铸盾单位
+     * @date  2020/3/30
+     * @return
+     **/
+    List<HashMap> findNumByZdNum();
+    /**
+     *  全面分析 企事业单位默认月份数据
+     * @date  2020/3/30
+     * @return
+     **/
+    List<HashMap> findDataQsyMonth();
     }

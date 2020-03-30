@@ -143,14 +143,27 @@
         tjrq=#{tjrq} and ssfjmc like '%' || #{name} ||'%' and dwlx='重要设施' AND jclxmc='专项检查' GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
 </select>
     <select id="findDataByZzOne" resultType="java.util.HashMap" parameterType="java.util.List">
-       SELECT
-        ssfjmc,
-        ssfjdm,
-        sum(dwsl)
-       FROM
-         "rpt_aqjg_zdmb_lzfxtj_sydwsl"
-       WHERE
-        tjrq =#{tjrq} and jbdjdm ='1' GROUP BY ssfjmc,ssfjdm ORDER BY ssfjmc
+      SELECT * FROM
+        (SELECT  ssfjmc,
+			'省级治安重点单位' AS sjname,
+            ( SELECT COALESCE(SUM(dwsl),'0') sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND jbdjdm = '1' AND ssfjmc=t.ssfjmc),
+            '市级治安重点单位' AS sname,
+            ( SELECT SUM (dwsl) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND jbdjdm = '2' and ssfjmc=t.ssfjmc),
+            '县市、区级治安重点单位' AS xname,
+            ( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND jbdjdm = '3' AND ssfjmc=t.ssfjmc),
+            '社区关注单位' AS sqname,
+            ( SELECT SUM (dwsl) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND jbdjdm = '8' AND ssfjmc=t.ssfjmc)
+        FROM
+            rpt_aqjg_zdmb_lzfxtj_sydwsl t
+        WHERE
+            1=1 AND tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') GROUP BY ssfjmc)e
+        LEFT JOIN
+        (select a.ssfjmc,ceiling(b.num/a.totleNum*100) as percent FROM
+        (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') GROUP BY ssfjmc) a
+        LEFT JOIN
+        (SELECT ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND jbdjdm in('1','2','3','8') GROUP BY ssfjmc) b
+        on a.ssfjmc = b.ssfjmc) f
+        on e.ssfjmc =f.ssfjmc ORDER BY e.ssfjmc
 </select>
     <select id="findNumByZyss" resultType="java.util.HashMap" parameterType="java.util.List">
        SELECT
@@ -462,5 +475,216 @@
             (SELECT qy, sum(zddwsl) sum  FROM "rpt_aqjg_zdmb_zddwtj" WHERE tjrq=#{tjrq}  GROUP BY qy) b
                 ON a.qy = b.qy
             ORDER BY num desc LIMIT 5
+    </select>
+    <select id="findNumByYhYear" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+        jc_year,
+        sum(yhcldwsl)
+        FROM
+        rpt_aqjg_zdmb_yhdwtj
+         WHERE tjrq=#{tjrq} GROUP BY jc_year ORDER BY jc_year
+    </select>
+    <select id="findNumByZyssFx" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            a.ssfjmc,
+            a.addnum,
+            b.totlenum
+        FROM
+            (SELECT  ssfjmc,sum(dwsl) addnum FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} GROUP BY ssfjmc ORDER BY ssfjmc) a
+        LEFT JOIN
+            (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq=#{tjrq} GROUP BY ssfjmc ORDER BY ssfjmc) b
+        ON a.ssfjmc = b.ssfjmc
+    </select>
+
+    <select id="findNumByZyssFxZl" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            a.ssfjmc,
+            a.addnum,
+            b.totlenum
+        FROM
+            (SELECT  ssfjmc,sum(dwsl) addnum FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} and
+            lbmc in
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                 #{item}
+            </foreach>
+            GROUP BY ssfjmc ORDER BY ssfjmc) a
+        LEFT JOIN
+            (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq=#{tjrq}
+             and lbmc in
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                 #{item}
+            </foreach>
+             GROUP BY ssfjmc ORDER BY ssfjmc) b
+        ON a.ssfjmc = b.ssfjmc
+    </select>
+
+
+    <select id="findNumByZyssTotle" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            sum(dwsl)
+        FROM
+         rpt_aqjg_zdmb_zysssl
+        WHERE
+          tjrq=#{tjrq}
+    </select>
+    <select id="findNumByDj" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT
+            qy,sum(zddwsl) num
+        FROM
+        rpt_aqjg_zdmb_zddwtj
+        WHERE
+        tjrq=#{tjrq} and
+        jbdjmc in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        group by qy order by num desc limit 5
+    </select>
+
+    <select id="findNumByZddwZl" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT
+        qy,
+        sum(zddwsl) num
+        FROM
+        rpt_aqjg_zdmb_zddwtj
+        WHERE
+        tjrq=#{tjrq} and
+        hylb in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        group by qy order by num desc limit 5
+    </select>
+
+    <select id="findDataByZddwYear" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT DISTINCT
+            nf,
+            '省级治安重点单位' AS sjname,
+            ( SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '1' AND nf=t.nf),
+            '市级治安重点单位' AS sname,
+            ( SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '2' AND nf=t.nf),
+            '县市、区级治安重点单位' AS xname,
+            ( SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '3' AND nf=t.nf),
+            '社区关注单位' AS sqname,
+            ( SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '8' AND nf=t.nf)
+        FROM
+            rpt_aqjg_zdmb_lzfxtj_sydwsl t
+        WHERE
+            1 = 1 AND tjrq = #{tjrq} GROUP BY nf ORDER BY nf
+    </select>
+    <select id="findDataByZddwMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT DISTINCT
+			yf,
+            '省级治安重点单位' AS sjname,
+            ( SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '1' AND yf=t.yf),
+            '市级治安重点单位' AS sname,
+            ( SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '2' AND yf=t.yf),
+            '县市、区级治安重点单位' AS xname,
+            ( SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq}  AND nf=#{nf} AND jbdjdm = '3' AND yf=t.yf),
+            '社区关注单位' AS sqname,
+            ( SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '8' AND yf=t.yf)
+        FROM
+            rpt_aqjg_zdmb_lzfxtj_sydwsl t
+        WHERE
+            1 = 1 AND tjrq = #{tjrq} AND nf=#{nf} GROUP BY yf ORDER BY yf
+    </select>
+
+    <select id="findNumByZddwJcMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT DISTINCT
+			yf,
+            '省级治安重点单位' AS sjname,
+            ( SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '1' AND yf=t.yf),
+            '市级治安重点单位' AS sname,
+            ( SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '2' AND yf=t.yf),
+            '县市、区级治安重点单位' AS xname,
+            ( SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq}  AND nf=#{nf} AND jbdjdm = '3' AND yf=t.yf),
+            '社区关注单位' AS sqname,
+            ( SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '8' AND yf=t.yf)
+        FROM
+            rpt_aqjg_zdmb_lzfxtj_sydwsl t
+        WHERE
+            1 = 1 AND tjrq = #{tjrq} AND nf=#{nf}
+        ssfjmc in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+             GROUP BY yf ORDER BY yf
+    </select>
+
+    <select id="findNumByQmQsyLx" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT
+            a.ssfjmc,
+            a.num,
+            b.totlenum,
+            ceiling(a.num/b.totleNum*100) as percent
+        FROM
+            (SELECT tjrq,ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq} AND jbdjmc in
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            GROUP BY  ssfjmc,tjrq) a
+        LEFT JOIN
+            (SELECT tjrq,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq} AND jbdjmc in
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            GROUP BY tjrq) b
+            ON a.tjrq = b.tjrq
+            ORDER BY ssfjmc
+    </select>
+    <select id="findNumByQmZyss" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        select
+            b.ssfjmc,
+            b.num,
+            ceiling(b.num/a.totlenum*100) as percent
+        FROM
+        (SELECT tjrq,sum(dwsl) totlenum FROM  rpt_aqjg_zdmb_zysssl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY tjrq) a
+        LEFT JOIN
+        (SELECT tjrq,ssfjmc,sum(dwsl) num FROM  rpt_aqjg_zdmb_zysssl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY ssfjmc,tjrq ORDER BY ssfjmc) b
+        on a.tjrq = b.tjrq
+    </select>
+
+    <select id="findNumByQmZyssZl" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT
+        a.ssfjmc,
+        a.num,
+        ceiling(a.num/b.totleNum*100) as percent
+        FROM
+        (SELECT tjrq,ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} AND lbmc in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY  ssfjmc,tjrq) a
+        LEFT JOIN
+        (SELECT tjrq,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} AND lbmc in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY tjrq) b
+        ON a.tjrq = b.tjrq
+        ORDER BY ssfjmc
+    </select>
+
+    <select id="findNumByZdNum" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT
+            fxjmc ssfjmc,
+            sum(zdgcdws) zdnum,
+            sum(qywjzs) wjznum,
+            sum(qyyjzs) jznum
+        FROM
+            "rpt_aqjg_zdmb_hdgctj"
+        WHERE
+            tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY fxjmc ORDER BY fxjmc
+    </select>
+
+    <select id="findDataQsyMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT
+            nf,
+            yf,
+            sum(dwsl)
+        FROM
+            "rpt_aqjg_zdmb_lzfxtj_sydwsl"
+        WHERE
+            nf=to_char(CURRENT_DATE, 'yyyy') GROUP BY yf,nf ORDER BY yf
     </select>
 </mapper>

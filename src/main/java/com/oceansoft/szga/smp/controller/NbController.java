@@ -4,9 +4,9 @@ package com.oceansoft.szga.smp.controller;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.service.NbService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import com.alibaba.fastjson.JSONObject;
+
 
 /**
  * 内保
@@ -523,6 +523,155 @@ public class NbController {
     @GetMapping("findNumByZddwLimit")
     public ApiResult findNumByZddwLimit(){
         ApiResult data = nbService.findNumByZddwLimit();
+        return data;
+    }
+    /**
+     *  重点单位分析-隐患数量态势-全市 年份
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByYhYear")
+    public ApiResult findNumByYhYear(){
+        ApiResult data = nbService.findNumByYhYear();
+        return data;
+    }
+    /**
+     *  重要设施分析-重要设施新增分析
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZyssFx")
+    public ApiResult findNumByZyssFx(){
+        ApiResult data = nbService.findNumByZyssFx();
+        return data;
+    }
+
+    /**
+     *  重要设施分析-重要设施新增分析  种类
+     * @author wzj
+     * @return 数据
+     */
+    @PostMapping("findNumByZyssFxZl")
+    public ApiResult findNumByZyssFxZl(@RequestBody JSONObject obj){
+        ApiResult data = nbService.findNumByZyssFxZl(obj);
+        return data;
+    }
+
+    /**
+     *  重要设施分析-重要设施新增分析  总量
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZyssTotle")
+    public ApiResult findNumByZyssTotle(){
+        ApiResult data = nbService.findNumByZyssTotle();
+        return data;
+    }
+
+    /**
+     *  重要设施分析-重点单位占比分析 等级
+     * @author wzj
+     * @return 数据
+     */
+    @PostMapping("findNumByDj")
+    public ApiResult findNumByDj(@RequestBody JSONObject obj){
+        ApiResult data = nbService.findNumByDj(obj);
+        return data;
+    }
+
+    /**
+     *  重要设施分析-重点单位占比分析 种类
+     * @author wzj
+     * @return 数据
+     */
+    @PostMapping("findNumByZddwZl")
+    public ApiResult findNumByZddwZl(@RequestBody JSONObject obj){
+        System.out.println(obj);
+        ApiResult data = nbService.findNumByZddwZl(obj);
+        return data;
+    }
+
+    /**
+     *  重要设施分析-重点单位营业状态监测 默认年份
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByZddwYear")
+    public ApiResult findDataByZddwYear(){
+        ApiResult data = nbService.findDataByZddwYear();
+        return data;
+    }
+    /**
+     *  重要设施分析-重点单位营业状态监测 默认月份
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataByZddwMonth")
+    public ApiResult findDataByZddwMonth(){
+        ApiResult data = nbService.findDataByZddwMonth();
+        return data;
+    }
+    /**
+     *  重要设施分析-重点单位营业状态监测 地区选择月份
+     * @author wzj
+     * @return 数据
+     */
+    @PostMapping("findNumByZddwJcMonth")
+    public ApiResult findNumByZddwJcMonth(@RequestBody JSONObject obj){
+        ApiResult data = nbService.findNumByZddwJcMonth(obj);
+        return data;
+    }
+
+    /**
+     *  全面分析企事业单位  种类选择
+     * @author wzj
+     * @return 数据
+     */
+    @PostMapping("findNumByQmQsyLx")
+    public ApiResult findNumByQmQsyLx(@RequestBody JSONObject obj){
+        ApiResult data = nbService.findNumByQmQsyLx(obj);
+        return data;
+    }
+    /**
+     *  全面分析  重要设施
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByQmZyss")
+    public ApiResult findNumByQmZyss(){
+        ApiResult data = nbService.findNumByQmZyss();
+        return data;
+    }
+    /**
+     *  全面分析  重要设施 种类选择
+     * @author wzj
+     * @return 数据
+     */
+    @PostMapping("findNumByQmZyssZl")
+    public ApiResult findNumByQmZyssZl(@RequestBody JSONObject obj){
+        ApiResult data = nbService.findNumByQmZyssZl(obj);
+        return data;
+    }
+
+    /**
+     *  全面分析  铸盾单位
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZdNum")
+    public ApiResult findNumByZdNum(){
+        ApiResult data = nbService.findNumByZdNum();
+        return data;
+    }
+
+    /**
+     * 全面分析 企事业单位默认月份数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataQsyMonth")
+    public ApiResult findDataQsyMonth(){
+        ApiResult data = nbService.findDataQsyMonth();
         return data;
     }
 }

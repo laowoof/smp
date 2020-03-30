@@ -1,6 +1,8 @@
 package com.oceansoft.szga.smp.service;
+import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import org.apache.ibatis.annotations.Mapper;
+
 
 
 /**
@@ -363,5 +365,113 @@ public interface NbService {
      * @return
      */
     ApiResult findNumByZddwLimit();
+    /**
+     *  重点单位分析-隐患数量态势-全市 年份
+     * @author wzj
+     * @date 2020/3/25
+     * @return
+     */
+    ApiResult findNumByYhYear();
+    /**
+     *  重要设施分析-重要设施新增分析
+     * @author wzj
+     * @date 2020/3/26
+     * @return
+     */
+    ApiResult findNumByZyssFx();
+
+    /**
+     *  重要设施分析-重要设施新增分析 种类
+     * @author wzj
+     * @date 2020/3/27
+     * @return
+     */
+    ApiResult findNumByZyssFxZl(JSONObject obj);
+
+    /**
+     *  重要设施分析-重要设施新增分析  总量
+     * @author wzj
+     * @date 2020/3/26
+     * @return
+     */
+    ApiResult findNumByZyssTotle();
+
+    /**
+     *  重要设施分析-重点单位占比分析 等级
+     * @author wzj
+     * @date 2020/3/26
+     * @return
+     */
+    ApiResult findNumByDj(JSONObject obj);
+    /**
+     *  重要设施分析-重点单位占比分析 种类
+     * @author wzj
+     * @date 2020/3/26
+     * @return
+     */
+    ApiResult findNumByZddwZl(JSONObject obj);
+
+    /**
+     *  重要设施分析-重点单位营业状态监测 默认年份
+     * @author wzj
+     * @date 2020/3/26
+     * @return
+     */
+    ApiResult findDataByZddwYear();
+
+    /**
+     *  重要设施分析-重点单位营业状态监测 月份
+     * @author wzj
+     * @date 2020/3/27
+     * @return
+     */
+    ApiResult findDataByZddwMonth();
+
+    /**
+     *  重要设施分析-重点单位营业状态监测 地区选择 月份
+     * @author wzj
+     * @date 2020/3/27
+     * @return
+     */
+    ApiResult findNumByZddwJcMonth(JSONObject obj);
+
+    /**
+     *  全面分析企事业单位  种类选择
+     * @author wzj
+     * @date 2020/3/30
+     * @param obj
+     * @return
+     */
+    ApiResult findNumByQmQsyLx(JSONObject obj);
+    /**
+     *  重要设施
+     * @author wzj
+     * @date 2020/3/30
+     * @return
+     */
+    ApiResult findNumByQmZyss();
+    /**
+     *  全面分析重要设施 种类选择
+     * @author wzj
+     * @date 2020/3/30
+     * @param obj
+     * @return
+     */
+    ApiResult findNumByQmZyssZl(JSONObject obj);
+
+    /**
+     *  全面分析-铸盾单位
+     * @author wzj
+     * @date 2020/3/30
+     * @return
+     */
+    ApiResult findNumByZdNum();
+    /**
+     *  全面分析 企事业单位默认月份数据
+     * @author wzj
+     * @date 2020/3/30
+     * @return
+     */
+    ApiResult findDataQsyMonth();
 }
 
