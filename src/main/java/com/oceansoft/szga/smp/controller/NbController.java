@@ -1,6 +1,7 @@
 package com.oceansoft.szga.smp.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.service.NbService;
 import io.swagger.annotations.ApiOperation;
@@ -561,6 +562,19 @@ public class NbController {
     }
 
     /**
+     *  重点单位分析-主动检查分析
+     *  @param nf 年份
+     *  @author wujg
+     *  @return 页面绑定数据
+     */
+    @GetMapping("findNumByZddwjcfx/{nf}")
+    public ApiResult findNumByZddwjcfx(@PathVariable("nf") String nf){
+        ApiResult data = nbService.findNumByZddwjcfx(nf);
+        return data;
+    }
+
+    /**
+        Updated upstream
      *  重要设施分析-重要设施新增分析  总量
      * @author wzj
      * @return 数据
@@ -708,10 +722,21 @@ public class NbController {
         ApiResult data = nbService.findDataQsyLtYear(name);
         return data;
     }
+
     @ApiOperation("重点设施-主动检查")
     @PostMapping("zdss-zdjc")
     public ApiResult zdssZdjc(@RequestBody Map map){
         ApiResult data = nbService.zdssZdjc(map);
+        return data;
+    }
+    /**  重要设施分析-营业状态监测
+     *  @param type 类型
+     *  @author wujg
+     *  @return 页面绑定数据
+     */
+    @PostMapping("findNumByZyssslZl/{type}")
+    public ApiResult findNumByZyssslZl(@PathVariable("type") String type, @RequestBody JSONObject obj){
+        ApiResult data = nbService.findNumByZyssslZl(type, obj);
         return data;
     }
 }

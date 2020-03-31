@@ -502,5 +502,21 @@ public interface NbService {
      * @return
      */
     ApiResult zdssZdjc(Map map);
+
+    /**
+     *  重点单位分析-主动检查分析
+     *  @author wujg
+     *  @date 2020/3/30
+     *  @return
+     */
+    ApiResult findNumByZddwjcfx(String nf);
+
+    /**
+     *  重要设施分析-营业状态监测-按月/按年/按地区
+     *  @author wujg
+     *  @date 2020/3/30
+     *  @return
+     */
+    ApiResult findNumByZyssslZl(String nf, JSONObject obj);
 }
 

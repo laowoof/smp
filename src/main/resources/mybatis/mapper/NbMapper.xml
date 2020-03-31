@@ -737,4 +737,88 @@
         ORDER BY
             COALESCE ( b.jcsl, 0 ) DESC
     </select>
+    <select id="findNumByZddwjcfx" resultType="java.util.HashMap" parameterType="java.util.List">
+         WITH zddwjcfx AS (
+            SELECT
+                nf,
+                ssfxjmc AS ssfjmc,
+                SUM ( jcsl ) jcsl
+            FROM
+                rpt_aqjg_zdmb_zddwjcfx
+            WHERE
+                jclx = '1'
+                AND nf = #{nf}
+                AND tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
+                AND ssfxjmc NOT IN ( '城市轨道交通治安分局', '公安分局' )
+            GROUP BY
+                nf,
+                ssfxjmc
+            ) SELECT A
+            .nf,
+            A.ssfjmc,
+            jcsl,
+            b.zl,
+            CEILING ( A.jcsl / b.zl * 100 ) AS percent
+        FROM
+            zddwjcfx
+            A LEFT JOIN ( SELECT nf, SUM ( jcsl ) AS zl FROM zddwjcfx GROUP BY nf ) b ON A.nf = b.nf
+            ORDER BY
+		      a.ssfjmc
+    </select>
+    <select id="findNumByZyssslZlMonth" resultType="java.util.HashMap">
+         WITH zysssl AS (
+            SELECT
+                tjrq,
+                SUM (dwsl) dwsl
+            FROM
+                rpt_aqjg_zdmb_zysssl_zl
+            WHERE 1=1 AND
+                tjrq IN (
+                SELECT
+                    tjrq
+                FROM
+                    (
+                    SELECT
+                        tjrq,
+                        ROW_NUMBER () OVER ( PARTITION BY date_trunc( 'month', to_date( tjrq, 'yyyy-MM-dd' ) ) ORDER BY tjrq ) AS ROW
+                    FROM
+                        rpt_aqjg_zdmb_zysssl_zl
+                    ORDER BY
+                        tjrq DESC
+                    ) AS zysssl
+                WHERE 1=1 AND
+                    ROW = '1'
+                )
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            GROUP BY
+                tjrq
+            )
+        SELECT SUBSTRING ( tjrq, 6, 2 ) AS yf, dwsl
+        FROM zysssl
+        WHERE 1=1 AND tjrq LIKE #{nf} || '%' ORDER BY yf
+    </select>
+    <select id="findNumByZyssslZlYear" resultType="java.util.HashMap">
+        SELECT SUBSTRING
+            ( tjrq, 1, 4 ) || '年' AS yen ,
+            SUM ( dwsl ) dwsl
+        FROM
+            rpt_aqjg_zdmb_zysssl_zl
+        WHERE
+            1=1
+        AND
+            SUBSTRING ( tjrq, 1, 4 ) BETWEEN ( to_char( CURRENT_TIMESTAMP + '-2year', 'yyyy' ) ) AND ( to_char( CURRENT_TIMESTAMP, 'yyyy' ) )
+        <if test="ssfjmc != null">
+            AND ssfjmc IN
+            <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+            SUBSTRING ( tjrq, 1, 4 ) ORDER BY yen
+    </select>
 </mapper>

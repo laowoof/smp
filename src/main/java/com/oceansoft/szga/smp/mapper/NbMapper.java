@@ -512,4 +512,25 @@ public interface NbMapper {
      * @return
      */
     List<Map> zdssZdjc(Map map);
+    /**
+     *  重点单位分析-主动检查分析
+     *  @author wujg
+     *  @date 2020/3/30
+     *  @return
+     */
+    List<HashMap> findNumByZddwjcfx(@Param("nf") String nf);
+    /**
+     *  重要设施分析-营业状态监测-按月/地区
+     *  @author wujg
+     *  @date 2020/3/30
+     *  @return
+     */
+    List<HashMap> findNumByZyssslZlMonth(HashMap has);
+    /**
+     *  重要设施分析-营业状态监测-按年/地区
+     *  @author wujg
+     *  @date 2020/3/30
+     *  @return
+     */
+    List<HashMap> findNumByZyssslZlYear(HashMap has);
     }

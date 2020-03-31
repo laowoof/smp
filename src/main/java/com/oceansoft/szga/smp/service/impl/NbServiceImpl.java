@@ -7,6 +7,7 @@ import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.mapper.NbMapper;
 import com.oceansoft.szga.smp.service.NbService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -566,6 +567,17 @@ public class NbServiceImpl implements NbService {
         return new ApiResult().success(200, "成功",changeData(data));
     }
 
+    public ApiResult findNumByZddwjcfx(String nf) {
+        if(StringUtils.isEmpty(nf) || 4 != nf.length()){
+            return new ApiResult().failure("非法参数!");
+        }
+        List<HashMap> data = nbMapper.findNumByZddwjcfx(nf);
+        if(data.size()<1){
+            return new ApiResult().failure("没有获取到任何数据!");
+        }
+        return new ApiResult().success(200, "成功",changeData(data));
+    }
+
     @Override
     public ApiResult findNumByZyssFxZl(JSONObject obj) {
         Calendar calendar = Calendar.getInstance();
@@ -692,6 +704,37 @@ public class NbServiceImpl implements NbService {
         return new ApiResult(ImmutableMap.of("list",list,"total",total));
     }
 
+    @Override
+    public ApiResult findNumByZyssslZl(String type, JSONObject obj) {
+        if(StringUtils.isEmpty(type) || 5 < type.length() ){
+            return new ApiResult().failure("非法参数!");
+        }
+        JSONArray array = obj.getJSONArray("ssfjmc");
+        array = changeNameJsonArray(array,true);
+        List<HashMap> data = new ArrayList<>();
+        HashMap has = new HashMap();
+        if("month".equals(type)){
+            //默认今年无法选择
+            has.put("nf","2020");
+            has.put("ssfjmc",array);
+            data = nbMapper.findNumByZyssslZlMonth(has);
+            //月份进行处理
+            data = changeMonth(data);
+        }else if("year".equals(type)){
+            has.put("ssfjmc",array);
+            //默认最近三年
+            data = nbMapper.findNumByZyssslZlYear(has);
+            //年份数据处理
+            data = changeYear(data);
+        }else{
+            return new ApiResult().failure("无效的参数!");
+        }
+        if(data.size()<1){
+            return new ApiResult().failure("没有获取到任何数据!");
+        }
+        return new ApiResult().success(200, "成功",data);
+    }
+
     public List<HashMap> changeData(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
@@ -804,32 +847,95 @@ public class NbServiceImpl implements NbService {
         maps.put("array",arrys);
         return maps;
     }
+
+    /**
+     * 返回一年的12个月的集合
+     * @param list 入参集合
+     * @return 修改后的集合
+     */
     public List<HashMap> changeMonth(List<HashMap> list){
         String  oldList [] = {"01","02","03","04","05","06","07","08","09","10","11","12"};
         String  newList [] = {"1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"};
-        for(HashMap map : list){
-            for(int i=0; i<oldList.length; i++){
+        List<HashMap> newHasList = new ArrayList<>();
+        boolean hex = false;
+        for(int i=0; i<oldList.length; i++){
+            for(HashMap map : list){
                 //判断是否集合里存在此名字
                 if(map.get("yf").equals(oldList[i])) {
                     map.put("yf", newList[i]);
-                    break;
+                    newHasList.add(map);
+                    hex = true;
                 }
             }
+            if(!hex){
+                HashMap has = new HashMap();
+                has.put("yf", newList[i]);
+                has.put("dwsl", 0);
+                newHasList.add(has);
+            }
+            hex = false;
         }
-        return list;
+        return newHasList;
     }
 
-    public String [] changeName2(String [] arr,boolean bl){
+    /**
+     * 返回最近两年的集合
+     * @param list 入参集合
+     * @return 修改后的集合
+     */
+    public List<HashMap> changeYear(List<HashMap> list){
+        String[] yearList = new String[3];
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat smd = new SimpleDateFormat("yyyy年");
+        List<HashMap> newHasList = new ArrayList<>();
+        boolean hex = false;
+        for(int i=2;0<=i;i--){
+            String yearName = smd.format(calendar.getTime());
+            yearList[i] = yearName;
+            calendar.add(Calendar.YEAR,-1);
+        }
+
+        for(int j=0;j<yearList.length;j++){
+            for(HashMap map : list){
+                if(map.get("yen").equals(yearList[j])){
+                    newHasList.add(map);
+                    hex = true;
+                }
+            }
+            if(!hex){
+                HashMap has = new HashMap();
+                has.put("yen", yearList[j]);
+                has.put("dwsl", 0);
+                newHasList.add(has);
+            }
+            hex = false;
+        }
+        return newHasList;
+    }
+
+    /**
+     * @param arr 入参集合
+     * @param bl  T 匹配new替换old  F 匹配old替换new
+     * @return 替换后的集合
+     */
+    public JSONArray changeNameJsonArray(JSONArray arr,boolean bl){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
-        for(int i=0 ; i < oldList.length ; i++){
-            if(bl && newList[i].equals(arr[i])){
-                arr[i] = oldList[i];
-            }else if (!bl && oldList[i].equals(arr[i])){
-                arr[i] = newList[i];
-            }else{
-                continue;
+        if( arr != null && arr.size()>0 ){
+            for(int i=0 ; i < arr.size() ; i++){
+                String qhName = arr.get(i).toString();
+                for(int j=0 ; j < oldList.length ; j++){
+                    if(bl && newList[j].equals(qhName)){
+                        arr.set(i,oldList[j]);
+                    }else if (!bl && oldList[i].equals(qhName)){
+                        arr.set(i,newList[j]);
+                    }else{
+                        continue;
+                    }
+                }
             }
+        }else{
+            arr = null;
         }
         return arr;
     }
