@@ -677,7 +677,37 @@ public class NbController {
         ApiResult data = nbService.findDataQsyMonth();
         return data;
     }
+    /**
+     * 全面分析 企事业单位默认年份数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataQsyYear")
+    public ApiResult findDataQsyYear(){
+        ApiResult data = nbService.findDataQsyYear();
+        return data;
+    }
 
+    /**
+     * 全面分析 企事业单位数据联调
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataQsyLtMonth")
+    public ApiResult findDataQsyLtMonth(String name){
+        ApiResult data = nbService.findDataQsyLtMonth(name);
+        return data;
+    }
+    /**
+     * 全面分析 企事业单位数据联调
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findDataQsyLtYear")
+    public ApiResult findDataQsyLtYear(String name){
+        ApiResult data = nbService.findDataQsyLtYear(name);
+        return data;
+    }
     @ApiOperation("重点设施-主动检查")
     @PostMapping("zdss-zdjc")
     public ApiResult zdssZdjc(@RequestBody Map map){

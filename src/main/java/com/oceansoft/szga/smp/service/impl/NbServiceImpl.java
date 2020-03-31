@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableMap;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.mapper.NbMapper;
 import com.oceansoft.szga.smp.service.NbService;
-import com.sun.xml.internal.ws.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -666,6 +665,24 @@ public class NbServiceImpl implements NbService {
     public ApiResult findDataQsyMonth() {
         List<HashMap> data = nbMapper.findDataQsyMonth();
         return new ApiResult().success(200, "成功",changeMonth(data));
+    }
+
+    @Override
+    public ApiResult findDataQsyYear() {
+        List<HashMap> data = nbMapper.findDataQsyYear();
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findDataQsyLtMonth(String name) {
+        List<HashMap> data = nbMapper.findDataQsyLtMonth(changeName(name));
+        return new ApiResult().success(200, "成功",changeMonth(data));
+    }
+
+    @Override
+    public ApiResult findDataQsyLtYear(String name) {
+        List<HashMap> data = nbMapper.findDataQsyLtYear(changeName(name));
+        return new ApiResult().success(200, "成功",data);
     }
 
     @Override

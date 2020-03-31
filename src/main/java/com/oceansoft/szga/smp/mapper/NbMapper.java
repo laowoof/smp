@@ -485,9 +485,31 @@ public interface NbMapper {
     List<HashMap> findDataQsyMonth();
 
     /**
+     *  全面分析 企事业单位默认年份数据
+     * @date  2020/3/30
+     * @return
+     **/
+    List<HashMap> findDataQsyYear();
+
+    /**
+     *  全面分析 企事业单位数据联调
+     * @date  2020/3/31
+     * @param name
+     * @return
+     **/
+    List<HashMap> findDataQsyLtMonth(@Param("name") String name);
+
+    /**
+     *  全面分析 企事业单位数据联调
+     * @date  2020/3/31
+     * @param name
+     * @return
+     **/
+    List<HashMap> findDataQsyLtYear(@Param("name") String name);
+    /**
      * 重点设施-主动检查
      * @param map
      * @return
      */
     List<Map> zdssZdjc(Map map);
-}
+    }

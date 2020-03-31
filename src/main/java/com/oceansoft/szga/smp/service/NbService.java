@@ -476,6 +476,27 @@ public interface NbService {
     ApiResult findDataQsyMonth();
 
     /**
+     *  全面分析 企事业单位默认年份数据
+     * @author wzj
+     * @date 2020/3/30
+     * @return
+     */
+    ApiResult findDataQsyYear();
+    /**
+     *  全面分析 企事业单位数据联调
+     * @author wzj
+     * @date 2020/3/31
+     * @param name
+     */
+    ApiResult findDataQsyLtMonth(String name);
+    /**
+     *  全面分析 企事业单位数据联调
+     * @author wzj
+     * @date 2020/3/31
+     * @param name
+     */
+    ApiResult findDataQsyLtYear(String name);
+    /**
      * 重点设施-主动检查
      * @param map
      * @return

@@ -685,7 +685,37 @@
         FROM
             "rpt_aqjg_zdmb_lzfxtj_sydwsl"
         WHERE
-            nf=to_char(CURRENT_DATE, 'yyyy') GROUP BY yf,nf ORDER BY yf
+            nf=to_char(CURRENT_DATE, 'yyyy') and tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY yf,nf ORDER BY yf
+    </select>
+    <select id="findDataQsyYear" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT
+            nf,
+            sum(dwsl)
+        FROM
+            "rpt_aqjg_zdmb_lzfxtj_sydwsl"
+        WHERE
+            tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY nf ORDER BY nf
+    </select>
+
+    <select id="findDataQsyLtMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+        SELECT
+            yf,
+            sum(dwsl)
+        FROM
+            rpt_aqjg_zdmb_lzfxtj_sydwsl
+        WHERE
+            tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND nf=to_char(CURRENT_DATE,'yyyy') AND ssfjmc=#{name} GROUP BY yf  ORDER BY yf
+    </select>
+
+    <select id="findDataQsyLtYear" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+       SELECT
+       nf,
+       sum(dwsl)
+       FROM
+       rpt_aqjg_zdmb_lzfxtj_sydwsl
+       WHERE
+       tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND ssfjmc=#{name}
+        GROUP BY nf ORDER BY nf
     </select>
     <select id="zdssZdjc" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT
