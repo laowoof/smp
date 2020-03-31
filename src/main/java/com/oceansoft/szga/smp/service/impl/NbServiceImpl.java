@@ -2,6 +2,7 @@ package com.oceansoft.szga.smp.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.ImmutableMap;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.mapper.NbMapper;
 import com.oceansoft.szga.smp.service.NbService;
@@ -9,8 +10,10 @@ import com.sun.xml.internal.ws.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *  内保
@@ -663,6 +666,13 @@ public class NbServiceImpl implements NbService {
     public ApiResult findDataQsyMonth() {
         List<HashMap> data = nbMapper.findDataQsyMonth();
         return new ApiResult().success(200, "成功",changeMonth(data));
+    }
+
+    @Override
+    public ApiResult zdssZdjc(Map map) {
+        List<Map> list = nbMapper.zdssZdjc(map);
+        int total = list.stream().collect(Collectors.summingInt(m-> ((BigDecimal) m.get("count")).intValue()));
+        return new ApiResult(ImmutableMap.of("list",list,"total",total));
     }
 
     public List<HashMap> changeData(List<HashMap> list){

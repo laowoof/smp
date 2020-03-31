@@ -3,6 +3,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Map;
 
 
 /**
@@ -473,5 +474,12 @@ public interface NbService {
      * @return
      */
     ApiResult findDataQsyMonth();
+
+    /**
+     * 重点设施-主动检查
+     * @param map
+     * @return
+     */
+    ApiResult zdssZdjc(Map map);
 }
 

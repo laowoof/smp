@@ -687,4 +687,24 @@
         WHERE
             nf=to_char(CURRENT_DATE, 'yyyy') GROUP BY yf,nf ORDER BY yf
     </select>
+    <select id="zdssZdjc" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            a.*,
+            COALESCE ( b.jcsl, 0 ) count
+        FROM
+            dept_table a
+            LEFT JOIN (
+        SELECT
+            ssfjdm,
+            sum( jcsl ) jcsl
+        FROM
+            rpt_aqjg_zdmb_zdsszt
+        WHERE
+            SUBSTR( tjrq, 1, 4 ) = #{year} and jclxmc = '主动检查'
+        GROUP BY
+            ssfjdm
+            ) b ON ( a.dept_code = b.ssfjdm )
+        ORDER BY
+            COALESCE ( b.jcsl, 0 ) DESC
+    </select>
 </mapper>

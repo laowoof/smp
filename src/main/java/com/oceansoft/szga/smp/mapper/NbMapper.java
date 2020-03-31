@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wzj
@@ -482,4 +483,11 @@ public interface NbMapper {
      * @return
      **/
     List<HashMap> findDataQsyMonth();
-    }
+
+    /**
+     * 重点设施-主动检查
+     * @param map
+     * @return
+     */
+    List<Map> zdssZdjc(Map map);
+}

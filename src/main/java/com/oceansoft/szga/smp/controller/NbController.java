@@ -3,9 +3,12 @@ package com.oceansoft.szga.smp.controller;
 
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.service.NbService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.alibaba.fastjson.JSONObject;
+
+import java.util.Map;
 
 
 /**
@@ -672,6 +675,13 @@ public class NbController {
     @GetMapping("findDataQsyMonth")
     public ApiResult findDataQsyMonth(){
         ApiResult data = nbService.findDataQsyMonth();
+        return data;
+    }
+
+    @ApiOperation("重点设施-主动检查")
+    @PostMapping("zdss-zdjc")
+    public ApiResult zdssZdjc(@RequestBody Map map){
+        ApiResult data = nbService.zdssZdjc(map);
         return data;
     }
 }
