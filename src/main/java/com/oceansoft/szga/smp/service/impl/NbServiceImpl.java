@@ -6,6 +6,9 @@ import com.google.common.collect.ImmutableMap;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.mapper.NbMapper;
 import com.oceansoft.szga.smp.service.NbService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -566,7 +569,7 @@ public class NbServiceImpl implements NbService {
         List<HashMap> data = nbMapper.findNumByZyssFx(tjrq);
         return new ApiResult().success(200, "成功",changeData(data));
     }
-
+    @Override
     public ApiResult findNumByZddwjcfx(String nf) {
         if(StringUtils.isEmpty(nf) || 4 != nf.length()){
             return new ApiResult().failure("非法参数!");
@@ -710,7 +713,20 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult yhslfxMonth(Map map) {
+        map.put("monthStr","'"+getMonthStr()+"'");
         return new ApiResult(nbMapper.yhslfxMonth(map));
+    }
+
+    private String getMonthStr() {
+        int num=12;
+        String[] monthArr = new String[num];
+        Date now = new Date();
+        for (int i=0;i<num;i++) {
+            Date temp = DateUtils.addMonths(now,0-i);
+            monthArr[i]=DateFormatUtils.format(temp,"yyyy-MM");
+        }
+        ArrayUtils.reverse(monthArr);
+        return String.join(",",monthArr);
     }
 
     @Override
