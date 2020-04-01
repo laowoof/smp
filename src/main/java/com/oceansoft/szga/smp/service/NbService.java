@@ -418,7 +418,7 @@ public interface NbService {
      * @date 2020/3/26
      * @return
      */
-    ApiResult findDataByZddwYear();
+    ApiResult findDataByZddwYear(JSONObject obj);
 
     /**
      *  重要设施分析-重点单位营业状态监测 月份
@@ -426,7 +426,7 @@ public interface NbService {
      * @date 2020/3/27
      * @return
      */
-    ApiResult findDataByZddwMonth();
+    ApiResult findDataByZddwMonth(JSONObject obj);
 
     /**
      *  重要设施分析-重点单位营业状态监测 地区选择 月份

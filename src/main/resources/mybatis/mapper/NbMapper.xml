@@ -455,6 +455,7 @@
         WHERE
              tjrq=#{tjrq} AND gllx='1' and jclx ='4' and clzt = '6' AND gljcjg  not in ('0',NULL) group by tjrq
     </select>
+
     <select id="findNumByZddw" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
             qy,
@@ -476,6 +477,7 @@
                 ON a.qy = b.qy
             ORDER BY num desc LIMIT 5
     </select>
+
     <select id="findNumByYhYear" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
         jc_year,
@@ -484,6 +486,7 @@
         rpt_aqjg_zdmb_yhdwtj
          WHERE tjrq=#{tjrq} GROUP BY jc_year ORDER BY jc_year
     </select>
+
     <select id="findNumByZyssFx" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
             a.ssfjmc,
@@ -518,7 +521,6 @@
         ON a.ssfjmc = b.ssfjmc
     </select>
 
-
     <select id="findNumByZyssTotle" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
             sum(dwsl)
@@ -527,6 +529,7 @@
         WHERE
           tjrq=#{tjrq}
     </select>
+
     <select id="findNumByDj" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
         SELECT
             qy,sum(zddwsl) num
@@ -556,37 +559,105 @@
         group by qy order by num desc limit 5
     </select>
 
-    <select id="findDataByZddwYear" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+    <select id="findDataByZddwYear" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         SELECT DISTINCT
             nf,
             '省级治安重点单位' AS sjname,
-            ( SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '1' AND nf=t.nf),
+            COALESCE((
+            SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '1' AND nf=t.nf
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            ),0) AS sjsnum,
             '市级治安重点单位' AS sname,
-            ( SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '2' AND nf=t.nf),
+            COALESCE((
+            SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '2' AND nf=t.nf
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            ),0) AS ssnum,
             '县市、区级治安重点单位' AS xname,
-            ( SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '3' AND nf=t.nf),
+            COALESCE((
+            SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '3' AND nf=t.nf
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            ),0) AS xsum,
             '社区关注单位' AS sqname,
-            ( SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '8' AND nf=t.nf)
+            COALESCE((
+            SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '8' AND nf=t.nf
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            ),0) AS sqsnum
         FROM
             rpt_aqjg_zdmb_lzfxtj_sydwsl t
         WHERE
             1 = 1 AND tjrq = #{tjrq} GROUP BY nf ORDER BY nf
     </select>
-    <select id="findDataByZddwMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
-        SELECT DISTINCT
-			yf,
+
+    <select id="findDataByZddwMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        WITH rpt_aqjg_zdmb_lzfxtj_sydwsl AS (
+        SELECT nf || yf as nfyf, ssfjmc, dwsl, jbdjdm, yf FROM rpt_aqjg_zdmb_lzfxtj_sydwsl
+        )
+        SELECT
+            nfyf as tjrq,
             '省级治安重点单位' AS sjname,
-            ( SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '1' AND yf=t.yf),
+            COALESCE((
+            SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '1' AND yf=t.yf
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            ),0) AS sjsnum,
             '市级治安重点单位' AS sname,
-            ( SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '2' AND yf=t.yf),
+            COALESCE((
+            SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '2' AND yf=t.yf
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            ),0) AS ssnum,
             '县市、区级治安重点单位' AS xname,
-            ( SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq}  AND nf=#{nf} AND jbdjdm = '3' AND yf=t.yf),
+            COALESCE((
+            SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '3' AND yf=t.yf
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            ),0) AS xsnum,
             '社区关注单位' AS sqname,
-            ( SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '8' AND yf=t.yf)
+            COALESCE((
+            SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '8' AND yf=t.yf
+            <if test="ssfjmc != null">
+                AND ssfjmc IN
+                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            ),0) AS sqsnum
         FROM
             rpt_aqjg_zdmb_lzfxtj_sydwsl t
         WHERE
-            1 = 1 AND tjrq = #{tjrq} AND nf=#{nf} GROUP BY yf ORDER BY yf
+            1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} GROUP BY nfyf ORDER BY nfyf
     </select>
 
     <select id="findNumByZddwJcMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
@@ -632,6 +703,7 @@
             ON a.tjrq = b.tjrq
             ORDER BY ssfjmc
     </select>
+
     <select id="findNumByQmZyss" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
         select
             b.ssfjmc,
@@ -687,6 +759,7 @@
         WHERE
             nf=to_char(CURRENT_DATE, 'yyyy') and tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY yf,nf ORDER BY yf
     </select>
+
     <select id="findDataQsyYear" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
         SELECT
              COALESCE(nf,'0') nf,
@@ -717,6 +790,7 @@
        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND ssfjmc=#{name}
         GROUP BY nf ORDER BY nf
     </select>
+
     <select id="zdssZdjc" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT
             a.*,
@@ -737,6 +811,7 @@
         ORDER BY
             COALESCE ( b.jcsl, 0 ) DESC
     </select>
+
     <select id="findNumByZddwjcfx" resultType="java.util.HashMap" parameterType="java.util.List">
          WITH zddwjcfx AS (
             SELECT
@@ -765,6 +840,7 @@
             ORDER BY
 		      a.ssfjmc
     </select>
+
     <select id="findNumByZyssslZlMonth" resultType="java.util.HashMap">
          WITH zysssl AS (
             SELECT
@@ -780,7 +856,7 @@
                     (
                     SELECT
                         tjrq,
-                        ROW_NUMBER () OVER ( PARTITION BY date_trunc( 'month', to_date( tjrq, 'yyyy-MM-dd' ) ) ORDER BY tjrq ) AS ROW
+                        ROW_NUMBER () OVER ( PARTITION BY date_trunc( 'month', to_date( tjrq, 'yyyyMM' ) ) ORDER BY tjrq ) AS ROW
                     FROM
                         rpt_aqjg_zdmb_zysssl_zl
                     ORDER BY
@@ -797,11 +873,14 @@
             </if>
             GROUP BY
                 tjrq
+            ORDER BY
+                tjrq
             )
-        SELECT SUBSTRING ( tjrq, 6, 2 ) AS yf, dwsl
+        SELECT SUBSTRING ( tjrq, 5, 2 ) AS yf, tjrq, dwsl
         FROM zysssl
-        WHERE 1=1 AND tjrq LIKE #{nf} || '%' ORDER BY yf
+        WHERE 1=1 AND tjrq &gt;= #{ltnf} AND tjrq &lt;= #{gtnf} ORDER BY tjrq DESC, yf DESC
     </select>
+
     <select id="findNumByZyssslZlYear" resultType="java.util.HashMap">
         SELECT SUBSTRING
             ( tjrq, 1, 4 ) || '年' AS yen ,
@@ -811,7 +890,7 @@
         WHERE
             1=1
         AND
-            SUBSTRING ( tjrq, 1, 4 ) BETWEEN ( to_char( CURRENT_TIMESTAMP + '-2year', 'yyyy' ) ) AND ( to_char( CURRENT_TIMESTAMP, 'yyyy' ) )
+            SUBSTRING ( tjrq, 1, 4 ) BETWEEN ( to_char( CURRENT_TIMESTAMP + '-10year', 'yyyy' ) ) AND ( to_char( CURRENT_TIMESTAMP, 'yyyy' ) )
         <if test="ssfjmc != null">
             AND ssfjmc IN
             <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
@@ -821,6 +900,7 @@
         GROUP BY
             SUBSTRING ( tjrq, 1, 4 ) ORDER BY yen
     </select>
+<<<<<<< Updated upstream
     <select id="findNumByZdgcYear" resultType="java.util.HashMap">
         SELECT
         COALESCE(nf,'0') as nf,
@@ -931,4 +1011,7 @@
         GROUP BY
         jc_year
     </select>
+=======
+
+>>>>>>> Stashed changes
 </mapper>

@@ -433,15 +433,14 @@ public interface NbMapper {
      * @param tjrq 日期
      * @return
      **/
-    List<HashMap> findDataByZddwYear(@Param("tjrq") String tjrq);
+    List<HashMap> findDataByZddwYear(HashMap has);
     /**
      *  重要设施分析-重点单位营业状态监测 默认月份
      * @date  2020/3/27
-     * @param tjrq 日期
-     * @param nf
+     * @param has 日期
      * @return
      **/
-    List<HashMap> findDataByZddwMonth(@Param("tjrq") String tjrq,@Param("nf")String nf);
+    List<HashMap> findDataByZddwMonth(HashMap has);
     /**
      *  重要设施分析-重点单位营业状态监测 地区选择 月份
      * @date  2020/3/27

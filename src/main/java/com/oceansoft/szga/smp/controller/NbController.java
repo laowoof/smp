@@ -613,9 +613,9 @@ public class NbController {
      * @author wzj
      * @return 数据
      */
-    @GetMapping("findDataByZddwYear")
-    public ApiResult findDataByZddwYear(){
-        ApiResult data = nbService.findDataByZddwYear();
+    @PostMapping("findDataByZddwYear")
+    public ApiResult findDataByZddwYear(@RequestBody JSONObject obj){
+        ApiResult data = nbService.findDataByZddwYear(obj);
         return data;
     }
     /**
@@ -623,9 +623,9 @@ public class NbController {
      * @author wzj
      * @return 数据
      */
-    @GetMapping("findDataByZddwMonth")
-    public ApiResult findDataByZddwMonth(){
-        ApiResult data = nbService.findDataByZddwMonth();
+    @PostMapping("findDataByZddwMonth")
+    public ApiResult findDataByZddwMonth(@RequestBody JSONObject obj){
+        ApiResult data = nbService.findDataByZddwMonth(obj);
         return data;
     }
     /**
