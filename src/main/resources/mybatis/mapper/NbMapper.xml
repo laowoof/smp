@@ -605,59 +605,52 @@
         FROM
             rpt_aqjg_zdmb_lzfxtj_sydwsl t
         WHERE
-            1 = 1 AND tjrq = #{tjrq} GROUP BY nf ORDER BY nf
+            1=1 AND tjrq = #{tjrq} AND nf IS NOT NULL GROUP BY nf ORDER BY nf
     </select>
 
     <select id="findDataByZddwMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        WITH rpt_aqjg_zdmb_lzfxtj_sydwsl AS (
-        SELECT nf || yf as nfyf, ssfjmc, dwsl, jbdjdm, yf FROM rpt_aqjg_zdmb_lzfxtj_sydwsl
+        WITH sydwsl AS (
+        SELECT nf || yf AS nfyf, ssfjmc, dwsl, jbdjdm, nf, yf FROM rpt_aqjg_zdmb_lzfxtj_sydwsl
         )
-        SELECT
-            nfyf as tjrq,
-            '省级治安重点单位' AS sjname,
-            COALESCE((
-            SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '1' AND yf=t.yf
-            <if test="ssfjmc != null">
-                AND ssfjmc IN
-                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
-                    #{item}
-                </foreach>
-            </if>
-            ),0) AS sjsnum,
-            '市级治安重点单位' AS sname,
-            COALESCE((
-            SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '2' AND yf=t.yf
-            <if test="ssfjmc != null">
-                AND ssfjmc IN
-                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
-                    #{item}
-                </foreach>
-            </if>
-            ),0) AS ssnum,
-            '县市、区级治安重点单位' AS xname,
-            COALESCE((
-            SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '3' AND yf=t.yf
-            <if test="ssfjmc != null">
-                AND ssfjmc IN
-                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
-                    #{item}
-                </foreach>
-            </if>
-            ),0) AS xsnum,
-            '社区关注单位' AS sqname,
-            COALESCE((
-            SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '8' AND yf=t.yf
-            <if test="ssfjmc != null">
-                AND ssfjmc IN
-                <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
-                    #{item}
-                </foreach>
-            </if>
-            ),0) AS sqsnum
+        SELECT nfyf AS tjrq,yf,
+        '省级治安重点单位' AS sjname,
+        COALESCE((SELECT SUM ( dwsl ) xsnum FROM	sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '1' AND yf = t.yf
+        <if test="ssfjmc != null">
+            AND ssfjmc IN
+            <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                #{item}
+            </foreach>
+        </if>
+        ),0) AS sjsnum,
+        '市级治安重点单位' AS sname,
+        COALESCE((SELECT SUM	( dwsl ) xsnum FROM sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '2' AND yf = t.yf
+        <if test="ssfjmc != null">
+            AND ssfjmc IN
+            <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                #{item}
+            </foreach>
+        </if>
+        ),0) AS ssnum,
+        '县市、区级治安重点单位' AS xname,
+        COALESCE((SELECT SUM ( dwsl ) xsnum FROM sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '3' AND yf = t.yf
+        <if test="ssfjmc != null">
+            AND ssfjmc IN
+            <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                #{item}
+            </foreach>
+        </if>
+        ),0) AS xsnum,
+        '社区关注单位' AS sqname,
+        COALESCE((SELECT SUM ( dwsl ) xsnum FROM sydwsl WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND jbdjdm = '8' AND yf = t.yf
+        <if test="ssfjmc != null">
+            AND ssfjmc IN
+            <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
+                #{item}
+            </foreach>
+        </if>
+        ),0) AS sqsnum
         FROM
-            rpt_aqjg_zdmb_lzfxtj_sydwsl t
-        WHERE
-            1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} GROUP BY nfyf ORDER BY nfyf
+        sydwsl t WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} GROUP BY yf,nfyf
     </select>
 
     <select id="findNumByZddwJcMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
@@ -823,7 +816,6 @@
             WHERE
                 jclx = '1'
                 AND nf = #{nf}
-                AND tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
                 AND ssfxjmc NOT IN ( '城市轨道交通治安分局', '公安分局' )
             GROUP BY
                 nf,
@@ -900,7 +892,7 @@
         GROUP BY
             SUBSTRING ( tjrq, 1, 4 ) ORDER BY yen
     </select>
-<<<<<<< Updated upstream
+
     <select id="findNumByZdgcYear" resultType="java.util.HashMap">
         SELECT
         COALESCE(nf,'0') as nf,
@@ -1011,7 +1003,4 @@
         GROUP BY
         jc_year
     </select>
-=======
-
->>>>>>> Stashed changes
 </mapper>
