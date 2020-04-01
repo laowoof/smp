@@ -530,9 +530,42 @@ public interface NbMapper {
      *  重要设施分析-营业状态监测-按年/地区
      *  @author wujg
      *  @date 2020/3/30
+     * @param has
      *  @return
      */
     List<HashMap> findNumByZyssslZlYear(HashMap has);
+    /**
+     *  “铸盾”工程单位  年份数据
+     *  @author wzj
+     *  @date 2020/4/1
+     * @param name
+     *  @return
+     */
+    List<HashMap> findNumByZdgcYear(@Param("name")String name);
+    /**
+     *  “铸盾”工程单位  年份数据
+     *  @author wzj
+     *  @date 2020/4/1
+     *  @return
+     */
+    List<HashMap> findNumByZdgcMRYear();
+
+    /**
+     *  重要设施单位数量  年份数据
+     *  @author wzj
+     *  @date 2020/4/1
+     * @param name
+     *  @return
+     */
+    List<HashMap> findNumByZyssYear(@Param("name")String name);
+
+    /**
+     *  重要设施单位数量  默认年份数据
+     *  @author wzj
+     *  @date 2020/4/1
+     *  @return
+     */
+    List<HashMap> findNumByZyssMRYear();
 
     /**
      * 隐患数量分析

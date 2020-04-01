@@ -12,6 +12,7 @@ import java.util.Map;
  * @date 2019/3/13
  */
 
+@Mapper
 public interface NbService {
     ApiResult test();
 
@@ -517,6 +518,36 @@ public interface NbService {
      *  @return
      */
     ApiResult findNumByZyssslZl(String nf, JSONObject obj);
+
+    /**
+     *  全面分析 “铸盾”工程单位数据联调
+     * @author wzj
+     * @date 2020/3/31
+     * @param name
+     */
+    ApiResult findNumByZdgcYear(String name);
+
+    /**
+     *  全面分析 “铸盾”工程单位 默认年 数据
+     * @author wzj
+     * @date 2020/3/31
+     */
+    ApiResult findNumByZdgcMRYear();
+
+    /**
+     *  重要设施单位数量  年份数据
+     * @author wzj
+     * @date 2020/3/31
+     * @param name
+     */
+    ApiResult findNumByZyssYear(String name);
+
+    /**
+     *  重要设施单位数量  默认年份数据
+     * @author wzj
+     * @date 2020/3/31
+     */
+    ApiResult findNumByZyssMRYear();
 
     /**
      * 隐患数量分析

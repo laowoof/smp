@@ -38,9 +38,9 @@
         a.num,
         ceiling(a.num/b.totleNum*100) as percent
     from
-        (select tjrq,ssfjmc,sum(dwsl) num from rpt_aqjg_zdmb_lzfxtj_sydwsl where tjrq =#{tjrq} GROUP BY ssfjmc,tjrq ORDER BY ssfjmc) as a
+        (select tjrq,ssfjmc,sum(dwsl) num from rpt_aqjg_zdmb_lzfxtj_sydwsl where tjrq =#{tjrq} AND ssfjdm not in('320597000000','320598000000') GROUP BY ssfjmc,tjrq ORDER BY ssfjmc) as a
     LEFT JOIN
-        (SELECT tjrq,sum(dwsl) totleNum from rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq =#{tjrq} GROUP BY tjrq) b
+        (SELECT tjrq,sum(dwsl) totleNum from rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq =#{tjrq} AND ssfjdm not in('320597000000','320598000000') GROUP BY tjrq) b
     on
         a.tjrq = b.tjrq ORDER BY a.ssfjmc
 </select>
@@ -146,22 +146,22 @@
       SELECT * FROM
         (SELECT  ssfjmc,
 			'省级治安重点单位' AS sjname,
-            ( SELECT COALESCE(SUM(dwsl),'0') sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND jbdjdm = '1' AND ssfjmc=t.ssfjmc),
+            ( SELECT COALESCE(SUM(dwsl),'0') sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm = '1' AND ssfjmc=t.ssfjmc),
             '市级治安重点单位' AS sname,
-            ( SELECT SUM (dwsl) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND jbdjdm = '2' and ssfjmc=t.ssfjmc),
+            ( SELECT SUM (dwsl) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm = '2' and ssfjmc=t.ssfjmc),
             '县市、区级治安重点单位' AS xname,
-            ( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND jbdjdm = '3' AND ssfjmc=t.ssfjmc),
+            ( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm = '3' AND ssfjmc=t.ssfjmc),
             '社区关注单位' AS sqname,
-            ( SELECT SUM (dwsl) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND jbdjdm = '8' AND ssfjmc=t.ssfjmc)
+            ( SELECT SUM (dwsl) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm = '8' AND ssfjmc=t.ssfjmc)
         FROM
             rpt_aqjg_zdmb_lzfxtj_sydwsl t
         WHERE
-            1=1 AND tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') GROUP BY ssfjmc)e
+            1=1 AND tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') and ssfjdm not in('320597000000','320598000000') GROUP BY ssfjmc)e
         LEFT JOIN
         (select a.ssfjmc,ceiling(b.num/a.totleNum*100) as percent FROM
-        (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') GROUP BY ssfjmc) a
+        (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000')  GROUP BY ssfjmc) a
         LEFT JOIN
-        (SELECT ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND jbdjdm in('1','2','3','8') GROUP BY ssfjmc) b
+        (SELECT ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm in('1','2','3','8') GROUP BY ssfjmc) b
         on a.ssfjmc = b.ssfjmc) f
         on e.ssfjmc =f.ssfjmc ORDER BY e.ssfjmc
 </select>
@@ -665,9 +665,9 @@
         ORDER BY ssfjmc
     </select>
 
-    <select id="findNumByZdNum" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+    <select id="findNumByZdNum" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
-            fxjmc ssfjmc,
+            COALESCE(fxjmc,'0')ssfjmc,
             sum(zdgcdws) zdnum,
             sum(qywjzs) wjznum,
             sum(qyyjzs) jznum
@@ -681,7 +681,7 @@
         SELECT
             nf,
             yf,
-            sum(dwsl)
+            sum(dwsl) dwsl
         FROM
             "rpt_aqjg_zdmb_lzfxtj_sydwsl"
         WHERE
@@ -689,7 +689,7 @@
     </select>
     <select id="findDataQsyYear" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
         SELECT
-            nf,
+             COALESCE(nf,'0') nf,
             sum(dwsl)
         FROM
             "rpt_aqjg_zdmb_lzfxtj_sydwsl"
@@ -821,6 +821,44 @@
         GROUP BY
             SUBSTRING ( tjrq, 1, 4 ) ORDER BY yen
     </select>
+    <select id="findNumByZdgcYear" resultType="java.util.HashMap">
+        SELECT
+        COALESCE(nf,'0') as nf,
+        sum(zdgcdws)+sum(qyyjzs)+sum(qywjzs) as num
+        FROM
+        "rpt_aqjg_zdmb_hdgctj"
+        WHERE
+        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND fxjmc=#{name} GROUP BY nf  ORDER BY nf
+    </select>
+    <select id="findNumByZdgcMRYear" resultType="java.util.HashMap">
+        SELECT
+        COALESCE(nf,'0') as nf,
+        sum(zdgcdws)+sum(qyyjzs)+sum(qywjzs) as num
+        FROM
+        "rpt_aqjg_zdmb_hdgctj"
+        WHERE
+        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY nf  ORDER BY nf
+    </select>
+    <select id="findNumByZyssYear" resultType="java.util.HashMap">
+       SELECT SUBSTRING
+            ( tjrq, 1, 4 ) || '年' AS yen ,
+            SUM ( dwsl ) dwsl
+        FROM
+            rpt_aqjg_zdmb_zysssl_zl
+        WHERE
+				ssfjmc=#{name}
+		GROUP BY
+            SUBSTRING ( tjrq, 1, 4 ) ORDER BY yen
+    </select>
+    <select id="findNumByZyssMRYear" resultType="java.util.HashMap">
+       SELECT SUBSTRING
+            ( tjrq, 1, 4 ) AS nf ,
+            SUM ( dwsl ) dwsl
+        FROM
+            rpt_aqjg_zdmb_zysssl_zl
+		GROUP BY
+            SUBSTRING ( tjrq, 1, 4 ) ORDER BY nf
+    </select>
     <select id="yhslfx" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT
             a.*,
@@ -852,40 +890,40 @@
         select regexp_split_to_table(${monthStr},',') a
         ) b left join (
         SELECT
-            concat(jc_year,'-',jc_month) datestr,
-            sum(
-            CASE
+        concat(jc_year,'-',jc_month) datestr,
+        sum(
+        CASE
 
-            WHEN ( clzt = '6' AND jclx != '4' AND gljcjg = '1' )
-            OR ( jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL ) ) THEN
-            yhsl ELSE 0
-            END
-            ) zgl,
-            sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
+        WHEN ( clzt = '6' AND jclx != '4' AND gljcjg = '1' )
+        OR ( jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL ) ) THEN
+        yhsl ELSE 0
+        END
+        ) zgl,
+        sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
         FROM
         rpt_aqjg_zdmb_yhdwtj
         WHERE 1=1 and jc_year is not null and jc_month is not null
-            <if test=" area!='全市' ">and ssfxj = (select dept_code from dept_table where dept_name=#{area})
-            </if>
+        <if test=" area!='全市' ">and ssfxj = (select dept_code from dept_table where dept_name=#{area})
+        </if>
         GROUP BY
-            jc_year,
-            jc_month
+        jc_year,
+        jc_month
         ) c on b.a=c.datestr
     </select>
     <select id="yhslfxYear" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT
         jc_year datestr,
         sum(
-            CASE
+        CASE
 
-            WHEN ( clzt = '6' AND jclx != '4' AND gljcjg = '1' )
-            OR ( jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL ) ) THEN
-            yhsl ELSE 0
-            END
+        WHEN ( clzt = '6' AND jclx != '4' AND gljcjg = '1' )
+        OR ( jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL ) ) THEN
+        yhsl ELSE 0
+        END
         ) zgl,
         sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
         FROM
-            rpt_aqjg_zdmb_yhdwtj
+        rpt_aqjg_zdmb_yhdwtj
         WHERE 1=1 and jc_year is not null
         <if test=" area!='全市' ">
             and ssfxj = (select dept_code from dept_table where dept_name=#{area})

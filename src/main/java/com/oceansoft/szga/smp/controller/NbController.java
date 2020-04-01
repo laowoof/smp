@@ -739,6 +739,47 @@ public class NbController {
         ApiResult data = nbService.findNumByZyssslZl(type, obj);
         return data;
     }
+
+    /**
+     * 全面分析 “铸盾”工程单位数据联调  年数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZdgcYear")
+    public ApiResult findNumByZdgcYear(String name){
+        ApiResult data = nbService.findNumByZdgcYear(name);
+        return data;
+    }
+    /**
+     * 全面分析 “铸盾”工程单位  默认  年数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZdgcMRYear")
+    public ApiResult findNumByZdgcMRYear(){
+        ApiResult data = nbService.findNumByZdgcMRYear();
+        return data;
+    }
+    /**
+     * 全面分析 重要设施单位数量  年份数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZyssYear")
+    public ApiResult findNumByZyssYear(String name){
+        ApiResult data = nbService.findNumByZyssYear(name);
+        return data;
+    }
+    /**
+     * 全面分析 重要设施单位数量 默认 年份数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZyssMRYear")
+    public ApiResult findNumByZyssMRYear(){
+        ApiResult data = nbService.findNumByZyssMRYear();
+        return data;
+    }
     @ApiOperation("隐患数量分析")
     @PostMapping("yhslfx")
     public ApiResult yhslfx(@RequestBody Map map){

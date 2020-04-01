@@ -673,6 +673,12 @@ public class NbServiceImpl implements NbService {
     @Override
     public ApiResult findNumByZdNum() {
         List<HashMap> data = nbMapper.findNumByZdNum();
+        for(HashMap map :data) {
+            if ("0".equals(map.get("ssfjmc"))) {
+                data.remove(map);
+                break;
+            }
+        }
         return new ApiResult().success(200, "成功",changeData(data));
     }
 
@@ -685,7 +691,7 @@ public class NbServiceImpl implements NbService {
     @Override
     public ApiResult findDataQsyYear() {
         List<HashMap> data = nbMapper.findDataQsyYear();
-        return new ApiResult().success(200, "成功",data);
+        return new ApiResult().success(200, "成功",removeData2(data));
     }
 
     @Override
@@ -705,33 +711,6 @@ public class NbServiceImpl implements NbService {
         List<Map> list = nbMapper.zdssZdjc(map);
         int total = list.stream().collect(Collectors.summingInt(m-> ((BigDecimal) m.get("count")).intValue()));
         return new ApiResult(ImmutableMap.of("list",list,"total",total));
-    }
-    @Override
-    public ApiResult yhslfx(Map map) {
-        return new ApiResult(nbMapper.yhslfx(map));
-    }
-
-    @Override
-    public ApiResult yhslfxMonth(Map map) {
-        map.put("monthStr","'"+getMonthStr()+"'");
-        return new ApiResult(nbMapper.yhslfxMonth(map));
-    }
-
-    private String getMonthStr() {
-        int num=12;
-        String[] monthArr = new String[num];
-        Date now = new Date();
-        for (int i=0;i<num;i++) {
-            Date temp = DateUtils.addMonths(now,0-i);
-            monthArr[i]=DateFormatUtils.format(temp,"yyyy-MM");
-        }
-        ArrayUtils.reverse(monthArr);
-        return String.join(",",monthArr);
-    }
-
-    @Override
-    public ApiResult yhslfxYear(Map map) {
-        return new ApiResult(nbMapper.yhslfxYear(map));
     }
 
     @Override
@@ -763,6 +742,56 @@ public class NbServiceImpl implements NbService {
             return new ApiResult().failure("没有获取到任何数据!");
         }
         return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByZdgcYear(String name) {
+        List<HashMap> data = nbMapper.findNumByZdgcYear(changeName(name));
+        return new ApiResult().success(200, "成功",removeData2(data));
+    }
+
+    @Override
+    public ApiResult findNumByZdgcMRYear() {
+        List<HashMap> data = nbMapper.findNumByZdgcMRYear();
+        return new ApiResult().success(200, "成功",removeData2(data));
+    }
+
+    @Override
+    public ApiResult findNumByZyssYear(String name) {
+        List<HashMap> data = nbMapper.findNumByZyssYear(changeName(name));
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByZyssMRYear() {
+        List<HashMap> data = nbMapper.findNumByZyssMRYear();
+        return new ApiResult().success(200, "成功",removeData2(data));
+    }
+    @Override
+    public ApiResult yhslfx(Map map) {
+        return new ApiResult(nbMapper.yhslfx(map));
+    }
+
+    @Override
+    public ApiResult yhslfxMonth(Map map) {
+        map.put("monthStr","'"+getMonthStr()+"'");
+        return new ApiResult(nbMapper.yhslfxMonth(map));
+    }
+    private String getMonthStr() {
+        int num=12;
+        String[] monthArr = new String[num];
+        Date now = new Date();
+        for (int i=0;i<num;i++) {
+            Date temp = DateUtils.addMonths(now,0-i);
+            monthArr[i]= DateFormatUtils.format(temp,"yyyy-MM");
+        }
+        ArrayUtils.reverse(monthArr);
+        return String.join(",",monthArr);
+    }
+
+    @Override
+    public ApiResult yhslfxYear(Map map) {
+        return new ApiResult(nbMapper.yhslfxYear(map));
     }
 
     public List<HashMap> changeData(List<HashMap> list){
@@ -810,6 +839,16 @@ public class NbServiceImpl implements NbService {
     public List<HashMap> removeData(List<HashMap> list){
         for(HashMap map :list) {
             if ("".equals(map.get("sspcsname"))) {
+                list.remove(map);
+                break;
+            }
+        }
+        return list;
+    }
+
+    public List<HashMap> removeData2(List<HashMap> list){
+        for(HashMap map :list) {
+            if ("0".equals(map.get("nf"))) {
                 list.remove(map);
                 break;
             }
