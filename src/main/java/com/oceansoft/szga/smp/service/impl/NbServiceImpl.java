@@ -703,6 +703,20 @@ public class NbServiceImpl implements NbService {
         int total = list.stream().collect(Collectors.summingInt(m-> ((BigDecimal) m.get("count")).intValue()));
         return new ApiResult(ImmutableMap.of("list",list,"total",total));
     }
+    @Override
+    public ApiResult yhslfx(Map map) {
+        return new ApiResult(nbMapper.yhslfx(map));
+    }
+
+    @Override
+    public ApiResult yhslfxMonth(Map map) {
+        return new ApiResult(nbMapper.yhslfxMonth(map));
+    }
+
+    @Override
+    public ApiResult yhslfxYear(Map map) {
+        return new ApiResult(nbMapper.yhslfxYear(map));
+    }
 
     @Override
     public ApiResult findNumByZyssslZl(String type, JSONObject obj) {

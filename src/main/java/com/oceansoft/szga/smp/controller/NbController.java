@@ -739,4 +739,22 @@ public class NbController {
         ApiResult data = nbService.findNumByZyssslZl(type, obj);
         return data;
     }
+    @ApiOperation("隐患数量分析")
+    @PostMapping("yhslfx")
+    public ApiResult yhslfx(@RequestBody Map map){
+        ApiResult data = nbService.yhslfx(map);
+        return data;
+    }
+    @ApiOperation("隐患数量分析-地区-月")
+    @PostMapping("yhslfx-month")
+    public ApiResult yhslfxMonth(@RequestBody Map map){
+        ApiResult data = nbService.yhslfxMonth(map);
+        return data;
+    }
+    @ApiOperation("隐患数量分析-地区-年")
+    @PostMapping("yhslfx-year")
+    public ApiResult yhslfxYear(@RequestBody Map map){
+        ApiResult data = nbService.yhslfxYear(map);
+        return data;
+    }
 }

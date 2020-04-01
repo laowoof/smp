@@ -821,4 +821,72 @@
         GROUP BY
             SUBSTRING ( tjrq, 1, 4 ) ORDER BY yen
     </select>
+    <select id="yhslfx" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            a.*,
+            COALESCE (b.zgl,0) zgl,
+            COALESCE (b.wzgl,0) wzgl
+        FROM
+            dept_table a
+            LEFT JOIN (
+        SELECT
+            ssfxj,
+            sum(
+                CASE
+
+                    WHEN ( clzt = '6' AND jclx != '4' AND gljcjg = '1' )
+                    OR ( jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL ) ) THEN
+                    yhsl ELSE 0
+                END
+            ) zgl,
+            sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
+        FROM
+            rpt_aqjg_zdmb_yhdwtj
+        where jc_year is not null and jc_month is not null
+        GROUP BY
+            ssfxj
+            ) b ON a.dept_code = b.ssfxj
+    </select>
+    <select id="yhslfxMonth" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            concat(jc_year,'-',jc_month) datestr,
+            sum(
+                CASE
+
+                    WHEN ( clzt = '6' AND jclx != '4' AND gljcjg = '1' )
+                    OR ( jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL ) ) THEN
+                    yhsl ELSE 0
+                END
+            ) zgl,
+            sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
+        FROM
+            rpt_aqjg_zdmb_yhdwtj
+        WHERE 1=1 and jc_year is not null and jc_month is not null
+            <if test=" area!='全市' ">
+                and ssfxj = (select dept_code from dept_table where dept_name=#{area})
+            </if>
+        GROUP BY
+            jc_year,jc_month order by concat(jc_year,'-',jc_month)
+    </select>
+    <select id="yhslfxYear" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        jc_year datestr,
+        sum(
+            CASE
+
+            WHEN ( clzt = '6' AND jclx != '4' AND gljcjg = '1' )
+            OR ( jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL ) ) THEN
+            yhsl ELSE 0
+            END
+        ) zgl,
+        sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
+        FROM
+            rpt_aqjg_zdmb_yhdwtj
+        WHERE 1=1 and jc_year is not null
+        <if test=" area!='全市' ">
+            and ssfxj = (select dept_code from dept_table where dept_name=#{area})
+        </if>
+        GROUP BY
+        jc_year
+    </select>
 </mapper>

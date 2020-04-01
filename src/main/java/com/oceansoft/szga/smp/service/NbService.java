@@ -12,7 +12,6 @@ import java.util.Map;
  * @date 2019/3/13
  */
 
-@Mapper
 public interface NbService {
     ApiResult test();
 
@@ -518,5 +517,26 @@ public interface NbService {
      *  @return
      */
     ApiResult findNumByZyssslZl(String nf, JSONObject obj);
+
+    /**
+     * 隐患数量分析
+     * @param map
+     * @return
+     */
+    ApiResult yhslfx(Map map);
+
+    /**
+     * 隐患数量分析-地区-按月
+     * @param map
+     * @return
+     */
+    ApiResult yhslfxMonth(Map map);
+
+    /**
+     * 隐患数量分析-地区-按年
+     * @param map
+     * @return
+     */
+    ApiResult yhslfxYear(Map map);
 }
 

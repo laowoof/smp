@@ -533,4 +533,25 @@ public interface NbMapper {
      *  @return
      */
     List<HashMap> findNumByZyssslZlYear(HashMap has);
+
+    /**
+     * 隐患数量分析
+     * @param map
+     * @return
+     */
+    List<Map> yhslfx(Map map);
+
+    /**
+     * 隐患数量分析-按月
+     * @param map
+     * @return
+     */
+    List<Map> yhslfxMonth(Map map);
+
+    /**
+     * 隐患数量分析-按年
+     * @param map
+     * @return
+     */
+    List<Map> yhslfxYear(Map map);
     }
