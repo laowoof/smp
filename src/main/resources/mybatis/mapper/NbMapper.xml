@@ -463,7 +463,7 @@
         FROM
             rpt_aqjg_zdmb_zddwtj
         WHERE
-         tjrq=#{tjrq} AND jbdj in('1','2','3','8') GROUP BY qy ORDER BY sum desc
+         tjrq=#{tjrq} AND jbdj in('1','2','3','8') AND qy IS NOT NULL GROUP BY qy ORDER BY sum desc
     </select>
     <select id="findNumByZddwLimit" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
@@ -815,8 +815,9 @@
                 rpt_aqjg_zdmb_zddwjcfx
             WHERE
                 jclx = '1'
+                AND tjrq LIKE '%' || TO_CHAR(CURRENT_DATE,'MM-dd') || '%'
                 AND nf = #{nf}
-                AND ssfxjmc NOT IN ( '城市轨道交通治安分局', '公安分局' )
+                AND ssfxj NOT IN ( '320597000000', '320598000000' )
             GROUP BY
                 nf,
                 ssfxjmc
@@ -831,6 +832,39 @@
             A LEFT JOIN ( SELECT nf, SUM ( jcsl ) AS zl FROM zddwjcfx GROUP BY nf ) b ON A.nf = b.nf
             ORDER BY
 		      a.ssfjmc
+    </select>
+
+    <select id="findNumByZddwjcfxZx" resultType="java.util.HashMap" parameterType="java.util.List">
+         WITH zddwjcfx AS (
+            SELECT
+                nf,
+                ssfxj,
+                ssfxjmc AS ssfjmc,
+                jczt,
+                jcsl
+            FROM
+                rpt_aqjg_zdmb_zddwjcfx
+            WHERE
+                1 = 1
+                AND tjrq LIKE '%' || TO_CHAR(CURRENT_DATE,'MM-dd') || '%'
+                AND nf = #{nf} AND jclx = '3' AND ssfxj NOT IN ( '320597000000', '320598000000' )
+            ) SELECT
+            ssfxj, ssfjmc, djc, yjc, qjc, djc + yjc + qjc AS zl
+        FROM
+            (
+            SELECT
+                ssfxj,
+                ssfjmc,
+                COALESCE ( ( SELECT SUM ( jcsl ) FROM zddwjcfx WHERE jczt = '0' AND ssfxj = T.ssfxj ), 0 ) AS djc,
+                COALESCE ( ( SELECT SUM ( jcsl ) FROM zddwjcfx WHERE jczt = '1' AND ssfxj = T.ssfxj ), 0 ) AS yjc,
+                COALESCE ( ( SELECT SUM ( jcsl ) FROM zddwjcfx WHERE jczt = '2' AND ssfxj = T.ssfxj ), 0 ) AS qjc
+            FROM
+                zddwjcfx T
+            GROUP BY
+                ssfxj, ssfjmc
+            ) zddwjcfx
+        GROUP BY
+            ssfxj, ssfjmc, djc, yjc, qjc
     </select>
 
     <select id="findNumByZyssslZlMonth" resultType="java.util.HashMap">

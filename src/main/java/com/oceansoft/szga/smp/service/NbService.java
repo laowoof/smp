@@ -509,7 +509,7 @@ public interface NbService {
      *  @date 2020/3/30
      *  @return
      */
-    ApiResult findNumByZddwjcfx(String nf);
+    ApiResult findNumByZddwjcfx(String nf, String type);
 
     /**
      *  重要设施分析-营业状态监测-按月/按年/按地区

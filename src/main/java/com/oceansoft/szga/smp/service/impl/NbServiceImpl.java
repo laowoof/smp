@@ -570,11 +570,18 @@ public class NbServiceImpl implements NbService {
         return new ApiResult().success(200, "成功",changeData(data));
     }
     @Override
-    public ApiResult findNumByZddwjcfx(String nf) {
-        if(StringUtils.isEmpty(nf) || 4 != nf.length()){
+    public ApiResult findNumByZddwjcfx(String nf, String type) {
+        if(StringUtils.isEmpty(nf) || 4 != nf.length() || StringUtils.isEmpty(type)){
             return new ApiResult().failure("非法参数!");
         }
-        List<HashMap> data = nbMapper.findNumByZddwjcfx(nf);
+        List<HashMap> data = new ArrayList<>();
+        if("findZxjc".equals(type)){
+            data = nbMapper.findNumByZddwjcfxZx(nf);
+        }else if("findZdjc".equals(type)){
+            data = nbMapper.findNumByZddwjcfx(nf);
+        }else{
+            return new ApiResult().failure("请传入类型!");
+        }
         if(data.size()<1){
             return new ApiResult().failure("没有获取到任何数据!");
         }
@@ -650,7 +657,7 @@ public class NbServiceImpl implements NbService {
         List<HashMap> creatZyssslList = creatZyssslMonth("ASC","ZddwMonth");
         //月份进行处理
         data = changeYearOrMonth(creatZyssslList, data, "ZddwMonth");
-        return new ApiResult().success(200, "成功",changeMonth(data));
+        return new ApiResult().success(200, "成功",data);
     }
 
     @Override

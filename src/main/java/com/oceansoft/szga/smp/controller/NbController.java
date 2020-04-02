@@ -567,9 +567,9 @@ public class NbController {
      *  @author wujg
      *  @return 页面绑定数据
      */
-    @GetMapping("findNumByZddwjcfx/{nf}")
-    public ApiResult findNumByZddwjcfx(@PathVariable("nf") String nf){
-        ApiResult data = nbService.findNumByZddwjcfx(nf);
+    @GetMapping("findNumByZddwjcfx/{nf}/{type}")
+    public ApiResult findNumByZddwjcfx(@PathVariable("nf") String nf,@PathVariable("type") String type){
+        ApiResult data = nbService.findNumByZddwjcfx(nf,type);
         return data;
     }
 
