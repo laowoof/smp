@@ -953,6 +953,12 @@
         FROM
             rpt_aqjg_zdmb_yhdwtj
         where jc_year is not null and jc_month is not null
+        <if test=" result != null and result.size() > 0 ">
+            and gljcjgmc IN
+            <foreach collection="result" item="re" index="index" open="(" close=")" separator=",">
+                #{re}
+            </foreach>
+        </if>
         GROUP BY
             ssfxj
             ) b ON a.dept_code = b.ssfxj
@@ -975,8 +981,15 @@
         FROM
         rpt_aqjg_zdmb_yhdwtj
         WHERE 1=1 and jc_year is not null and jc_month is not null
-        <if test=" area!='全市' ">and ssfxj = (select dept_code from dept_table where dept_name=#{area})
-        </if>
+
+            <if test=" area!='全市' ">and ssfxj = (select dept_code from dept_table where dept_name=#{area})
+            </if>
+            <if test=" result != null and result.size() > 0 ">
+                and gljcjgmc IN
+                <foreach collection="result" item="re" index="index" open="(" close=")" separator=",">
+                    #{re}
+                </foreach>
+            </if>
         GROUP BY
         jc_year,
         jc_month
@@ -999,6 +1012,12 @@
         WHERE 1=1 and jc_year is not null
         <if test=" area!='全市' ">
             and ssfxj = (select dept_code from dept_table where dept_name=#{area})
+        </if>
+        <if test=" result != null and result.size() > 0 ">
+            and gljcjgmc IN
+            <foreach collection="result" item="re" index="index" open="(" close=")" separator=",">
+                #{re}
+            </foreach>
         </if>
         GROUP BY
         jc_year
