@@ -760,6 +760,18 @@ public class NbController {
         ApiResult data = nbService.findNumByZdgcMRYear();
         return data;
     }
+
+    /**
+     * 全面分析 “铸盾”工程单位  默认  月数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZdgcMRMonth")
+    public ApiResult findNumByZdgcMRMonth(){
+        ApiResult data = nbService.findNumByZdgcMRMonth();
+        return data;
+    }
+
     /**
      * 全面分析 重要设施单位数量  年份数据
      * @author wzj
@@ -771,6 +783,28 @@ public class NbController {
         return data;
     }
     /**
+     * 全面分析 铸盾数量  联调月数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZddwLtMonth")
+    public ApiResult findNumByZddwLtMonth(String name){
+        ApiResult data = nbService.findNumByZddwLtMonth(name);
+        return data;
+    }
+
+    /**
+     * 全面分析 重要设施 联调月数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZyssLtMonth")
+    public ApiResult findNumByZyssLtMonth(String name){
+        ApiResult data = nbService.findNumByZyssLtMonth(name);
+        return data;
+    }
+
+    /**
      * 全面分析 重要设施单位数量 默认 年份数据
      * @author wzj
      * @return 数据
@@ -778,6 +812,16 @@ public class NbController {
     @GetMapping("findNumByZyssMRYear")
     public ApiResult findNumByZyssMRYear(){
         ApiResult data = nbService.findNumByZyssMRYear();
+        return data;
+    }
+    /**
+     * 全面分析 重要设施单位数量 默认 月数据
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("findNumByZyssMRMonth")
+    public ApiResult findNumByZyssMRMonth(){
+        ApiResult data = nbService.findNumByZyssMRMonth();
         return data;
     }
     @ApiOperation("隐患数量分析")

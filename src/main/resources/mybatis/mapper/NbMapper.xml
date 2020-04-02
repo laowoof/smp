@@ -464,7 +464,7 @@
         FROM
             rpt_aqjg_zdmb_zddwtj
         WHERE
-         tjrq=#{tjrq} AND jbdj in('1','2','3','8') AND qy IS NOT NULL GROUP BY qy ORDER BY sum desc
+         tjrq=#{tjrq} AND jbdj in('1','2','3','8') AND ssfxj NOT IN ( '320597000000', '320598000000' ) AND qy IS NOT NULL GROUP BY qy ORDER BY sum desc
     </select>
     <select id="findNumByZddwLimit" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
@@ -743,15 +743,15 @@
             tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY fxjmc ORDER BY fxjmc
     </select>
 
-    <select id="findDataQsyMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+    <select id="findDataQsyMonth" resultType="java.util.HashMap" parameterType="java.util.List">
+        WITH sydwsl AS ( SELECT nf || yf AS nfyf, ssfjmc, dwsl, jbdjdm, yf FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-            nf,
-            yf,
-            sum(dwsl) dwsl
+        nfyf as tjrq,
+        yf,
+        sum(dwsl) dwsl
         FROM
-            "rpt_aqjg_zdmb_lzfxtj_sydwsl"
-        WHERE
-            nf=to_char(CURRENT_DATE, 'yyyy') and tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY yf,nf ORDER BY yf
+        sydwsl
+        WHERE 1=1 AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf}  GROUP BY yf,nfyf
     </select>
 
     <select id="findDataQsyYear" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
@@ -764,14 +764,17 @@
             tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY nf ORDER BY nf
     </select>
 
-    <select id="findDataQsyLtMonth" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
+    <select id="findDataQsyLtMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        WITH sydwsl AS ( SELECT nf || yf AS nfyf, ssfjmc,yf,dwsl FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-            yf,
-            sum(dwsl)
+        nfyf as tjrq,
+        yf,
+        sum(dwsl) dwsl
         FROM
-            rpt_aqjg_zdmb_lzfxtj_sydwsl
+        sydwsl
         WHERE
-            tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND nf=to_char(CURRENT_DATE,'yyyy') AND ssfjmc=#{name} GROUP BY yf  ORDER BY yf
+        1=1
+        AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND ssfjmc=#{name} GROUP BY yf,nfyf
     </select>
 
     <select id="findDataQsyLtYear" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
@@ -1048,13 +1051,54 @@
         <if test=" area!='全市' ">
             and ssfxj = (select dept_code from dept_table where dept_name=#{area})
         </if>
-        <if test=" result != null and result.size() > 0 ">
-            and gljcjgmc IN
-            <foreach collection="result" item="re" index="index" open="(" close=")" separator=",">
-                #{re}
-            </foreach>
-        </if>
         GROUP BY
         jc_year
+    </select>
+    <select id="findNumByZdgcMRMonth" resultType="java.util.Map" parameterType="java.util.Map">
+        WITH hdgctj AS ( SELECT nf || yf AS nfyf, fxjmc, zdgcdws, qyyjzs, qywjzs,yf FROM rpt_aqjg_zdmb_hdgctj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        SELECT
+        nfyf as tjrq,
+        yf,
+        sum(zdgcdws)+sum(qyyjzs)+sum(qywjzs) dwsl
+        FROM
+        hdgctj
+        WHERE
+        1=1
+        AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf}  GROUP BY yf,nfyf
+    </select>
+    <select id="findNumByZyssMRMonth" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+        tjrq,
+        COALESCE(sum(dwsl),0) dwsl,
+        SUBSTRING(tjrq,5,6)
+        FROM
+        rpt_aqjg_zdmb_zysssl_zl
+        WHERE
+        1=1
+        AND tjrq &gt;= #{ltnf} AND tjrq &lt;= #{gtnf}  GROUP BY tjrq
+    </select>
+    <select id="findNumByZddwLtMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        WITH hdgctj AS ( SELECT nf || yf AS nfyf, fxjmc, zdgcdws, qyyjzs, qywjzs,yf FROM rpt_aqjg_zdmb_hdgctj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        SELECT
+        nfyf as tjrq,
+        yf,
+        sum(zdgcdws)+sum(qyyjzs)+sum(qywjzs) dwsl
+        FROM
+        hdgctj
+        WHERE
+        1=1
+        AND nfyf &gt;= #{ltnf} AND nfyf &lt;= #{gtnf} AND fxjmc=#{name} GROUP BY yf,nfyf
+    </select>
+
+    <select id="findNumByZyssLtMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+        tjrq,
+        COALESCE(sum(dwsl),0) dwsl,
+        SUBSTRING(tjrq,5,6)
+        FROM
+        rpt_aqjg_zdmb_zysssl_zl
+        WHERE
+        1=1
+        AND tjrq &gt;= #{ltnf} AND tjrq &lt;= #{gtnf} AND ssfjmc=#{name} GROUP BY tjrq
     </select>
 </mapper>

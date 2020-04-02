@@ -675,8 +675,16 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataQsyMonth() {
-        List<HashMap> data = nbMapper.findDataQsyMonth();
-        return new ApiResult().success(200, "成功",changeMonth(data));
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        List<HashMap> data = nbMapper.findDataQsyMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
     }
 
     @Override
@@ -687,8 +695,17 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataQsyLtMonth(String name) {
-        List<HashMap> data = nbMapper.findDataQsyLtMonth(changeName(name));
-        return new ApiResult().success(200, "成功",changeMonth(data));
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        has.put("name",changeName(name));
+        List<HashMap> data = nbMapper.findDataQsyLtMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
     }
 
     @Override
@@ -755,6 +772,20 @@ public class NbServiceImpl implements NbService {
     }
 
     @Override
+    public ApiResult findNumByZdgcMRMonth() {
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        List<HashMap> data = nbMapper.findNumByZdgcMRMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
     public ApiResult findNumByZyssYear(String name) {
         List<HashMap> data = nbMapper.findNumByZyssYear(changeName(name));
         return new ApiResult().success(200, "成功",data);
@@ -765,6 +796,51 @@ public class NbServiceImpl implements NbService {
         List<HashMap> data = nbMapper.findNumByZyssMRYear();
         return new ApiResult().success(200, "成功",removeData2(data));
     }
+
+    @Override
+    public ApiResult findNumByZyssMRMonth() {
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        List<HashMap> data = nbMapper.findNumByZyssMRMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByZddwLtMonth(String name) {
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        has.put("name",changeName(name));
+        List<HashMap> data = nbMapper.findNumByZddwLtMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByZyssLtMonth(String name) {
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        has.put("name",changeName(name));
+        List<HashMap> data = nbMapper.findNumByZyssLtMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
+    }
+
     @Override
     public ApiResult yhslfx(Map map) {
         return new ApiResult(nbMapper.yhslfx(map));
@@ -924,10 +1000,12 @@ public class NbServiceImpl implements NbService {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("M月");
         SimpleDateFormat sdfp = new SimpleDateFormat("yyyyMM");
+        SimpleDateFormat sdfpn = new SimpleDateFormat("yyyy年M月");
         for(int i=0;i<12;i++){
             HashMap has = new HashMap();
             String month = sdf.format(cal.getTime());
             String tjrq = sdfp.format(cal.getTime());
+            String year = sdfpn.format(cal.getTime());
             if("ZddwMonth".equals(type)){
                 has.put("sjname","省级治安重点单位");
                 has.put("sjsnum",0);
@@ -939,6 +1017,7 @@ public class NbServiceImpl implements NbService {
                 has.put("sqsnum",0);
             }
             has.put("tjrq",tjrq);
+            has.put("year",year);
             has.put("yf",month);
             has.put("dwsl",0);
             has.put("sort",i);

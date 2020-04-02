@@ -466,9 +466,10 @@ public interface NbMapper {
     /**
      *  全面分析 企事业单位默认月份数据
      * @date  2020/3/30
+     * @param has
      * @return
      **/
-    List<HashMap> findDataQsyMonth();
+    List<HashMap> findDataQsyMonth(HashMap has);
 
     /**
      *  全面分析 企事业单位默认年份数据
@@ -483,7 +484,7 @@ public interface NbMapper {
      * @param name
      * @return
      **/
-    List<HashMap> findDataQsyLtMonth(@Param("name") String name);
+    List<HashMap> findDataQsyLtMonth(HashMap has);
 
     /**
      *  全面分析 企事业单位数据联调
@@ -580,4 +581,32 @@ public interface NbMapper {
      * @return
      */
     List<Map> yhslfxYear(Map map);
+
+    /**
+     * 全面分析 铸盾 默认月数据
+     * @param has
+     * @return
+     */
+    List<HashMap> findNumByZdgcMRMonth(HashMap has);
+
+    /**
+     * 全面分析 重要设施 默认月数据
+     * @param has
+     * @return
+     */
+    List<HashMap> findNumByZyssMRMonth(HashMap has);
+
+    /**
+     * 全面分析 铸盾 月数据联调
+     * @param has
+     * @return
+     */
+    List<HashMap> findNumByZddwLtMonth(HashMap has);
+
+    /**
+     * 全面分析 重要设施 月数据联调
+     * @param has
+     * @return
+     */
+    List<HashMap> findNumByZyssLtMonth(HashMap has);
     }
