@@ -50,19 +50,17 @@ public interface NbMapper {
     /**
      * 履历分析 单位登记量排名
      * @date  2020/3/19
-     * @param tjrq 日期
      * @return
      */
-    List<HashMap> findDataByOrder(@Param("tjrq") String tjrq);
+    List<HashMap> findDataByOrder();
 
     /**
      * 履历分析 单位登记量排名 详情派出所前10
      * @date  2020/3/19
-     * @param tjrq 日期
      * @param name 区域名字
      * @return
     **/
-    List<HashMap> findDataByLimit(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataByLimit(@Param("name")String name);
     /**
      * 常规检查 主动检查 专项检查数
      * @date  2020/3/19
@@ -103,11 +101,10 @@ public interface NbMapper {
     /**
      * 重要设施专项检查量排名 派出所排名
      * @date  2020/3/20
-     * @param tjrq 日期
      * @param name
      * @return
      **/
-    List<HashMap> findDataByZzLinit(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataByZzLinit(@Param("name")String name);
 
     /**
      * 全面分析重点单位 省
@@ -172,11 +169,10 @@ public interface NbMapper {
     /**
      *  履历分析-重要设施登记量排名  派出所前10
      * @date  2020/3/23
-     * @param tjrq 日期
      * @param  name
      * @return
      **/
-    List<HashMap> findDataZySsPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataZySsPcs(@Param("name")String name);
     /**
      *  履历分析-隐患发现量排名
      * @date  2020/3/23
@@ -187,11 +183,10 @@ public interface NbMapper {
     /**
      *  履历分析-隐患发现量排名 派出所前10
      * @date  2020/3/23
-     * @param tjrq 日期
      * @param  name
      * @return
      **/
-    List<HashMap> findDataYhFxPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataYhFxPcs(@Param("name")String name);
     /**
      *  履历分析-重点单位常规检查排名
      * @date  2020/3/24
@@ -203,11 +198,10 @@ public interface NbMapper {
     /**
      *  履历分析-常规检查区域派出所 前10
      * @date  2020/3/24
-     * @param tjrq 日期
      * @param name
      * @return
      **/
-    List<HashMap> findDataJctjCgPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataJctjCgPcs(@Param("name")String name);
     /**
      *  履历分析-专项检查排名
      * @date  2020/3/24
@@ -219,11 +213,10 @@ public interface NbMapper {
     /**
      *  履历分析-专项检查区域派出所 前10
      * @date  2020/3/24
-     * @param tjrq 日期
      * @param name
      * @return
      **/
-    List<HashMap> findDataJctjZxPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataJctjZxPcs(@Param("name")String name);
     /**
      *  履历分析-缺省检查排名
      * @date  2020/3/24
@@ -235,11 +228,10 @@ public interface NbMapper {
     /**
      *  履历分析-缺省检查区域派出所 前10
      * @date  2020/3/24
-     * @param tjrq 日期
      * @param name
      * @return
      **/
-    List<HashMap> findDataJctjQsPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataJctjQsPcs(@Param("name")String name);
     /**
      *  履历分析-主动检查排名
      * @date  2020/3/24
@@ -251,11 +243,10 @@ public interface NbMapper {
     /**
      *  履历分析-主动检查区域派出所 前10
      * @date  2020/3/24
-     * @param tjrq 日期
      * @param name
      * @return
      **/
-    List<HashMap> findDataJctjZdPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataJctjZdPcs(@Param("name")String name);
     /**
      *  履历分析-未整改量排名
      * @date  2020/3/24
@@ -267,11 +258,10 @@ public interface NbMapper {
     /**
      *  履历分析-未整改量区域派出所 前10
      * @date  2020/3/24
-     * @param tjrq 日期
      * @param name
      * @return
      **/
-    List<HashMap> findDataJctjWzgPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataJctjWzgPcs(@Param("name")String name);
     /**
      *  履历分析-整改量排名
      * @date  2020/3/24
@@ -283,11 +273,10 @@ public interface NbMapper {
     /**
      *  履历分析-整改量区域派出所 前10
      * @date  2020/3/24
-     * @param tjrq 日期
      * @param name
      * @return
      **/
-    List<HashMap> findDataJctjZgPcs(@Param("tjrq") String tjrq,@Param("name")String name);
+    List<HashMap> findDataJctjZgPcs(@Param("name")String name);
     /**
      *  隐患分析-隐患上报数
      * @date  2020/3/24
@@ -398,7 +387,6 @@ public interface NbMapper {
     /**
      *  重要设施分析-重要设施新增分析  种类
      * @date  2020/3/27
-     * @param tjrq 日期
      * @return
      **/
     List<HashMap> findNumByZyssFxZl(HashMap map);
@@ -430,7 +418,6 @@ public interface NbMapper {
     /**
      *  重要设施分析-重点单位营业状态监测 默认年份
      * @date  2020/3/26
-     * @param tjrq 日期
      * @return
      **/
     List<HashMap> findDataByZddwYear(HashMap has);

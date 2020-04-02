@@ -78,19 +78,13 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataByOrder() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataByOrder(tjrq);
+        List<HashMap> data = nbMapper.findDataByOrder();
         return new ApiResult().success(200, "成功", changeData(data));
     }
 
     @Override
     public ApiResult findDataByLimit(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataByLimit(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataByLimit(changeName(name));
         return new ApiResult().success(200, "成功", removeData(data));
     }
 
@@ -167,10 +161,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataByZzLinit(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataByZzLinit(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataByZzLinit(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -245,10 +236,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataZySsPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataZySsPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataZySsPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -263,10 +251,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataYhFxPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataYhFxPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataYhFxPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -281,10 +266,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjCgPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjCgPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjCgPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -299,10 +281,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjZxPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjZxPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjZxPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -317,10 +296,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjQsPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjQsPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjQsPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -335,10 +311,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjZdPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjZdPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjZdPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -353,10 +326,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjWzgPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjWzgPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjWzgPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -371,10 +341,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjZgPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjZgPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjZgPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
