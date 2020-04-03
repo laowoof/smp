@@ -526,6 +526,7 @@
         WHERE
          tjrq=#{tjrq} AND jbdj in('1','2','3','8') AND ssfxj NOT IN ( '320597000000', '320598000000', '' ) AND qy IS NOT NULL GROUP BY qy ORDER BY sum desc
     </select>
+    <!--没用-->
     <select id="findNumByZddwLimit" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
             a.qy,
@@ -590,32 +591,43 @@
         WHERE
           tjrq=#{tjrq}
     </select>
-
+    <!--没用-->
     <select id="findNumByDj" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
         SELECT
             qy,sum(zddwsl) num
         FROM
-        rpt_aqjg_zdmb_zddwtj
+            rpt_aqjg_zdmb_zddwtj
         WHERE
-        tjrq=#{tjrq} and
-        jbdjmc in
-        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            tjrq = to_char(CURRENT_DATE ,'yyyy-MM-dd') and
+            jbdjmc in
+        <foreach collection="dj" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
+        AND
+            hylb in
+        <foreach collection="zl" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+         </foreach>
         group by qy order by num desc limit 5
     </select>
+
     <select id="findNumByZddwZl" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
-        SELECT
-        qy,
-        sum(zddwsl) num
-        FROM
-        rpt_aqjg_zdmb_zddwtj
-        WHERE
-        tjrq=#{tjrq} and
-        hylb in
-        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        SELECT qy,sum(zddwsl) as num
+        FROM rpt_aqjg_zdmb_zddwtj
+        WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')
+        AND jbdj in('1','2','3','8') AND ssfxj IS NOT NULL AND ssfxj != '' AND qy IS NOT NULL AND qy != ''
+        <if test="dj != null">
+            AND jbdjmc in
+            <foreach collection="dj" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="zl != null">
+            AND hylb in
+            <foreach collection="zl" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
         group by qy order by num desc limit 5
     </select>
 

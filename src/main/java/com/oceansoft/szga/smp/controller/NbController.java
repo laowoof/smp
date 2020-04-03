@@ -597,13 +597,12 @@ public class NbController {
     }
 
     /**
-     *  重要设施分析-重点单位占比分析 种类
+     *  重要设施分析-重点单位占比分析 种类/等级
      * @author wzj
      * @return 数据
      */
     @PostMapping("findNumByZddwZl")
     public ApiResult findNumByZddwZl(@RequestBody JSONObject obj){
-        System.out.println(obj);
         ApiResult data = nbService.findNumByZddwZl(obj);
         return data;
     }

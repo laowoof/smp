@@ -578,10 +578,20 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findNumByZddwZl(JSONObject obj) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findNumByZddwZl(changeData4(obj,tjrq));
+        JSONArray djArrys = obj.getJSONArray("djData");
+        JSONArray zlArrys = obj.getJSONArray("zlData");
+        HashMap has = new HashMap();
+        if(djArrys.size() < 1){
+            has.put("dj", null);
+        }else{
+            has.put("dj", djArrys);
+        }
+        if(zlArrys.size() < 1){
+            has.put("zl", null);
+        }else{
+            has.put("zl", zlArrys);
+        }
+        List<HashMap> data = nbMapper.findNumByZddwZl(has);
         return new ApiResult().success(200, "成功",changeData3(data));
     }
 
@@ -968,10 +978,14 @@ public class NbServiceImpl implements NbService {
         JSONArray arrys = obj.getJSONArray("data");
         //遍历入list
         final List list = new ArrayList<String>();
-        for(int i=0 ;i<arrys.size() ;i++){
-            if(arrys.get(i) != null) {
-                list.add(arrys.get(i));
+        if(arrys.size() > 0){
+            for(int i=0 ;i<arrys.size() ;i++){
+                if(arrys.get(i) != null) {
+                    list.add(arrys.get(i));
+                }
             }
+        }else{
+            list.clear();
         }
         //建一个map将数据put进去
         HashMap maps = new HashMap();
