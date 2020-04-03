@@ -949,7 +949,7 @@
                     yhsl ELSE 0
                 END
             ) zgl,
-            sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
+            sum( CASE WHEN jclx = '4' AND (clzt != '6' or clzt is null) AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
         FROM
             rpt_aqjg_zdmb_yhdwtj
         where jc_year is not null and jc_month is not null
@@ -977,7 +977,7 @@
         yhsl ELSE 0
         END
         ) zgl,
-        sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
+        sum( CASE WHEN jclx = '4' AND (clzt != '6' or clzt is null) AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
         FROM
         rpt_aqjg_zdmb_yhdwtj
         WHERE 1=1 and jc_year is not null and jc_month is not null
@@ -1006,7 +1006,7 @@
         yhsl ELSE 0
         END
         ) zgl,
-        sum( CASE WHEN jclx = '4' AND clzt = '6' AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
+        sum( CASE WHEN jclx = '4' AND (clzt != '6' or clzt is null) AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
         FROM
         rpt_aqjg_zdmb_yhdwtj
         WHERE 1=1 and jc_year is not null
