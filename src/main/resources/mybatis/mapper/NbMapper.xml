@@ -179,27 +179,20 @@
         GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
 </select>
     <select id="findDataByZzOne" resultType="java.util.HashMap" parameterType="java.util.List">
-      SELECT * FROM
-        (SELECT  ssfjmc,
-			'省级治安重点单位' AS sjname,
-            ( SELECT COALESCE(SUM(dwsl),'0') sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm = '1' AND ssfjmc=t.ssfjmc),
-            '市级治安重点单位' AS sname,
-            ( SELECT SUM (dwsl) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm = '2' and ssfjmc=t.ssfjmc),
-            '县市、区级治安重点单位' AS xname,
-            ( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm = '3' AND ssfjmc=t.ssfjmc),
-            '社区关注单位' AS sqname,
-            ( SELECT SUM (dwsl) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm = '8' AND ssfjmc=t.ssfjmc)
-        FROM
-            rpt_aqjg_zdmb_lzfxtj_sydwsl t
-        WHERE
-            1=1 AND tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') and ssfjdm not in('320597000000','320598000000') GROUP BY ssfjmc)e
-        LEFT JOIN
-        (select a.ssfjmc,ceiling(b.num/a.totleNum*100) as percent FROM
-        (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000')  GROUP BY ssfjmc) a
-        LEFT JOIN
-        (SELECT ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')  AND ssfjdm not in('320597000000','320598000000') AND jbdjdm in('1','2','3','8') GROUP BY ssfjmc) b
-        on a.ssfjmc = b.ssfjmc) f
-        on e.ssfjmc =f.ssfjmc ORDER BY e.ssfjmc
+      WITH temp as (
+        SELECT ssfjmc,ssfjdm,jbdjdm, COALESCE(SUM(dwsl),'0') sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND ssfjdm not in('320597000000','320598000000') and jbdjdm in ('1','2','3','8') GROUP BY jbdjdm,ssfjmc,ssfjdm
+      )
+      select ssfjmc,ssfjdm,
+        '省级治安重点单位' as sjname,
+        sum(case when jbdjdm='1' then sjsnum  else 0 end) as sjsnum,
+        '市级治安重点单位' as sname,
+        sum(case when jbdjdm='2' then sjsnum else 0 end) as ssnum,
+        '县市、区级治安重点单位' as xname,
+        sum(case when jbdjdm='3' then sjsnum else 0 end) as xsnum,
+        '社区关注单位' as sqname,
+        sum(case when jbdjdm='8' then sjsnum else 0 end) as sqsnum,
+        ceiling(sum(sjsnum)/(select sum(sjsnum) from temp)*100) as percent
+      from temp group by ssfjmc,ssfjdm
 </select>
     <select id="findNumByZyss" resultType="java.util.HashMap" parameterType="java.util.List">
        SELECT
