@@ -93,10 +93,9 @@ public interface NbMapper {
     /**
      * 重要设施专项检查量排名
      * @date  2020/3/20
-     * @param tjrq 日期
      * @return
      **/
-    List<HashMap> findDataByZz(@Param("tjrq") String tjrq);
+    List<HashMap> findDataByZz();
 
     /**
      * 重要设施专项检查量排名 派出所排名

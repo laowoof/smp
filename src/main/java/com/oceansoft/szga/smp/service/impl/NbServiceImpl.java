@@ -152,10 +152,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataByZz() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataByZz(tjrq);
+        List<HashMap> data = nbMapper.findDataByZz();
         return new ApiResult().success(200, "成功", changeData(data));
     }
 
@@ -851,24 +848,13 @@ public class NbServiceImpl implements NbService {
         map.put("monthStr","'"+getMonthStr()+"'");
         return new ApiResult(nbMapper.yhslfxMonth(map));
     }
-    private String getMonthStr() {
-        int num=12;
-        String[] monthArr = new String[num];
-        Date now = new Date();
-        for (int i=0;i<num;i++) {
-            Date temp = DateUtils.addMonths(now,0-i);
-            monthArr[i]= DateFormatUtils.format(temp,"yyyy-MM");
-        }
-        ArrayUtils.reverse(monthArr);
-        return String.join(",",monthArr);
-    }
 
     @Override
     public ApiResult yhslfxYear(Map map) {
         return new ApiResult(nbMapper.yhslfxYear(map));
     }
 
-    public List<HashMap> changeData(List<HashMap> list){
+    private List<HashMap> changeData(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         for(HashMap map : list){
@@ -882,7 +868,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public List<HashMap> changeData2(List<HashMap> list){
+
+    private List<HashMap> changeData2(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         for(HashMap map : list){
@@ -896,7 +883,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public List<HashMap> changeData3(List<HashMap> list){
+
+    private List<HashMap> changeData3(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         for(HashMap map : list){
@@ -910,7 +898,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public List<HashMap> removeData(List<HashMap> list){
+
+    private List<HashMap> removeData(List<HashMap> list){
         for(HashMap map :list) {
             if ("".equals(map.get("sspcsname"))) {
                 list.remove(map);
@@ -920,7 +909,7 @@ public class NbServiceImpl implements NbService {
         return list;
     }
 
-    public List<HashMap> removeData2(List<HashMap> list){
+    private List<HashMap> removeData2(List<HashMap> list){
         for(HashMap map :list) {
             if ("0".equals(map.get("nf"))) {
                 list.remove(map);
@@ -929,7 +918,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public String changeName(String name){
+
+    private String changeName(String name){
         if("吴中区".equals(name)){
             name = "吴中分局";
         }
@@ -965,7 +955,8 @@ public class NbServiceImpl implements NbService {
         }
         return name;
     }
-    public List<HashMap> addData(List<HashMap> list,String tjrq){
+
+    private List<HashMap> addData(List<HashMap> list,String tjrq){
         if(list.size() == 0){
             HashMap<String,String> has = new HashMap<>();
             has.put("tjrq",tjrq);
@@ -974,7 +965,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public HashMap changeData4(JSONObject obj,String tjrq){
+
+    private HashMap changeData4(JSONObject obj,String tjrq){
         //获取data内的数据
         JSONArray arrys = obj.getJSONArray("data");
         //遍历入list
@@ -1059,7 +1051,7 @@ public class NbServiceImpl implements NbService {
      * @param creatData 基本集合
      * @return 修改后的集合
      */
-    public List<HashMap> changeYearOrMonth(List<HashMap> creatData, List<HashMap> data, String type){
+    private List<HashMap> changeYearOrMonth(List<HashMap> creatData, List<HashMap> data, String type){
         for(HashMap dataMap : data){
             for(HashMap creatMap : creatData){
                 switch (type){
@@ -1082,7 +1074,7 @@ public class NbServiceImpl implements NbService {
         return creatData;
     }
 
-    public List<HashMap> changeMonth(List<HashMap> list){
+    private List<HashMap> changeMonth(List<HashMap> list){
         String  oldList [] = {"01","02","03","04","05","06","07","08","09","10","11","12"};
         String  newList [] = {"1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"};
         for(HashMap map : list){
@@ -1102,7 +1094,7 @@ public class NbServiceImpl implements NbService {
      * @param list 入参集合
      * @return 修改后的集合
      */
-    public List<HashMap> changeYear(List<HashMap> list){
+    private List<HashMap> changeYear(List<HashMap> list){
         String[] yearList = new String[3];
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat smd = new SimpleDateFormat("yyyy年");
@@ -1137,7 +1129,7 @@ public class NbServiceImpl implements NbService {
      * @param bl  T 匹配new替换old  F 匹配old替换new
      * @return 替换后的集合
      */
-    public JSONArray changeNameJsonArray(JSONArray arr,boolean bl){
+    private JSONArray changeNameJsonArray(JSONArray arr,boolean bl){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         if( arr != null && arr.size()>0 ){
@@ -1158,7 +1150,8 @@ public class NbServiceImpl implements NbService {
         }
         return arr;
     }
-    public HashMap changeData5(JSONObject obj,String tjrq,String nf){
+
+    private HashMap changeData5(JSONObject obj,String tjrq,String nf){
         //获取data内的数据
         JSONArray arrys = obj.getJSONArray("data");
         //遍历入list
@@ -1175,5 +1168,18 @@ public class NbServiceImpl implements NbService {
         maps.put("array",arrys);
         return maps;
     }
+
+    private String getMonthStr() {
+        int num=12;
+        String[] monthArr = new String[num];
+        Date now = new Date();
+        for (int i=0;i<num;i++) {
+            Date temp = DateUtils.addMonths(now,0-i);
+            monthArr[i]= DateFormatUtils.format(temp,"yyyy-MM");
+        }
+        ArrayUtils.reverse(monthArr);
+        return String.join(",",monthArr);
+    }
+
 
 }
