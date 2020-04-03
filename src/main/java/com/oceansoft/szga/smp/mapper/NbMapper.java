@@ -381,7 +381,7 @@ public interface NbMapper {
      * @param tjrq 日期
      * @return
      **/
-    List<HashMap> findNumByZyssFx(@Param("tjrq") String tjrq);
+    List<HashMap> findNumByZyssFx();
 
     /**
      *  重要设施分析-重要设施新增分析  种类

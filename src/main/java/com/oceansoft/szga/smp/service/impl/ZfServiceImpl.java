@@ -364,6 +364,12 @@ public class ZfServiceImpl implements ZfService {
         return new ApiResult().success(200,"返回数据",zdrysl);
     }
 
+    @Override
+    public ApiResult zaData() {
+        List<HashMap> data = zfMapper.zaData();
+        return new ApiResult().success(200,"返回数据",data);
+    }
+
 
     public List<HashMap> dateData(List<HashMap> list,String num,String xzqhmc){
         Calendar calendar = Calendar.getInstance();

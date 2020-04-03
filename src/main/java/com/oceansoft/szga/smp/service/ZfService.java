@@ -348,5 +348,11 @@ public interface ZfService {
      */
     ApiResult zdrysl();
 
+    /**
+     *  全面分析  治安隐患数据
+     * @return
+     */
+    ApiResult zaData();
+
 }
 

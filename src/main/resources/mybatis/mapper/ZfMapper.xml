@@ -12,7 +12,16 @@
         where
         tjrq =#{tjrq}
 </select>
-
+    <select id="zaData" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+      sum(fws) fws,
+      sum(yhs) yhs,
+      sum(zgs) zgs
+    FROM
+        rpt_aqjg_qzf_zayhsj
+    where
+        tjrq = to_char(CURRENT_DATE,'yyyy-mm-dd')
+</select>
     <select id="czfNumDesc" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         tjrq,

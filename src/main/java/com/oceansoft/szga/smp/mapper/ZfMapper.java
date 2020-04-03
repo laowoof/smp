@@ -355,4 +355,9 @@ public interface ZfMapper {
      */
     List<HashMap> zdrysl();
 
+    /**
+     *  全面分析  治安隐患数据
+     * @return
+     */
+    List<HashMap> zaData();
 }

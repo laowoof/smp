@@ -527,10 +527,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findNumByZyssFx() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findNumByZyssFx(tjrq);
+        List<HashMap> data = nbMapper.findNumByZyssFx();
         return new ApiResult().success(200, "成功",changeData(data));
     }
     @Override

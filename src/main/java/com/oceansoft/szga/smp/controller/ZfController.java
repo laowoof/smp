@@ -501,4 +501,15 @@ public class ZfController {
         ApiResult zdrysl = zfService.zdrysl();
         return zdrysl;
     }
+
+    /**
+     * @author wzj
+     *   治安隐患数据
+     * @return 数据
+     */
+    @GetMapping("zaData")
+    public ApiResult zaData(){
+        ApiResult data = zfService.zaData();
+        return data;
+    }
 }

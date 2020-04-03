@@ -29,7 +29,7 @@
         from
         rpt_aqjg_zdmb_lzfxtj_sydwsl
         where
-        tjrq =#{tjrq} and jbdjdm in ('1','2','3','7','8','9') GROUP BY jbdjmc,jbdjdm ORDER BY sl
+        tjrq =#{tjrq} and jbdjdm in ('1','2','3','7','8','9') GROUP BY jbdjmc,jbdjdm ORDER BY sl desc
 </select>
     <select id="findDataByJj" resultType="java.util.HashMap" parameterType="java.util.List">
     SELECT
@@ -554,9 +554,9 @@
             a.addnum,
             b.totlenum
         FROM
-            (SELECT  ssfjmc,sum(dwsl) addnum FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} GROUP BY ssfjmc ORDER BY ssfjmc) a
+            (SELECT  ssfjmc,sum(dwsl) addnum FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY ssfjmc ORDER BY ssfjmc) a
         LEFT JOIN
-            (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq=#{tjrq} GROUP BY ssfjmc ORDER BY ssfjmc) b
+            (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl_zl" GROUP BY ssfjmc ORDER BY ssfjmc) b
         ON a.ssfjmc = b.ssfjmc
     </select>
 
@@ -571,15 +571,15 @@
             <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
                  #{item}
             </foreach>
-            GROUP BY ssfjmc ORDER BY ssfjmc) a
+            GROUP BY ssfjmc) a
         LEFT JOIN
-            (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq=#{tjrq}
-             and lbmc in
+            (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE
+             lbmc in
             <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
                  #{item}
             </foreach>
-             GROUP BY ssfjmc ORDER BY ssfjmc) b
-        ON a.ssfjmc = b.ssfjmc
+             GROUP BY ssfjmc) b
+        ON a.ssfjmc = b.ssfjmc ORDER BY ssfjmc
     </select>
 
     <select id="findNumByZyssTotle" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -742,13 +742,17 @@
             b.totlenum,
             ceiling(a.num/b.totleNum*100) as percent
         FROM
-            (SELECT tjrq,ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq} AND jbdjmc in
+            (SELECT tjrq,ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq}
+            AND ssfjdm not in('320597000000','320598000000')
+            AND jbdjmc in
             <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
             GROUP BY  ssfjmc,tjrq) a
         LEFT JOIN
-            (SELECT tjrq,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq} AND jbdjmc in
+            (SELECT tjrq,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq}
+            AND ssfjdm not in('320597000000','320598000000')
+            AND jbdjmc in
             <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
