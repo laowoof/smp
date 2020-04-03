@@ -1095,6 +1095,7 @@
         jc_year,
         jc_month
         ) c on b.a=c.datestr
+
     </select>
     <select id="yhslfxYear" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT
@@ -1116,6 +1117,7 @@
         </if>
         GROUP BY
         jc_year
+        order by jc_year
     </select>
     <select id="findNumByZdgcMRMonth" resultType="java.util.Map" parameterType="java.util.Map">
         WITH hdgctj AS ( SELECT nf || yf AS nfyf, fxjmc, zdgcdws, qyyjzs, qywjzs,yf FROM rpt_aqjg_zdmb_hdgctj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
