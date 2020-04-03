@@ -78,19 +78,13 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataByOrder() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataByOrder(tjrq);
+        List<HashMap> data = nbMapper.findDataByOrder();
         return new ApiResult().success(200, "成功", changeData(data));
     }
 
     @Override
     public ApiResult findDataByLimit(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataByLimit(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataByLimit(changeName(name));
         return new ApiResult().success(200, "成功", removeData(data));
     }
 
@@ -158,19 +152,13 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataByZz() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataByZz(tjrq);
+        List<HashMap> data = nbMapper.findDataByZz();
         return new ApiResult().success(200, "成功", changeData(data));
     }
 
     @Override
     public ApiResult findDataByZzLinit(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataByZzLinit(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataByZzLinit(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -245,10 +233,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataZySsPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataZySsPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataZySsPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -263,10 +248,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataYhFxPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataYhFxPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataYhFxPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -281,10 +263,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjCgPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjCgPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjCgPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -299,10 +278,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjZxPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjZxPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjZxPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -317,10 +293,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjQsPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjQsPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjQsPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -335,10 +308,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjZdPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjZdPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjZdPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -353,10 +323,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjWzgPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjWzgPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjWzgPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -371,10 +338,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataJctjZgPcs(String name) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> data = nbMapper.findDataJctjZgPcs(tjrq,changeName(name));
+        List<HashMap> data = nbMapper.findDataJctjZgPcs(changeName(name));
         return new ApiResult().success(200, "成功",removeData(data));
     }
 
@@ -570,11 +534,18 @@ public class NbServiceImpl implements NbService {
         return new ApiResult().success(200, "成功",changeData(data));
     }
     @Override
-    public ApiResult findNumByZddwjcfx(String nf) {
-        if(StringUtils.isEmpty(nf) || 4 != nf.length()){
+    public ApiResult findNumByZddwjcfx(String nf, String type) {
+        if(StringUtils.isEmpty(nf) || 4 != nf.length() || StringUtils.isEmpty(type)){
             return new ApiResult().failure("非法参数!");
         }
-        List<HashMap> data = nbMapper.findNumByZddwjcfx(nf);
+        List<HashMap> data = new ArrayList<>();
+        if("findZxjc".equals(type)){
+            data = nbMapper.findNumByZddwjcfxZx(nf);
+        }else if("findZdjc".equals(type)){
+            data = nbMapper.findNumByZddwjcfx(nf);
+        }else{
+            return new ApiResult().failure("请传入类型!");
+        }
         if(data.size()<1){
             return new ApiResult().failure("没有获取到任何数据!");
         }
@@ -650,7 +621,7 @@ public class NbServiceImpl implements NbService {
         List<HashMap> creatZyssslList = creatZyssslMonth("ASC","ZddwMonth");
         //月份进行处理
         data = changeYearOrMonth(creatZyssslList, data, "ZddwMonth");
-        return new ApiResult().success(200, "成功",changeMonth(data));
+        return new ApiResult().success(200, "成功",data);
     }
 
     @Override
@@ -701,8 +672,16 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataQsyMonth() {
-        List<HashMap> data = nbMapper.findDataQsyMonth();
-        return new ApiResult().success(200, "成功",changeMonth(data));
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        List<HashMap> data = nbMapper.findDataQsyMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
     }
 
     @Override
@@ -713,8 +692,17 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult findDataQsyLtMonth(String name) {
-        List<HashMap> data = nbMapper.findDataQsyLtMonth(changeName(name));
-        return new ApiResult().success(200, "成功",changeMonth(data));
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        has.put("name",changeName(name));
+        List<HashMap> data = nbMapper.findDataQsyLtMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
     }
 
     @Override
@@ -781,6 +769,20 @@ public class NbServiceImpl implements NbService {
     }
 
     @Override
+    public ApiResult findNumByZdgcMRMonth() {
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        List<HashMap> data = nbMapper.findNumByZdgcMRMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
     public ApiResult findNumByZyssYear(String name) {
         List<HashMap> data = nbMapper.findNumByZyssYear(changeName(name));
         return new ApiResult().success(200, "成功",data);
@@ -791,6 +793,51 @@ public class NbServiceImpl implements NbService {
         List<HashMap> data = nbMapper.findNumByZyssMRYear();
         return new ApiResult().success(200, "成功",removeData2(data));
     }
+
+    @Override
+    public ApiResult findNumByZyssMRMonth() {
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        List<HashMap> data = nbMapper.findNumByZyssMRMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByZddwLtMonth(String name) {
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        has.put("name",changeName(name));
+        List<HashMap> data = nbMapper.findNumByZddwLtMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
+    }
+
+    @Override
+    public ApiResult findNumByZyssLtMonth(String name) {
+        HashMap dateMap = creatLtGtDate(11);
+        HashMap has = new HashMap();
+        has.put("ltnf",dateMap.get("ltnf"));
+        has.put("gtnf",dateMap.get("gtnf"));
+        has.put("name",changeName(name));
+        List<HashMap> data = nbMapper.findNumByZyssLtMonth(has);
+        //生成本年本月往前一年的基本信息
+        List<HashMap> creatZyssslList = creatZyssslMonth("ASC","");
+        //月份进行处理
+        data = changeYearOrMonth(creatZyssslList, data, "");
+        return new ApiResult().success(200, "成功",data);
+    }
+
     @Override
     public ApiResult yhslfx(Map map) {
         return new ApiResult(nbMapper.yhslfx(map));
@@ -801,24 +848,13 @@ public class NbServiceImpl implements NbService {
         map.put("monthStr","'"+getMonthStr()+"'");
         return new ApiResult(nbMapper.yhslfxMonth(map));
     }
-    private String getMonthStr() {
-        int num=12;
-        String[] monthArr = new String[num];
-        Date now = new Date();
-        for (int i=0;i<num;i++) {
-            Date temp = DateUtils.addMonths(now,0-i);
-            monthArr[i]= DateFormatUtils.format(temp,"yyyy-MM");
-        }
-        ArrayUtils.reverse(monthArr);
-        return String.join(",",monthArr);
-    }
 
     @Override
     public ApiResult yhslfxYear(Map map) {
         return new ApiResult(nbMapper.yhslfxYear(map));
     }
 
-    public List<HashMap> changeData(List<HashMap> list){
+    private List<HashMap> changeData(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         for(HashMap map : list){
@@ -832,7 +868,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public List<HashMap> changeData2(List<HashMap> list){
+
+    private List<HashMap> changeData2(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         for(HashMap map : list){
@@ -846,7 +883,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public List<HashMap> changeData3(List<HashMap> list){
+
+    private List<HashMap> changeData3(List<HashMap> list){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         for(HashMap map : list){
@@ -860,7 +898,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public List<HashMap> removeData(List<HashMap> list){
+
+    private List<HashMap> removeData(List<HashMap> list){
         for(HashMap map :list) {
             if ("".equals(map.get("sspcsname"))) {
                 list.remove(map);
@@ -870,7 +909,7 @@ public class NbServiceImpl implements NbService {
         return list;
     }
 
-    public List<HashMap> removeData2(List<HashMap> list){
+    private List<HashMap> removeData2(List<HashMap> list){
         for(HashMap map :list) {
             if ("0".equals(map.get("nf"))) {
                 list.remove(map);
@@ -879,7 +918,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public String changeName(String name){
+
+    private String changeName(String name){
         if("吴中区".equals(name)){
             name = "吴中分局";
         }
@@ -915,7 +955,8 @@ public class NbServiceImpl implements NbService {
         }
         return name;
     }
-    public List<HashMap> addData(List<HashMap> list,String tjrq){
+
+    private List<HashMap> addData(List<HashMap> list,String tjrq){
         if(list.size() == 0){
             HashMap<String,String> has = new HashMap<>();
             has.put("tjrq",tjrq);
@@ -924,7 +965,8 @@ public class NbServiceImpl implements NbService {
         }
         return list;
     }
-    public HashMap changeData4(JSONObject obj,String tjrq){
+
+    private HashMap changeData4(JSONObject obj,String tjrq){
         //获取data内的数据
         JSONArray arrys = obj.getJSONArray("data");
         //遍历入list
@@ -950,10 +992,12 @@ public class NbServiceImpl implements NbService {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("M月");
         SimpleDateFormat sdfp = new SimpleDateFormat("yyyyMM");
+        SimpleDateFormat sdfpn = new SimpleDateFormat("yyyy年M月");
         for(int i=0;i<12;i++){
             HashMap has = new HashMap();
             String month = sdf.format(cal.getTime());
             String tjrq = sdfp.format(cal.getTime());
+            String year = sdfpn.format(cal.getTime());
             if("ZddwMonth".equals(type)){
                 has.put("sjname","省级治安重点单位");
                 has.put("sjsnum",0);
@@ -965,6 +1009,7 @@ public class NbServiceImpl implements NbService {
                 has.put("sqsnum",0);
             }
             has.put("tjrq",tjrq);
+            has.put("year",year);
             has.put("yf",month);
             has.put("dwsl",0);
             has.put("sort",i);
@@ -1006,7 +1051,7 @@ public class NbServiceImpl implements NbService {
      * @param creatData 基本集合
      * @return 修改后的集合
      */
-    public List<HashMap> changeYearOrMonth(List<HashMap> creatData, List<HashMap> data, String type){
+    private List<HashMap> changeYearOrMonth(List<HashMap> creatData, List<HashMap> data, String type){
         for(HashMap dataMap : data){
             for(HashMap creatMap : creatData){
                 switch (type){
@@ -1029,7 +1074,7 @@ public class NbServiceImpl implements NbService {
         return creatData;
     }
 
-    public List<HashMap> changeMonth(List<HashMap> list){
+    private List<HashMap> changeMonth(List<HashMap> list){
         String  oldList [] = {"01","02","03","04","05","06","07","08","09","10","11","12"};
         String  newList [] = {"1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"};
         for(HashMap map : list){
@@ -1049,7 +1094,7 @@ public class NbServiceImpl implements NbService {
      * @param list 入参集合
      * @return 修改后的集合
      */
-    public List<HashMap> changeYear(List<HashMap> list){
+    private List<HashMap> changeYear(List<HashMap> list){
         String[] yearList = new String[3];
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat smd = new SimpleDateFormat("yyyy年");
@@ -1084,7 +1129,7 @@ public class NbServiceImpl implements NbService {
      * @param bl  T 匹配new替换old  F 匹配old替换new
      * @return 替换后的集合
      */
-    public JSONArray changeNameJsonArray(JSONArray arr,boolean bl){
+    private JSONArray changeNameJsonArray(JSONArray arr,boolean bl){
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         if( arr != null && arr.size()>0 ){
@@ -1105,7 +1150,8 @@ public class NbServiceImpl implements NbService {
         }
         return arr;
     }
-    public HashMap changeData5(JSONObject obj,String tjrq,String nf){
+
+    private HashMap changeData5(JSONObject obj,String tjrq,String nf){
         //获取data内的数据
         JSONArray arrys = obj.getJSONArray("data");
         //遍历入list
@@ -1122,5 +1168,18 @@ public class NbServiceImpl implements NbService {
         maps.put("array",arrys);
         return maps;
     }
+
+    private String getMonthStr() {
+        int num=12;
+        String[] monthArr = new String[num];
+        Date now = new Date();
+        for (int i=0;i<num;i++) {
+            Date temp = DateUtils.addMonths(now,0-i);
+            monthArr[i]= DateFormatUtils.format(temp,"yyyy-MM");
+        }
+        ArrayUtils.reverse(monthArr);
+        return String.join(",",monthArr);
+    }
+
 
 }
