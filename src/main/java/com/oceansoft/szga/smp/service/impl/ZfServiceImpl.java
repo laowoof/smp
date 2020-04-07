@@ -33,10 +33,7 @@ public class ZfServiceImpl implements ZfService {
 
     @Override
     public ApiResult czfNumDesc() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> czfNumDesc = zfMapper.czfNumDesc(tjrq);
+        List<HashMap> czfNumDesc = zfMapper.czfNumDesc();
         return new ApiResult().success(200,"成功",czfNumDesc);
     }
 
@@ -80,6 +77,12 @@ public class ZfServiceImpl implements ZfService {
         int MaxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         calendar.set( calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), MaxDay);
         String time2 = sdf.format(calendar.getTime());
+        System.out.println(111111);
+        System.out.println(time);
+        System.out.println(111111);
+        System.out.println(2222222);
+        System.out.println(time2);
+        System.out.println(222222);
         List<HashMap> areaAddNum = zfMapper.areaAddNum(time2,time);
         return new ApiResult().success(200,"成功",areaAddNum);
     }
@@ -158,10 +161,7 @@ public class ZfServiceImpl implements ZfService {
 
     @Override
     public ApiResult floatingPopulationNum() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String tjrq = sdf.format(calendar.getTime());
-        List<HashMap> floatNum = zfMapper.floatingPopulationNum(tjrq);
+        List<HashMap> floatNum = zfMapper.floatingPopulationNum();
         return new ApiResult().success(200,"返回数据",floatNum);
     }
 
@@ -199,6 +199,12 @@ public class ZfServiceImpl implements ZfService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> data = zfMapper.fZaSj(tjrq);
+        return new ApiResult().success(200,"返回数据",data);
+    }
+
+    @Override
+    public ApiResult fZaDataSj() {
+        List<HashMap> data = zfMapper.fZaDataSj();
         return new ApiResult().success(200,"返回数据",data);
     }
 
@@ -367,6 +373,12 @@ public class ZfServiceImpl implements ZfService {
     @Override
     public ApiResult zaData() {
         List<HashMap> data = zfMapper.zaData();
+        return new ApiResult().success(200,"返回数据",data);
+    }
+
+    @Override
+    public ApiResult lzFxDataByLdrk() {
+        List<HashMap> data = zfMapper.lzFxDataByLdrk();
         return new ApiResult().success(200,"返回数据",data);
     }
 

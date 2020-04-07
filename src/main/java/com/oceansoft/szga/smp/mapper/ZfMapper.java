@@ -31,7 +31,7 @@ public interface ZfMapper {
      * @date 2020/2/26
      * @return 数据
      */
-    List<HashMap> czfNumDesc(@Param("tjrq")String tjrq);
+    List<HashMap> czfNumDesc();
 
     /**
      * 出租房数量
@@ -151,7 +151,7 @@ public interface ZfMapper {
      * @date 2020/1/20
      * @return 数据
      */
-    List<HashMap> floatingPopulationNum(@Param("tjrq") String tjrq);
+    List<HashMap> floatingPopulationNum();
 
     /**
      *流动人口数量
@@ -184,6 +184,13 @@ public interface ZfMapper {
      * @return 数据
      */
     List<HashMap> fZaSj(@Param("tjrq")String tjrq);
+    /**
+     *非治安隐患数据
+     * @author wzj
+     * @date 2020/4/7
+     * @return 数据
+     */
+    List<HashMap> fZaDataSj();
 
     /**
      * 单独数据
@@ -360,4 +367,12 @@ public interface ZfMapper {
      * @return
      */
     List<HashMap> zaData();
+
+    /**
+     *  履职分析  流动人口
+     * @author wzj
+     * @date 2020/4/7
+     * @return
+     */
+    List<HashMap> lzFxDataByLdrk();
 }

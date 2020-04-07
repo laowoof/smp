@@ -243,6 +243,16 @@ public class ZfController {
         return fZaSj ;
     }
 
+    /**
+     * @author wzj
+     * 非治安隐患数据
+     * @return 数据
+     */
+    @GetMapping("fZaDataSj")
+    public ApiResult fZaDataSj(){
+        ApiResult data = zfService.fZaDataSj();
+        return data ;
+    }
 
     /**
      * @author wzj
@@ -510,6 +520,16 @@ public class ZfController {
     @GetMapping("zaData")
     public ApiResult zaData(){
         ApiResult data = zfService.zaData();
+        return data;
+    }
+    /**
+     * 履历分析  流动人口分析
+     * @author wzj
+     * @return 数据
+     */
+    @GetMapping("lzFxDataByLdrk")
+    public ApiResult lzFxDataByLdrk(){
+        ApiResult data = zfService.lzFxDataByLdrk();
         return data;
     }
 }

@@ -178,6 +178,14 @@ public interface ZfService {
     ApiResult fZaSj();
 
     /**
+     * 非治安隐患数据
+     * @author  wzj
+     * @date  2020/4/7
+     * @return 数据
+     */
+    ApiResult fZaDataSj();
+
+    /**
      * 非治安近日天数数据7/30
      * @author  wzj
      * @date  2020/2/19
@@ -353,6 +361,13 @@ public interface ZfService {
      * @return
      */
     ApiResult zaData();
+    /**
+     * 重点人员数量
+     * @author  wzj
+     * @date  2020/4/7
+     * @return 数据
+     */
+    ApiResult lzFxDataByLdrk();
 
 }
 

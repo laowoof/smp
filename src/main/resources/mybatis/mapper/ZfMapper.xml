@@ -23,7 +23,7 @@
         tjrq = to_char(CURRENT_DATE,'yyyy-mm-dd')
 </select>
     <select id="czfNumDesc" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
+   select
         tjrq,
         xzqh,
         xzqhmc,
@@ -31,7 +31,7 @@
     from
         rpt_aqjg_qzf_czfsl
     where
-        tjrq =#{tjrq} order by sl desc
+        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND xzqhmc is not null order by sl desc
 </select>
 
     <select id="qzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -74,22 +74,21 @@
 
     <select id="qzfMonthData" resultType="java.util.HashMap" parameterType="java.util.List">
     SELECT
-        SUM(sl)
+        COALESCE(SUM(sl),0) as num
     FROM
         rpt_aqjg_qzf_qzfsl
     WHERE
         tjrq like '%' || #{time} ||'%'
 </select>
 
-    <select id="areaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">
-    select * from (
+    <select id="areaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">select * from (
     select qxmc.xzqhmc,(jt.sl-zt.sl) AS addNum from (
-        (select xzqhmc from rpt_aqjg_qzf_qzfsl GROUP BY xzqhmc) as qxmc
+        (select xzqhmc from rpt_aqjg_qzf_qzfsl WHERE xzqhmc is not null GROUP BY xzqhmc) as qxmc
         LEFT JOIN
-       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time2}) as jt on qxmc.xzqhmc = jt.xzqhmc
+       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq =#{time} AND xzqhmc is not null) as jt on qxmc.xzqhmc = jt.xzqhmc
         LEFT JOIN
-       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time}) as zt on qxmc.xzqhmc = zt.xzqhmc
-    )GROUP BY qxmc.xzqhmc,addNum
+       (select COALESCE(sl,0) sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time2} AND xzqhmc is not null) as zt on qxmc.xzqhmc = zt.xzqhmc
+    ) WHERE jt.sl-zt.sl is NOT NULL GROUP BY qxmc.xzqhmc,addNum
         ) foo ORDER BY xzqhmc ASC
 </select>
 
@@ -150,14 +149,12 @@
 
     <select id="yhQzfTotleNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
-        tjrq,
-        xzqh,
         xzqhmc,
-        sl
+        sum(sl)
     from
         rpt_aqjg_qzf_yhqzfsj
     where
-        tjrq =#{tjrq} order by xzqhmc
+        tjrq =#{tjrq} group by xzqhmc order by xzqhmc
 </select>
 
     <select id="nearYhQzf" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -174,13 +171,18 @@
 
 
     <select id="dangerTypeFx" resultType="java.util.HashMap" parameterType="java.util.List">
-    select
-        sum(sl) as num,
-        yhlbmc
-    from
-        rpt_aqjg_qzf_yhdlfx
-    where
-       yhlbmc is not null and  tjrq=#{tjrq} group by yhlbmc order by num
+     SELECT
+        a.num,
+        a.yhlbmc,
+        ceiling(a.num/b.totlenum*100) as percent
+     FROM
+        (select	tjrq, sum(sl) as num, yhlbmc from rpt_aqjg_qzf_yhdlfx where
+       yhlbmc is not null and  tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') group by tjrq,yhlbmc order by num) a
+	LEFT JOIN
+		(select tjrq,sum(sl) as totlenum from rpt_aqjg_qzf_yhdlfx where
+       yhlbmc is not null and  tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY tjrq) b
+	on a.tjrq = b.tjrq
+
 </select>
 
     <select id="notDangerTypeSb" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -223,7 +225,16 @@
     where
         tjrq =#{tjrq} order by xzqhmc
     </select>
-
+    <select id="fZaDataSj" resultType="java.util.HashMap" parameterType="java.util.List">
+    select
+        sum(yhs) as totleYhs,
+        sum(zgs) as totleZg,
+        sum(yhs) - sum(zgs) as totleWzg
+    from
+        rpt_aqjg_qzf_fzayhsj
+    where
+        tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')
+    </select>
     <select id="fzaYhNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
         sum(fws) as totle_fws,
@@ -299,12 +310,29 @@
 
     <select id="floatingPopulationNum" resultType="java.util.HashMap" parameterType="java.util.List">
     select
+        a.nld,
+        a.slNum,
+        b.totleNum,
+        ceiling(a.slNum/b.totleNum*100) as percent
+    FROM
+    (select
+		tjrq,
         nld,
+        sum(sl) as slNum
+    from
+        rpt_aqjg_qzf_ldrksl
+    where
+        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') group by nld,tjrq) a
+	LEFT JOIN
+	(select
+		tjrq,
         sum(sl) as totleNum
     from
         rpt_aqjg_qzf_ldrksl
     where
-        tjrq=#{tjrq} group by nld order by nld
+        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') gROUP BY tjrq) b
+				on a.tjrq = b.tjrq
+				ORDER BY nld
 </select>
 
     <select id="ldryFxData" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -502,5 +530,14 @@
         sl as sl
     from
         rpt_aqjg_qzf_zdrysl
+</select>
+    <select id="lzFxDataByLdrk" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            xzqhmc,
+            sum(sl)
+        FROM
+            rpt_aqjg_qzf_ldrksys
+        WHERE
+        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND xzqhmc !='其他' GROUP BY xzqhmc ORDER BY sum DESC
 </select>
 </mapper>
