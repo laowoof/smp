@@ -523,7 +523,7 @@
         FROM
             rpt_aqjg_zdmb_zddwtj
         WHERE
-         tjrq=#{tjrq} AND jbdj in('1','2','3','8') AND ssfxj NOT IN ( '320597000000', '320598000000', '' ) AND qy IS NOT NULL GROUP BY qy ORDER BY sum desc
+         tjrq=#{tjrq} AND jbdj in('1','2','3','8') AND ssfxj NOT IN ( '320597000000', '320598000000') AND qy IS NOT NULL GROUP BY qy ORDER BY sum desc
     </select>
     <!--没用-->
     <select id="findNumByZddwLimit" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -614,7 +614,7 @@
         SELECT qy,sum(zddwsl) as num
         FROM rpt_aqjg_zdmb_zddwtj
         WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')
-        AND jbdj in('1','2','3','8') AND ssfxj IS NOT NULL AND ssfxj != '' AND qy IS NOT NULL AND qy != ''
+        AND jbdj in('1','2','3','8') AND ssfxj IS NOT NULL AND qy IS NOT NULL
         <if test="dj != null">
             AND jbdjmc in
             <foreach collection="dj" index="index" item="item" open="(" separator="," close=")">
