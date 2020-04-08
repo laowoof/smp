@@ -70,7 +70,7 @@
     (SELECT  tjrq,ssfjmc,ssfjdm,sum(dwsl) as totleNum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd') GROUP BY tjrq,ssfjmc,ssfjdm) a
     LEFT JOIN
     (SELECT tjrq,ssfjmc,ssfjdm,sum(dwsl) AS zd FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd') and jbdjdm in ('1','2','3','8') GROUP BY tjrq,ssfjmc,ssfjdm ORDER BY zd DESC) b
-    on a.ssfjdm = b.ssfjdm WHERE a.ssfjdm NOT IN ('320597000000','320598000000','') AND a.ssfjdm IS NOT NULL
+    on a.ssfjdm = b.ssfjdm WHERE a.ssfjdm NOT IN ('320597000000','320598000000') AND a.ssfjdm IS NOT NULL
     ORDER BY totleNum DESC
 </select>
     <select id="findDataByLimit" resultType="java.util.HashMap" parameterType="java.lang.String">
@@ -83,16 +83,16 @@
       (SELECT sspcsmc, sspcsdm, sum(dwsl) as totleNum
         FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl"
         WHERE tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-        AND sspcsmc != '' AND sspcsmc IS NOT NULL
-        AND sspcsdm != '' AND sspcsdm IS NOT NULL
+        AND sspcsmc IS NOT NULL
+        AND sspcsdm IS NOT NULL
         AND ssfjmc like '%' || #{name} ||'%'
         GROUP BY sspcsmc, sspcsdm) a
     left JOIN
       (SELECT sspcsmc,sum(dwsl) as zd
         FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl"
         WHERE tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-        AND sspcsmc != '' AND sspcsmc IS NOT NULL
-        AND sspcsdm != '' AND sspcsdm IS NOT NULL
+        AND sspcsmc IS NOT NULL
+        AND sspcsdm IS NOT NULL
         AND jbdjdm in ('1','2','3','8')
         and ssfjmc like '%' || #{name} ||'%' GROUP BY sspcsmc) b
     on a.sspcsmc = b.sspcsmc WHERE 1=1
@@ -149,8 +149,7 @@
 		tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
 		AND dwlx = '重要设施'
 		AND jclxmc = '专项检查'
-		AND ssfjmc != ''
-		AND ssfjdm NOT IN ( '320597000000', '320598000000', '' )
+		AND ssfjdm NOT IN ( '320597000000', '320598000000')
 		AND ssfjmc IS NOT NULL
 	GROUP BY ssfjmc, ssfjdm
 	ORDER BY SUM DESC
@@ -160,7 +159,7 @@
     FROM
         rpt_aqjg_zdmb_lzfxtj_jcsl T LEFT JOIN lzfxtj J ON T.ssfjdm = J.ssfjdm
     WHERE
-        T.ssfjdm NOT IN ( '320597000000', '320598000000', '' ) AND T.ssfjmc IS NOT NULL
+        T.ssfjdm NOT IN ( '320597000000', '320598000000') AND T.ssfjmc IS NOT NULL
     GROUP BY
         T.ssfjmc, T.ssfjdm, J.SUM  ORDER BY SUM DESC
 </select>
@@ -172,8 +171,8 @@
         "rpt_aqjg_zdmb_lzfxtj_jcsl"
     WHERE
         tjrq= to_char(CURRENT_DATE, 'yyyy-MM-dd')
-        and sspcsdm != '' and sspcsdm is not null
-        and sspcsmc != '' and sspcsmc is not null
+        and sspcsdm is not null
+        and sspcsmc is not null
         and ssfjmc like '%' || #{name} ||'%'
         and dwlx='重要设施' AND jclxmc='专项检查'
         GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
@@ -253,7 +252,7 @@
        FROM
          rpt_aqjg_zdmb_zysssl
        WHERE
-        tjrq =#{tjrq} AND ssfjmc != '' AND ssfjmc IS NOT NULL group by ssfjmc order by num desc
+        tjrq =#{tjrq} AND ssfjmc IS NOT NULL group by ssfjmc order by num desc
 </select>
     <select id="findDataZySsPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
        SELECT
@@ -263,8 +262,8 @@
          rpt_aqjg_zdmb_zysssl
        WHERE
         tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-        and sspcsdm != '' and sspcsdm is not null
-        and sspcsmc != '' and sspcsmc is not null
+        and sspcsdm is not null
+        and sspcsmc is not null
         and ssfjmc like '%' || #{name} ||'%'
         group by sspcsmc order by num desc limit 10
 </select>
@@ -275,7 +274,7 @@
        FROM
          rpt_aqjg_zdmb_lzfxtj_yhsl
        WHERE
-        tjrq =#{tjrq} AND ssfjmc != '' AND ssfjmc IS NOT NULL group by ssfjmc order by num desc
+        tjrq =#{tjrq} AND ssfjmc IS NOT NULL group by ssfjmc order by num desc
 </select>
     <select id="findDataYhFxPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
         SELECT
@@ -285,8 +284,8 @@
     rpt_aqjg_zdmb_lzfxtj_yhsl
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-    and sspcsmc != '' and sspcsmc is not null
-    and sspcsdm != '' and sspcsdm is not null
+    sspcsmc is not null
+    sspcsdm is not null
     and ssfjmc like '%' || #{name} ||'%'
     group by sspcsmc order by num desc limit 10
 </select>
@@ -296,7 +295,7 @@
         sum(cgjc_qypcssl) as cgnum
     FROM
         rpt_aqjg_zdmb_aqjctj_pcs
-    WHERE tjrq =#{tjrq} AND ssfxjname != '' AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by cgnum desc
+    WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by cgnum desc
 </select>
     <select id="findDataJctjCgPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
         SELECT
@@ -306,8 +305,8 @@
         rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
         tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-        and sspcs != '' and sspcs is not null
-        and sspcsname != '' and sspcsname is not null
+        and sspcs is not null
+        and sspcsname is not null
         and ssfxjname like '%' || #{name} ||'%'
         group by sspcsname,cgjc_qypcssl order by cgjc_qypcssl desc limit 10
 </select>
@@ -317,7 +316,7 @@
             sum(zxjc_qypcssl) as zxnum
         FROM
             rpt_aqjg_zdmb_aqjctj_pcs
-        WHERE tjrq =#{tjrq} AND ssfxjname != '' AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by zxnum desc
+        WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by zxnum desc
 </select>
     <select id="findDataJctjZxPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
         SELECT
@@ -327,8 +326,8 @@
     rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-    and sspcsname != '' and sspcsname is not null
-    and sspcs != '' and sspcs is not null
+    and sspcsname is not null
+    and sspcs is not null
     and ssfxjname like '%' || #{name} ||'%'
     group by sspcsname,zxjc_qypcssl order by zxjc_qypcssl desc limit 10
 </select>
@@ -338,7 +337,7 @@
             sum(qsjc_qypcssl) as qsnum
         FROM
             rpt_aqjg_zdmb_aqjctj_pcs
-        WHERE tjrq =#{tjrq} AND ssfxjname != '' AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by qsnum desc
+        WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by qsnum desc
 </select>
     <select id="findDataJctjQsPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
     SELECT
@@ -348,8 +347,8 @@
     rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-    and sspcsname != '' and sspcsname is not null
-    and sspcs != '' and sspcs is not null
+    and sspcsname is not null
+    and sspcs is not null
     and ssfxjname like '%' || #{name} ||'%'
     group by sspcsname,qsjc_qypcssl order by qsjc_qypcssl desc limit 10
 </select>
@@ -359,7 +358,7 @@
             sum(zdjc_qypcssl) as zdnum
         FROM
             rpt_aqjg_zdmb_aqjctj_pcs
-        WHERE tjrq =#{tjrq} AND ssfxjname != '' AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by zdnum desc
+        WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by zdnum desc
 </select>
     <select id="findDataJctjZdPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
     SELECT
@@ -369,8 +368,8 @@
     rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-    and sspcsname != '' and sspcsname is not null
-    and sspcs != '' and sspcs is not null
+    and sspcsname is not null
+    and sspcs is not null
     and ssfxjname like '%' || #{name} ||'%'
     group by sspcsname,zdjc_qypcssl order by zdjc_qypcssl desc limit 10
 </select>
@@ -380,7 +379,7 @@
             sum(dwsl1)
         FROM
             rpt_aqjg_zdmb_aqjctj_pcs
-        WHERE tjrq =#{tjrq} AND ssfxjname != '' AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by sum desc
+        WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by sum desc
 </select>
     <select id="findDataJctjWzgPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
         SELECT
@@ -390,8 +389,8 @@
     rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-    and sspcsname != '' and sspcsname is not null
-    and sspcs != '' and sspcs is not null
+    and sspcsname is not null
+    and sspcs is not null
     and ssfxjname like '%' || #{name} ||'%'
     group by sspcsname,dwsl1 order by dwsl1 desc limit 10
 </select>
@@ -401,7 +400,7 @@
             (sum(dwsl1)+sum(dwsl)) as num
         FROM
             rpt_aqjg_zdmb_aqjctj_pcs
-        WHERE tjrq =#{tjrq} AND ssfxjname != '' AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by num desc
+        WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by num desc
 </select>
     <select id="findDataJctjZgPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
     SELECT
@@ -411,8 +410,8 @@
     rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
-    and sspcsname != '' and sspcsname is not null
-    and sspcs != '' and sspcs is not null
+    and sspcsname is not null
+    and sspcs is not null
     and ssfxjname=#{name}
     group by sspcsname,dwsl,dwsl1 order by num desc limit 10
 </select>

@@ -43,7 +43,7 @@
     from
         rpt_aqjg_qzf_qzfsl
     where
-        tjrq =#{tjrq}
+        tjrq =#{tjrq} and xzqhmc is not null
 </select>
 
     <select id="nearQzfNum" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -81,14 +81,15 @@
         tjrq like '%' || #{time} ||'%'
 </select>
 
-    <select id="areaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">select * from (
+    <select id="areaAddNum" resultType="java.util.HashMap" parameterType="java.util.List">
+    select * from (
     select qxmc.xzqhmc,(jt.sl-zt.sl) AS addNum from (
-        (select xzqhmc from rpt_aqjg_qzf_qzfsl WHERE xzqhmc is not null GROUP BY xzqhmc) as qxmc
+        (select xzqhmc from rpt_aqjg_qzf_qzfsl where xzqhmc is not null GROUP BY xzqhmc) as qxmc
         LEFT JOIN
-       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq =#{time} AND xzqhmc is not null) as jt on qxmc.xzqhmc = jt.xzqhmc
+       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time} and xzqhmc is not null) as jt on qxmc.xzqhmc = jt.xzqhmc
         LEFT JOIN
-       (select COALESCE(sl,0) sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time2} AND xzqhmc is not null) as zt on qxmc.xzqhmc = zt.xzqhmc
-    ) WHERE jt.sl-zt.sl is NOT NULL GROUP BY qxmc.xzqhmc,addNum
+       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time2} and xzqhmc is not null) as zt on qxmc.xzqhmc = zt.xzqhmc
+    )GROUP BY qxmc.xzqhmc,addNum
         ) foo ORDER BY xzqhmc ASC
 </select>
 

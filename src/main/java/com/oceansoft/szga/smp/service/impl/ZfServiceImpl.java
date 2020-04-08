@@ -77,12 +77,6 @@ public class ZfServiceImpl implements ZfService {
         int MaxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         calendar.set( calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), MaxDay);
         String time2 = sdf.format(calendar.getTime());
-        System.out.println(111111);
-        System.out.println(time);
-        System.out.println(111111);
-        System.out.println(2222222);
-        System.out.println(time2);
-        System.out.println(222222);
         List<HashMap> areaAddNum = zfMapper.areaAddNum(time2,time);
         return new ApiResult().success(200,"成功",areaAddNum);
     }
