@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.TjMapper">
+   <select id="zyssFlTj" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        'pcs'as diff,
+        a.dept_name,
+        b.*,
+        (b.fsznum+b.sygdnum+b.cqknum+b.mnnum+b.fsnum+b.jlznum+b.sqgdnum+b.bdsnum) as num
+    FROM
+        dept_table a
+    LEFT JOIN (
+    SELECT
+    DISTINCT ssfjdm,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND ssfjdm = t.ssfjdm),0 ) as fsznum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND ssfjdm = t.ssfjdm ),0 ) as sygdnum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND ssfjdm = t.ssfjdm),0 ) as cqknum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND ssfjdm = t.ssfjdm),0 ) as mnnum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND ssfjdm = t.ssfjdm),0 ) as fsnum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND ssfjdm = t.ssfjdm),0 ) as jlznum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND ssfjdm = t.ssfjdm),0 ) as sqgdnum,
+    COALESCE (( SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND ssfjdm = t.ssfjdm),0 ) as bdsnum
+    FROM
+        rpt_aqjg_zdmb_zysssl t
+    WHERE
+        1=1
+        GROUP BY ssfjdm ORDER BY ssfjdm) b
+        on a.dept_code = b.ssfjdm
+</select>
+    <select id="zyssFlTjPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+    SELECT
+        'zrq' as diff,
+        b.*,
+        (b.fsznum+b.sygdnum+b.cqknum+b.mnnum+b.fsnum+b.jlznum+b.sqgdnum+b.bdsnum) as num
+    FROM
+    (SELECT
+    DISTINCT sspcsdm,
+	case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end as dept_name,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND sspcsdm = t.sspcsdm),0 ) as fsznum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND sspcsdm = t.sspcsdm ),0 ) as sygdnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND sspcsdm = t.sspcsdm),0 ) as cqknum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND sspcsdm = t.sspcsdm),0 ) as mnnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND sspcsdm = t.sspcsdm),0 ) as fsnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND sspcsdm = t.sspcsdm),0 ) as jlznum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND sspcsdm = t.sspcsdm),0 ) as sqgdnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND sspcsdm = t.sspcsdm),0 ) as bdsnum
+    FROM
+        rpt_aqjg_zdmb_zysssl t
+    WHERE
+        1=1 AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsdm,sspcsmc) b
+</select>
+    <select id="zyssFlTjZrq" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+        b.*,(b.fsznum+b.sygdnum+b.cqknum+b.mnnum+b.fsnum+b.jlznum+b.sqgdnum+b.bdsnum) as num FROM
+        (SELECT
+        DISTINCT sszrqmc as dept_name,
+		sszrqdm,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND sszrqdm = t.sszrqdm),0 ) as fsznum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND sszrqdm = t.sszrqdm ),0 ) as sygdnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND sszrqdm = t.sszrqdm),0 ) as cqknum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND sszrqdm = t.sszrqdm),0 ) as mnnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND sszrqdm = t.sszrqdm),0 ) as fsnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND sszrqdm = t.sszrqdm),0 ) as jlznum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND sszrqdm = t.sszrqdm),0 ) as sqgdnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND sszrqdm = t.sszrqdm),0 ) as bdsnum
+    FROM
+        rpt_aqjg_zdmb_zysssl t
+    WHERE
+        1=1 AND sspcsdm=#{code} and sszrqmc is not null GROUP BY sszrqdm,sszrqmc) b
+</select>
+	<select id="lzTjFxData" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            'pcs' as diff,
+            a.dept_name as area,
+            b.ssfjdm,
+            COALESCE(b.djcnum,0) djcnum,
+            COALESCE(b.czdjcnum,0) czdjcnum,
+            COALESCE(b.zxdjcnum,0) zxdjcnum,
+            COALESCE(b.fcdjcnum,0) fcdjcnum,
+            COALESCE(b.yjcnum,0) yjcnum,
+            COALESCE(b.czyjcnum,0) czyjcnum,
+            COALESCE(b.zxyjcnum,0) zxyjcnum,
+            COALESCE(b.zdyjcnum,0) zdyjcnum,
+            COALESCE(b.fcyjcnum,0) fcyjcnum,
+            COALESCE(b.czqjcnum,0) czqjcnum,
+            COALESCE(b.zxqjcnum,0) zxqjcnum,
+            COALESCE(b.fcqjcnum,0) fcqjcnum,
+            COALESCE(c.yhdwsl,0) yhdwsl,
+            COALESCE(c.yhsl,0) yhsl,
+            COALESCE(d.dclnum,0) dclnum,
+            COALESCE(d.dczgnum,0) dczgnum,
+            COALESCE(d.zljgnum,0) zljgnum,
+            COALESCE(d.zlzgnum,0) zlzgnum,
+            COALESCE(d.zgwc,0) zgwc,
+            COALESCE(d.fknum,0) fknum,
+            COALESCE(d.xtjj,0) xtjj
+        FROM
+            dept_table a
+        LEFT JOIN
+        (select
+		    ssfjdm,
+            sum(case when jcztdm = '0' then jcsl else 0 end) as djcnum,
+            sum(case when (jcztdm = '0' AND jclxdm='1') then jcsl else 0 end) as czdjcnum,
+            sum(case when (jcztdm = '0' AND jclxdm='3') then jcsl else 0 end) as zxdjcnum,
+            sum(case when (jcztdm = '0' AND jclxdm='4') then jcsl else 0 end) as fcdjcnum,
+            sum(case when jcztdm = '1' then jcsl else 0 end) as yjcnum,
+            sum(case when (jcztdm = '1' AND jclxdm='1') then jcsl else 0 end) as czyjcnum,
+            sum(case when (jcztdm = '1' AND jclxdm='3') then jcsl else 0 end) as zxyjcnum,
+            sum(case when (jcztdm = '1' AND jclxdm='2') then jcsl else 0 end) as zdyjcnum,
+            sum(case when (jcztdm = '1' AND jclxdm='4') then jcsl else 0 end) as fcyjcnum,
+            sum(case when (jcztdm = '2' AND jclxdm='1') then jcsl else 0 end) as czqjcnum,
+            sum(case when (jcztdm = '2' AND jclxdm='3') then jcsl else 0 end) as zxqjcnum,
+            sum(case when (jcztdm = '2' AND jclxdm='4') then jcsl else 0 end) as fcqjcnum
+		from
+			rpt_aqjg_zdmb_lzfxtj_jcsl
+		WHERE
+		    tjrq=#{tjrq} group by ssfjdm ) b
+				on a.dept_code = b.ssfjdm
+		LEFT JOIN (
+		    select ssfjdm,sum(yhdwsl) yhdwsl,sum(yhsl) yhsl FROM rpt_aqjg_zdmb_lzfxtj_yhsl  WHERE tjrq=#{tjrq} GROUP BY ssfjdm) c
+			on a.dept_code = c.ssfjdm
+		LEFT JOIN(
+			SELECT
+                ssfxj,
+				sum(case when (jclx='4' AND clzt='6' AND gljcjg is not null AND gljcjg !='0') then yhsl else 0 end) as dclnum,
+				sum(case when (gljcjg ='1' AND ssfxjmc is not null) then yhsl else 0 end) as dczgnum,
+				sum(case when (gljcjg ='2' AND ssfxjmc is not null) then yhsl else 0 end) as zljgnum,
+				sum(case when (gljcjgmc ='责令限期警告' AND ssfxjmc is not null) then yhsl else 0 end) as zlzgnum,
+			    sum(case when (clzt='6' AND jclx !='4' AND gljcjg  in('1','0',null) AND ssfxjmc is not null) then yhsl else 0 end) as zgwc,
+			    sum(case when (jclx='4' AND gljcjg='罚款' AND ssfxjmc is not null) then yhsl else 0 end) as fknum,
+			    sum(case when (jclx='4' AND gljcjg='协调处理' AND ssfxjmc is not null) then yhsl else 0 end) as xtjj
+                FROM
+                    rpt_aqjg_zdmb_yhdwtj
+                where
+                    tjrq=#{tjrq} GROUP BY ssfxj) d
+				on a.dept_code = d.ssfxj
+     </select>
+    <select id="lzTjFxDataPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            'zrq' as diff,
+	        a.*,
+	        COALESCE(b.yhdwsl,0) yhdwsl,
+	        COALESCE(b.yhsl,0) yhsl,
+	        c.*
+        from
+        (select
+		    case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end as area,
+			sspcsdm,
+			sum(case when jcztdm = '0' then jcsl else 0 end) as djcnum,
+			sum(case when (jcztdm = '0' AND jclxdm='1') then jcsl else 0 end) as czdjcnum,
+			sum(case when (jcztdm = '0' AND jclxdm='3') then jcsl else 0 end) as zxdjcnum,
+			sum(case when (jcztdm = '0' AND jclxdm='4') then jcsl else 0 end) as fcdjcnum,
+			sum(case when jcztdm = '1' then jcsl else 0 end) as yjcnum,
+			sum(case when (jcztdm = '1' AND jclxdm='1') then jcsl else 0 end) as czyjcnum,
+			sum(case when (jcztdm = '1' AND jclxdm='3') then jcsl else 0 end) as zxyjcnum,
+			sum(case when (jcztdm = '1' AND jclxdm='2') then jcsl else 0 end) as zdyjcnum,
+			sum(case when (jcztdm = '1' AND jclxdm='4') then jcsl else 0 end) as fcyjcnum,
+			sum(case when (jcztdm = '2' AND jclxdm='1') then jcsl else 0 end) as czqjcnum,
+			sum(case when (jcztdm = '2' AND jclxdm='3') then jcsl else 0 end) as zxqjcnum,
+			sum(case when (jcztdm = '2' AND jclxdm='4') then jcsl else 0 end) as fcqjcnum
+		from
+			rpt_aqjg_zdmb_lzfxtj_jcsl
+		WHERE
+		    tjrq=#{tjrq} AND ssfjdm=#{code} and sspcsmc is not null group by sspcsmc,sspcsdm) a
+		LEFT JOIN (
+			select sspcsdm,sum(yhdwsl) yhdwsl,sum(yhsl) yhsl FROM rpt_aqjg_zdmb_lzfxtj_yhsl  WHERE tjrq=#{tjrq} AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsdm)b
+			on a.sspcsdm = b.sspcsdm
+	LEFT JOIN(
+		SELECT
+            sspcs,
+			sum(case when (jclx='4' AND clzt='6' AND gljcjg is not null AND gljcjg !='0') then yhsl else 0 end) as dclnum,
+			sum(case when (gljcjg ='1' AND ssfxjmc is not null) then yhsl else 0 end) as dczgnum,
+			sum(case when (gljcjg ='2' AND ssfxjmc is not null) then yhsl else 0 end) as zljgnum,
+			sum(case when (gljcjgmc ='责令限期警告' AND ssfxjmc is not null) then yhsl else 0 end) as zlzgnum,
+			sum(case when (clzt='6' AND jclx !='4' AND gljcjg  in('1','0',null) AND ssfxjmc is not null) then yhsl else 0 end) as zgwc,
+			sum(case when (jclx='4' AND gljcjg='罚款' AND ssfxjmc is not null) then yhsl else 0 end) as fknum,
+			sum(case when (jclx='4' AND gljcjg='协调处理' AND ssfxjmc is not null) then yhsl else 0 end) as xtjj
+        FROM
+            rpt_aqjg_zdmb_yhdwtj
+		WHERE tjrq=#{tjrq} AND ssfxj=#{code} and sspcs is not null GROUP BY sspcs)c
+	on a.sspcsdm = c.sspcs
+	WHERE
+	    a.area is not null
+    </select>
+    <select id="lzTjFxDataZrq" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+	        a.*,
+	        COALESCE(b.yhdwsl,0) yhdwsl,
+	        COALESCE(b.yhsl,0) yhsl,
+	        c.*
+        from
+            (select
+		        sszrqmc as area,
+				sszrqdm,
+				sum(case when jcztdm = '0' then jcsl else 0 end) as djcnum,
+				sum(case when (jcztdm = '0' AND jclxdm='1') then jcsl else 0 end) as czdjcnum,
+				sum(case when (jcztdm = '0' AND jclxdm='3') then jcsl else 0 end) as zxdjcnum,
+				sum(case when (jcztdm = '0' AND jclxdm='4') then jcsl else 0 end) as fcdjcnum,
+				sum(case when jcztdm = '1' then jcsl else 0 end) as yjcnum,
+				sum(case when (jcztdm = '1' AND jclxdm='1') then jcsl else 0 end) as czyjcnum,
+				sum(case when (jcztdm = '1' AND jclxdm='3') then jcsl else 0 end) as zxyjcnum,
+				sum(case when (jcztdm = '1' AND jclxdm='2') then jcsl else 0 end) as zdyjcnum,
+				sum(case when (jcztdm = '1' AND jclxdm='4') then jcsl else 0 end) as fcyjcnum,
+				sum(case when (jcztdm = '2' AND jclxdm='1') then jcsl else 0 end) as czqjcnum,
+				sum(case when (jcztdm = '2' AND jclxdm='3') then jcsl else 0 end) as zxqjcnum,
+				sum(case when (jcztdm = '2' AND jclxdm='4') then jcsl else 0 end) as fcqjcnum
+		    from
+			    rpt_aqjg_zdmb_lzfxtj_jcsl
+		    WHERE
+		    tjrq=#{tjrq} AND sspcsdm=#{code} group by sszrqmc,sszrqdm) a
+		LEFT JOIN (
+			select
+			    sszrqdm,
+			    sum(yhdwsl) yhdwsl,
+			    sum(yhsl) yhsl
+			FROM
+			    rpt_aqjg_zdmb_lzfxtj_yhsl
+			WHERE
+			    tjrq=#{tjrq} AND sspcsdm=#{code} GROUP BY sszrqdm)b
+		on a.sszrqdm = b.sszrqdm
+	    LEFT JOIN(
+		    SELECT
+                sszrq,
+			    sum(case when (jclx='4' AND clzt='6' AND gljcjg is not null AND gljcjg !='0') then yhsl else 0 end) as dclnum,
+			    sum(case when (gljcjg ='1' AND ssfxjmc is not null) then yhsl else 0 end) as dczgnum,
+			    sum(case when (gljcjg ='2' AND ssfxjmc is not null) then yhsl else 0 end) as zljgnum,
+			    sum(case when (gljcjgmc ='责令限期警告' AND ssfxjmc is not null) then yhsl else 0 end) as zlzgnum,
+			    sum(case when (clzt='6' AND jclx !='4' AND gljcjg  in('1','0',null) AND ssfxjmc is not null) then yhsl else 0 end) as zgwc,
+			    sum(case when (jclx='4' AND gljcjg='罚款' AND ssfxjmc is not null) then yhsl else 0 end) as fknum,
+			    sum(case when (jclx='4' AND gljcjg='协调处理' AND ssfxjmc is not null) then yhsl else 0 end) as xtjj
+            FROM
+                rpt_aqjg_zdmb_yhdwtj
+			WHERE
+			    tjrq=#{tjrq} AND sspcs=#{code} GROUP BY sszrq)c
+			on a.sszrqdm = c.sszrq
+			where
+			 a.area is not null
+    </select>
+    <select id="zyssYhTj" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            'pcs' as diff,
+            a.dept_name as area,
+	        b.ssfjdm,
+			COALESCE(b.sszs,0) as sszs,
+			COALESCE(b.yhsss,0) as yhsss,
+			COALESCE(b.yhfxs,0) as yhfxs,
+			COALESCE(b.yhzgs,0) as yhzgs,
+			COALESCE(b.yhwzgs,0) as yhwzgs
+        FROM
+	        dept_table a
+	    LEFT JOIN (
+	        SELECT
+		        ssfjdm,
+		        SUM ( sszs ) sszs,
+		        SUM ( yhsss ) yhsss,
+		        SUM ( yhfxs ) yhfxs,
+		        SUM ( yhzgs ) yhzgs,
+		        SUM ( yhwzgs ) yhwzgs
+	        FROM
+		        rpt_aqjg_zdmb_zyssyhtj
+	        WHERE
+		        tjrq = #{tjrq} GROUP BY ssfjdm ) b
+		ON a.dept_code = b.ssfjdm
+    ORDER BY a.dept_name
+     </select>
+    <select id="zYssYhTjPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+	     SELECT
+			'zrq' as diff,
+			case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end as area,
+			sspcsdm,
+		    SUM (sszs) sszs,
+		    SUM (yhsss) yhsss,
+		    SUM (yhfxs) yhfxs,
+		    SUM (yhzgs) yhzgs,
+		    SUM (yhwzgs) yhwzgs
+	    FROM
+		    rpt_aqjg_zdmb_zyssyhtj
+	    WHERE
+		    tjrq = #{tjrq} AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsmc,sspcsdm
+    </select>
+    <select id="zYssYhTjZrq" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+			sszrqmc as area,
+		    SUM (sszs) sszs,
+		    SUM (yhsss) yhsss,
+		    SUM (yhfxs) yhfxs,
+		    SUM (yhzgs) yhzgs,
+		    SUM (yhwzgs) yhwzgs
+	    FROM
+		    rpt_aqjg_zdmb_zyssyhtj
+	    WHERE
+		    tjrq =#{tjrq} AND sspcsdm=#{code} AND sszrqmc is not null GROUP BY sszrqmc
+    </select>
+    <select id="jgSsTj" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+			'pcs' as diff,
+			a.dept_name as area,
+			b.ssfxj,
+			COALESCE(b.qsysl,0) qsysl,
+			COALESCE(b.snum,0) snum,
+			COALESCE(b.sjnum,0) sjnum,
+			COALESCE(b.qxnum,0) qxnum,
+			COALESCE(b.jyznum,0) jyznum,
+			COALESCE(b.yjzbcszl,0) yjzbcszl,
+			COALESCE(b.azsxtsl,0) azsxtsl,
+			COALESCE(b.wazsxtsl,0) wazsxtsl,
+			COALESCE((b.yjzbcszl + b.jyznum),0) as sqtotle,
+			COALESCE((b.snum +b.sjnum+b.qxnum),0) as sjTotle,
+			COALESCE(c.dwsl,0) dwsl
+		FROM
+			dept_table a
+		LEFT JOIN
+		(select
+			ssfxj,
+			sum(qsyzl) as qsysl,
+			sum(case when jbdj = '1' then  qsyzl else 0 end) as snum,
+			sum(case when jbdj = '2' then  qsyzl else 0 end) as sjnum,
+			sum(case when jbdj = '3' then  qsyzl else 0 end) as qxnum,
+			sum(case when jbdj = '8' then  jyzsl else 0 end) as jyznum,
+			sum(case when jbdj = '8' then  yjzbcszl else 0 end) as yjzbcszl,
+			sum(azsxtsl) as azsxtsl,
+			sum(wazsxtsl) as wazsxtsl
+	 	FROM
+      		rpt_aqjg_zdmb_qsydwtj
+   		WHERE
+      		ssfxj not in('320597000000','320598000000') AND tjrq=#{tjrq} GROUP BY ssfxj) b
+			on a.dept_code = b.ssfxj
+		LEFT JOIN(
+		 SELECT
+		 	ssfjdm,
+		 	sum(dwsl) dwsl
+		FROM
+			rpt_aqjg_zdmb_zysssl
+		WHERE tjrq=#{tjrq} GROUP BY ssfjdm) c
+		on a.dept_code = c.ssfjdm
+     </select>
+	<select id="jgSsTjPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+		SELECT
+			'zrq' as diff,
+			a.area,
+			a.sspcs,
+			COALESCE(a.qsysl,0) qsysl,
+			COALESCE(a.snum,0) snum,
+			COALESCE(a.sjnum,0) sjnum,
+			COALESCE(a.qxnum,0) qxnum,
+			COALESCE(a.jyznum,0) jyznum,
+			COALESCE(a.yjzbcszl,0) yjzbcszl,
+			COALESCE(a.azsxtsl,0) azsxtsl,
+			COALESCE(a.wazsxtsl,0) wazsxtsl,
+			COALESCE((a.yjzbcszl + a.jyznum),0) as sqtotle,
+			COALESCE((a.snum +a.sjnum+a.qxnum),0) as sjTotle,
+			COALESCE(b.dwsl,0) dwsl
+		FROM
+		(select
+			case when position('分局' in pcs) > 0 then split_part(pcs, '分局', 2) else split_part(pcs, '公安局', 2) end as area,
+			sspcs,
+			sum(qsyzl) as qsysl,
+			sum(case when jbdj = '1' then  qsyzl else 0 end) as snum,
+			sum(case when jbdj = '2' then  qsyzl else 0 end) as sjnum,
+			sum(case when jbdj = '3' then  qsyzl else 0 end) as qxnum,
+			sum(case when jbdj = '8' then  jyzsl else 0 end) as jyznum,
+			sum(case when jbdj = '8' then  yjzbcszl else 0 end) as yjzbcszl,
+			sum(azsxtsl) as azsxtsl,
+			sum(wazsxtsl) as wazsxtsl
+	 	FROM
+      		rpt_aqjg_zdmb_qsydwtj
+   		WHERE
+      		ssfxj not in('320597000000','320598000000') AND tjrq=#{tjrq} AND ssfxj=#{code} AND pcs is not null GROUP BY pcs,sspcs) a
+		LEFT JOIN(
+			SELECT
+				sspcsdm,
+				sspcsmc,
+				sum(dwsl) dwsl
+			FROM
+				"rpt_aqjg_zdmb_zysssl"
+			WHERE
+				tjrq=#{tjrq}AND ssfjdm=#{code} GROUP BY sspcsdm,sspcsmc ) b
+		on a.sspcs = b.sspcsdm
+	</select>
+	<select id="jgSsTjZrq" resultType="java.util.HashMap" parameterType="java.util.List">
+		SELECT
+			a.zrq as area,
+			a.sssq,
+			COALESCE(a.qsysl,0) qsysl,
+			COALESCE(a.snum,0) snum,
+			COALESCE(a.sjnum,0) sjnum,
+			COALESCE(a.qxnum,0) qxnum,
+			COALESCE(a.jyznum,0) jyznum,
+			COALESCE(a.yjzbcszl,0) yjzbcszl,
+			COALESCE(a.azsxtsl,0) azsxtsl,
+			COALESCE(a.wazsxtsl,0) wazsxtsl,
+			COALESCE((a.yjzbcszl + a.jyznum),0) as sqtotle,
+			COALESCE((a.snum +a.sjnum+a.qxnum),0) as sjTotle,
+			COALESCE(b.dwsl,0) dwsl
+		FROM
+			(select
+				zrq,
+				sssq,
+				sum(qsyzl) as qsysl,
+				sum(case when jbdj = '1' then  qsyzl else 0 end) as snum,
+				sum(case when jbdj = '2' then  qsyzl else 0 end) as sjnum,
+				sum(case when jbdj = '3' then  qsyzl else 0 end) as qxnum,
+				sum(case when jbdj = '8' then  jyzsl else 0 end) as jyznum,
+				sum(case when jbdj = '8' then  yjzbcszl else 0 end) as yjzbcszl,
+				sum(azsxtsl) as azsxtsl,
+				sum(wazsxtsl) as wazsxtsl
+	 		FROM
+      			rpt_aqjg_zdmb_qsydwtj
+   			WHERE
+      			ssfxj not in('320597000000','320598000000') AND tjrq=#{tjrq} AND sspcs=#{code} AND zrq is not null GROUP BY zrq,sssq) a
+			LEFT JOIN(
+				SELECT
+					sszrqmc,
+					sszrqdm,
+					sum(dwsl) dwsl
+				FROM
+					"rpt_aqjg_zdmb_zysssl"
+				WHERE
+					tjrq=#{tjrq} AND sspcsdm=#{code} GROUP BY sszrqmc,sszrqdm ) b
+		 	on a.sssq = b.sszrqdm
+	</select>
+    <select id="zdDwYhTjSs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            'pcs' as diff,
+	        a.dept_name as area,
+	        b.ssfxj,
+	        COALESCE(b.sjza,0) as sjza,
+	        COALESCE(b.sjzayhdws,0) as sjzayhdws,
+	        COALESCE(b.sjzayhfxs,0) as sjzayhfxs,
+	        COALESCE(b.sjzayhzgs,0) as sjzayhzgs,
+	        COALESCE(b.sjzayhwzgs,0) as sjzayhwzgs,
+	        COALESCE(b.sjzd,0) as sjzd,
+	        COALESCE(b.sjzdyhdws,0) as sjzdyhdws,
+	        COALESCE(b.sjzdyhfxs,0) as sjzdyhfxs,
+	        COALESCE(b.sjyhzgs,0) as sjyhzgs,
+	        COALESCE(b.sjzdyhwzgs,0) as sjzdyhwzgs,
+	        COALESCE(b.sjjzd,0) as sjjzd,
+	        COALESCE(b.sjjzdyhdws,0) as sjjzdyhdws,
+	        COALESCE(b.sjjzdyhfxs,0) as sjjzdyhfxs,
+	        COALESCE(b.sjjyhzgs,0) as sjjyhzgs,
+	        COALESCE(b.sjjzdyhwzgs,0) as sjjzdyhwzgs,
+	        COALESCE(b.qxzd,0) as qxzd,
+	        COALESCE(b.qxzdyhdws,0) as qxzdyhdws,
+	        COALESCE(b.qxzdyhfxs,0) as qxzdyhfxs,
+	        COALESCE(b.qxzdyhzgs,0) as qxzdyhzgs,
+	        COALESCE(b.qxzdyhwzgs,0) as qxzdyhwzgs,
+	        COALESCE(b.sqzd,0) as sqzd,
+	        COALESCE(b.sqzdyhdws,0) as sqzdyhdws,
+	        COALESCE(b.sqzdyhfxs,0) as sqzdyhfxs,
+	        COALESCE(b.sqzdyhzgs,0) as sqzdyhzgs,
+	        COALESCE(b.sqzdyhwzgs,0) as sqzdyhwzgs
+	    from
+	        dept_table a
+        LEFT JOIN (
+	    select
+		    ssfxj,
+		    sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj in('1','2','3'))  then  yhcldwsl else 0 end) as sjza,
+		    sum(case when jbdj in('1','2','3') then  yhcldwsl else 0 end) as sjzayhdws,
+		    sum(case when jbdj in('1','2','3') then  yhsl else 0 end) as sjzayhfxs,
+		    sum(CASe WHEN (clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjzayhzgs,
+		    sum(case when (jbdj in('1','2','3') AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjzayhwzgs,
+		    sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='1')  then  yhcldwsl else 0 end) as sjzd,
+		    sum(case when jbdj='1' then  yhcldwsl else 0 end) as sjzdyhdws,
+		    sum(case when jbdj='1' then  yhsl else 0 end) as sjzdyhfxs,
+		    sum(CASe WHEN (jbdj='1' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjyhzgs,
+		    sum(case when (jbdj='1' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjzdyhwzgs,
+		    sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='2')  then  yhcldwsl else 0 end) as sjjzd,
+	    	sum(case when jbdj='2' then  yhcldwsl else 0 end) as sjjzdyhdws,
+	    	sum(case when jbdj='2' then  yhsl else 0 end) as sjjzdyhfxs,
+	    	sum(CASe WHEN (jbdj='2' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjjyhzgs,
+		    sum(case when (jbdj='2' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjjzdyhwzgs,
+            sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='3')  then  yhcldwsl else 0 end) as qxzd,
+		    sum(case when jbdj='3' then yhcldwsl else 0 end) as qxzdyhdws,
+		    sum(case when jbdj='3' then yhsl else 0 end) as qxzdyhfxs,
+		    sum(CASe WHEN (jbdj='3' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as qxzdyhzgs,
+		    sum(case when (jbdj='3' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as qxzdyhwzgs,
+            sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='8')  then  yhcldwsl else 0 end) as sqzd,
+		    sum(case when jbdj='8' then  yhcldwsl else 0 end) as sqzdyhdws,
+		    sum(case when jbdj='8' then  yhsl else 0 end) as sqzdyhfxs,
+		    sum(CASe WHEN (jbdj='8' and clzt = '6' AND jclx != '4' AND gljcjg = '1')OR (jclx = '4' AND clzt = '6' AND (gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sqzdyhzgs,
+		    sum(case when jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') then  yhsl else 0 end) as sqzdyhwzgs
+		from
+			rpt_aqjg_zdmb_yhdwtj
+		WHERE
+		    tjrq=#{tjrq} group by ssfxj) b
+        on a.dept_code = b.ssfxj
+     </select>
+    <select id="zdDwYhTjSsPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        select
+        'zrq' as diff,
+		sspcs,
+		case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end as area,
+		sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj in('1','2','3'))  then  yhcldwsl else 0 end) as sjza,
+		sum(case when jbdj in('1','2','3') then  yhcldwsl else 0 end) as sjzayhdws,
+		sum(case when jbdj in('1','2','3') then  yhsl else 0 end) as sjzayhfxs,
+		sum(CASe WHEN (clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjzayhzgs,
+		sum(case when (jbdj in('1','2','3') AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjzayhwzgs,
+		sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='1')  then  yhcldwsl else 0 end) as sjzd,
+		sum(case when jbdj='1' then  yhcldwsl else 0 end) as sjzdyhdws,
+		sum(case when jbdj='1' then  yhsl else 0 end) as sjzdyhfxs,
+		sum(CASe WHEN (jbdj='1' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjyhzgs,
+		sum(case when (jbdj='1' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjzdyhwzgs,
+		sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='2')  then  yhcldwsl else 0 end) as sjjzd,
+		sum(case when jbdj='2' then  yhcldwsl else 0 end) as sjjzdyhdws,
+		sum(case when jbdj='2' then  yhsl else 0 end) as sjjzdyhfxs,
+		sum(CASe WHEN (jbdj='2' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjjyhzgs,
+		sum(case when (jbdj='2' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjjzdyhwzgs,
+        sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='3')  then  yhcldwsl else 0 end) as qxzd,
+		sum(case when jbdj='3' then yhcldwsl else 0 end) as qxzdyhdws,
+		sum(case when jbdj='3' then yhsl else 0 end) as qxzdyhfxs,
+		sum(CASe WHEN (jbdj='3' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as qxzdyhzgs,
+		sum(case when (jbdj='3' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as qxzdyhwzgs,
+        sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='8')  then  yhcldwsl else 0 end) as sqzd,
+		sum(case when jbdj='8' then  yhcldwsl else 0 end) as sqzdyhdws,
+		sum(case when jbdj='8' then  yhsl else 0 end) as sqzdyhfxs,
+		sum(CASe WHEN (jbdj='8' and clzt = '6' AND jclx != '4' AND gljcjg = '1')OR (jclx = '4' AND clzt = '6' AND (gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sqzdyhzgs,
+		sum(case when jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') then  yhsl else 0 end) as sqzdyhwzgs
+		from
+			rpt_aqjg_zdmb_yhdwtj WHERE tjrq=#{tjrq} AND ssfxj=#{code} AND sspcsmc IS NOT NULL
+			group by sspcsmc,sspcs
+    </select>
+    <select id="zdDwYhTjSsZrq" resultType="java.util.HashMap" parameterType="java.util.List">
+        select
+		sszrqmc as area,
+		sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj in('1','2','3'))  then  yhcldwsl else 0 end) as sjza,
+		sum(case when jbdj in('1','2','3')  then  yhcldwsl else 0 end) as sjzayhdws,
+		sum(case when jbdj in('1','2','3')  then  yhsl else 0 end) as sjzayhfxs,
+		sum(CASe WHEN (clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjzayhzgs,
+		sum(case when (jbdj in('1','2','3') AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjzayhwzgs,
+		sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='1')  then  yhcldwsl else 0 end) as sjzd,
+		sum(case when jbdj='1' then  yhcldwsl else 0 end) as sjzdyhdws,
+		sum(case when jbdj='1' then  yhsl else 0 end) as sjzdyhfxs,
+		sum(CASe WHEN (jbdj='1' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjyhzgs,
+		sum(case when (jbdj='1' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjzdyhwzgs,
+		sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='2')  then  yhcldwsl else 0 end) as sjjzd,
+		sum(case when jbdj='2' then  yhcldwsl else 0 end) as sjjzdyhdws,
+		sum(case when jbdj='2' then  yhsl else 0 end) as sjjzdyhfxs,
+		sum(CASe WHEN (jbdj='2' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sjjyhzgs,
+		sum(case when (jbdj='2' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as sjjzdyhwzgs,
+        sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='3')  then  yhcldwsl else 0 end) as qxzd,
+		sum(case when jbdj='3' then yhcldwsl else 0 end) as qxzdyhdws,
+		sum(case when jbdj='3' then yhsl else 0 end) as qxzdyhfxs,
+		sum(CASe WHEN (jbdj='3' and clzt = '6' AND jclx != '4' AND gljcjg = '1' )OR (jclx = '4' AND clzt = '6' AND ( gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as qxzdyhzgs,
+		sum(case when (jbdj='3' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0'))  then  yhsl else 0 end) as qxzdyhwzgs,
+        sum(case when (jbspztmc='审批完毕' and yyzt='01' AND jbdj='8')  then  yhcldwsl else 0 end) as sqzd,
+		sum(case when jbdj='8' then  yhcldwsl else 0 end) as sqzdyhdws,
+		sum(case when jbdj='8' then  yhsl else 0 end) as sqzdyhfxs,
+		sum(CASe WHEN (jbdj='8' and clzt = '6' AND jclx != '4' AND gljcjg = '1')OR (jclx = '4' AND clzt = '6' AND (gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sqzdyhzgs,
+		sum(case when jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') then  yhsl else 0 end) as sqzdyhwzgs
+		from
+			rpt_aqjg_zdmb_yhdwtj WHERE tjrq=#{tjrq} AND sspcs=#{code} AND sszrqmc IS NOT NULL
+			group by sszrqmc
+    </select>
+    <select id="zySsXzTjSs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            'pcs' as diff,
+            a.dept_name as area,
+            b.ssfjdm,
+            b.sum,
+            (c.num2-c.num) as num
+        FROM
+            dept_table a
+        LEFT JOIN
+            (SELECT ssfjmc,ssfjdm,sum(dwsl) FROM "rpt_aqjg_zdmb_zysssl_zl" where tjrq &lt;=#{tjrq} GROUP BY ssfjmc,ssfjdm) b
+            on a.dept_code = b.ssfjdm
+        LEFT JOIN
+        (SELECT
+            DISTINCT ssfjdm,
+            COALESCE((SELECT sum(dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND ssfjdm=t.ssfjdm and tjrq=#{time}),0) as num,
+            COALESCE((SELECT sum(dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND ssfjdm=t.ssfjdm and tjrq=#{tjrq}),0) as num2
+        FROM
+            rpt_aqjg_zdmb_zysssl_zl t
+        WHERE 1=1 GROUP BY ssfjdm)c
+            on a.dept_code = c.ssfjdm
+    </select>
+    <select id="zySsXzTjSsPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            'zrq' as diff,
+            b.area,
+            a.sspcsdm,
+			a.sum,
+			(b.num2-b.num) as num
+        FROM
+		    (SELECT sspcsmc,sspcsdm,sum(dwsl) FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq &lt;=#{tjrq} and ssfjdm=#{code} GROUP BY sspcsdm,sspcsmc) a
+        LEFT JOIN
+            (SELECT
+                DISTINCT sspcsdm,
+		        case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end as area,
+                COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sspcsdm=t.sspcsdm and tjrq=#{time}),0) as num,
+                COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sspcsdm=t.sspcsdm and tjrq=#{tjrq}),0) as num2
+            FROM
+                rpt_aqjg_zdmb_zysssl_zl t
+            WHERE
+                1=1 AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsdm,sspcsmc) b
+	    on a.sspcsdm = b.sspcsdm
+    </select>
+    <select id="zySsXzTjSsZrq" resultType="java.util.HashMap" parameterType="java.util.List">
+        SELECT
+            b.area,
+			a.sum,
+			(b.num2-b.num) as num
+        FROM
+		    (SELECT sszrqdm,sszrqmc,sum(dwsl) FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq &lt;=#{tjrq} and sspcsdm=#{code} GROUP BY sszrqdm,sszrqmc) a
+        LEFT JOIN
+            (SELECT
+                DISTINCT sszrqdm,
+		        sszrqmc as area,
+                COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sszrqdm=t.sszrqdm and tjrq=#{time}),0) as num,
+                COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sszrqdm=t.sszrqdm and tjrq=#{tjrq}),0) as num2
+            FROM
+                rpt_aqjg_zdmb_zysssl_zl t
+            WHERE
+                1=1 AND sspcsdm=#{code} and sszrqmc is not null GROUP BY sszrqdm,sszrqmc) b
+	        on a.sszrqdm = b.sszrqdm
+    </select>
+	<select id="qsyAddSs" resultType="java.util.HashMap" parameterType="java.util.List">
+		SELECT
+			'pcs' as diff,
+			a.dept_name as area,
+			b.ssfjdm,
+			COALESCE(b.num,0) as num,
+			COALESCE(b.addnum,0) as addnum,
+			COALESCE(b.snum,0) as snum,
+			COALESCE(b.sjnum,0) as sjnum,
+			COALESCE(b.xqnum,0) as xqnum,
+			COALESCE(b.sqnum,0) as sqnum,
+			COALESCE(b.ynum,0) as ynum,
+			COALESCE(b.gnum,0) as gnum
+		FROM
+			dept_table a
+		LEFT JOIN
+			(SELECT
+				ssfjdm,
+				sum(case when tjrq &lt;=#{tjrq} then dwsl else 0 end) as num,
+				sum(case when tjrq=#{tjrq} then dwsl else 0 end) as addnum,
+				sum(case when (tjrq=#{tjrq} AND jbdjdm='1') then dwsl else 0 end) as snum,
+				sum(case when (tjrq=#{tjrq} AND jbdjdm='2') then dwsl else 0 end) as sjnum,
+				sum(case when (tjrq=#{tjrq} AND jbdjdm='3') then dwsl else 0 end) as xqnum,
+				sum(case when (tjrq=#{tjrq} AND jbdjdm='8') then dwsl else 0 end) as sqnum,
+				sum(case when (tjrq=#{tjrq} AND jbdjdm='9') then dwsl else 0 end) as ynum,
+				sum(case when (tjrq=#{tjrq} AND jbdjdm='7') then dwsl else 0 end) as gnum
+			FROM
+				rpt_aqjg_zdmb_sydwsl_zl
+			GROUP BY ssfjdm) b
+		on a.dept_code = b.ssfjdm
+	</select>
+	<select id="qsyAddSsPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+		SELECT
+			'zrq' as diff,
+			sspcsdm,
+			case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end as area,
+			sum(case when tjrq &lt;=#{tjrq} then dwsl else 0 end) as num,
+			sum(case when tjrq=#{tjrq} then dwsl else 0 end) as addnum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='1') then dwsl else 0 end) as snum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='2') then dwsl else 0 end) as sjnum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='3') then dwsl else 0 end) as xqnum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='8') then dwsl else 0 end) as sqnum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='9') then dwsl else 0 end) as ynum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='7') then dwsl else 0 end) as gnum
+		FROM
+			rpt_aqjg_zdmb_sydwsl_zl
+		WHERE
+			ssfjdm=#{code} AND sspcsdm is not null GROUP BY sspcsdm,sspcsmc
+	</select>
+	<select id="qsyAddSsZrq" resultType="java.util.HashMap" parameterType="java.util.List">
+		SELECT
+			sszrqmc as area,
+			sum(case when tjrq &lt;=#{tjrq} then dwsl else 0 end) as num,
+			sum(case when tjrq=#{tjrq} then dwsl else 0 end) as addnum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='1') then dwsl else 0 end) as snum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='2') then dwsl else 0 end) as sjnum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='3') then dwsl else 0 end) as xqnum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='8') then dwsl else 0 end) as sqnum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='9') then dwsl else 0 end) as ynum,
+			sum(case when (tjrq=#{tjrq} AND jbdjdm='7') then dwsl else 0 end) as gnum
+		FROM
+			rpt_aqjg_zdmb_sydwsl_zl
+		WHERE
+			sspcsdm=#{code} AND sspcsdm is not null and sszrqmc is not null GROUP BY sszrqmc
+	</select>
+	<select id="zySsXzTjYd" resultType="java.util.HashMap" parameterType="java.util.List">
+		SELECT
+			'pcs' diff,
+			a.dept_name area,
+			a.dept_code code,
+			COALESCE(b.addone,0) addone,
+			COALESCE(b.addtwo,0) addtwo,
+			COALESCE(b.addthree,0) addthree,
+			COALESCE(b.addfour,0) addfour,
+			COALESCE(b.addfive,0) addfive,
+			COALESCE(b.addsix,0) addsix,
+			COALESCE(b.addseven,0) addseven,
+			COALESCE(b.addeigth,0) addeigth,
+			COALESCE(b.addnine,0) addnine,
+			COALESCE(b.addten,0) addten,
+			COALESCE(b.addeleven,0) addeleven,
+			COALESCE(b.addtwelve,0) addtwelve,
+			b.one,
+			b.two,
+			b.three,
+			b.four,
+			b.five,
+			b.six,
+			b.seven,
+			b.eigth,
+			b.nine,
+			b.ten,
+			b.eleven,
+			b.twelve
+		FROM
+			dept_table a
+		LEFT JOIN
+		(SELECT
+			ssfjdm,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='01' AND tjrq like  '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addone,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='02'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addtwo,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='03'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addthree,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='04'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addfour,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='05'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addfive,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='06'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addsix,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='07'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addseven,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='08'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addeigth,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='09'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addnine,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='10'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addten,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='11'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addeleven,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='12'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addtwelve,
+			SUM(CASE WHEN tjrq &lt;=#{year}||'01' THEN dwsl ELSE 0 END) as one,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'02' THEN dwsl ELSE 0 END) as two,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'03' THEN dwsl ELSE 0 END) as three,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'04'THEN dwsl ELSE 0 END) as four,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'05'THEN dwsl ELSE 0 END) as five,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'06'THEN dwsl ELSE 0 END) as six,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'07'THEN dwsl ELSE 0 END) as seven,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'08'THEN dwsl ELSE 0 END) as eigth,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'09'THEN dwsl ELSE 0 END) as nine,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'10'THEN dwsl ELSE 0 END) as ten,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'11'THEN dwsl ELSE 0 END) as eleven,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'12'THEN dwsl ELSE 0 END) as twelve
+		FROM
+			rpt_aqjg_zdmb_zysssl_zl
+		GROUP BY ssfjdm) b
+		on a.dept_code = b.ssfjdm
+	</select>
+	<select id="zySsXzTjYdPcs" resultType="java.util.HashMap" parameterType="java.util.List">
+		SELECT
+			'zrq' diff,
+			b.sspcsdm code,
+			b.sspcsmc area,
+			COALESCE(b.addone,0) addone,
+			COALESCE(b.addtwo,0) addtwo,
+			COALESCE(b.addthree,0) addthree,
+			COALESCE(b.addfour,0) addfour,
+			COALESCE(b.addfive,0) addfive,
+			COALESCE(b.addsix,0) addsix,
+			COALESCE(b.addseven,0) addseven,
+			COALESCE(b.addeigth,0) addeigth,
+			COALESCE(b.addnine,0) addnine,
+			COALESCE(b.addten,0) addten,
+			COALESCE(b.addeleven,0) addeleven,
+			COALESCE(b.addtwelve,0) addtwelve,
+			b.one,
+			b.two,
+			b.three,
+			b.four,
+			b.five,
+			b.six,
+			b.seven,
+			b.eigth,
+			b.nine,
+			b.ten,
+			b.eleven,
+			b.twelve
+		FROM
+		(SELECT
+			sspcsmc,
+			sspcsdm,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='01' AND tjrq like  '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addone,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='02'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addtwo,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='03'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addthree,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='04'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addfour,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='05'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addfive,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='06'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addsix,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='07'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addseven,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='08'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addeigth,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='09'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addnine,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='10'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addten,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='11'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addeleven,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='12'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addtwelve,
+			SUM(CASE WHEN tjrq &lt;=#{year}||'01' THEN dwsl ELSE 0 END) as one,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'02' THEN dwsl ELSE 0 END) as two,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'03' THEN dwsl ELSE 0 END) as three,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'04'THEN dwsl ELSE 0 END) as four,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'05'THEN dwsl ELSE 0 END) as five,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'06'THEN dwsl ELSE 0 END) as six,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'07'THEN dwsl ELSE 0 END) as seven,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'08'THEN dwsl ELSE 0 END) as eigth,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'09'THEN dwsl ELSE 0 END) as nine,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'10'THEN dwsl ELSE 0 END) as ten,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'11'THEN dwsl ELSE 0 END) as eleven,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'12'THEN dwsl ELSE 0 END) as twelve
+		FROM
+			rpt_aqjg_zdmb_zysssl_zl
+		WHERE
+			ssfjdm=#{code} GROUP BY sspcsmc,sspcsdm) b
+	</select>
+	<select id="zySsXzTjYdZrq" resultType="java.util.HashMap" parameterType="java.util.List">
+		SELECT
+		b.sszrqmc area,
+		COALESCE(b.addone,0) addone,
+		COALESCE(b.addtwo,0) addtwo,
+		COALESCE(b.addthree,0) addthree,
+		COALESCE(b.addfour,0) addfour,
+		COALESCE(b.addfive,0) addfive,
+		COALESCE(b.addsix,0) addsix,
+		COALESCE(b.addseven,0) addseven,
+		COALESCE(b.addeigth,0) addeigth,
+		COALESCE(b.addnine,0) addnine,
+		COALESCE(b.addten,0) addten,
+		COALESCE(b.addeleven,0) addeleven,
+		COALESCE(b.addtwelve,0) addtwelve,
+		b.one,
+		b.two,
+		b.three,
+		b.four,
+		b.five,
+		b.six,
+		b.seven,
+		b.eigth,
+		b.nine,
+		b.ten,
+		b.eleven,
+		b.twelve
+		FROM
+		(SELECT
+		sszrqmc,
+		SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='01' AND tjrq like  '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addone,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='02'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addtwo,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='03'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addthree,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='04'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addfour,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='05'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addfive,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='06'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addsix,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='07'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addseven,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='08'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addeigth,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='09'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addnine,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='10'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addten,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='11'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addeleven,
+			SUM(CASE WHEN (SUBSTRING(tjrq,5,6) ='12'AND tjrq like '%' || #{year} ||'%')THEN dwsl ELSE 0 END) as addtwelve,
+			SUM(CASE WHEN tjrq &lt;=#{year}||'01' THEN dwsl ELSE 0 END) as one,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'02' THEN dwsl ELSE 0 END) as two,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'03' THEN dwsl ELSE 0 END) as three,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'04'THEN dwsl ELSE 0 END) as four,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'05'THEN dwsl ELSE 0 END) as five,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'06'THEN dwsl ELSE 0 END) as six,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'07'THEN dwsl ELSE 0 END) as seven,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'08'THEN dwsl ELSE 0 END) as eigth,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'09'THEN dwsl ELSE 0 END) as nine,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'10'THEN dwsl ELSE 0 END) as ten,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'11'THEN dwsl ELSE 0 END) as eleven,
+			SUM(CASE WHEN tjrq &lt;=#{year} ||'12'THEN dwsl ELSE 0 END) as twelve
+		FROM
+		rpt_aqjg_zdmb_zysssl_zl
+		WHERE sspcsdm=#{code}
+		GROUP BY sszrqmc) b
+	</select>
+</mapper>
