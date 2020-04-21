@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wzj
@@ -14,6 +15,41 @@ import java.util.List;
 @Repository
 public interface RoadMapper {
     List<HashMap> test();
+    /**
+     *  安全隐患-隐患数据
+     * @author wzj
+     * @param map
+     * @return
+     */
+    List<Map> anTotleNum(Map map);
+
+    /**
+     *  各大队隐患处理情况分析
+     * @author wzj
+     * @param map
+     * @return
+     */
+    List<Map> yhQusFx(Map map);
+
+    List<Map> yhQusGs(Map map);
+
+    List<Map> yhQusXs(Map map);
+
+    /**
+     *  重要节点分析
+     * @author wzj
+     * @param map
+     * @return
+     */
+    List<Map> zyJdFx(Map map);
+
+    /**
+     *  隐患类型分析
+     * @author wzj
+     * @param map
+     * @return
+     */
+    List<Map> yhLxFx(Map map);
 
     List<HashMap> getAddress();
 

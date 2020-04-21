@@ -1,7 +1,7 @@
 package com.oceansoft.szga.smp.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.entity.SourceNum;
 import com.oceansoft.szga.smp.mapper.RoadMapper;
@@ -9,6 +9,7 @@ import com.oceansoft.szga.smp.service.RoadService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +29,7 @@ public class RoadServiceImpl implements RoadService {
     private RoadMapper roadMapper;
 
     @Override
+
     public ApiResult test() {
         List<HashMap> data = roadMapper.test();
         return new ApiResult().success(200, "成功", data);
@@ -121,5 +123,36 @@ public class RoadServiceImpl implements RoadService {
             sourceNum.setNynew(new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime()));
         }
         return sourceNum;
+    }
+
+    @Override
+    public ApiResult anTotleNum(Map map) {
+        List<Map> data = roadMapper.anTotleNum(map);
+        return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
+    public ApiResult yhQusFx(String type,Map map) {
+        List<Map> data = null;
+        if("市区".equals(type)){
+             data = roadMapper.yhQusFx(map);
+        }else if("五县市".equals(type)){
+             data = roadMapper.yhQusXs(map);
+        }else if("高速".equals(type)) {
+             data = roadMapper.yhQusGs(map);
+        }
+        return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
+    public ApiResult zyJdFx(Map map) {
+        List<Map> data = roadMapper.zyJdFx(map);
+        return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
+    public ApiResult yhLxFx(Map map) {
+        List<Map> data = roadMapper.yhLxFx(map);
+        return new ApiResult().success(200, "成功", data);
     }
 }
