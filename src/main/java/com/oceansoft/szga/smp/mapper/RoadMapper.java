@@ -1,5 +1,6 @@
 package com.oceansoft.szga.smp.mapper;
 
+import com.oceansoft.szga.smp.entity.SourceNum;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -13,4 +14,6 @@ import java.util.List;
 @Repository
 public interface RoadMapper {
     List<HashMap> test();
+
+    HashMap getSourceSum(SourceNum sourceNum);
 }

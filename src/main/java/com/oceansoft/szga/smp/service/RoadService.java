@@ -1,6 +1,9 @@
 package com.oceansoft.szga.smp.service;
+import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.HashMap;
 
 /**
  *  道路交通
@@ -11,5 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface RoadService {
     ApiResult test();
+
+    HashMap getSourceSum(JSONObject json);
 }
 

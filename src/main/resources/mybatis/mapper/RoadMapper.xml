@@ -9,4 +9,19 @@
         where
         tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')
     </select>
+
+    <select id="getSourceSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
+        WITH dljtytgltj AS
+        (
+            select * from (
+                select t.lx, t.year || '-' || t.mon as ny, sl
+                FROM rpt_aqjg_ggjt_dljtytgltj t
+                where t.tjrq = to_char(CURRENT_DATE -1, 'yyyy-MM-dd') and lx in ('1','2','3')
+            ) dlj where ny BETWEEN #{nyold} and #{nynew}
+        )
+        select
+        (select sum(sl) from dljtytgltj where lx = '1') as qysum,
+        (select sum(sl) from dljtytgltj where lx = '2') as clsum,
+        (select sum(sl) from dljtytgltj where lx = '3') as rysum
+    </select>
 </mapper>
