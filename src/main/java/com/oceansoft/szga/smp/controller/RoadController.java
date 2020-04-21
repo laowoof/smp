@@ -25,10 +25,22 @@ public class RoadController {
         return data;
     }
 
+    @GetMapping("getAddress")
+    public ApiResult getAddresses(){
+        return roadService.getAddress();
+    }
+
     @PostMapping("getSourceSum")
     @ResponseBody
     public ApiResult getSourceSum(@RequestBody JSONObject json){
         HashMap result = roadService.getSourceSum(json);
         return new ApiResult().success(200, "获取数据成功!", result);
+    }
+
+    @PostMapping("getFirmAnalzeSum")
+    @ResponseBody
+    public ApiResult getFirmAnalzeSum(@RequestBody JSONObject json){
+        return roadService.getFirmAnalzeSum(json);
+
     }
 }

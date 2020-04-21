@@ -15,5 +15,9 @@ import java.util.List;
 public interface RoadMapper {
     List<HashMap> test();
 
+    List<HashMap> getAddress();
+
     HashMap getSourceSum(SourceNum sourceNum);
+
+    List<HashMap> getFirmAnalzeSum(SourceNum sourceNum);
 }

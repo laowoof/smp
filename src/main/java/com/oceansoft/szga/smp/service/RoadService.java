@@ -15,6 +15,10 @@ import java.util.HashMap;
 public interface RoadService {
     ApiResult test();
 
+    ApiResult getAddress();
+
     HashMap getSourceSum(JSONObject json);
+
+    ApiResult getFirmAnalzeSum(JSONObject json);
 }
 

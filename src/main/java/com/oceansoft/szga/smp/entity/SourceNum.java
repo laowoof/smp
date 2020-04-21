@@ -15,6 +15,8 @@ public class SourceNum {
     private String nyold;
     //年月新
     private String nynew;
+    //deptid
+    private String deptId;
 
     public String getType() {
         return type;
@@ -38,5 +40,13 @@ public class SourceNum {
 
     public void setNynew(String nynew) {
         this.nynew = nynew;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
 }
