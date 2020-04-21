@@ -47,13 +47,14 @@ public class RoadServiceImpl implements RoadService {
                 //设置为去年
                 Calendar c = Calendar.getInstance();
                 c.add(Calendar.YEAR, -1);
-                sourceNum.setNyold(new SimpleDateFormat("yyyy").format(c.getTime()));
-                sourceNum.setNynew(new SimpleDateFormat("yyyy").format(c.getTime()));
+                sourceNum.setNyold(new SimpleDateFormat("yyyy-MM").format(c.getTime()));
+                c.add(Calendar.MONTH, 11);
+                sourceNum.setNynew(new SimpleDateFormat("yyyy-MM").format(c.getTime()));
             }
         }else{
-            //暂时一进来先获取本年本月的 之后待定
-            sourceNum.setNyold(new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime()));
-            sourceNum.setNynew(new SimpleDateFormat("yyyy-MM").format(Calendar.getInstance().getTime()));
+            //暂时一进来先获取本年的 之后待定
+            sourceNum.setNyold(new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime()));
+            sourceNum.setNynew(new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime()));
         }
         return roadMapper.getSourceSum(sourceNum);
     }

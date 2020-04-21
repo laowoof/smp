@@ -17,7 +17,14 @@
                 select t.lx, t.year || '-' || t.mon as ny, sl
                 FROM rpt_aqjg_ggjt_dljtytgltj t
                 where t.tjrq = to_char(CURRENT_DATE -1, 'yyyy-MM-dd') and lx in ('1','2','3')
-            ) dlj where ny BETWEEN #{nyold} and #{nynew}
+            ) dlj where 1=1
+            <if test="type=='nf'">
+                and ny BETWEEN #{nyold} || '-01' and #{nynew} || '-12'
+            </if>
+            <if test="type=='yf'">
+                and ny BETWEEN #{nyold} and #{nynew}
+            </if>
+
         )
         select
         (select sum(sl) from dljtytgltj where lx = '1') as qysum,
