@@ -47,12 +47,31 @@ public interface RoadService {
      */
     ApiResult yhLxFx(Map map);
 
+    /**
+     * 获取十一个区县和全区
+     * @return 区划代码和名称
+     */
     ApiResult getAddress();
 
+    /**
+     * 页面按年/月/1月的查询按钮
+     * @param json
+     * @return 企业总量、重点车辆数、重点人员数
+     */
     HashMap getSourceSum(JSONObject json);
 
+    /**
+     * 企业性质/类型分析
+     * @param json
+     * @return 处理后的数据
+     */
     ApiResult getFirmAnalzeSum(JSONObject json);
 
+    /**
+     * 治理成果统计/类型分析、完成率
+     * @param json
+     * @return 处理后的数据
+     */
     ApiResult getAchievCount(JSONObject json);
 }
 

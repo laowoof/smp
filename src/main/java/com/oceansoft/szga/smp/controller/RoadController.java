@@ -73,11 +73,20 @@ public class RoadController {
         return data;
     }
 
+    /**
+     * 获取十一个区县和全区
+     * @return 区划代码和名称
+     */
     @GetMapping("getAddress")
     public ApiResult getAddresses(){
         return roadService.getAddress();
     }
 
+    /**
+     * 页面按年/月/1月的查询按钮
+     * @param json
+     * @return 企业总量、重点车辆数、重点人员数
+     */
     @PostMapping("getSourceSum")
     @ResponseBody
     public ApiResult getSourceSum(@RequestBody JSONObject json){
@@ -85,6 +94,11 @@ public class RoadController {
         return new ApiResult().success(200, "获取数据成功!", result);
     }
 
+    /**
+     * 企业性质/类型分析
+     * @param json
+     * @return 处理后的数据
+     */
     @PostMapping("getFirmAnalzeSum")
     @ResponseBody
     public ApiResult getFirmAnalzeSum(@RequestBody JSONObject json){
@@ -92,6 +106,11 @@ public class RoadController {
 
     }
 
+    /**
+     * 治理成果统计/类型分析、完成率
+     * @param json
+     * @return 处理后的数据
+     */
     @PostMapping("getAchievCount")
     @ResponseBody
     public ApiResult getAchievCount(@RequestBody JSONObject json){

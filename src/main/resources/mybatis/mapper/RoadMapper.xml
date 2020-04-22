@@ -9,6 +9,7 @@
         where
         tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')
     </select>
+
     <select id="anTotleNum" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
@@ -34,27 +35,6 @@
         ) dll order by xqdm desc
     </select>
 
-    <select id="getSourceSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
-        WITH dljtytgltj AS
-        (
-            select * from (
-                select t.lx, t.year || '-' || t.mon as ny, sl
-                FROM rpt_aqjg_ggjt_dljtytgltj t
-                where t.tjrq = to_char(CURRENT_DATE -2, 'yyyy-MM-dd') and lx in ('1','2','3')
-            ) dlj where 1=1
-            <if test="type=='nf'">
-                and ny BETWEEN #{nyold} || '-01' and #{nynew} || '-12'
-            </if>
-            <if test="type=='yf'">
-                and ny BETWEEN #{nyold} and #{nynew}
-            </if>
-
-        )
-        select
-        (select sum(sl) from dljtytgltj where lx = '1') as qysum,
-        (select sum(sl) from dljtytgltj where lx = '2') as clsum,
-        (select sum(sl) from dljtytgltj where lx = '3') as rysum
-    </select>
     <select id="yhQusFx" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
     SELECT
@@ -75,6 +55,7 @@
         </if>
         GROUP BY ddbm,ddmc ORDER BY ddmc
     </select>
+
     <select id="yhQusXs" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
@@ -95,6 +76,7 @@
         </if>
         GROUP BY ddbm,ddmc ORDER BY ddmc
     </select>
+
     <select id="yhQusGs" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
@@ -115,6 +97,7 @@
         </if>
         GROUP BY ddbm,ddmc ORDER BY ddmc
     </select>
+
     <select id="zyJdFx" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj  as (SELECT year||'-'||mon as date,year as yearDate,jdlx,jdmc,zblx,zblxmc,sl FROM rpt_aqjg_ggjt_yhjdtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
@@ -145,6 +128,7 @@
             date between #{month} and #{month2}
         </if>
     </select>
+
     <select id="yhLxFx" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj  as (SELECT year||'-'||mon as date,year as yearDate,yhlxmc,yhwcsl,yhlx,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
@@ -161,6 +145,28 @@
             date between #{month} and #{month2}
         </if>
         GROUP BY yhlxmc,yhlx
+    </select>
+
+    <select id="getSourceSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
+        WITH dljtytgltj AS
+        (
+        select * from (
+        select t.lx, t.year || '-' || t.mon as ny, sl
+        FROM rpt_aqjg_ggjt_dljtytgltj t
+        where t.tjrq = to_char(CURRENT_DATE -2, 'yyyy-MM-dd') and lx in ('1','2','3')
+        ) dlj where 1=1
+        <if test="type=='nf'">
+            and ny BETWEEN #{nyold} || '-01' and #{nynew} || '-12'
+        </if>
+        <if test="type=='yf'">
+            and ny BETWEEN #{nyold} and #{nynew}
+        </if>
+
+        )
+        select
+        (select sum(sl) from dljtytgltj where lx = '1') as qysum,
+        (select sum(sl) from dljtytgltj where lx = '2') as clsum,
+        (select sum(sl) from dljtytgltj where lx = '3') as rysum
     </select>
 
     <select id="getFirmAnalzeSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">

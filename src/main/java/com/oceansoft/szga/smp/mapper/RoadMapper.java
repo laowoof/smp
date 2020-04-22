@@ -51,11 +51,30 @@ public interface RoadMapper {
      */
     List<Map> yhLxFx(Map map);
 
+    /**
+     * 获取十一个区县和全区
+     * @return 区划代码和名称
+     */
     List<HashMap> getAddress();
 
+    /**
+     * 页面按年/月/1月的查询按钮
+     * @param sourceNum 条件
+     * @return 企业总量、重点车辆数、重点人员数
+     */
     HashMap getSourceSum(SourceNum sourceNum);
 
+    /**
+     * 企业性质/类型分析
+     * @param sourceNum 条件
+     * @return 处理后的数据
+     */
     List<HashMap> getFirmAnalzeSum(SourceNum sourceNum);
 
+    /**
+     * 治理成果统计/类型分析、完成率
+     * @param sourceNum 条件
+     * @return 处理后的数据
+     */
     List<HashMap> getAchievCount(SourceNum sourceNum);
 }

@@ -56,6 +56,7 @@ public class RoadServiceImpl implements RoadService {
             List<HashMap> ydatas = new ArrayList<>();
             List<HashMap> ldatas = new ArrayList<>();
             for(HashMap hashMap : has){
+                //区分分类合计 只有4种类型
                 if("flhj".equals(hashMap.get("xzxlmc"))){
                     ydatas.add(hashMap);
                     yboole[Integer.parseInt(hashMap.get("xzdl").toString()) - 1] = true;
@@ -63,6 +64,7 @@ public class RoadServiceImpl implements RoadService {
                     ldatas.add(hashMap);
                 }
             }
+            //处理数据中没有找到的类型并赋值为空
             for(int i=0 ;i<yboole.length; i++){
                 HashMap ydata = new HashMap();
                 if(!yboole[i]){
@@ -111,25 +113,29 @@ public class RoadServiceImpl implements RoadService {
         sourceNum.setDeptId(json.getString("deptId"));
         sourceNum.setCgtype(json.getString("cgtype"));
         JSONArray nyList = json.getJSONArray("nyList");
+        //开始处理时间 前端传参都是 yyyy-MM 是个List 且只有2个值
+        //判断是否有选择时间
         if(nyList.size() > 0){
             String nyold = nyList.get(0).toString();
             String nynew = nyList.get(1).toString();
+            //判断查询类型是否为按年 拆分只要年份
             if("nf".equals(sourceNum.getType())){
                 sourceNum.setNyold(nyold.split("-")[0]);
                 sourceNum.setNynew(nynew.split("-")[0]);
+            //判断查询类型是否按月 则直接赋值
             }else if("yf".equals(sourceNum.getType())){
                 sourceNum.setNyold(nyold);
                 sourceNum.setNynew(nynew);
+            //判断两个值是否选择的值是一样且月份为1月 则赋值为去年 查询类型赋值强制为按年
             }else if(nyold.equals(nynew) && nyold.split("-")[1].equals("01") || nynew.split("-")[1].equals("01")){
-                //设置为去年
+                sourceNum.setType("nf");
                 Calendar c = Calendar.getInstance();
                 c.add(Calendar.YEAR, -1);
-                sourceNum.setNyold(new SimpleDateFormat("yyyy-MM").format(c.getTime()));
-                c.add(Calendar.MONTH, 11);
-                sourceNum.setNynew(new SimpleDateFormat("yyyy-MM").format(c.getTime()));
+                sourceNum.setNyold(new SimpleDateFormat("yyyy").format(c.getTime()));
+                sourceNum.setNynew(new SimpleDateFormat("yyyy").format(c.getTime()));
             }
         }else{
-            //暂时一进来先获取本年的 之后待定
+            //没没有选择时间 则暂定获取今年的
             sourceNum.setNyold(new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime()));
             sourceNum.setNynew(new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime()));
         }
