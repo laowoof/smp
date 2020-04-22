@@ -52,5 +52,7 @@ public interface RoadService {
     HashMap getSourceSum(JSONObject json);
 
     ApiResult getFirmAnalzeSum(JSONObject json);
+
+    ApiResult getAchievCount(JSONObject json);
 }
 

@@ -27,7 +27,11 @@
     </select>
 
     <select id="getAddress" resultType="java.util.HashMap">
-        select distinct xqdm AS deptid, xqmc as deptname from rpt_aqjg_ggjt_qyxzfx order by xqdm
+        select xqdm AS deptid,xqmc AS deptname from (
+            select 'all' AS xqdm, '全市信息' as xqmc
+            union all
+            select xqdm , xqmc from rpt_aqjg_ggjt_qyxzfx GROUP BY xqdm,xqmc order by xqdm
+        ) dll order by xqdm desc
     </select>
 
     <select id="getSourceSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
@@ -36,7 +40,7 @@
             select * from (
                 select t.lx, t.year || '-' || t.mon as ny, sl
                 FROM rpt_aqjg_ggjt_dljtytgltj t
-                where t.tjrq = to_char(CURRENT_DATE -1, 'yyyy-MM-dd') and lx in ('1','2','3')
+                where t.tjrq = to_char(CURRENT_DATE -2, 'yyyy-MM-dd') and lx in ('1','2','3')
             ) dlj where 1=1
             <if test="type=='nf'">
                 and ny BETWEEN #{nyold} || '-01' and #{nynew} || '-12'
@@ -162,27 +166,49 @@
     <select id="getFirmAnalzeSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
         WITH qyxzfx AS
             (
-                select * from (
+              select * from (
                   select t.year || '-' || t.mon as ny, t.xzdl, t.xzdlmc, t.xzxl, coalesce(t.xzxlmc, t.xzdlmc) as xzxlmc, dwsl, xqdm, xqmc
                 from rpt_aqjg_ggjt_qyxzfx t
-                where t.tjrq = to_char(CURRENT_DATE -1, 'yyyy-MM-dd')
+                where t.tjrq = to_char(CURRENT_DATE -2, 'yyyy-MM-dd')
                 and t.xzdl in ('1','2','3','4')
-                ) dlj where 1=1
+              ) dlj where 1=1
                 <if test="type=='nf'">
-                    and ny BETWEEN #{nyold} || '-01' and #{nynew} || '-12'
+                    and ny between #{nyold} || '-01' and #{nynew} || '-12'
                 </if>
                 <if test="type=='yf'">
-                    and ny BETWEEN #{nyold} and #{nynew}
+                    and ny between #{nyold} and #{nynew}
                 </if>
             )
-            select xzdl,xzdlmc,'flhj' xzxlmc, sum(dwsl) dwsl from qyxzfx group by xzdl,xzdlmc
+            select xzdl,xzdlmc,'flhj' xzxlmc, sum(dwsl) dwsl from qyxzfx where 1=1 <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdl,xzdlmc
             union all
-            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where xzdl='1' group by xzdlmc,xzxlmc,xzdl
+            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='1' <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdlmc,xzxlmc,xzdl
             union all
-            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where xzdl='2' group by xzdlmc,xzxlmc,xzdl
+            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='2' <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdlmc,xzxlmc,xzdl
             union all
-            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where xzdl='3' group by xzdlmc,xzxlmc,xzdl
+            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='3' <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdlmc,xzxlmc,xzdl
             union all
-            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where xzdl='4' group by xzdlmc,xzxlmc,xzdl
+            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='4' <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdlmc,xzxlmc,xzdl
+    </select>
+
+    <select id="getAchievCount" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
+        WITH zllxtj AS (
+          select * from (
+            select t.year || '-' || t.mon as ny, t.lxdm, t.lxmc, dddm, ddmc, zddm, zdmc, rws, wcs
+            from rpt_aqjg_ggjt_zllxtj t where 1=1 and t.tjrq = to_char(CURRENT_DATE -2, 'yyyy-MM-dd')
+            and dddm like ('3205%') and zddm like ('3205%')
+          )dlj where 1=1
+            <if test="type=='nf'">
+                and ny between #{nyold} || '-01' and #{nynew} || '-12'
+            </if>
+            <if test="type=='yf'">
+                and ny between #{nyold} and #{nynew}
+            </if>
+        )
+        <if test="cgtype=='tj'"> select dddm,ddmc,sum(rws) rws,sum(wcs) wcs,round(sum(wcs)/sum(rws)*100,1) wcl from ( </if>
+        <if test="cgtype=='lx'"> select lxmc,sum(rws) rws,sum(wcs) wcs from ( </if>
+        select lxdm, lxmc, dddm, ddmc, zddm, zdmc,sum(rws) rws,sum(wcs) wcs from zllxtj group by lxdm, lxmc, dddm, ddmc, zddm, zdmc
+        ) dll group by
+        <if test="cgtype=='tj'"> dddm,ddmc order by wcl desc, wcs desc</if>
+        <if test="cgtype=='lx'"> lxdm,lxmc </if>
     </select>
 </mapper>

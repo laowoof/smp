@@ -11,6 +11,8 @@ public class SourceNum {
 
     //查询类型
     private String type;
+    //成果查询类型
+    private String cgtype;
     //年月旧
     private String nyold;
     //年月新
@@ -24,6 +26,14 @@ public class SourceNum {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getCgtype() {
+        return cgtype;
+    }
+
+    public void setCgtype(String cgtype) {
+        this.cgtype = cgtype;
     }
 
     public String getNyold() {

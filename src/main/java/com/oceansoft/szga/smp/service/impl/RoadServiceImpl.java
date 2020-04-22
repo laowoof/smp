@@ -86,9 +86,18 @@ public class RoadServiceImpl implements RoadService {
             listMap.put("ydata",ydatas);
             listMap.put("ldata",ldatas);
             return new ApiResult().success(200,"获取成功", listMap);
-        }else{
-            return new ApiResult().failure("暂无数据");
         }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getAchievCount(JSONObject json) {
+        SourceNum sourceNum = checkSourceEntity(json);
+        List<HashMap> has = roadMapper.getAchievCount(sourceNum);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
     }
 
     /**
@@ -99,6 +108,8 @@ public class RoadServiceImpl implements RoadService {
     private SourceNum checkSourceEntity(JSONObject json){
         SourceNum sourceNum = new SourceNum();
         sourceNum.setType(json.getString("type"));
+        sourceNum.setDeptId(json.getString("deptId"));
+        sourceNum.setCgtype(json.getString("cgtype"));
         JSONArray nyList = json.getJSONArray("nyList");
         if(nyList.size() > 0){
             String nyold = nyList.get(0).toString();

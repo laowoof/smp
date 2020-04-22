@@ -56,4 +56,6 @@ public interface RoadMapper {
     HashMap getSourceSum(SourceNum sourceNum);
 
     List<HashMap> getFirmAnalzeSum(SourceNum sourceNum);
+
+    List<HashMap> getAchievCount(SourceNum sourceNum);
 }

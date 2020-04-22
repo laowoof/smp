@@ -91,4 +91,11 @@ public class RoadController {
         return roadService.getFirmAnalzeSum(json);
 
     }
+
+    @PostMapping("getAchievCount")
+    @ResponseBody
+    public ApiResult getAchievCount(@RequestBody JSONObject json){
+        return roadService.getAchievCount(json);
+
+    }
 }
