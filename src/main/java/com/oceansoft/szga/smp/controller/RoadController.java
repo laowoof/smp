@@ -74,6 +74,65 @@ public class RoadController {
     }
 
     /**
+     *  主要隐患高发地分析
+     * @author wzj
+     * @return 数据
+     * @param map
+     */
+    @PostMapping("getAnYhDdFx")
+    public ApiResult getAnYhDdFx(@RequestBody Map map){
+        ApiResult data = roadService.getAnYhDdFx(map);
+        return data;
+    }
+    /**
+     *  隐患治理列表
+     * @author wzj
+     * @return 数据
+     * @param map
+     */
+    @PostMapping("getYhZlLb")
+    public ApiResult getYhZlLb(@RequestBody Map map){
+        ApiResult data = roadService.getYhZlLb(map);
+        return data;
+    }
+
+    /**
+     *  top5
+     * @author wzj
+     * @return 数据
+     * @param map
+     */
+    @PostMapping("getSqTop5/{typeName}")
+    public ApiResult getSqTop5(@PathVariable("typeName") String typeName, @RequestBody Map map){
+        ApiResult data = roadService.getSqTop5(typeName,map);
+        return data;
+    }
+
+    /**
+     *  各大队隐患处理情况分析  点击事件获取 中队数据
+     * @author wzj
+     * @return 数据
+     * @param map
+     */
+    @PostMapping("getDataClick/{clickName}")
+    public ApiResult getDataClick(@PathVariable("clickName") String clickName, @RequestBody Map map){
+        ApiResult data = roadService.getDataClick(clickName,map);
+        return data;
+    }
+
+    /**
+     *  各大队隐患处理情况分析  点击事件获取 中队数据 道路top5
+     * @author wzj
+     * @return 数据
+     * @param map
+     */
+    @PostMapping("getDataClickTop5/{clickName}")
+    public ApiResult getDataClickTop5(@PathVariable("clickName") String clickName, @RequestBody Map map){
+        ApiResult data = roadService.getDataClickTop5(clickName,map);
+        return data;
+    }
+
+    /**
      * 获取十一个区县和全区
      * @return 区划代码和名称
      */

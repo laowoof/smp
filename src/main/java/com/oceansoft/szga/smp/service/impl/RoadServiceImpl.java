@@ -171,8 +171,47 @@ public class RoadServiceImpl implements RoadService {
     }
 
     @Override
+    public ApiResult getAnYhDdFx(Map map) {
+        Object changeYear =  map.get("twoYear");
+        int b=Integer.parseInt((String)changeYear);
+        map.put("twoYeat",b+1+"");
+        List<Map> data = roadMapper.getAnYhDdFx(map);
+        return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
     public ApiResult yhLxFx(Map map) {
         List<Map> data = roadMapper.yhLxFx(map);
+        return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
+    public ApiResult getYhZlLb(Map map) {
+        Object changeYear =  map.get("twoYear");
+        int b=Integer.parseInt((String)changeYear);
+        map.put("twoYeat",b+1+"");
+        List<Map> data = roadMapper.getYhZlLb(map);
+        return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
+    public ApiResult getDataClick(String clickName, Map map) {
+        map.put("clickName",clickName);
+        List<Map> data = roadMapper.getDataClick(map);
+        return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
+    public ApiResult getDataClickTop5(String clickName, Map map) {
+        map.put("clickName",clickName);
+        List<Map> data = roadMapper.getDataClickTop5(map);
+        return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
+    public ApiResult getSqTop5(String typeName,Map map) {
+        map.put("typeName",typeName);
+        List<Map> data = roadMapper.getSqTop5(map);
         return new ApiResult().success(200, "成功", data);
     }
 }

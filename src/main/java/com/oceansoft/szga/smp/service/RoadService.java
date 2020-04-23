@@ -45,7 +45,44 @@ public interface RoadService {
      * @param map
      * @return
      */
+    ApiResult getAnYhDdFx(Map map);
+
+    /**
+     *  隐患类型分析
+     * @param map
+     * @return
+     */
     ApiResult yhLxFx(Map map);
+
+    /**
+     *  隐患治理列表
+     * @param map
+     * @return
+     */
+    ApiResult getYhZlLb(Map map);
+
+    /**
+     *   各大队隐患处理情况分析  点击事件获取 中队数据
+     * @param map
+     * @param clickName
+     * @return
+     */
+    ApiResult getDataClick(String clickName,Map map);
+
+    /**
+     *   各大队隐患处理情况分析  点击事件获取 中队数据  道路top5
+     * @param map
+     * @param clickName
+     * @return
+     */
+    ApiResult getDataClickTop5(String clickName,Map map);
+
+    /**
+     *  top5
+     * @param map
+     * @return
+     */
+    ApiResult getSqTop5(String typeName,Map map);
 
     /**
      * 获取十一个区县和全区
