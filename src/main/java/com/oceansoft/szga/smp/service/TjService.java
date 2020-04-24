@@ -2,6 +2,13 @@ package com.oceansoft.szga.smp.service;
 import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import org.apache.ibatis.annotations.Mapper;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  *  统计
  * @author wzj
@@ -185,5 +192,13 @@ public interface TjService {
      * @return
      */
     ApiResult zySsXzTjYdZrq(String year,String code);
+
+    List<List<Object>> createListObject(List<LinkedHashMap> data);
+
+    List<List<String>> createHead();
+
+    void exportExcel(HttpServletResponse response, List<List<Object>> objects, List<List<String>> heads, String 实时数据统计表) throws IOException;
+
+    List<List<Object>> createJgSsTjListObject(List<Map> data);
 }
 

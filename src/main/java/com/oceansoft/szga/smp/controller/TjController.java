@@ -1,11 +1,24 @@
 package com.oceansoft.szga.smp.controller;
 
 
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.metadata.Sheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.service.TjService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author  wzj
@@ -128,9 +141,19 @@ public class TjController {
      * @return 数据
      */
     @GetMapping("jgSsTj")
-    public ApiResult jgSsTj(String tjrq){
+    public ApiResult jgSsTj(String tjrq, HttpServletRequest request){
         ApiResult data = tjService.jgSsTj(tjrq);
+        request.getSession().setAttribute("jgSsTj",data.getData());
         return data;
+    }
+
+    @GetMapping("jgSsTj/export")
+    public void jgSsTjExport(String tjrq, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<Map> data = (List<Map>) request.getSession().getAttribute("jgSsTj");
+
+        List<List<Object>> objects = tjService.createJgSsTjListObject(data);
+        List<List<String>> heads = tjService.createHead();
+        tjService.exportExcel(response, objects, heads,"实时数据统计表");
     }
 
     /**

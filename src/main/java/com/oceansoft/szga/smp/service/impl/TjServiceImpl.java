@@ -1,5 +1,8 @@
 package com.oceansoft.szga.smp.service.impl;
 
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.metadata.Sheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
@@ -7,12 +10,13 @@ import com.oceansoft.szga.smp.mapper.TjMapper;
 import com.oceansoft.szga.smp.service.TjService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  *  统计
@@ -168,6 +172,83 @@ public class TjServiceImpl implements TjService {
     public ApiResult zySsXzTjYdZrq(String year, String code) {
         List<HashMap> data = tjMapper.zySsXzTjYdZrq(year,code);
         return new ApiResult().success(200, "成功", data);
+    }
+
+
+    @Override
+    public List<List<Object>> createListObject(List<LinkedHashMap> list) {
+        List<List<Object>> temp=new ArrayList<>();
+        list.forEach(map->{
+            List<Object> ll=new ArrayList<>();
+            map.values().forEach(v->ll.add(v));
+            temp.add(ll);
+        });
+        return temp;
+    }
+
+    @Override
+    public List<List<String>> createHead() {
+        String[][] heads = {
+                {"区域","区域"},
+                {"企业事业单位总量","企业事业单位总量"},
+                {"三级治安保卫重点单位","总量"},
+                {"三级治安保卫重点单位","省级"},
+                {"三级治安保卫重点单位","市级"},
+                {"三级治安保卫重点单位","区县级"},
+                {"社区关注重点单位","总量"},
+                {"社区关注重点单位","加油站"},
+                {"社区关注重点单位","金银珠宝场所"},
+                {"铸盾工程单位数","加装人像卡口单位数"},
+                {"铸盾工程单位数","未加装人像卡口单位数"},
+                {"重要设施总数","重要设施总数"},
+        };
+        return getHeadList(heads);
+    }
+
+    @Override
+    public void exportExcel(HttpServletResponse response, List<List<Object>> objects, List<List<String>> heads, String fileName) throws IOException {
+        ServletOutputStream out = response.getOutputStream();
+        response.setContentType("multipart/form-data");
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-disposition", "attachment;filename="+ URLEncoder.encode(fileName,"UTF-8")+".xlsx");
+        ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX, true);
+        Sheet sheet1 = new Sheet(1, 0);
+        sheet1.setSheetName(fileName);
+        sheet1.setHead(heads);
+        writer.write1(objects, sheet1);
+        writer.finish();
+        out.flush();
+    }
+
+    @Override
+    public List<List<Object>> createJgSsTjListObject(List<Map> list) {
+        List<List<Object>> temp=new ArrayList<>();
+        list.forEach(map->{
+            List<Object> ll=new ArrayList<>();
+            ll.add(map.get("area"));
+            ll.add(map.get("qsysl"));
+            ll.add(map.get("sjtotle"));
+            ll.add(map.get("snum"));
+            ll.add(map.get("sjnum"));
+            ll.add(map.get("qxnum"));
+            ll.add(map.get("sqtotle"));
+            ll.add(map.get("jyznum"));
+            ll.add(map.get("yjzbcszl"));
+            ll.add(map.get("azsxtsl"));
+            ll.add(map.get("wazsxtsl"));
+            ll.add(map.get("dwsl"));
+            temp.add(ll);
+        });
+        return temp;
+    }
+
+    private List<List<String>> getHeadList(String[][] heads) {
+        List<List<String>> head = new ArrayList<List<String>>();
+        for(int i=0;i<heads.length;i++){
+            //每个子数组就是一列的表头
+            head.add(Arrays.asList(heads[i]));
+        }
+        return head;
     }
 
     private String time(String tjrq){
