@@ -110,5 +110,128 @@ public interface RoadService {
      * @return 处理后的数据
      */
     ApiResult getAchievCount(JSONObject json);
+
+    /**
+     * 违法打击 数量总计
+     * @param map
+     * @return 处理后的数据
+     */
+    ApiResult getWfDj(HashMap map);
+    /**
+     * 违法打击 执法数据
+     * @param map
+     * @return 处理后的数据
+     */
+    ApiResult getZfSj(HashMap map);
+
+    /**
+     * 违法打击 执法中队 数据
+     * @param map
+     * @param clickName
+     * @return 处理后的数据
+     */
+    ApiResult getZfSjZd(String clickName,HashMap map);
+
+    /**
+     * 违法打击 违法黑名单
+     * @param map
+     * @return 处理后的数据
+     */
+    ApiResult getWfHmd(HashMap map);
+
+    /**
+     * 违法打击 查缉布控
+     * @param map
+     * @return 处理后的数据
+     */
+    ApiResult getDataCjBk(HashMap map);
+    /**
+     * 违法打击 人像识别
+     * @param map
+     * @return 处理后的数据
+     */
+    ApiResult getDataRxSb(HashMap map);
+    /**
+     * 违法打击 交通违法时间段分析
+     * @param name
+     * @return 处理后的数据
+     */
+    ApiResult getDataJtWf(String name);
+    /**
+     * 违法打击 重点违量统计
+     * @param map
+     * @param TypeName
+     * @return 处理后的数据
+     */
+    ApiResult getDataZdWlTj(String TypeName,HashMap map);
+    /**
+     * 违法打击 重点违法类型分析
+     * @param map
+     * @param typeName
+     * @return 处理后的数据
+     */
+    ApiResult getDataWfLx(String typeName,HashMap map);
+    /**
+     * 违法打击 重点违法类型分析type
+     * @param map
+     * @param typeName
+     * @return 处理后的数据
+     */
+    ApiResult getDataWfLxType(String typeName,HashMap map);
+
+    /**
+     * 违法打击 违法打击 重点违量统计点击事件
+     * @param map
+     * @param name
+     * @return 处理后的数据
+     */
+    ApiResult getClickDataWfLxType(String name,HashMap map);
+
+    /**
+     * 违法打击 违法打击 重点违量统计点击事件
+     * @param map
+     * @param typeName
+     * @return 处理后的数据
+     */
+    ApiResult getDataCar(String typeName,HashMap map);
+
+    /**
+     * 违法打击 车辆问题类型分析
+     * @param map
+     * @param typeName
+     * @return 处理后的数据
+     */
+    ApiResult getDataCarQue(String typeName,HashMap map);
+
+    /**
+     * 违法打击 大队列表
+     * @param typeName
+     * @return 处理后的数据
+     */
+    ApiResult getDataDdList(String typeName);
+    /**
+     * 违法打击 大队选择
+     * @param titleName
+     * @param  map
+     * @return 处理后的数据
+     */
+    ApiResult getDataDdListChange(String titleName,Map map);
+
+    /**
+     * 违法打击 大队选择后 车辆问题变化趋势分析
+     * @param titleName
+     * @param  map
+     * @return 处理后的数据
+     */
+    ApiResult getDataDdListChangeCar(String titleName,Map map);
+
+    /**
+     * 违法打击 点击事件
+     * @param name
+     * @param  map
+     * @return 处理后的数据
+     */
+    ApiResult getDataClickCarAndChange(String name,Map map);
+
 }
 

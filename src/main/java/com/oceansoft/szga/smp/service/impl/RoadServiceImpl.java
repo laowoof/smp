@@ -19,7 +19,7 @@ import java.util.List;
 /**
  *  道路交通
  * @author wzj
- * @date 2019/4/20
+ * @date 2020/4/20
  */
 
 @Service
@@ -100,6 +100,185 @@ public class RoadServiceImpl implements RoadService {
             return new ApiResult().success(200,"获取成功", has);
         }
         return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getWfDj(HashMap map) {
+        List<HashMap> has = roadMapper.getWfDj(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getZfSj(HashMap map) {
+        List<HashMap> has = roadMapper.getZfSj(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getZfSjZd(String clickName,HashMap map) {
+        map.put("clickName",clickName);
+        List<HashMap> has = roadMapper.getZfSjZd(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getWfHmd(HashMap map) {
+        List<HashMap> has = roadMapper.getWfHmd(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataCjBk(HashMap map) {
+        List<HashMap> has = roadMapper.getDataCjBk(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataRxSb(HashMap map) {
+        List<HashMap> has = roadMapper.getDataRxSb(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataJtWf(String name) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        calendar.add(Calendar.DATE, -1);
+        String yesterday  =  sdf.format(calendar.getTime());
+        List<HashMap> has = roadMapper.getDataJtWf(name,yesterday);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataZdWlTj(String TypeName, HashMap map) {
+        map.put("TypeName",TypeName);
+        List<HashMap> has = roadMapper.getDataZdWlTj(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataWfLx(String typeName, HashMap map) {
+        map.put("typeName",typeName);
+        List<HashMap> has = roadMapper.getDataWfLx(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataWfLxType(String typeName, HashMap map) {
+        map.put("typeName",typeName);
+        List<HashMap> has = roadMapper.getDataWfLxType(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getClickDataWfLxType(String name, HashMap map) {
+        map.put("name",name);
+        List<HashMap> has = roadMapper.getClickDataWfLxType(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataCar(String typeName, HashMap map) {
+        map.put("typeName",typeName);
+        List<HashMap> has = null;
+        if("year".equals(map.get("dateType"))){
+             has = roadMapper.getDataCarYear(map);
+        }
+        if("month".equals(map.get("dateType"))){
+             has = roadMapper.getDataCarMonth(map);
+        }
+        if("mr".equals(map.get("dateType"))){
+            has = roadMapper.getDataCarMR(map);
+        }
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataCarQue(String typeName, HashMap map) {
+        map.put("typeName",typeName);
+        List<HashMap> has = roadMapper.getDataCarQue(map);
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataDdList(String typeName) {
+        List<HashMap> has = roadMapper.getDataDdList(typeName);
+        return new ApiResult().success(200,"获取成功", has);
+    }
+
+    @Override
+    public ApiResult getDataDdListChange(String titleName,Map map) {
+        map.put("titleName",titleName);
+        List<HashMap> has = roadMapper.getDataDdListChange(map);
+        return new ApiResult().success(200,"获取成功", has);
+    }
+
+    @Override
+    public ApiResult getDataDdListChangeCar(String titleName, Map map) {
+        map.put("titleName",titleName);
+        List<HashMap> has = null;
+        if("year".equals(map.get("dateType"))){
+            has = roadMapper.getDataDdListChangeYear(map);
+        }
+        if("month".equals(map.get("dateType"))){
+            has = roadMapper.getDataDdListChangeMonth(map);
+        }
+        if("mr".equals(map.get("dateType"))){
+            has = roadMapper.getDataDdListChangeMr(map);
+        }
+        if(has.size() > 0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getDataClickCarAndChange(String name, Map map) {
+        System.err.println(name);
+        System.err.println(map);
+        map.put("name",name);
+        System.err.println(map);
+        List<HashMap> has = roadMapper.getDataClickCarAndChange(map);
+        return new ApiResult().success(200,"获取成功", has);
     }
 
     /**

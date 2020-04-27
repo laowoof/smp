@@ -312,4 +312,422 @@
         </if>
          GROUP BY dlmc ORDER BY yhzl desc LIMIT 5
     </select>
+    <select id="getWfDj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with wfdj_jcxx as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,sl FROM rpt_aqjg_ggjt_wfdj_jcxx  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        SELECT
+            COALESCE(SUM(CASE WHEN lxdm='1' THEN sl ELSE 0 END),0) zfs,
+            COALESCE(SUM(CASE WHEN lxdm='2' THEN sl ELSE 0 END),0) jdcs,
+            COALESCE(SUM(CASE WHEN lxdm='3' THEN sl ELSE 0 END),0) yjs
+        FROM
+            wfdj_jcxx
+        where
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} and #{month2}
+        </if>
+    </select>
+    <select id="getZfSj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with wfdj_zftj as (SELECT year||'-'||mon as date,year as yearDate,ddmc,lxdm,zfs FROM rpt_aqjg_ggjt_wfdj_zftj)
+        SELECT
+            ddmc,
+            COALESCE(SUM(CASE WHEN lxdm='1' THEN zfs ELSE 0 END),0) jycf,
+            COALESCE(SUM(CASE WHEN lxdm='2' THEN zfs ELSE 0 END),0) qzcs
+        FROM
+            wfdj_zftj
+        WHERE
+            ddmc is not null and
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} and #{month2}
+        </if>
+            GROUP BY ddmc ORDER BY ddmc
+    </select>
+    <select id="getZfSjZd" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with wfdj_zftj as (SELECT year||'-'||mon as date,year as yearDate,ddmc,zdmc,lxdm,zfs FROM rpt_aqjg_ggjt_wfdj_zftj)
+        SELECT
+            zdmc,
+            COALESCE(SUM(CASE WHEN lxdm='1' THEN zfs ELSE 0 END),0) jycf,
+            COALESCE(SUM(CASE WHEN lxdm='2' THEN zfs ELSE 0 END),0) qzcs
+        FROM
+            wfdj_zftj
+        WHERE
+        ddmc is not null AND ddmc=#{clickName} and
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} and #{month2}
+        </if>
+        GROUP BY zdmc ORDER BY zdmc
+    </select>
+    <select id="getWfHmd" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+            hphm,
+            wfsj,
+            wfxwmc
+        FROM
+            rpt_aqjg_ggjt_wfxx
+        where
+        <if test="firstYear !='' and twoYear !=''">
+            substring(wfsj, 0,5) between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            substring(wfsj, 0,11) between #{month} AND #{month2}
+        </if>
+        ORDER BY wfsj desc limit 10
+    </select>
+    <select id="getDataCjBk" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with jcbktj as (SELECT year||'-'||mon as date,year as yearDate,ljs,bjs,xycls FROM rpt_aqjg_ggjt_jcbktj)
+        SELECT
+            COALESCE(sum(ljs),0) ljs,
+            COALESCE(sum(bjs),0) bjs,
+            COALESCE(sum(xycls),0) xycls
+        FROM
+            jcbktj
+        where
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} and #{month2}
+        </if>
+    </select>
+    <select id="getDataRxSb" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with jcbkxx as (SELECT year||'-'||mon as date,year as yearDate,yjsj,hphm,bklxmc,czxm FROM rpt_aqjg_ggjt_jcbkxx)
+        SELECT
+            substring(yjsj, 0,11) yjsj,
+            bklxmc,
+            hphm,
+            COALESCE(czxm,'****') czxm
+        FROM
+            jcbkxx
+        where
+        bklxmc is not null and
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} and #{month2}
+        </if>
+        ORDER BY yjsj desc limit 10
+
+    </select>
+    <select id="getDataJtWf" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+            wfrq,
+            SUM(CASE WHEN wfsd='0-7' THEN wfs ELSE 0 END) as one,
+            SUM(CASE WHEN wfsd='7-9' THEN wfs ELSE 0 END) as two,
+            SUM(CASE WHEN wfsd='9-12' THEN wfs ELSE 0 END) as three,
+            SUM(CASE WHEN wfsd='12-16' THEN wfs ELSE 0 END) as four,
+            SUM(CASE WHEN wfsd='16-19' THEN wfs ELSE 0 END) as five,
+            SUM(CASE WHEN wfsd='19-24' THEN wfs ELSE 0 END) as six
+        FROM
+            rpt_aqjg_ggjt_wfsjtj
+        where
+         wfrq =#{yesterday} and
+        <if test="name == '总体情况'">
+            1=1
+        </if>
+        <if test="name == '张家港'">
+            dddm ='21'
+        </if>
+        <if test="name == '常熟'">
+            dddm ='22'
+        </if>
+        <if test="name == '昆山'">
+            dddm ='23'
+        </if>
+        <if test="name == '太仓'">
+            dddm ='25'
+        </if>
+        <if test="name == '吴江'">
+            dddm ='24'
+        </if>
+        <if test="name == '工业园区'">
+            dddm ='11'
+        </if>
+        <if test="name == '姑苏区'">
+            dddm ='12'
+        </if>
+        <if test="name == '高新区'">
+            dddm ='13'
+        </if>
+        <if test="name == '吴中'">
+            dddm ='14'
+        </if>
+        <if test="name == '度假区'">
+            dddm ='16'
+        </if>
+        group by wfrq
+    </select>
+    <select id="getDataZdWlTj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,dddm,ddmc,wfs FROM rpt_aqjg_ggjt_zdwf)
+        SELECT
+            dddm,
+            ddmc,
+            sum(wfs)
+        FROM
+            zdwf
+        WHERE
+        <if test="TypeName == '市区'">
+            dddm in('11','12','13','14','15')
+        </if>
+        <if test="TypeName == '五县市'">
+            dddm in('21','22','23','24','25')
+        </if>
+        <if test="TypeName == '高速'">
+            dddm in('31','32','33','34','35','36','37','38','39')
+        </if>
+        <if test="firstYear !='' and twoYear !=''">
+           and yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+           and date between #{month} AND #{month2}
+        </if>
+        GROUP BY dddm,ddmc order by dddm
+    </select>
+
+    <select id="getDataWfLx" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,lxdm,lxmc FROM rpt_aqjg_ggjt_zdwf)
+        SELECT
+            COALESCE(SUM(CASE WHEN lxdm='1' THEN wfs ELSE 0 END),0) one,
+            COALESCE(SUM(CASE WHEN lxdm='2' THEN wfs ELSE 0 END),0) two,
+            COALESCE(SUM(CASE WHEN lxdm='3' THEN wfs ELSE 0 END),0) three,
+            COALESCE(SUM(CASE WHEN lxdm='4' THEN wfs ELSE 0 END),0) four,
+            COALESCE(SUM(CASE WHEN lxdm='5' THEN wfs ELSE 0 END),0) five,
+            COALESCE(SUM(CASE WHEN lxdm='6' THEN wfs ELSE 0 END),0) six
+        FROM
+            zdwf
+        <if test="typeName !='' ">
+            WHERE ddmc#{typeName}
+        </if>
+        <if test="firstYear !='' and twoYear !=''">
+            and yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            and date between #{month} AND #{month2}
+        </if>
+    </select>
+
+    <select id="getDataWfLxType" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,dddm,lxdm,lxmc FROM rpt_aqjg_ggjt_zdwf)
+        SELECT
+        COALESCE(SUM(CASE WHEN lxdm='1' THEN wfs ELSE 0 END),0) one,
+        COALESCE(SUM(CASE WHEN lxdm='2' THEN wfs ELSE 0 END),0) two,
+        COALESCE(SUM(CASE WHEN lxdm='3' THEN wfs ELSE 0 END),0) three,
+        COALESCE(SUM(CASE WHEN lxdm='4' THEN wfs ELSE 0 END),0) four,
+        COALESCE(SUM(CASE WHEN lxdm='5' THEN wfs ELSE 0 END),0) five,
+        COALESCE(SUM(CASE WHEN lxdm='6' THEN wfs ELSE 0 END),0) six
+        FROM
+        zdwf
+        WHERE
+        <if test="typeName == '市区'">
+            dddm in('11','12','13','14','15')
+        </if>
+        <if test="typeName == '五县市'">
+            dddm in('21','22','23','24','25')
+        </if>
+        <if test="typeName == '高速'">
+            dddm in('31','32','33','34','35','36','37','38','39')
+        </if>
+        <if test="firstYear !='' and twoYear !=''">
+            and yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            and date between #{month} AND #{month2}
+        </if>
+    </select>
+
+    <select id="getClickDataWfLxType" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,dddm,lxdm,lxmc FROM rpt_aqjg_ggjt_zdwf)
+        SELECT
+        COALESCE(SUM(CASE WHEN lxdm='1' THEN wfs ELSE 0 END),0) one,
+        COALESCE(SUM(CASE WHEN lxdm='2' THEN wfs ELSE 0 END),0) two,
+        COALESCE(SUM(CASE WHEN lxdm='3' THEN wfs ELSE 0 END),0) three,
+        COALESCE(SUM(CASE WHEN lxdm='4' THEN wfs ELSE 0 END),0) four,
+        COALESCE(SUM(CASE WHEN lxdm='5' THEN wfs ELSE 0 END),0) five,
+        COALESCE(SUM(CASE WHEN lxdm='6' THEN wfs ELSE 0 END),0) six
+        FROM
+        zdwf
+        WHERE
+        ddmc =#{name}
+        <if test="firstYear !='' and twoYear !=''">
+            and yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            and date between #{month} AND #{month2}
+        </if>
+    </select>
+    <select id="getDataCarYear" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+            year date,
+            sum(cls)
+        FROM
+            rpt_aqjg_ggjt_clwttj
+        WHERE
+            year  between #{firstYear} AND #{twoYear} and
+            <if test="typeName == '市区'">
+                dddm in('11','12','13','14','15')
+            </if>
+            <if test="typeName == '五县市'">
+                dddm in('21','22','23','24','25')
+            </if>
+            <if test="typeName == '高速'">
+                dddm in('31','32','33','34','35','36','37','38','39')
+            </if>
+            GROUP BY year  ORDER BY year
+    </select>
+    <select id="getDataCarMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        SELECT
+            date,
+            sum(cls)
+        FROM
+            clwttj
+        WHERE
+            <if test="typeName == '市区'">
+                dddm in('11','12','13','14','15')
+            </if>
+            <if test="typeName == '五县市'">
+                dddm in('21','22','23','24','25')
+            </if>
+            <if test="typeName == '高速'">
+                dddm in('31','32','33','34','35','36','37','38','39')
+            </if>
+            and date between #{month} AND #{month2}
+            GROUP BY date ORDER BY date
+    </select>
+    <select id="getDataCarMR" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        SELECT
+            date,
+            sum(cls)
+        FROM
+            clwttj
+        WHERE
+            <if test="typeName == '市区'">
+                dddm in('11','12','13','14','15')
+            </if>
+            <if test="typeName == '五县市'">
+                dddm in('21','22','23','24','25')
+             </if>
+            <if test="typeName == '高速'">
+                dddm in('31','32','33','34','35','36','37','38','39')
+            </if>
+                and yearDate  between #{firstYear} AND #{twoYear}
+            GROUP BY date ORDER BY date
+    </select>
+    <select id="getDataCarQue" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        SELECT
+            lxdm,
+            lxmc,
+            sum(cls)
+        FROM
+            clwttj
+        where
+        <if test="firstYear !='' and twoYear !=''">
+             yearDate between #{firstYear} AND #{twoYear} and
+        </if>
+        <if test="month !='' and month2 !=''">
+             date between #{month} AND #{month2}  and
+        </if>
+        <if test="typeName == '市区'">
+            dddm in('11','12','13','14','15')
+        </if>
+        <if test="typeName == '五县市'">
+            dddm in('21','22','23','24','25')
+        </if>
+        <if test="typeName == '高速'">
+            dddm in('31','32','33','34','35','36','37','38','39')
+        </if>
+        GROUP BY lxdm,lxmc ORDER BY lxdm
+    </select>
+    <select id="getDataDdList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT dddm,ddmc
+        FROM rpt_aqjg_ggjt_clwttj
+        WHERE
+        <if test="typeName == '市区'">
+            dddm in('11','12','13','14','15')
+        </if>
+        <if test="typeName == '五县市'">
+            dddm in('21','22','23','24','25')
+        </if>
+        <if test="typeName == '高速'">
+            dddm in('31','32','33','34','35','36','37','38','39')
+        </if>
+        GROUP BY ddmc,dddm order by dddm
+    </select>
+    <select id="getDataDdListChange" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        SELECT
+            lxdm,
+            lxmc,
+            sum(cls)
+        FROM
+            clwttj
+        WHERE
+            ddmc=#{titleName} and
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} AND #{month2}
+        </if>
+        GROUP BY lxdm,lxmc ORDER BY lxdm
+    </select>
+    <select id="getDataDdListChangeMr" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        SELECT date,sum(cls)
+        FROM
+        clwttj
+        WHERE
+        ddmc=#{titleName} and yearDate BETWEEN #{firstYear} and #{twoYear} GROUP BY date ORDER BY date
+    </select>
+    <select id="getDataDdListChangeYear" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+       SELECT yearDate date,sum(cls)
+        FROM
+        clwttj
+        WHERE ddmc=#{titleName} and yearDate BETWEEN #{firstYear} and #{twoYear} GROUP BY yearDate ORDER BY yearDate
+    </select>
+    <select id="getDataDdListChangeMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+       SELECT date,sum(cls)
+        FROM
+        clwttj
+        WHERE ddmc=#{titleName} and date BETWEEN #{month} AND #{month2} GROUP BY date ORDER BY date
+    </select>
+    <select id="getDataClickCarAndChange" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        SELECT
+            COALESCE(SUM(CASE WHEN lxdm='1' THEN cls ELSE 0 END),0) wf,
+            COALESCE(SUM(CASE WHEN lxdm='2' THEN cls ELSE 0 END),0) sg
+        FROM
+            clwttj
+        WHERE
+        <if test="dateType == 'year'">
+            yearDate=#{clickTime} and
+        </if>
+        <if test="dateType == 'month' or dateType == 'mr' ">
+            date=#{clickTime} and
+        </if>
+        <if test="name == '市区'">
+            dddm in('11','12','13','14','15')
+        </if>
+        <if test="name == '五县市'">
+            dddm in('21','22','23','24','25')
+        </if>
+        <if test="name == '高速'">
+            dddm in('31','32','33','34','35','36','37','38','39')
+        </if>
+        <if test="titleName !='请选择大队'">
+           and ddmc=#{titleName}
+        </if>
+        GROUP BY lxdm,lxmc ORDER BY lxdm
+    </select>
 </mapper>

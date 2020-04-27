@@ -176,4 +176,171 @@ public class RoadController {
         return roadService.getAchievCount(json);
 
     }
+
+    /**
+     * 违法打击 数量总计
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getWfDj")
+    public ApiResult getWfDj(@RequestBody HashMap map){
+        return roadService.getWfDj(map);
+    }
+
+    /**
+     * 违法打击 执法数据
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getZfSj")
+    public ApiResult getZfSj(@RequestBody HashMap map){
+        return roadService.getZfSj(map);
+    }
+
+    /**
+     * 违法打击 执法中队数据
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getZfSjZd/{clickName}")
+    public ApiResult getZfSjZd(@PathVariable("clickName") String clickName,@RequestBody HashMap map){
+        return roadService.getZfSjZd(clickName,map);
+    }
+
+    /**
+     * 违法打击 违法黑名单
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getWfHmd")
+    public ApiResult getWfHmd(@RequestBody HashMap map){
+        return roadService.getWfHmd(map);
+    }
+    /**
+     * 违法打击 查缉布控
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getDataCjBk")
+    public ApiResult getDataCjBk(@RequestBody HashMap map){
+        return roadService.getDataCjBk(map);
+    }
+    /**
+     * 违法打击 人像识别
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getDataRxSb")
+    public ApiResult getDataRxSb(@RequestBody HashMap map){
+        return roadService.getDataRxSb(map);
+    }
+    /**
+     * 违法打击 交通违法时间段分析
+     * @return 处理后的数据
+     * @param name
+     */
+    @GetMapping("getDataJtWf/{name}")
+    public ApiResult getDataJtWf(@PathVariable("name") String name){
+        return roadService.getDataJtWf(name);
+    }
+    /**
+     * 违法打击 重点违量统计
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getDataZdWlTj/{TypeName}")
+    public ApiResult getDataZdWlTj(@PathVariable("TypeName") String TypeName,@RequestBody HashMap map){
+        return roadService.getDataZdWlTj(TypeName,map);
+    }
+    /**
+     * 违法打击 重点违法类型分析
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getDataWfLx/{typeName}")
+    public ApiResult getDataWfLx(@PathVariable("typeName") String typeName,@RequestBody HashMap map){
+        return roadService.getDataWfLx(typeName,map);
+    }
+    /**
+     * 违法打击 重点违法类型分析type
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getDataWfLxType/{typeName}")
+    public ApiResult getDataWfLxType(@PathVariable("typeName") String typeName,@RequestBody HashMap map){
+        return roadService.getDataWfLxType(typeName,map);
+    }
+
+    /**
+     * 违法打击 重点违量统计点击事件
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getClickDataWfLxType/{name}")
+    public ApiResult getClickDataWfLxType(@PathVariable("name") String name,@RequestBody HashMap map){
+        return roadService.getClickDataWfLxType(name,map);
+    }
+    /**
+     * 违法打击 车辆问题变化趋势分析
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getDataCar/{typeName}")
+    public ApiResult getDataCar(@PathVariable("typeName") String typeName,@RequestBody HashMap map){
+        return roadService.getDataCar(typeName,map);
+    }
+
+    /**
+     * 违法打击 车辆问题类型分析
+     * @return 处理后的数据
+     * @param map
+     */
+    @PostMapping("getDataCarQue/{typeName}")
+    public ApiResult getDataCarQue(@PathVariable("typeName") String typeName,@RequestBody HashMap map){
+        return roadService.getDataCarQue(typeName,map);
+    }
+
+    /**
+     * 违法打击 大队列表
+     * @return 处理后的数据
+     * @param typeName
+     */
+    @GetMapping("getDataDdList/{typeName}")
+    public ApiResult getDataDdList(@PathVariable("typeName") String typeName){
+        return roadService.getDataDdList(typeName);
+    }
+
+    /**
+     * 违法打击 大队选择
+     * @return 处理后的数据
+     * @param titleName
+     * @param map
+     */
+    @PostMapping("getDataDdListChange/{titleName}")
+    public ApiResult getDataDdListChange(@PathVariable("titleName") String titleName,@RequestBody HashMap map){
+        return roadService.getDataDdListChange(titleName,map);
+    }
+
+    /**
+     * 违法打击 大队选择车辆问题变化趋势分析数据
+     * @return 处理后的数据
+     * @param titleName
+     * @param map
+     */
+
+    @PostMapping("getDataDdListChangeCar/{titleName}")
+    public ApiResult getDataDdListChangeCar(@PathVariable("titleName") String titleName,@RequestBody HashMap map){
+        return roadService.getDataDdListChangeCar(titleName,map);
+    }
+    /**
+     * 违法打击 大队选择车辆问题变化趋势分析   点击事件
+     * @return 处理后的数据
+     * @param name
+     * @param map
+     */
+
+    @PostMapping("getDataClickCarAndChange/{name}")
+    public ApiResult getDataClickCarAndChange(@PathVariable("name") String name,@RequestBody HashMap map){
+        return roadService.getDataClickCarAndChange(name,map);
+    }
 }
