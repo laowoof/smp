@@ -1176,5 +1176,29 @@
         1=1
         AND tjrq &gt;= #{ltnf} AND tjrq &lt;= #{gtnf} AND ssfjmc=#{name} GROUP BY tjrq
     </select>
-
+    <select id="getDataJcFx" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+            a.dept_name,
+            (COALESCE(yjc,0)+COALESCE(djc,0)+COALESCE(ycq,0)+COALESCE(xfjc,0)) jcsl,
+            COALESCE(yjc,0) yjc,
+            COALESCE(djc,0) djc,
+            COALESCE(ycq,0) ycq,
+            COALESCE(xfjc,0) xfjc
+        FROM
+            dept_table a
+        LEFT JOIN
+        (SELECT
+            ssfjdm,
+            SUBSTRING(tjrq,0,5) nf,
+            max(tjrq) max,
+            sum(case when jcztdm = '1' then jcsl else 0 end) as yjc,
+            sum(case when jcztdm = '0' then jcsl else 0 end) as djc,
+            sum(case when jcztmc = '已超期' then jcsl else 0 end) as ycq,
+            sum(case when jcztmc != '已取消' then jcsl else 0 end) as xfjc
+        FROM
+            rpt_aqjg_zdmb_zdsszt
+        WHERE
+            jclxdm ='3' AND SUBSTRING(tjrq,0,5)=#{titleDateType} GROUP BY ssfjdm,SUBSTRING(tjrq,0,5)) b
+        on a.dept_code = b.ssfjdm
+    </select>
 </mapper>

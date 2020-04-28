@@ -595,5 +595,12 @@ public interface NbService {
      * @return
      */
     ApiResult yhslfxYear(Map map);
+
+    /**
+     * 重要设施分析-专项检查分析
+     * @param titleDateType
+     * @return
+     */
+    ApiResult getDataJcFx(String titleDateType);
 }
 

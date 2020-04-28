@@ -841,4 +841,15 @@ public class NbController {
         ApiResult data = nbService.yhslfxYear(map);
         return data;
     }
+    /**
+     * 重要设施分析-专项检查分析
+     * @author wzj
+     * @param titleDateType
+     * @return 数据
+     */
+    @GetMapping("getDataJcFx/{titleDateType}")
+    public ApiResult getDataJcFx(@PathVariable("titleDateType")String titleDateType){
+        ApiResult data = nbService.getDataJcFx(titleDateType);
+        return data;
+    }
 }

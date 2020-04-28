@@ -608,4 +608,11 @@ public interface NbMapper {
      * @return
      */
     List<HashMap> findNumByZyssLtMonth(HashMap has);
+
+    /**
+     * 重要设施分析-专项检查分析
+     * @param titleDateType
+     * @return
+     */
+    List<HashMap> getDataJcFx(String titleDateType);
     }

@@ -55,7 +55,10 @@ public class NbServiceImpl implements NbService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> data = nbMapper.totleNumBySl(tjrq);
-        return new ApiResult().success(200,"成功",data);
+        if(data.size()>0){
+            return new ApiResult().success(200,"成功",data);
+        }
+        return new ApiResult().failure("暂无数据");
     }
 
     @Override
@@ -126,7 +129,10 @@ public class NbServiceImpl implements NbService {
                 break;
             }
         }
-        return new ApiResult().success(200, "成功", data);
+        if(data.size()>0){
+            return new ApiResult().success(200, "成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
     }
 
     @Override
@@ -147,7 +153,10 @@ public class NbServiceImpl implements NbService {
                 break;
             }
         }
-        return new ApiResult().success(200, "成功", data);
+        if(data.size()>0){
+            return new ApiResult().success(200, "成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
     }
 
     @Override
@@ -219,7 +228,10 @@ public class NbServiceImpl implements NbService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> data = nbMapper.findNumBySsFx(tjrq);
-        return new ApiResult().success(200, "成功",data);
+        if(data.size()>0){
+            return new ApiResult().success(200, "成功",data);
+        }
+        return new ApiResult().failure("暂无数据");
     }
 
     @Override
@@ -528,7 +540,10 @@ public class NbServiceImpl implements NbService {
     @Override
     public ApiResult findNumByZyssFx() {
         List<HashMap> data = nbMapper.findNumByZyssFx();
-        return new ApiResult().success(200, "成功",changeData(data));
+        if(data.size()>0){
+            return new ApiResult().success(200, "成功",changeData(data));
+        }
+        return  new ApiResult().failure("暂无数据");
     }
     @Override
     public ApiResult findNumByZddwjcfx(String nf, String type) {
@@ -859,6 +874,11 @@ public class NbServiceImpl implements NbService {
     @Override
     public ApiResult yhslfxYear(Map map) {
         return new ApiResult(nbMapper.yhslfxYear(map));
+    }
+
+    @Override
+    public ApiResult getDataJcFx(String titleDateType) {
+        return new ApiResult(nbMapper.getDataJcFx(titleDateType));
     }
 
     private List<HashMap> changeData(List<HashMap> list){
