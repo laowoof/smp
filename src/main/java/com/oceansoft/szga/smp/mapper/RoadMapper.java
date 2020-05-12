@@ -43,65 +43,6 @@ public interface RoadMapper {
      */
     List<Map> zyJdFx(Map map);
 
-    /**
-     *  隐患类型分析
-     * @author wzj
-     * @param map
-     * @return
-     */
-    List<Map> yhLxFx(Map map);
-
-    /**
-     *  主要隐患高发地分析
-     * @author wzj
-     * @param map
-     * @return
-     */
-    List<Map> getAnYhDdFx(Map map);
-
-    /**
-     *  隐患治理列表
-     * @author wzj
-     * @param map
-     * @return
-     */
-    List<Map> getYhZlLb(Map map);
-
-    /**
-     *  top5
-     * @author wzj
-     * @param map
-     * @return
-     */
-    List<Map> getSqTop5(Map map);
-
-    /**
-     *  各大队隐患处理情况分析  点击事件获取 中队数据
-     * @author wzj
-     * @param map
-     * @return
-     */
-    List<Map> getDataClick(Map map);
-
-    /**
-     *  各大队隐患处理情况分析  点击事件获取中队数据后 道路隐患top5
-     * @author wzj
-     * @param map
-     * @return
-     */
-    List<Map> getDataClickTop5(Map map);
-
-    /**
-     * 获取十一个区县和全区
-     * @return 区划代码和名称
-     */
-    List<HashMap> getAddress();
-
-    /**
-     * 页面按年/月/1月的查询按钮
-     * @param sourceNum 条件
-     * @return 企业总量、重点车辆数、重点人员数
-     */
     HashMap getSourceSum(SourceNum sourceNum);
 
     /**
