@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.DLAQTJMapper">
+    <!--源头任务统计 大队信息-->
+    <select id="YTRWTJ" resultType="com.oceansoft.szga.smp.entity.YTRW" parameterType="java.util.HashMap">
+      with zzz as
+          (
+        SELECT
+	      aa.ddmc,aa.lxmc , sum(aa.rws) as rws , sum(aa.wcs) as wcs
+        FROM
+	      "rpt_aqjg_ggjt_zllxtj"  aa
+        WHERE
+            aa.ddmc is not null and aa.lxmc in ('告知事项','现场检查','驾驶人安全教育','督促整改')
+	    and
+        <choose>
+            <when test="param== null">
+              to_date( concat_ws ( '', YEAR ), 'yyyy' ) = to_date(#{choiceDate},'yyyy')
+            </when>
+            <otherwise>
+               to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+
+	    GROUP BY
+	        aa.ddmc , aa.lxmc
+	    ORDER BY
+	        ddmc , lxmc
+          )
+      SELECT
+	      ddmc as company ,
+        SUM( CASE WHEN lxmc = '告知事项' THEN zzz.rws ELSE 0 END ) as task1 ,
+        SUM( CASE WHEN lxmc = '告知事项' THEN zzz.wcs ELSE 0 END ) as finished1,
+        SUM( CASE WHEN lxmc = '现场检查' THEN zzz.rws ELSE 0 END ) as task2,
+        SUM( CASE WHEN lxmc = '现场检查' THEN zzz.wcs ELSE 0 END) as finished2 ,
+        SUM( CASE WHEN lxmc = '驾驶人安全教育' THEN zzz.rws ELSE 0 END ) as task3 ,
+        SUM( CASE WHEN lxmc = '驾驶人安全教育' THEN zzz.wcs ELSE 0 END ) as finished3 ,
+        SUM( CASE WHEN lxmc = '督促整改' THEN zzz.rws ELSE 0 END  ) as task4 ,
+        SUM( CASE WHEN lxmc = '督促整改' THEN zzz.wcs ELSE 0 END  ) as finished4
+      FROM
+          zzz
+      GROUP BY
+          ddmc
+    </select>
+    <!--源头任务统计  中队信息-->
+    <select id="YTRWTJZX" resultType="com.oceansoft.szga.smp.entity.YTRW" parameterType="java.util.HashMap" >
+        with zzz as
+          (
+            SELECT
+  	          aa.zdmc as ddmc,
+	          aa.lxmc,
+	          SUM ( aa.rws ) AS rws,
+	          SUM ( aa.wcs ) AS wcs
+            FROM
+	          "rpt_aqjg_ggjt_zllxtj" aa
+            WHERE
+	            aa.zdmc IS NOT NULL
+                AND aa.ddmc =#{name}
+	            AND aa.lxmc IN ( '告知事项', '现场检查', '驾驶人安全教育', '督促整改' )
+	            AND
+               <choose>
+                    <when test="param== null">
+                      to_date( concat_ws ( '', YEAR ), 'yyyy' ) = to_date(#{choiceDate},'yyyy')
+                   </when>
+               <otherwise>
+                   to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                     AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+               </otherwise>
+               </choose>
+            GROUP BY
+	           aa.zdmc,aa.lxmc
+            ORDER BY
+	          ddmc,lxmc
+          )
+      SELECT
+	      ddmc as company ,
+        SUM( CASE WHEN lxmc = '告知事项' THEN zzz.rws ELSE 0 END ) as task1 ,
+        SUM( CASE WHEN lxmc = '告知事项' THEN zzz.wcs ELSE 0 END ) as finished1,
+        SUM( CASE WHEN lxmc = '现场检查' THEN zzz.rws ELSE 0 END ) as task2,
+        SUM( CASE WHEN lxmc = '现场检查' THEN zzz.wcs ELSE 0 END) as finished2 ,
+        SUM( CASE WHEN lxmc = '驾驶人安全教育' THEN zzz.rws ELSE 0 END ) as task3 ,
+        SUM( CASE WHEN lxmc = '驾驶人安全教育' THEN zzz.wcs ELSE 0 END ) as finished3 ,
+        SUM( CASE WHEN lxmc = '督促整改' THEN zzz.rws ELSE 0 END  ) as task4 ,
+        SUM( CASE WHEN lxmc = '督促整改' THEN zzz.wcs ELSE 0 END  ) as finished4
+      FROM
+          zzz
+      GROUP BY
+          ddmc
+	  ORDER BY
+	      ddmc
+    </select>
+
+    <!--隐患完成情况统计  -->
+    <select id="YHWCQKTJ" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+        with aaa as (
+            with zzz as (
+            SELECT
+                  ddmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  from rpt_aqjg_ggjt_yhlxtj
+            where
+                  <choose>
+                  <when test="param== null">
+                     to_date( concat_ws ( '', YEAR ), 'yyyy' ) = to_date(#{choiceDate},'yyyy')
+                  </when>
+                  <otherwise>
+                      to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                  AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+                  </otherwise>
+                  </choose>
+            GROUP BY
+                ddmc , mon
+            ORDER BY
+                ddmc , mon
+            )
+        <choose>
+            <when test="status== '隐患录入'">
+                SELECT ddmc , mon,  CAST('隐患录入' as text) as status  , yhzl as num from zzz
+            </when>
+            <when test="status== '完成'">
+                SELECT ddmc , mon,  CAST('完成' as text) as status  , yhwcsl as num from zzz
+            </when>
+            <when test="status== '待处理'">
+                SELECT ddmc , mon, CAST('待处理' as text) as status   , yhwwcsl as num from zzz
+            </when>
+            <when test="status== 'all'">
+                SELECT ddmc , mon, CAST('隐患录入' as text) as status  , yhzl as num from zzz
+                union all
+                SELECT ddmc , mon, CAST('完成' as text) as status   , yhwcsl as num from zzz
+                union all
+                SELECT ddmc , mon, CAST('待处理' as text) as status  , yhwwcsl as num from zzz
+            </when>
+        </choose>
+
+        )
+      SELECT * , (january+february+march+april+may+june+july+august+september+october+november+december) as all
+        from
+        (
+          SELECT
+	       ddmc as company, status ,
+	    SUM(CASE WHEN aaa.mon = '01' THEN aaa.num ELSE 0 END)  as january,
+	    SUM(CASE WHEN aaa.mon = '02' THEN aaa.num ELSE 0 END)  as february,
+	    SUM(CASE WHEN aaa.mon = '03' THEN aaa.num ELSE 0 END)  as march,
+	    SUM(CASE WHEN aaa.mon = '04' THEN aaa.num ELSE 0 END)  as april,
+	    SUM(CASE WHEN aaa.mon = '05' THEN aaa.num ELSE 0 END)  as may,
+	    SUM(CASE WHEN aaa.mon = '06' THEN aaa.num ELSE 0 END)  as june,
+	    SUM(CASE WHEN aaa.mon = '07' THEN aaa.num ELSE 0 END)  as july,
+	    SUM(CASE WHEN aaa.mon = '08' THEN aaa.num ELSE 0 END)  as august,
+	    SUM(CASE WHEN aaa.mon = '09' THEN aaa.num ELSE 0 END)  as september,
+	    SUM(CASE WHEN aaa.mon = '10' THEN aaa.num ELSE 0 END)  as october,
+	    SUM(CASE WHEN aaa.mon = '11' THEN aaa.num ELSE 0 END)  as november,
+	    SUM(CASE WHEN aaa.mon = '12' THEN aaa.num ELSE 0 END)  as december
+      FROM
+	      aaa
+       GROUP BY ddmc , status  ORDER BY ddmc , status
+        ) t
+
+    </select>
+
+    <!--隐患完成情况统计  子项 -->
+    <select id="YHWCQKTJZX" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+        with aaa as (
+        with zzz as (
+        SELECT
+           zdmc as  ddmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  from rpt_aqjg_ggjt_yhlxtj
+        where
+        <choose>
+            <when test="param== null">
+                to_date( concat_ws ( '', YEAR ), 'yyyy' ) = to_date(#{choiceDate},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+           and ddmc =#{name}
+        GROUP BY
+        zdmc , mon
+        ORDER BY
+        zdmc , mon
+        )
+        <choose>
+            <when test="status== '隐患录入'">
+                SELECT ddmc , mon,  CAST('隐患录入' as text) as status  , yhzl as num from zzz
+            </when>
+            <when test="status== '完成'">
+                SELECT ddmc , mon,  CAST('完成' as text) as status  , yhwcsl as num from zzz
+            </when>
+            <when test="status== '待处理'">
+                SELECT ddmc , mon, CAST('待处理' as text) as status   , yhwwcsl as num from zzz
+            </when>
+            <when test="status== 'all'">
+                SELECT ddmc , mon, CAST('隐患录入' as text) as status  , yhzl as num from zzz
+                union all
+                SELECT ddmc , mon, CAST('完成' as text) as status   , yhwcsl as num from zzz
+                union all
+                SELECT ddmc , mon, CAST('待处理' as text) as status  , yhwwcsl as num from zzz
+            </when>
+        </choose>
+
+        )
+        SELECT * , (january+february+march+april+may+june+july+august+september+october+november+december) as all
+        from
+        (
+        SELECT
+        ddmc as company, status ,
+        SUM(CASE WHEN aaa.mon = '01' THEN aaa.num ELSE 0 END)  as january,
+        SUM(CASE WHEN aaa.mon = '02' THEN aaa.num ELSE 0 END)  as february,
+        SUM(CASE WHEN aaa.mon = '03' THEN aaa.num ELSE 0 END)  as march,
+        SUM(CASE WHEN aaa.mon = '04' THEN aaa.num ELSE 0 END)  as april,
+        SUM(CASE WHEN aaa.mon = '05' THEN aaa.num ELSE 0 END)  as may,
+        SUM(CASE WHEN aaa.mon = '06' THEN aaa.num ELSE 0 END)  as june,
+        SUM(CASE WHEN aaa.mon = '07' THEN aaa.num ELSE 0 END)  as july,
+        SUM(CASE WHEN aaa.mon = '08' THEN aaa.num ELSE 0 END)  as august,
+        SUM(CASE WHEN aaa.mon = '09' THEN aaa.num ELSE 0 END)  as september,
+        SUM(CASE WHEN aaa.mon = '10' THEN aaa.num ELSE 0 END)  as october,
+        SUM(CASE WHEN aaa.mon = '11' THEN aaa.num ELSE 0 END)  as november,
+        SUM(CASE WHEN aaa.mon = '12' THEN aaa.num ELSE 0 END)  as december
+        FROM
+        aaa
+        GROUP BY ddmc , status  ORDER BY ddmc , status
+        ) t
+
+    </select>
+
+
+    <!--隐患类型统计 -->
+    <select id="YHLXTJ" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    with aaa as (
+          with zzz as (
+          SELECT
+                yhlxmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  FROM "rpt_aqjg_ggjt_yhlxtj"
+          where
+          <choose>
+            <when test="param== null">
+                to_date( concat_ws ( '', YEAR ), 'yyyy' ) = to_date(#{choiceDate},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+          GROUP BY
+                yhlxmc , mon
+          ORDER BY  yhlxmc , mon)
+        <choose>
+            <when test="status== '隐患录入'">
+                SELECT yhlxmc , mon,  CAST('隐患录入' as text) as status  , yhzl as num from zzz
+            </when>
+            <when test="status== '完成'">
+                SELECT yhlxmc , mon,  CAST('完成' as text) as status  , yhwcsl as num from zzz
+            </when>
+            <when test="status== '待处理'">
+                SELECT yhlxmc , mon, CAST('待处理' as text) as status   , yhwwcsl as num from zzz
+            </when>
+            <when test="status== 'all'">
+                SELECT yhlxmc , mon, CAST('隐患录入' as text) as status  , yhzl as num from zzz
+                union all
+                SELECT yhlxmc , mon, CAST('完成' as text) as status   , yhwcsl as num from zzz
+                union all
+                SELECT yhlxmc , mon, CAST('待处理' as text) as status  , yhwwcsl as num from zzz
+            </when>
+        </choose>
+        )
+
+    SELECT * , (january+february+march+april+may+june+july+august+september+october+november+december) as all
+    from
+        (
+        SELECT
+           aaa.yhlxmc as company, aaa.status , t2.Completion ,
+        SUM(CASE WHEN aaa.mon = '01' THEN aaa.num ELSE 0 END)  as january,
+        SUM(CASE WHEN aaa.mon = '02' THEN aaa.num ELSE 0 END)  as february,
+        SUM(CASE WHEN aaa.mon = '03' THEN aaa.num ELSE 0 END)  as march,
+        SUM(CASE WHEN aaa.mon = '04' THEN aaa.num ELSE 0 END)  as april,
+        SUM(CASE WHEN aaa.mon = '05' THEN aaa.num ELSE 0 END)  as may,
+        SUM(CASE WHEN aaa.mon = '06' THEN aaa.num ELSE 0 END)  as june,
+        SUM(CASE WHEN aaa.mon = '07' THEN aaa.num ELSE 0 END)  as july,
+        SUM(CASE WHEN aaa.mon = '08' THEN aaa.num ELSE 0 END)  as august,
+        SUM(CASE WHEN aaa.mon = '09' THEN aaa.num ELSE 0 END)  as september,
+        SUM(CASE WHEN aaa.mon = '10' THEN aaa.num ELSE 0 END)  as october,
+        SUM(CASE WHEN aaa.mon = '11' THEN aaa.num ELSE 0 END)  as november,
+        SUM(CASE WHEN aaa.mon = '12' THEN aaa.num ELSE 0 END)  as december
+        FROM
+        aaa
+        join(
+        SELECT
+            yhlxmc , round(sum(yhwcsl)/sum(yhzl),3)*(100)  as Completion FROM "rpt_aqjg_ggjt_yhlxtj"
+		where
+        <choose>
+            <when test="param== null">
+                to_date( concat_ws ( '', YEAR ), 'yyyy' ) = to_date(#{choiceDate},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+		GROUP BY
+		    yhlxmc
+		ORDER BY
+		    yhlxmc ) t2
+		on
+		    aaa.yhlxmc=t2.yhlxmc
+	    GROUP BY
+	        aaa.yhlxmc , aaa.status , t2.Completion
+	    ORDER BY
+	        aaa.yhlxmc , aaa.status ,  t2.Completion
+	) t3
+
+
+
+    </select>
+
+    <!--八进宣传统计 -->
+    <select id="BJXCTJ" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+
+    with zzz as (
+        SELECT
+	      ddmc,
+	      lxmc,
+          SUM ( rws ) AS rws,
+	      SUM ( wcs ) AS wcs,
+	      SUM(CASE when lxmc in ('学校','机关','重点源头企业','非重点源头企业','社区','农村','公共场所') then rws ELSE 0 END) as all_rws ,
+	      SUM(CASE when lxmc in ('学校','机关','重点源头企业','非重点源头企业','社区','农村','公共场所') then wcs ELSE 0 END) as all_wcs,
+	      SUM(CASE WHEN lxmc = '学校' THEN rws ELSE 0 END) as school  ,
+          SUM(CASE WHEN lxmc = '机关' THEN rws ELSE 0 END) as organ  ,
+          SUM(CASE WHEN lxmc = '重点源头企业' THEN rws ELSE 0 END) as key  ,
+          SUM(CASE WHEN lxmc = '非重点源头企业' THEN rws ELSE 0 END) as nokey  ,
+          SUM(CASE WHEN lxmc = '社区' THEN rws ELSE 0 END) as community  ,
+          SUM(CASE WHEN lxmc = '农村' THEN rws ELSE 0 END) as rural  ,
+          SUM(CASE WHEN lxmc = '公共场所' THEN rws ELSE 0 END) as public ,
+          SUM(CASE WHEN lxmc = '家庭' THEN rws ELSE 0 END) as family ,
+          SUM(CASE WHEN lxmc = '媒体' THEN rws ELSE 0 END) as media
+	    FROM
+	      "rpt_aqjg_ggjt_xcxxtj"
+        WHERE
+        <choose>
+            <when test="param== null">
+                to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+	       AND ddmc IS NOT NULL
+	       AND lxmc IS NOT NULL
+        GROUP BY
+	      ddmc,
+	      lxmc
+        ORDER BY
+	      ddmc,
+	      lxmc
+	)
+
+      SELECT
+	      zzz.ddmc AS company,
+	      t1.count as police ,
+          round(sum(all_wcs)/sum(all_rws),3)*(100)	as progress,
+	      SUM ( all_rws ) AS sixall,
+	      SUM ( all_wcs ) AS all_wcs,
+	      SUM ( school ) AS school ,
+	      SUM ( organ ) AS organ ,
+	      SUM ( key ) AS key ,
+	      SUM ( nokey ) AS key2 ,
+	      SUM ( community ) AS community ,
+	      SUM ( rural ) AS rural ,
+	      SUM ( public ) AS public ,
+	      SUM ( family ) AS family ,
+	      SUM ( media ) AS media
+      FROM
+	      zzz
+	  JOIN (
+	          SELECT
+	              ddmc,"count"(xcmj)
+              FROM
+	              rpt_aqjg_ggjt_xcmjtj
+              WHERE
+        <choose>
+            <when test="param== null">
+                to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+	              AND ddmc IS NOT NULL
+	              AND xcmj IS NOT NULL
+              GROUP BY ddmc
+	        ) t1
+	  ON
+	      zzz.ddmc=t1.ddmc
+      GROUP BY
+	      zzz.ddmc ,t1.count
+      ORDER BY
+      	  zzz.ddmc
+
+
+    </select>
+
+    <!--八进宣传统计  子项-->
+    <select id="BJXCTJZX" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+
+        with zzz as (
+        SELECT
+        zdmc as ddmc,
+        lxmc,
+        SUM ( rws ) AS rws,
+        SUM ( wcs ) AS wcs,
+        SUM(CASE when lxmc in ('学校','机关','重点源头企业','非重点源头企业','社区','农村','公共场所') then rws ELSE 0 END) as all_rws ,
+        SUM(CASE when lxmc in ('学校','机关','重点源头企业','非重点源头企业','社区','农村','公共场所') then wcs ELSE 0 END) as all_wcs,
+        SUM(CASE WHEN lxmc = '学校' THEN rws ELSE 0 END) as school  ,
+        SUM(CASE WHEN lxmc = '机关' THEN rws ELSE 0 END) as organ  ,
+        SUM(CASE WHEN lxmc = '重点源头企业' THEN rws ELSE 0 END) as key  ,
+        SUM(CASE WHEN lxmc = '非重点源头企业' THEN rws ELSE 0 END) as nokey  ,
+        SUM(CASE WHEN lxmc = '社区' THEN rws ELSE 0 END) as community  ,
+        SUM(CASE WHEN lxmc = '农村' THEN rws ELSE 0 END) as rural  ,
+        SUM(CASE WHEN lxmc = '公共场所' THEN rws ELSE 0 END) as public ,
+        SUM(CASE WHEN lxmc = '家庭' THEN rws ELSE 0 END) as family ,
+        SUM(CASE WHEN lxmc = '媒体' THEN rws ELSE 0 END) as media
+        FROM
+        "rpt_aqjg_ggjt_xcxxtj"
+        WHERE
+        <choose>
+            <when test="param== null">
+                to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+        AND ddmc =#{name}
+        AND lxmc IS NOT NULL
+        GROUP BY
+        zdmc,
+        lxmc
+        ORDER BY
+        zdmc,
+        lxmc
+        )
+
+        SELECT
+        zzz.ddmc AS company,
+        t1.count as police ,
+        round(sum(all_wcs)/sum(all_rws),3)*(100)	as progress,
+        SUM ( all_rws ) AS sixall,
+        SUM ( all_wcs ) AS all_wcs,
+        SUM ( school ) AS school ,
+        SUM ( organ ) AS organ ,
+        SUM ( key ) AS key ,
+        SUM ( nokey ) AS key2 ,
+        SUM ( community ) AS community ,
+        SUM ( rural ) AS rural ,
+        SUM ( public ) AS public ,
+        SUM ( family ) AS family ,
+        SUM ( media ) AS media
+        FROM
+        zzz
+        JOIN (
+        SELECT
+        zdmc as ddmc,"count"(xcmj)
+        FROM
+        rpt_aqjg_ggjt_xcmjtj
+        WHERE
+        <choose>
+            <when test="param== null">
+                to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+        AND ddmc =#{name}
+        AND xcmj IS NOT NULL
+        GROUP BY zdmc
+        ) t1
+        ON
+        zzz.ddmc=t1.ddmc
+        GROUP BY
+        zzz.ddmc ,t1.count
+        ORDER BY
+        zzz.ddmc
+
+    </select>
+
+
+    <!--单位重点违法统计-->
+    <select id="DWZDWFTJ" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+        SELECT
+            ddmc as company,
+            SUM(CASE WHEN lxmc = '国省道重点违法' THEN wfs ELSE 0 END) as country  ,
+            SUM(CASE WHEN lxmc = '农村公路重点违法' THEN wfs ELSE 0 END) as village  ,
+            SUM(CASE WHEN lxmc = '两客一危重点违法' THEN wfs ELSE 0 END) as illegal  ,
+            SUM(CASE WHEN lxmc = '重型货车、挂车超载、非法改装' THEN wfs ELSE 0 END) as van  ,
+            SUM(CASE WHEN lxmc = '酒驾醉驾' THEN wfs ELSE 0 END) as dui  ,
+            SUM(CASE WHEN lxmc = '假套牌' THEN wfs ELSE 0 END) as fake
+        FROM
+            "rpt_aqjg_ggjt_zdwf"
+        WHERE
+            lxmc IN ('国省道重点违法','农村公路重点违法','两客一危重点违法','重型货车、挂车超载、非法改装','酒驾醉驾','假套牌')
+            And
+           <choose>
+             <when test="param== null">
+                to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+        GROUP BY ddmc
+        ORDER BY ddmc
+
+    </select>
+
+    <!--单位重点违法统计  子项-->
+    <select id="DWZDWFTJZX" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+        SELECT
+        zdmc as company,
+        SUM(CASE WHEN lxmc = '国省道重点违法' THEN wfs ELSE 0 END) as country  ,
+        SUM(CASE WHEN lxmc = '农村公路重点违法' THEN wfs ELSE 0 END) as village  ,
+        SUM(CASE WHEN lxmc = '两客一危重点违法' THEN wfs ELSE 0 END) as illegal  ,
+        SUM(CASE WHEN lxmc = '重型货车、挂车超载、非法改装' THEN wfs ELSE 0 END) as van  ,
+        SUM(CASE WHEN lxmc = '酒驾醉驾' THEN wfs ELSE 0 END) as dui  ,
+        SUM(CASE WHEN lxmc = '假套牌' THEN wfs ELSE 0 END) as fake
+        FROM
+        "rpt_aqjg_ggjt_zdwf"
+        WHERE
+            ddmc=#{name}
+           AND  lxmc IN ('国省道重点违法','农村公路重点违法','两客一危重点违法','重型货车、挂车超载、非法改装','酒驾醉驾','假套牌')
+        And
+        <choose>
+            <when test="param== null">
+                to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+            </when>
+            <otherwise>
+                to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+        GROUP BY zdmc
+        ORDER BY zdmc
+
+    </select>
+
+
+    <!--源头底数统计-->
+    <select id="YTDSTJ" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+        SELECT
+          xzdlmc as dwType ,
+          xzxlmc as dwResource ,
+          sum(dwsl) as qyNum ,
+          CASE WHEN true THEN 0 ELSE 0 END	 as carNum,
+          CASE WHEN true THEN 0 ELSE 0 END	 as carNum2,
+          CASE WHEN true THEN 0 ELSE 0 END	 as driverNum,
+          CASE WHEN true THEN 0 ELSE 0 END	 as peNum
+        FROM
+          "rpt_aqjg_ggjt_qyxzfx"
+
+        where
+          xzdlmc is not null
+          AND xzxlmc is not null
+        <choose>
+            <when test="param== null">
+                AND to_date(concat_ws('',year),'yyyy') = to_date(#{year},'yyyy')
+            </when>
+            <otherwise>
+                AND to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+
+        GROUP BY
+          xzdlmc , xzxlmc
+        ORDER BY
+          xzdlmc , xzxlmc
+
+    </select>
+
+</mapper>

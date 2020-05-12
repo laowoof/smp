@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.XCJYMapper">
+    <!--基础信息 采集单位总数-->
+    <select id="totalNumCJDW" resultType="Integer" parameterType="java.util.HashMap">
+
+        SELECT SUM
+            ( dwsl ) AS cjdwNum
+        FROM
+           "rpt_aqjg_ggjt_xcdwcj"
+        WHERE
+            dwlx IN ( '1', '2', '3', '4-1', '4-2', '5', '7', '8', '9' )
+        <choose>
+            <when test="param== null">
+                AND to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+            </when>
+            <otherwise>
+                AND to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+            </otherwise>
+        </choose>
+
+    </select>
+
+   <!--基础信息 宣传总数-->
+   <select id="totalNumXCZS" resultType="Integer" parameterType="java.util.HashMap">
+
+       SELECT
+          sum(wcs) as xczsNum
+       FROM
+         "rpt_aqjg_ggjt_xcxxtj"
+       WHERE
+          lxdm IN ('1','2','3','4-1','4-2','5','7','8','9')
+          <choose>
+             <when test="param== null">
+               AND to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+               AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+             </when>
+             <otherwise>
+               AND to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+               AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+             </otherwise>
+          </choose>
+
+   </select>
+
+
+   <!--基础底数 -->
+   <select id="JCDUNum" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+
+       SELECT
+          sum(dwsl) as dwsl , SUBSTRING(dwlxmc,"length"(dwlxmc)-1,2) as dwlxmc
+       FROM
+           "rpt_aqjg_ggjt_xcdwcj"
+       where
+          dwlx in ('1','2','3','4-1','4-2','5','7','8','9')
+          <choose>
+              <when test="param== null">
+                  and to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                  and to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+              </when>
+              <otherwise>
+                  and to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                  and to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+              </otherwise>
+          </choose>
+
+       GROUP BY SUBSTRING(dwlxmc,"length"(dwlxmc)-1,2)
+
+   </select>
+
+   <!--单位宣传进度完成情况-->
+   <select id="Unitpublicity" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+
+       SELECT
+          ddmc , round(sum(wcs)/sum(rws),3)*(100) as rate
+       FROM
+          rpt_aqjg_ggjt_xcxxtj
+       WHERE
+           ddmc is not null
+           <choose>
+              <when test="param== null">
+                and to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+                and to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+              </when>
+           <otherwise>
+                and to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+                and to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+           </otherwise>
+       </choose>
+
+
+       GROUP BY ddmc
+
+   </select>
+
+
+
+   <!--八进宣传任务 -->
+   <select id="PublicityTasks" resultType="java.util.HashMap" parameterType="java.util.List">
+
+       SELECT
+          sum(rws) as rws  ,SUBSTRING(lxmc,"length"(lxmc)-1,2) as lxmc , round(sum(wcs)/sum(rws),3)*(100) as rate
+       FROM
+          rpt_aqjg_ggjt_xcxxtj
+       WHERE
+           lxdm in ('1','2','3','4-1','4-2','5','7','8','9')
+          AND ddmc =#{dd}
+       <choose>
+           <when test="param== null">
+               AND to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+               AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+           </when>
+           <otherwise>
+               AND to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+               AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+           </otherwise>
+       </choose>
+       GROUP BY SUBSTRING(lxmc,"length"(lxmc)-1,2)
+   </select>
+
+
+   <!--民警宣传-->
+   <select id="PromotionalRate" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+
+       With ali as (
+         SELECT
+              sum(rws) as rws
+         FROM
+            rpt_aqjg_ggjt_xcxxtj
+          WHERE
+            ddmc = #{dd}
+          <choose>
+              <when test="param== null">
+               AND to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+               AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+             </when>
+             <otherwise>
+               AND to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+               AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+             </otherwise>
+          </choose>
+       )
+       SELECT
+          sum(xcs) as xcs, xcmjmc ,(SELECT ali.rws from ali) as dwru, round(sum(xcs)/(SELECT ali.rws from ali),3)*(100) as rate
+       FROM
+          rpt_aqjg_ggjt_xcmjtj
+       WHERE
+          ddmc =#{dd}
+          and xcmjmc is not null
+          <choose>
+             <when test="param== null">
+               AND to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+               AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+             </when>
+             <otherwise>
+               AND to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+               AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+             </otherwise>
+       </choose>
+       GROUP BY xcmjmc ORDER BY xcs DESC LIMIT 10
+   </select>
+    <!--大队名称集合-->
+    <select id="DDMC" resultType="java.util.HashMap" >
+        SELECT  ddmc FROM rpt_aqjg_ggjt_xcmjtj where ddmc is not NULL GROUP BY  ddmc
+    </select>
+
+</mapper>
