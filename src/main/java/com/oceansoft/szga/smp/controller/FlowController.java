@@ -21,7 +21,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("flow/report")
-@ApiOperation("协同流转")
+//@ApiOperation("协同流转")
 public class FlowController {
     @Autowired
     private FlowReportService reportService;

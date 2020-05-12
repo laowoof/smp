@@ -1,19 +1,24 @@
 spring:
-  application:
-    name: smp
-  jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
+  aop:
+    proxy-target-class: true
+    auto: true
+  http:
+    multipart:
+      maxFileSize: 10000MB
+      maxRequestSize: 10000MB
   profiles:
     active: dev
+
 server:
-  port: 19123
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    min-response-size: 1024
+  port: 8101
   tomcat:
     uri-encoding: utf-8
-mybatis:
-#  # 配置mapper的扫描，找到所有的mapper.xml映射文件
-  mapperLocations: classpath:mybatis/mapper/*.xml
-  configLocation: classpath:mybatis/mybatis-config.xml
+prop:
+  cas-ignore-pattern: /api/.*|/account/.*|/static/.*|/project/.*|/system/.*|/evaluate/.*|/sjextract/.*|/xfjextract/.*|/special/.*|/statistics/.*|/supervision/.*|/cas/login/info|/test/.*
 pagehelper:
   helperDialect: postgresql
   reasonable: true
@@ -21,6 +26,12 @@ pagehelper:
   row-bounds-with-count: true
   offset-as-page-num: true
   page-size-zero: true
+mybatis:
+  configuration:
+    cache-enabled: true
+    use-generated-keys: true
+    default-executor-type: reuse
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 ---
 spring:
   profiles: dev
@@ -36,7 +47,12 @@ spring:
     port: 6379
 #logging:
 #  config: classpath:logback.dev.xml
-
+cas:
+  server-url-prefix: http://172.17.118.238:8081/cas
+  server-login-url: http://172.17.118.238:8081/cas/login
+  client-host-url: http://localhost:8101
+  validation-type: cas
+  authentication-url-patterns: /cas/login/index
 ---
 spring:
   profiles: pro
@@ -52,7 +68,10 @@ spring:
     port: 6379
 logging:
   config: classpath:logback.pro.xml
-
-
-
-
+cas:
+  #Required properties
+  server-url-prefix: http://tyyh.szh.js:9080/cas
+  server-login-url: http://tyyh.szh.js:9080/cas/login
+  client-host-url: http://50.73.67.224:8101
+  validation-type: cas
+  authentication-url-patterns: /cas/login/index
