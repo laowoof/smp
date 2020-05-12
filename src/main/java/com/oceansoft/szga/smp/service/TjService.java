@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,28 +107,28 @@ public interface TjService {
      */
     ApiResult jgSsTjZrq(String code,String tjrq);
 
-    /**
-     *  重点单位实施数据  统计
-     * @param tjrq
-     * @return
-     */
-    ApiResult zdDwYhTjSs(String tjrq);
-
-    /**
-     *  重点单位实施数据 派出所  统计
-     * @param code
-     * @param tjrq
-     * @return
-     */
-    ApiResult zdDwYhTjSsPcs(String code,String tjrq);
-
-    /**
-     *  重点单位实施数据 责任区  统计
-     * @param code
-     * @param tjrq
-     * @return
-     */
-    ApiResult zdDwYhTjSsZrq(String code,String tjrq);
+//    /**
+//     *  重点单位实施数据  统计
+//     * @param tjrq
+//     * @return
+//     */
+//    ApiResult zdDwYhTjSs(String tjrq);
+//
+//    /**
+//     *  重点单位实施数据 派出所  统计
+//     * @param code
+//     * @param tjrq
+//     * @return
+//     */
+//    ApiResult zdDwYhTjSsPcs(String code,String tjrq);
+//
+//    /**
+//     *  重点单位实施数据 责任区  统计
+//     * @param code
+//     * @param tjrq
+//     * @return
+//     */
+//    ApiResult zdDwYhTjSsZrq(String code,String tjrq);
 
     /**
      *  重点单位实施数据 责任区  统计
@@ -153,26 +154,6 @@ public interface TjService {
     ApiResult zySsXzTjSsZrq(String code,String tjrq);
 
     /**
-     *  企事业单位新增统计  实施
-     * @param tjrq
-     * @return
-     */
-    ApiResult qsyAddSs(String tjrq);
-    /**
-     *  企事业单位新增统计  实时派出所
-     * @param code
-     * @param tjrq
-     * @return
-     */
-    ApiResult qsyAddSsPcs(String code,String tjrq);
-    /**
-     *  企事业单位新增统计  实时责任区
-     * @param code
-     * @param tjrq
-     * @return
-     */
-    ApiResult qsyAddSsZrq(String code,String tjrq);
-    /**
      *  重要设施新增统计 月度数据
      * @param year
      * @return
@@ -192,6 +173,70 @@ public interface TjService {
      * @return
      */
     ApiResult zySsXzTjYdZrq(String year,String code);
+    /**
+     * 重要设施隐患统计 月度数据统计
+     * @param year
+     * @date  2020/5/7
+     * @return
+     */
+    ApiResult zySsYhTjYd(String year);
+
+
+    /**
+     * 重要设施隐患统计 月度数据统计 点击数据
+     * @param map
+     * @date  2020/5/8
+     * @return
+     */
+    ApiResult zySsYhTjYdClick(HashMap map);
+
+    /**
+     * 监管项底数统计  月度数据
+     * @param year
+     * @date  2020/5/9
+     * @return
+     */
+    ApiResult jgYdData(String year);
+
+    /**
+     * 监管项底数统计  月度数据  钻取功能
+     * @param map
+     * @date  2020/5/9
+     * @return
+     */
+    ApiResult jgYdDataClick(HashMap map);
+
+    /**
+     * 监企事业单位新增统计  月度数据
+     * @param map
+     * @date  2020/5/11
+     * @return
+     */
+    ApiResult qsyAddYdData(HashMap map);
+
+    /**
+     * 监企事业单位新增统计  实时数据
+     * @param map
+     * @date  2020/5/11
+     * @return
+     */
+    ApiResult qsyAddSsData(HashMap map);
+
+    /**
+     * 重点单位隐患统计  月度数据
+     * @param map
+     * @date  2020/5/11
+     * @return
+     */
+    ApiResult zdDwYhYdData(HashMap map);
+
+    /**
+     * 重点单位隐患统计  月度数据
+     * @param map
+     * @date  2020/5/11
+     * @return
+     */
+    ApiResult zdDwYhSsData(HashMap map);
 
     List<List<Object>> createListObject(List<LinkedHashMap> data);
 

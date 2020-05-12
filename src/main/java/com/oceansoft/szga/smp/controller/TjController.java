@@ -15,10 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author  wzj
@@ -180,42 +177,42 @@ public class TjController {
         return data;
     }
 
-    /**
-     *  重点单位隐患统计 实时数据
-     * @author wzj
-     * @return 数据
-     */
-    @GetMapping("zdDwYhTjSs")
-    public ApiResult zdDwYhTjSs(String tjrq){
-        ApiResult data = tjService.zdDwYhTjSs(tjrq);
-        return data;
-    }
-
-    /**
-     * 重点单位隐患统计 实时数据 派出所
-     * @param tjrq
-     * @param code
-     * @author wzj
-     * @return 数据
-     */
-    @GetMapping("zdDwYhTjSsPcs")
-    public ApiResult zdDwYhTjSsPcs(String code,String tjrq){
-        ApiResult data = tjService.zdDwYhTjSsPcs(code,tjrq);
-        return data;
-    }
-
-    /**
-     * 重点单位隐患统计 实时数据 责任区
-     * @param tjrq
-     * @param code
-     * @author wzj
-     * @return 数据
-     */
-    @GetMapping("zdDwYhTjSsZrq")
-    public ApiResult zdDwYhTjSsZrq(String code,String tjrq){
-        ApiResult data = tjService.zdDwYhTjSsZrq(code,tjrq);
-        return data;
-    }
+//    /**
+//     *  重点单位隐患统计 实时数据
+//     * @author wzj
+//     * @return 数据
+//     */
+//    @GetMapping("zdDwYhTjSs")
+//    public ApiResult zdDwYhTjSs(String tjrq){
+//        ApiResult data = tjService.zdDwYhTjSs(tjrq);
+//        return data;
+//    }
+//
+//    /**
+//     * 重点单位隐患统计 实时数据 派出所
+//     * @param tjrq
+//     * @param code
+//     * @author wzj
+//     * @return 数据
+//     */
+//    @GetMapping("zdDwYhTjSsPcs")
+//    public ApiResult zdDwYhTjSsPcs(String code,String tjrq){
+//        ApiResult data = tjService.zdDwYhTjSsPcs(code,tjrq);
+//        return data;
+//    }
+//
+//    /**
+//     * 重点单位隐患统计 实时数据 责任区
+//     * @param tjrq
+//     * @param code
+//     * @author wzj
+//     * @return 数据
+//     */
+//    @GetMapping("zdDwYhTjSsZrq")
+//    public ApiResult zdDwYhTjSsZrq(String code,String tjrq){
+//        ApiResult data = tjService.zdDwYhTjSsZrq(code,tjrq);
+//        return data;
+//    }
     /**
      * 重要设施新增统计 实时数据
      * @author wzj
@@ -249,41 +246,20 @@ public class TjController {
         return data;
     }
 
+
     /**
-     * 企事业单位新增统计  实施
+     * 企事业单位新增统计  实时
      * @author wzj
-     * @param tjrq
+     * @param map
      * @return 数据
      */
-    @GetMapping("qsyAddSs")
-    public ApiResult qsyAddSs(String tjrq){
-        ApiResult data = tjService.qsyAddSs(tjrq);
+    @PostMapping("qsyAddSsData")
+    public ApiResult qsyAddSsData(@RequestBody HashMap map){
+        ApiResult data = tjService.qsyAddSsData(map);
         return data;
     }
-    /**
-     * 企事业单位新增统计  实时派出所
-     * @param tjrq
-     * @param code
-     * @author wzj
-     * @return 数据
-     */
-    @GetMapping("qsyAddSsPcs")
-    public ApiResult qsyAddSsPcs(String code,String tjrq){
-        ApiResult data = tjService.qsyAddSsPcs(code,tjrq);
-        return data;
-    }
-    /**
-     * 企事业单位新增统计  实时责任区
-     * @author wzj
-     * @param tjrq
-     * @param code
-     * @return 数据
-     */
-    @GetMapping("qsyAddSsZrq")
-    public ApiResult qsyAddSsZrq(String code,String tjrq){
-        ApiResult data = tjService.qsyAddSsZrq(code,tjrq);
-        return data;
-    }
+
+
 
     /**
      * 重要设施新增统计 月度数据
@@ -318,5 +294,76 @@ public class TjController {
     public ApiResult zySsXzTjYdZrq(String year,String code){
         ApiResult data = tjService.zySsXzTjYdZrq(year,code);
         return data;
+    }
+    /**
+     * 重要设施隐患统计 月度数据统计
+     * @author wzj
+     * @param year
+     * @return 数据
+     */
+    @GetMapping("zySsYhTjYd")
+    public ApiResult zySsYhTjYd(String year){
+        ApiResult data = tjService.zySsYhTjYd(year);
+        return data;
+    }
+
+    @PostMapping("zySsYhTjYdClick")
+    public ApiResult zySsYhTjYdClick(@RequestBody HashMap map){
+        ApiResult data = tjService.zySsYhTjYdClick(map);
+        return data;
+    }
+    /**
+     * 监管项底数统计  月度数据
+     * @author wzj
+     * @param year
+     * @return 数据
+     */
+    @GetMapping("jgYdData/{year}")
+    public ApiResult jgYdData(@PathVariable("year") String year){
+        return tjService.jgYdData(year);
+    }
+
+    /**
+     * 监管项底数统计  月度数据  钻取功能
+     * @author wzj
+     * @param map
+     * @return 数据
+     */
+    @PostMapping("jgYdDataClick")
+    public ApiResult jgYdDataClick(@RequestBody HashMap map){
+        ApiResult data = tjService.jgYdDataClick(map);
+        return data;
+    }
+    /**
+     * 企事业单位新增统计  月度数据
+     * @author wzj
+     * @param map
+     * @return 数据
+     */
+    @PostMapping("qsyAddYdData")
+    public ApiResult qsyAddYdData(@RequestBody HashMap map){
+        ApiResult data = tjService.qsyAddYdData(map);
+        return data;
+    }
+    /**
+     * 重点单位隐患统计  月度数据
+     * @author wzj
+     * @param map
+     * @return 数据
+     */
+    @PostMapping("zdDwYhYdData")
+    public ApiResult zdDwYhYdData(@RequestBody HashMap map){
+        return tjService.zdDwYhYdData(map);
+    }
+
+    /**
+     * 重点单位隐患统计  实时数据
+     * @author wzj
+     * @param map
+     * @return 数据
+     */
+    @PostMapping("zdDwYhSsData")
+    public ApiResult zdDwYhSsData(@RequestBody HashMap map){
+        return tjService.zdDwYhSsData(map);
     }
 }

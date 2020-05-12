@@ -102,23 +102,23 @@ public class TjServiceImpl implements TjService {
         return new ApiResult().success(200, "成功", data);
     }
 
-    @Override
-    public ApiResult zdDwYhTjSs(String tjrq) {
-        List<HashMap> data = tjMapper.zdDwYhTjSs(tjrq);
-        return new ApiResult().success(200, "成功", data);
-    }
-
-    @Override
-    public ApiResult zdDwYhTjSsPcs(String code,String tjrq) {
-        List<HashMap> data = tjMapper.zdDwYhTjSsPcs(code,tjrq);
-        return new ApiResult().success(200, "成功", data);
-    }
-
-    @Override
-    public ApiResult zdDwYhTjSsZrq(String code,String tjrq) {
-        List<HashMap> data = tjMapper.zdDwYhTjSsZrq(code,tjrq);
-        return new ApiResult().success(200, "成功", data);
-    }
+//    @Override
+//    public ApiResult zdDwYhTjSs(String tjrq) {
+//        List<HashMap> data = tjMapper.zdDwYhTjSs(tjrq);
+//        return new ApiResult().success(200, "成功", data);
+//    }
+//
+//    @Override
+//    public ApiResult zdDwYhTjSsPcs(String code,String tjrq) {
+//        List<HashMap> data = tjMapper.zdDwYhTjSsPcs(code,tjrq);
+//        return new ApiResult().success(200, "成功", data);
+//    }
+//
+//    @Override
+//    public ApiResult zdDwYhTjSsZrq(String code,String tjrq) {
+//        List<HashMap> data = tjMapper.zdDwYhTjSsZrq(code,tjrq);
+//        return new ApiResult().success(200, "成功", data);
+//    }
 
     @Override
     public ApiResult zySsXzTjSs(String tjrq) {
@@ -139,24 +139,6 @@ public class TjServiceImpl implements TjService {
     }
 
     @Override
-    public ApiResult qsyAddSs(String tjrq) {
-        List<HashMap> data = tjMapper.qsyAddSs(tjrq);
-        return new ApiResult().success(200, "成功", data);
-    }
-
-    @Override
-    public ApiResult qsyAddSsPcs(String code,String tjrq) {
-        List<HashMap> data = tjMapper.qsyAddSsPcs(code,tjrq);
-        return new ApiResult().success(200, "成功", data);
-    }
-
-    @Override
-    public ApiResult qsyAddSsZrq(String code,String tjrq) {
-        List<HashMap> data = tjMapper.qsyAddSsZrq(code,tjrq);
-        return new ApiResult().success(200, "成功", data);
-    }
-
-    @Override
     public ApiResult zySsXzTjYd(String year) {
         List<HashMap> data = tjMapper.zySsXzTjYd(year);
         return new ApiResult().success(200, "成功", data);
@@ -172,6 +154,116 @@ public class TjServiceImpl implements TjService {
     public ApiResult zySsXzTjYdZrq(String year, String code) {
         List<HashMap> data = tjMapper.zySsXzTjYdZrq(year,code);
         return new ApiResult().success(200, "成功", data);
+    }
+
+    @Override
+    public ApiResult zySsYhTjYd(String year) {
+        List<HashMap> data = tjMapper.zySsYhTjYd(year);
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult zySsYhTjYdClick(HashMap map) {
+        List<HashMap> data = null;
+        if("zrq".equals(map.get("type"))){
+            data = tjMapper.zySsYhTjYdZrq(map);
+        }else if("pcs".equals(map.get("type"))){
+            data = tjMapper.zySsYhTjYdPcs(map);
+        }
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult jgYdData(String year) {
+        List<HashMap> data = tjMapper.jgYdData(year);
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult jgYdDataClick(HashMap map) {
+        List<HashMap> data = null;
+        if("zrq".equals(map.get("type"))){
+            data = tjMapper.jgYdDataZrq(map);
+        }else if("pcs".equals(map.get("type"))){
+            data = tjMapper.jgYdDataPcs(map);
+        }
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult qsyAddYdData(HashMap map) {
+        List<HashMap> data = null;
+        if("all".equals(map.get("type"))){
+            data = tjMapper.qsyAddYd(map);
+        }else if("zrq".equals(map.get("type"))){
+            data = tjMapper.qsyAddYdZrq(map);
+        }else if("pcs".equals(map.get("type"))){
+            data = tjMapper.qsyAddYdPcs(map);
+        }
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult qsyAddSsData(HashMap map) {
+        List<HashMap> data = null;
+        if("all".equals(map.get("type"))){
+            data = tjMapper.qsyAddSs(map);
+        }else if("zrq".equals(map.get("type"))){
+            data = tjMapper.qsyAddSsZrq(map);
+        }else if("pcs".equals(map.get("type"))){
+            data = tjMapper.qsyAddSsPcs(map);
+        }
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult zdDwYhYdData(HashMap map) {
+        List<HashMap> data = null;
+        if("all".equals(map.get("type"))){
+            data = tjMapper.zdDwYhYd(map);
+        }else if("zrq".equals(map.get("type"))){
+            data = tjMapper.zdDwYhZrq(map);
+        }else if("pcs".equals(map.get("type"))){
+            data = tjMapper.zdDwYhPcs(map);
+        }
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult zdDwYhSsData(HashMap map) {
+        List<HashMap> data = null;
+        if("all".equals(map.get("type"))){
+            data = tjMapper.zdDwYhTjSs(map);
+        }else if("zrq".equals(map.get("type"))){
+            data = tjMapper.zdDwYhTjSsZrq(map);
+        }else if("pcs".equals(map.get("type"))){
+            data = tjMapper.zdDwYhTjSsPcs(map);
+        }
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
     }
 
 

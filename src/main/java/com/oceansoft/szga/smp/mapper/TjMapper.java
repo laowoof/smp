@@ -111,27 +111,25 @@ public interface TjMapper {
 
     /**
      * 重点单位隐患统计 实时数据
-     * @param tjrq
+     * @param map
      * @date  2020/4/14
      * @return
      */
-    List<HashMap> zdDwYhTjSs(@Param("tjrq")String tjrq);
+    List<HashMap> zdDwYhTjSs(HashMap map);
     /**
      * 重点单位隐患统计 实时数据 派出所
-     * @param code
-     * @param tjrq
+     * @param map
      * @date  2020/4/14
      * @return
      */
-    List<HashMap> zdDwYhTjSsPcs(@Param("code") String code,@Param("tjrq")String tjrq);
+    List<HashMap> zdDwYhTjSsPcs(HashMap map);
     /**
      * 重点单位隐患统计 实时数据 责任区
-     * @param code
-     * @param tjrq
+     * @param map
      * @date  2020/4/14
      * @return
      */
-    List<HashMap> zdDwYhTjSsZrq(@Param("code") String code,@Param("tjrq")String tjrq);
+    List<HashMap> zdDwYhTjSsZrq(HashMap map);
     /**
      * 重要设施新增统计 实时数据
      * @param time
@@ -159,27 +157,25 @@ public interface TjMapper {
     List<HashMap> zySsXzTjSsZrq(@Param("time") String time,@Param("code") String code,@Param("tjrq")String tjrq);
     /**
      * 企事业单位新增统计  实施
-     * @param tjrq
+     * @param map
      * @date  2020/4/15
      * @return
      */
-    List<HashMap> qsyAddSs(@Param("tjrq")String tjrq);
+    List<HashMap> qsyAddSs(HashMap map);
     /**
      * 企事业单位新增统计 实时 派出所
-     * @param code
-     * @param tjrq
+     * @param map
      * @date  2020/4/15
      * @return
      */
-    List<HashMap> qsyAddSsPcs(@Param("code")String code,@Param("tjrq")String tjrq);
+    List<HashMap> qsyAddSsPcs(HashMap map);
     /**
      * 企事业单位新增统计  实施 责任区
-     * @param code
-     * @param tjrq
+     * @param map
      * @date  2020/4/15
      * @return
      */
-    List<HashMap> qsyAddSsZrq(@Param("code")String code,@Param("tjrq")String tjrq);
+    List<HashMap> qsyAddSsZrq(HashMap map);
 
     /**
      * 重要设施新增统计 月度数据
@@ -204,4 +200,91 @@ public interface TjMapper {
      * @return
      */
     List<HashMap> zySsXzTjYdZrq(@Param("year") String year,@Param("code")String code);
+    /**
+     * 重要设施隐患统计 月度数据统计
+     * @param year
+     * @date  2020/5/7
+     * @return
+     */
+    List<HashMap> zySsYhTjYd(@Param("year") String year);
+    /**
+     * 重要设施隐患统计 月度数据统计 派出所
+     * @param map
+     * @date  2020/5/8
+     * @return
+     */
+    List<HashMap> zySsYhTjYdPcs(HashMap map);
+
+    /**
+     * 重要设施隐患统计 月度数据统计 责任区
+     * @param map
+     * @date  2020/5/8
+     * @return
+     */
+    List<HashMap> zySsYhTjYdZrq(HashMap map);
+
+    /**
+     * 监管项底数统计  月度数据
+     * @param year
+     * @date  2020/5/9
+     * @return
+     */
+    List<HashMap> jgYdData(String year);
+    /**
+     * 监管项底数统计  月度数据派出所
+     * @param map
+     * @date  2020/5/9
+     * @return
+     */
+    List<HashMap> jgYdDataPcs(HashMap map);
+    /**
+     * 监管项底数统计  月度数据责任区
+     * @param map
+     * @date  2020/5/11
+     * @return
+     */
+    List<HashMap> jgYdDataZrq(HashMap map);
+    /**
+     * 企事业单位新增统计  月度数据
+     * @param map
+     * @date  2020/5/11
+     * @return
+     */
+    List<HashMap> qsyAddYd(HashMap map);
+    /**
+     * 企事业单位新增统计  月度数据 派出所
+     * @param map
+     * @date  2020/5/11
+     * @return
+     */
+    List<HashMap> qsyAddYdPcs(HashMap map);
+    /**
+     * 企事业单位新增统计  月度数据责任区
+     * @param map
+     * @date  2020/5/11
+     * @return
+     */
+    List<HashMap> qsyAddYdZrq(HashMap map);
+
+    /**
+     * 重点单位隐患统计  月度数据
+     * @param map
+     * @date  2020/5/12
+     * @return
+     */
+    List<HashMap> zdDwYhYd(HashMap map);
+    /**
+     * 重点单位隐患统计  月度数据 派出所
+     * @param map
+     * @date  2020/5/12
+     * @return
+     */
+    List<HashMap> zdDwYhPcs(HashMap map);
+    /**
+     * 重点单位隐患统计  月度数据 责任区
+     * @param map
+     * @date  2020/5/12
+     * @return
+     */
+    List<HashMap> zdDwYhZrq(HashMap map);
 }
