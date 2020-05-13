@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = {"单点登陆"})
 public class CasLoginController {
 
-    @Value("${cas.redirect-url}")
+    @Value("${prop.redirect-url}")
     private String redirectUrl;
 
     @Autowired
