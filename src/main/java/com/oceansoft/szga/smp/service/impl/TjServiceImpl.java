@@ -266,6 +266,22 @@ public class TjServiceImpl implements TjService {
         return new ApiResult().failure("暂无数据");
     }
 
+    @Override
+    public ApiResult yhFlTjSsData(HashMap map) {
+        List<HashMap> data = null;
+        if("all".equals(map.get("type"))){
+            data = tjMapper.yhFlTjSs(map);
+        }else if("zrq".equals(map.get("type"))){
+            data = tjMapper.yhFlTjSsZrq(map);
+        }else if("pcs".equals(map.get("type"))){
+            data = tjMapper.yhFlTjSsPcs(map);
+        }
+        if(data.size() > 0){
+            return new ApiResult().success(200,"获取成功", data);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
 
     @Override
     public List<List<Object>> createListObject(List<LinkedHashMap> list) {

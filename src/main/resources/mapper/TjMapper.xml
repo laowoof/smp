@@ -3496,4 +3496,107 @@ WHERE
 GROUP BY sszrqmc
 ) b
 	</select>
+	<select id="yhFlTjSs" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+			SELECT
+			    'pcs' diff,
+				a.dept_code code,
+				a.dept_name area,
+				COALESCE(b.part1,0) + COALESCE(b.part2,0) yht,
+				COALESCE(b.dczg,0) dczg,
+				COALESCE(b.zljg,0) zljg,
+				COALESCE(b.zlzg,0) zlzg,
+				COALESCE(b.yhwzg,0) yhwzg,
+				COALESCE(b.kgyy,0) kgyy,
+				COALESCE(b.wzdly,0) wzdly,
+				COALESCE(b.qybzg,0) qybzg
+			FROM
+				dept_table a
+			LEFT JOIN
+			(SELECT
+				ssfxj,
+				SUM(CASE WHEN (clzt='6' and jclx!='4' AND gljcjg='1') THEN yhsl ELSE 0 END) part1,
+				SUM(CASE WHEN (clzt='6' and jclx='4' AND gljcjg in (null,'0')) THEN yhsl ELSE 0 END)  part2,
+				SUM(CASE WHEN gljcjg='1' THEN yhsl ELSE 0 END)  dczg,
+				SUM(CASE WHEN gljcjg='3' THEN yhsl ELSE 0 END)  zljg,
+				SUM(CASE WHEN gljcjg='2' THEN yhsl ELSE 0 END)  zlzg,
+				SUM(CASE WHEN (jclx='4' and clzt='6' and gljcjg not in(null,'0')) THEN yhsl ELSE 0 END)  yhwzg,
+				SUM(CASE WHEN (jclx='4' and gljcjgmc='因客观原因整改未达到规定要求') THEN yhsl ELSE 0 END ) kgyy,
+				SUM(CASE WHEN (jclx='4' and gljcjgmc='无正当理由未达到要求') THEN yhsl ELSE 0 END) wzdly,
+				sum(CASE WHEN (jclx='4' and gljcjgmc='逾期不整改') THEN yhsl ELSE 0 END ) qybzg
+			FROM
+				rpt_aqjg_zdmb_yhdwtj
+			WHERE
+				tjrq=to_char(CURRENT_DATE,'yyyy-MM-dd') AND jc_month =split_part( #{time}, '-', 2 ) and jc_year=split_part( #{time}, '-', 1 )
+				GROUP BY ssfxj )b
+			on a.dept_code = b.ssfxj
+	</select>
+    <select id="yhFlTjSsPcs" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+            'zrq' diff,
+	        b.sspcs code,
+	        b.sspcsmc area,
+	        COALESCE(b.part1,0) + COALESCE(b.part2,0) yht,
+	        COALESCE(b.dczg,0) dczg,
+	        COALESCE(b.zljg,0) zljg,
+	        COALESCE(b.zlzg,0) zlzg,
+	        COALESCE(b.yhwzg,0) yhwzg,
+	        COALESCE(b.kgyy,0) kgyy,
+	        COALESCE(b.wzdly,0) wzdly,
+	        COALESCE(b.qybzg,0) qybzg
+        FROM
+            (
+            SELECT
+	            sspcs,
+	            sspcsmc,
+	            SUM(CASE WHEN (clzt='6' and jclx!='4' AND gljcjg='1') THEN yhsl ELSE 0 END) part1,
+	            SUM(CASE WHEN (clzt='6' and jclx='4' AND gljcjg in (null,'0')) THEN yhsl ELSE 0 END)  part2,
+	            SUM(CASE WHEN gljcjg='1' THEN yhsl ELSE 0 END)  dczg,
+	            SUM(CASE WHEN gljcjg='3' THEN yhsl ELSE 0 END)  zljg,
+	            SUM(CASE WHEN gljcjg='2' THEN yhsl ELSE 0 END)  zlzg,
+	            SUM(CASE WHEN (jclx='4' and clzt='6' and gljcjg not in(null,'0')) THEN yhsl ELSE 0 END)  yhwzg,
+	            SUM(CASE WHEN (jclx='4' and gljcjgmc='因客观原因整改未达到规定要求') THEN yhsl ELSE 0 END ) kgyy,
+	            SUM(CASE WHEN (jclx='4' and gljcjgmc='无正当理由未达到要求') THEN yhsl ELSE 0 END) wzdly,
+	            sum(CASE WHEN (jclx='4' and gljcjgmc='逾期不整改') THEN yhsl ELSE 0 END ) qybzg
+            FROM
+	            rpt_aqjg_zdmb_yhdwtj
+            WHERE
+                tjrq=to_char(CURRENT_DATE,'yyyy-MM-dd') AND jc_month =split_part( #{time}, '-', 2 )
+                and jc_year=split_part( #{time}, '-', 1 ) and ssfxj=#{code}
+                GROUP BY sspcs,sspcsmc) b
+    </select>
+	<select id="yhFlTjSsZrq" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT
+			b.sszrqmc area,
+			COALESCE ( b.part1, 0 ) + COALESCE ( b.part2, 0 ) yht,
+			COALESCE ( b.dczg, 0 ) dczg,
+			COALESCE ( b.zljg, 0 ) zljg,
+			COALESCE ( b.zlzg, 0 ) zlzg,
+			COALESCE ( b.yhwzg, 0 ) yhwzg,
+			COALESCE ( b.kgyy, 0 ) kgyy,
+			COALESCE ( b.wzdly, 0 ) wzdly,
+			COALESCE ( b.qybzg, 0 ) qybzg
+		FROM
+		(
+		SELECT
+			sszrqmc,
+			SUM ( CASE WHEN ( clzt = '6' AND jclx != '4' AND gljcjg = '1' ) THEN yhsl ELSE 0 END ) part1,
+			SUM ( CASE WHEN ( clzt = '6' AND jclx = '4' AND gljcjg IN ( NULL, '0' )) THEN yhsl ELSE 0 END ) part2,
+			SUM ( CASE WHEN gljcjg = '1' THEN yhsl ELSE 0 END ) dczg,
+			SUM ( CASE WHEN gljcjg = '3' THEN yhsl ELSE 0 END ) zljg,
+			SUM ( CASE WHEN gljcjg = '2' THEN yhsl ELSE 0 END ) zlzg,
+			SUM ( CASE WHEN ( jclx = '4' AND clzt = '6' AND gljcjg NOT IN ( NULL, '0' )) THEN yhsl ELSE 0 END ) yhwzg,
+			SUM ( CASE WHEN ( jclx = '4' AND gljcjgmc = '因客观原因整改未达到规定要求' ) THEN yhsl ELSE 0 END ) kgyy,
+			SUM ( CASE WHEN ( jclx = '4' AND gljcjgmc = '无正当理由未达到要求' ) THEN yhsl ELSE 0 END ) wzdly,
+			SUM ( CASE WHEN ( jclx = '4' AND gljcjgmc = '逾期不整改' ) THEN yhsl ELSE 0 END ) qybzg
+		FROM
+			rpt_aqjg_zdmb_yhdwtj
+		WHERE
+			tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
+			AND jc_month = split_part( #{time}, '-', 2 )
+			AND jc_year = split_part( #{time}, '-', 1 )
+			AND sspcs = #{code}
+		GROUP BY
+			sszrqmc
+		) b
+	</select>
 </mapper>

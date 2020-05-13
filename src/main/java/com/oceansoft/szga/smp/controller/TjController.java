@@ -366,4 +366,15 @@ public class TjController {
     public ApiResult zdDwYhSsData(@RequestBody HashMap map){
         return tjService.zdDwYhSsData(map);
     }
+
+    /**
+     * 隐患分类统计  实时数据
+     * @author wzj
+     * @param map
+     * @return 数据
+     */
+    @PostMapping("yhFlTjSsData")
+    public ApiResult yhFlTjSsData(@RequestBody HashMap map){
+        return tjService.yhFlTjSsData(map);
+    }
 }

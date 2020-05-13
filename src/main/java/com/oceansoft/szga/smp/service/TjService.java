@@ -238,6 +238,14 @@ public interface TjService {
      */
     ApiResult zdDwYhSsData(HashMap map);
 
+    /**
+     * 隐患分类统计  实时数据
+     * @param map
+     * @date  2020/5/13
+     * @return
+     */
+    ApiResult yhFlTjSsData(HashMap map);
+
     List<List<Object>> createListObject(List<LinkedHashMap> data);
 
     List<List<String>> createHead();

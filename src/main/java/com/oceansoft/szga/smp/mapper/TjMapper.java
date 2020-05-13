@@ -287,4 +287,27 @@ public interface TjMapper {
      * @return
      */
     List<HashMap> zdDwYhZrq(HashMap map);
+
+    /**
+     * 隐患分类统计  实时数据
+     * @param map
+     * @date  2020/5/13
+     * @return
+     */
+    List<HashMap> yhFlTjSs(HashMap map);
+
+    /**
+     * 隐患分类统计  实时数据 派出所
+     * @param map
+     * @date  2020/5/13
+     * @return
+     */
+    List<HashMap> yhFlTjSsPcs(HashMap map);
+    /**
+     * 隐患分类统计  实时数据 责任区
+     * @param map
+     * @date  2020/5/13
+     * @return
+     */
+    List<HashMap> yhFlTjSsZrq(HashMap map);
 }
