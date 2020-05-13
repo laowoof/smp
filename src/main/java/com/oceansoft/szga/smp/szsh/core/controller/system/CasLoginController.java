@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = {"/cas/login"})
 @Api(tags = {"单点登陆"})
 public class CasLoginController {
+
+    @Value("${cas.redirect-url}")
+    private String redirectUrl;
 
     @Autowired
     private SysUserService userService;
@@ -48,7 +52,7 @@ public class CasLoginController {
 
     @GetMapping("index")
     public String index(){
-        return "redirect:http://localhost:8085/#/login";
+        return "redirect:"+redirectUrl;
     }
 
     @PostMapping("out")
