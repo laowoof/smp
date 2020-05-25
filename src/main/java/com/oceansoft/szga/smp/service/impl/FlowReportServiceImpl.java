@@ -1,5 +1,7 @@
 package com.oceansoft.szga.smp.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.oceansoft.szga.smp.config.domain.ApiPager;
@@ -32,28 +34,58 @@ public class FlowReportServiceImpl implements FlowReportService {
     private FlowReportMapper mapper;
 
     @Override
-    public ApiResult add(FlowReport report) {
+    public ApiResult add(JSONObject json) {
         //1添加一条流转
-        report.setGuid(GuidUtils.newUUID());
-        int count = mapper.add(report);
-        if(count==0){
-            return new ApiResult().failure("保存失败");
+//        report.setGuid(GuidUtils.newUUID());
+        int num  =  mapper.getNum(report(json).getGuid());
+        if(num>0){
+            return new ApiResult().failure("单据编号已存在！");
+        }else{
+            int count = mapper.add(report(json));
+            if(count==0){
+                return new ApiResult().failure("保存失败");
+            }
+            //2添加代办任务
+            List<Map<String, Object>> nodes = mapper.findNodes(report(json).getFlowType(), Constant.BEGIN_NODE_ID);
+            nodes.stream().forEach(map->{
+                map.put("guid", GuidUtils.newUUID());
+                map.put("flow_id",report(json).getGuid());
+                map.put("create_user",report(json).getCreateUser());
+                map.put("des",report(json).getDes());
+                map.put("flow_node_id",report(json).getReportDept());
+                map.put("update_user",report(json).getCreateUser());
+                mapper.addTask(map);
+            });
+            return new ApiResult("保存并分发成功！");
         }
-        //2添加代办任务
-        List<Map<String, Object>> nodes = mapper.findNodes(report.getFlowType(), Constant.BEGIN_NODE_ID);
-        nodes.stream().forEach(map->{
-            map.put("guid", GuidUtils.newUUID());
-            map.put("flow_id",report.getGuid());
-            map.put("create_user",report.getCreateUser());
-            mapper.addTask(map);
-        });
-        return new ApiResult();
+    }
+
+    @Override
+    public ApiResult findAll() {
+        List data =  mapper.findAll();
+        return new ApiResult<>().success(data);
+    }
+
+    @Override
+    public ApiResult save(JSONObject json) {
+        //保存
+        int num  =  mapper.getNum(report(json).getGuid());
+        if(num>0){
+            return new ApiResult().failure("单据编号已存在！");
+        }else{
+            int count = mapper.add(report(json));
+            if(count==0){
+                return new ApiResult().failure("保存失败");
+            }
+            return new ApiResult(200,true,"保存成功");
+        }
     }
 
     @Override
     public ApiPager<Map<String, Object>> page(ApiQueryBase query) {
         PageHelper.startPage(query.getPi(), query.getPs(), true);
         Page<Map<String,Object>> page = (Page)mapper.page(query);
+
         ApiPager<Map<String,Object>> pager = new ApiPager(query.getPs(), query.getPi(), page.getTotal(), page.getResult());
         return pager;
     }
@@ -85,6 +117,26 @@ public class FlowReportServiceImpl implements FlowReportService {
     }
 
     @Override
+    public ApiResult updateInfo(JSONObject json) {
+        int num = mapper.updateInfo(report(json));
+        if(num ==0){
+            return new ApiResult().failure("修改失败!");
+        }else{
+            return new ApiResult(200,true,"修改成功!");
+        }
+    }
+
+    @Override
+    public ApiResult updateIsDelete(String guid) {
+         int num = mapper.updateIsDelete(guid);
+         if(num == 0){
+             return new ApiResult().failure("删除失败!");
+         }else{
+             return new ApiResult(200,true,"删除成功!");
+         }
+    }
+
+    @Override
     public Map<String, Object> get(String guid) {
         return mapper.get(guid);
     }
@@ -99,4 +151,26 @@ public class FlowReportServiceImpl implements FlowReportService {
         return mapper.getTask(guid);
     }
 
+    @Override
+    public ApiResult userAll(String id) {
+        return new ApiResult().success(200,"成功",mapper.userAll(id));
+    }
+
+    private FlowReport report(JSONObject json){
+        FlowReport report = new FlowReport();
+        report.setGuid(json.getString("guid"));
+        report.setSource(json.getString("source"));
+        report.setFlowType(json.getString("flowType"));
+        report.setTaskName(json.getString("taskName"));
+        report.setReportDate(json.getString("reportDate"));
+        report.setDes(json.getString("des"));
+        report.setReportDept(json.getString("reportDept"));
+        report.setFileIds(json.getString("fileIds"));
+        report.setCreateUser(json.getString("createUser"));
+        report.setCreateUserId(json.getString("createUserId"));
+        report.setCreateDate(json.getString("createDate"));
+        report.setIsDelete(json.getString("isDelete"));
+        report.setReceiptsInfo(JSON.toJSONString(json.get("receiptsInfo")));
+        return report;
+    }
 }

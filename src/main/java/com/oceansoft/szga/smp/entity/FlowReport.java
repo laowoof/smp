@@ -23,4 +23,9 @@ public class FlowReport {
     private String receiptsInfo;
     private String fileIds;
     private String createUser;
+    private String createUserId;
+    private String createDate;
+    private String isDelete;
+    private String source;
+
 }

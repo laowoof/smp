@@ -1,11 +1,15 @@
 package com.oceansoft.szga.smp.mapper;
 
 import com.oceansoft.szga.smp.config.domain.ApiQueryBase;
+import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.entity.FlowExecute;
 import com.oceansoft.szga.smp.entity.FlowReport;
+import com.oceansoft.szga.smp.szsh.core.entity.system.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.crypto.hash.Hash;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +35,8 @@ public interface FlowReportMapper
      */
     List<Map<String, Object>> page(ApiQueryBase query);
 
+    List<HashMap> findAll();
+
     /**
      * 获取任务节点
      * @param flowType
@@ -55,10 +61,17 @@ public interface FlowReportMapper
      */
     int completeTask(FlowExecute execute);
 
+    int updateInfo(FlowReport flowReport);
+
     Map<String, Object> get(String guid);
+
+    Integer getNum(String guid);
+
+    Integer updateIsDelete(String guid);
 
     List<Map<String, Object>> getTasks(String guid);
 
     Map<String, Object> getTask(String guid);
 
+    SysUser userAll(String id);
 }

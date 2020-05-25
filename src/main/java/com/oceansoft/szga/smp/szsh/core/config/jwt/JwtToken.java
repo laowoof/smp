@@ -16,6 +16,12 @@ public class JwtToken implements AuthenticationToken {
 
     private String uid;
 
+//    private String name;
+//
+//    private String departmentName;
+//
+//    private String departmentId;
+
     public JwtToken(String token, String username, String password) {
         this.token = token;
         this.username = username;

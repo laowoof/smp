@@ -1,8 +1,11 @@
 package com.oceansoft.szga.smp.szsh.core.controller.system;
 
+import com.oceansoft.szga.smp.config.domain.ApiResult;
+import com.oceansoft.szga.smp.service.FlowReportService;
 import com.oceansoft.szga.smp.szsh.common.bean.ResponseCode;
 import com.oceansoft.szga.smp.szsh.common.bean.ResponseResult;
 import com.oceansoft.szga.smp.szsh.core.config.jwt.JwtToken;
+import com.oceansoft.szga.smp.szsh.core.entity.system.SysUser;
 import com.oceansoft.szga.smp.szsh.core.service.system.SysUserService;
 import com.oceansoft.szga.smp.szsh.core.vo.system.SignUserV1;
 import io.swagger.annotations.Api;
@@ -22,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 
 @Controller
-@RequestMapping(value = {"/cas/login"})
+@RequestMapping(value = {"cas/login"})
 @Api(tags = {"单点登陆"})
 public class CasLoginController {
 
@@ -32,14 +35,21 @@ public class CasLoginController {
     @Autowired
     private SysUserService userService;
 
-    @PostMapping(value = {"/info"})
+    @Autowired
+    private FlowReportService  reportService;
+
+    @PostMapping(value = {"info"})
     @ResponseBody
     @ApiOperation(value = "单点登陆回传")
     public ResponseResult getInfo(){
-        ResponseResult responseResult=new ResponseResult();
+        ResponseResult responseResult= new ResponseResult();
         SignUserV1 signUserV1=new SignUserV1();
         JwtToken jwtToken=((JwtToken) SecurityUtils.getSubject().getPrincipal());
+        SysUser data =  (SysUser)reportService.userAll(jwtToken.getUid()).getData();
         if(jwtToken!=null){
+            signUserV1.setDepartmentId(data.getDepartmentId());
+            signUserV1.setDepartmentName(data.getDepartmentName());
+            signUserV1.setUserId(data.getId());
             signUserV1.setName(jwtToken.getUsername());
             signUserV1.setToken(jwtToken.getToken());
             signUserV1.setPermission(userService.getAllPermissionTag(jwtToken.getUid()));
@@ -48,10 +58,12 @@ public class CasLoginController {
             responseResult= ResponseResult.e(ResponseCode.NOT_SING_IN_CAS);
         }
         return responseResult;
+
     }
 
     @GetMapping("index")
     public String index(){
+        System.err.println("====index接口===");
         return "redirect:"+redirectUrl;
     }
 
@@ -63,7 +75,5 @@ public class CasLoginController {
         request.logout();
         return new ResponseResult();
     }
-
-
 
 }

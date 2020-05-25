@@ -28,6 +28,9 @@ public class SignUserV1 {
      */
     private String name;
 
+    private String departmentName;
 
+    private String departmentId;
 
+    private String userId;
 }
