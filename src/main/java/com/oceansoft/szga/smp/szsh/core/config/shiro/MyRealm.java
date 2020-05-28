@@ -61,6 +61,9 @@ public class MyRealm extends AuthorizingRealm {
                         }
                     });
                 }
+                if("admin".equals(findUser.getUsername())){
+                    info.addStringPermission("*:*:*");
+                }
                 return info;
             }
         }
