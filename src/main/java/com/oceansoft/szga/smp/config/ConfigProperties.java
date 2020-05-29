@@ -1,6 +1,7 @@
 package com.oceansoft.szga.smp.config;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,5 +12,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class ConfigProperties {
+    @Value("${file.confirm-url}")
+    private String confirmFileUrl;
 
+    public String getConfirmFileUrl() {
+        return confirmFileUrl;
+    }
+
+    public void setConfirmFileUrl(String confirmFileUrl) {
+        this.confirmFileUrl = confirmFileUrl;
+    }
 }
