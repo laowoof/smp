@@ -1,6 +1,7 @@
 package com.oceansoft.szga.smp.mapper;
 
 import com.oceansoft.szga.smp.entity.SourceNum;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -161,7 +162,7 @@ public interface RoadMapper {
      * @param name
      * @return 处理后的数据
      */
-    List<HashMap> getDataJtWf(String name,String yesterday);
+    List<HashMap> getDataJtWf(@Param("name") String name, @Param("yesterday") String yesterday);
 
     /**
      * 违法打击  重点违量统计
