@@ -7,6 +7,7 @@ import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.entity.FlowExecute;
 import com.oceansoft.szga.smp.entity.FlowReport;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -45,4 +46,18 @@ public interface FlowReportService {
     Map<String,Object> getTask(String guid);
 
     ApiResult userAll(String id);
+
+    ApiResult addTask(JSONObject json);
+
+    ApiResult plFfInfo(JSONObject json);
+
+    ApiResult findAllTask();
+
+    ApiResult plQsInfo(JSONObject json);
+
+    ApiResult plQsInfo2(JSONObject json);
+
+    ApiResult findNode(String deptName,String actionName);
+
+    ApiResult findSpecal(@Param("deptName") String deptName,@Param("actionName") String actionName);
 }

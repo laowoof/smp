@@ -32,12 +32,14 @@ public class FlowController {
     @ApiOperation("协同流转分页数据")
     @GetMapping("page")
     public ApiResult page(ApiQueryBase query, HttpServletRequest request){
-        System.err.println(request);
         query.getConditions().put("reportDept", request.getParameter("reportDept"));
         query.getConditions().put("keyword", request.getParameter("keyword"));
         query.getConditions().put("flowType", request.getParameter("flowType"));
         query.getConditions().put("qsState", request.getParameter("qsState"));
         query.getConditions().put("ffState", request.getParameter("ffState"));
+        query.getConditions().put("wqsState", request.getParameter("wqsState"));
+        query.getConditions().put("wffState", request.getParameter("wffState"));
+        query.getConditions().put("allState", request.getParameter("allState"));
         return new ApiResult(reportService.page(query));
     }
     @ApiOperation("新增并分发")
@@ -54,6 +56,52 @@ public class FlowController {
     @ResponseBody
     public ApiResult save(@RequestBody JSONObject json){
         return reportService.save(json);
+    }
+
+    @ApiOperation("分发插入")
+    @PostMapping("addTask")
+    @ResponseBody
+    public ApiResult addTask(@RequestBody JSONObject json){
+        return reportService.addTask(json);
+    }
+
+    @ApiOperation("批量分发")
+    @PostMapping("plFfInfo")
+    @ResponseBody
+    public ApiResult plFfInfo(@RequestBody JSONObject json){
+        return reportService.plFfInfo(json);
+    }
+
+    @ApiOperation("批量签收")
+    @PostMapping("plQsInfo")
+    @ResponseBody
+    public ApiResult plQsInfo(@RequestBody JSONObject json){
+        return reportService.plQsInfo(json);
+    }
+
+    @ApiOperation("批量签收")
+    @PostMapping("plQsInfo2")
+    @ResponseBody
+    public ApiResult plQsInfo2(@RequestBody JSONObject json){
+        return reportService.plQsInfo2(json);
+    }
+
+    @ApiOperation("查询下一节点部门")
+    @GetMapping("nextDept")
+    public ApiResult findNode(String deptName,String actionName){
+        return reportService.findNode(deptName,actionName);
+    }
+
+    @ApiOperation("查询下一节点部门")
+    @GetMapping("findSpecal")
+    public ApiResult findSpecal(String deptName,String actionName){
+        return reportService.findSpecal(deptName,actionName);
+    }
+
+    @ApiOperation("查询分发后数据")
+    @GetMapping("findAllTask")
+    public ApiResult findAllTask(){
+        return reportService.findAllTask();
     }
 
     @ApiOperation("修改")

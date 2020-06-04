@@ -35,9 +35,9 @@
             create_user_id=#{createUserId},
             create_date= now(),
             is_delete=#{isDelete},
-            source='手动',
+            source='手动'
         where
-            guid=#{uid}
+            guid=#{guid}
     </update>
 
     <select id="get" resultType="map">
@@ -57,58 +57,62 @@
     </select>
 
     <select id="page" resultType="java.util.HashMap">
-    SELECT
-        T.*,
-        M.guid qs_guid,
-        COALESCE(M.action_name,'未签收') qs_state,
-        n.guid ff_guid,
-        COALESCE(n.action_name,'未分发') ff_state
-    FROM
+        SELECT
+        f.*,
+        TO_CHAR(f.create_date,'yyyy-MM-dd hh24:mi') createdate,
+        COALESCE(c.action_name,'未签收') qs_state,
+        COALESCE(d.action_name,'未分发') ff_state
+        FROM
         (
-    SELECT DISTINCT
-            A.*,
---         A.guid,
-        TO_CHAR(A.create_date,'yyyy-MM-dd hh24:mi') createdate,
---         A.report_dept,
---         A.flow_type,
---         A.task_name,
---         A.source,
-        C.node_type,
-        TO_CHAR(B.update_date,'yyyy-MM-dd hh24:mi') update_date,
-        B.update_user
---         A.create_user,
---         A.create_user_id,
---         A.receipts_info
-    FROM
-        flow_report A,
-        flow_report_task b,
-        flow_node C
-    WHERE
---         A.guid = b.flow_id
-         b.flow_node_id = C.ID
-        AND A.is_delete = '0'
-<!--        <if test=" dept!='' and dept !=null ">-->
-<!--            AND b.dept = #{dept}-->
-<!--        </if>-->
-        <if test=" conditions.reportDept!='' and conditions.reportDept !=null ">
-            and a.report_dept =#{conditions.reportDept}
+        SELECT DISTINCT
+        r.*,
+        t.update_user
+        FROM
+        flow_report r,
+        flow_node n,
+        (SELECT
+        a.*
+        FROM
+        flow_report_task a
+        left join
+        (SELECT flow_id,max(update_date) FROM flow_report_task  GROUP BY flow_id) b
+        on a.flow_id = b.flow_id
+        WHERE a.update_date = b.max) t
+        WHERE
+        t.flow_node_id = n.ID
+        AND r.is_delete = '0'
+                <if test=" conditions.reportDept!='' and conditions.reportDept !=null ">
+                    and r.report_dept =#{conditions.reportDept}
+                </if>
+                <if test=" conditions.flowType!='' and conditions.flowType !=null ">
+                    and r.flow_type =#{conditions.flowType}
+                </if>
+                <if test=" conditions.keyword!='' and conditions.keyword !=null ">
+                    and (r.report_dept like '%'||#{conditions.keyword}||'%' or r.task_name like '%'||#{conditions.keyword}||'%')
+                </if>
+        ) f
+        LEFT JOIN ( SELECT s.guid, s.STATE, s.flow_id,s.action_name,s.update_date FROM flow_report_task s left join (SELECT flow_id,max(update_date) FROM flow_report_task  GROUP BY flow_id) b
+        on s.flow_id = b.flow_id
+        WHERE s.update_date = b.max and  s.action_name = '签收' ) c ON c.flow_id = f.guid
+        LEFT JOIN (SELECT DISTINCT s.STATE, s.flow_id,s.action_name FROM flow_report_task s left join (SELECT flow_id,max(update_date) FROM flow_report_task  GROUP BY flow_id) b
+        on s.flow_id = b.flow_id WHERE s.action_name = '分发' ) d ON d.flow_id = f.guid
+        WHERE 1=1 and
+        <if test=" conditions.qsState=='已签收'">
+             c.action_name ='签收'
+         </if>
+        <if test=" conditions.ffState == '已分发'">
+             d.action_name ='分发'
         </if>
-        <if test=" conditions.flowType!='' and conditions.flowType !=null ">
-            and a.flow_type =#{conditions.flowType}
+        <if test=" conditions.wqsState == '未签收' ">
+             c.action_name =''
         </if>
-        <if test=" conditions.keyword!='' and conditions.keyword !=null ">
-            and (a.report_dept like '%'||#{conditions.keyword}||'%' or a.task_name like '%'||#{conditions.keyword}||'%')
+        <if test=" conditions.wffState =='未分发' ">
+             d.action_name =''
         </if>
-        ) T
-         LEFT JOIN ( SELECT s.guid, s.STATE, s.flow_id,s.action_name FROM flow_report_task s WHERE s.action_name = '签收' ) M ON M.flow_id = T.guid
-        LEFT JOIN ( SELECT s.guid, s.STATE, s.flow_id,s.action_name FROM flow_report_task s WHERE s.action_name = '分发' ) n ON n.flow_id = T.guid
-        where 1=1
-        <if test=" conditions.qsState!='' and conditions.qsState !=null ">
-            and m.state =#{conditions.qsState}
-        </if>
-        <if test=" conditions.ffState!='' and conditions.ffState !=null ">
-            and n.state =#{conditions.ffState}
-        </if>
+        <if test=" conditions.allState== '全部'">
+            c.action_name ='签收' or d.action_name =''  or d.action_name ='分发'
+            or c.action_name =''
+         </if>
         ORDER BY create_date
     </select>
 
@@ -118,15 +122,100 @@
 	values(#{guid},#{flow_id},now(),#{create_user},#{node_name},'0',#{dept},#{flow_node_id},#{des},#{action_name},now(),#{update_user})
 	</insert>
 
-
     <select id="getTasks" resultType="map">
-    select * from flow_report_task where flow_id=#{guid}
+    select
+        flow_node_id,
+        TO_CHAR(update_date,'yyyy-MM-dd hh24:mi') update_date,
+        dept
+    from
+        flow_report_task
+    where
+        flow_id=#{guid}
     </select>
+
     <select id="getTask" resultType="map">
     select * from flow_report_task where guid=#{guid}
     </select>
+
     <select id="userAll" resultType="com.oceansoft.szga.smp.szsh.core.entity.system.SysUser">
         select * from sys_user where id=#{id}
     </select>
 
+    <select id="plFfInfo" resultType="map">
+        SELECT * FROM flow_report WHERE guid not in(select flow_id FROM flow_report_task)
+    </select>
+
+    <select id="getNodeName" resultType="map">
+        select node_name,dept,action_name from flow_node where id=#{id}
+    </select>
+
+    <select id="findAllTask" resultType="map">
+        SELECT
+        T.guid,
+        T.flow_type,
+        T.task_name,
+        T.create_user,
+        TO_CHAR(T.create_date,'yyyy-MM-dd hh24:mi') createdate,
+        T.node_name,
+        T.dept,
+		T.id
+    FROM
+        (
+    SELECT DISTINCT
+         A.*,
+        C.node_type,
+        C.node_name,
+		C.dept,
+		C.id,
+        B.update_user
+    FROM
+        flow_report A,
+        flow_report_task b,
+        flow_node C
+    WHERE
+         b.flow_node_id = C.ID
+        AND A.is_delete = '0'
+     ) T
+    </select>
+
+    <update id="plQsInfo" parameterType="Hashmap">
+        update
+            flow_report_task
+       set
+        node_name =#{nodeName},
+        update_date = now(),
+        update_user =#{updateUser},
+        dept =#{dept},
+        flow_node_id =#{flowNodeId},
+        des =#{instructions},
+        action_name =#{actionName}
+    </update>
+    <select id="findNode" resultType="hashmap">
+        SELECT
+            node_name,
+            dept,
+            id
+        FROM
+            flow_node
+        WHERE
+            parent_id=(SELECT id  FROM flow_node  WHERE dept=#{deptName} and action_name =#{actionName})
+    </select>
+    <select id="findSpecal" resultType="hashmap">
+         SELECT * FROM flow_node WHERE dept=#{deptName} and action_name =#{actionName}
+    </select>
+    <select id="qs" resultType="hashmap">
+        SELECT * FROM flow_report_task WHERE flow_node_id = (select parent_id  from flow_node WHERE id=#{id}) AND action_name =  '分发'
+    </select>
+    <select id="findTaskByParentId" resultType="hashmap">
+        select  * from flow_report_task where  flow_node_id=#{id}
+    </select>
+    <select id="ffCount" resultType="int" >
+        select  count(1) from flow_report_task where  flow_node_id=#{id} AND state='0'
+    </select>
+    <update id="updateId" parameterType="Hashmap">
+        update flow_report_task set state ='1' where guid=#{guid}
+    </update>
+    <select id="qsCount" resultType="int">
+        SELECT count(1) FROM flow_report_task WHERE flow_node_id = (select parent_id  from flow_node WHERE id=#{id}) AND action_name =  '分发' and state='0'
+    </select>
 </mapper>

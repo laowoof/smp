@@ -4,6 +4,7 @@ import com.oceansoft.szga.smp.config.domain.ApiQueryBase;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.entity.FlowExecute;
 import com.oceansoft.szga.smp.entity.FlowReport;
+import com.oceansoft.szga.smp.entity.FlowTask;
 import com.oceansoft.szga.smp.szsh.core.entity.system.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -74,4 +75,26 @@ public interface FlowReportMapper
     Map<String, Object> getTask(String guid);
 
     SysUser userAll(String id);
+
+    List<Map<String,String>> plFfInfo();
+
+    Map getNodeName(String id);
+
+    List<Map> findAllTask();
+
+    Integer plQsInfo(HashMap map);
+
+    List<Map> findNode(@Param("deptName")String deptName,@Param("actionName")String actionName);
+
+    List<Map<String,String>> qs(String id);
+
+    List<Map<String,String>> findTaskByParentId(@Param("id") String id);
+
+    int ffCount(@Param("id") String id);
+
+    HashMap findSpecal(@Param("deptName") String deptName,@Param("actionName") String actionName);
+
+    int updateId(@Param("guid")String guid);
+
+    int qsCount(@Param("id") String id);
 }
