@@ -96,5 +96,9 @@ public interface FlowReportMapper
 
     int updateId(@Param("guid")String guid);
 
+    int updateIdByFlowId(@Param("id")String id);
+
     int qsCount(@Param("id") String id);
+
+    String getDeptByFlowId(@Param("id") String id);
 }

@@ -40,6 +40,7 @@ public class FlowController {
         query.getConditions().put("wqsState", request.getParameter("wqsState"));
         query.getConditions().put("wffState", request.getParameter("wffState"));
         query.getConditions().put("allState", request.getParameter("allState"));
+        query.getConditions().put("deptName", request.getParameter("deptName"));
         return new ApiResult(reportService.page(query));
     }
     @ApiOperation("新增并分发")
@@ -72,7 +73,7 @@ public class FlowController {
         return reportService.plFfInfo(json);
     }
 
-    @ApiOperation("批量签收")
+    @ApiOperation("单个签收")
     @PostMapping("plQsInfo")
     @ResponseBody
     public ApiResult plQsInfo(@RequestBody JSONObject json){

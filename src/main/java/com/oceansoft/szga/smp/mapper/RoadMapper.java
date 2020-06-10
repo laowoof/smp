@@ -162,7 +162,7 @@ public interface RoadMapper {
      * @param name
      * @return 处理后的数据
      */
-    List<HashMap> getDataJtWf(@Param("name") String name, @Param("yesterday") String yesterday);
+    List<HashMap> getDataJtWf(HashMap map);
 
     /**
      * 违法打击  重点违量统计
@@ -216,10 +216,10 @@ public interface RoadMapper {
     List<HashMap> getDataCarQue(HashMap map);
     /**
      * 违法打击    大队列表
-     * @param typeName
+     * @param map
      * @return 处理后的数据
      */
-    List<HashMap> getDataDdList(String typeName);
+    List<HashMap> getDataDdList(HashMap map);
     /**
      * 违法打击    选择大队
      * @param map
