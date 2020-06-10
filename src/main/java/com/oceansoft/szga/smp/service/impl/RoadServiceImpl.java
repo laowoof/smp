@@ -163,7 +163,10 @@ public class RoadServiceImpl implements RoadService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         calendar.add(Calendar.DATE, -1);
         String yesterday  =  sdf.format(calendar.getTime());
-        List<HashMap> has = roadMapper.getDataJtWf(name,yesterday);
+        HashMap map = new HashMap();
+        map.put("name",name);
+        map.put("yesterday",yesterday);
+        List<HashMap> has = roadMapper.getDataJtWf(map);
         if(has.size() > 0){
             return new ApiResult().success(200,"获取成功", has);
         }
@@ -241,7 +244,9 @@ public class RoadServiceImpl implements RoadService {
 
     @Override
     public ApiResult getDataDdList(String typeName) {
-        List<HashMap> has = roadMapper.getDataDdList(typeName);
+        HashMap map = new HashMap();
+        map.put("typeName",typeName);
+        List<HashMap> has = roadMapper.getDataDdList(map);
         return new ApiResult().success(200,"获取成功", has);
     }
 
