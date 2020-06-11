@@ -110,24 +110,52 @@
         ) f
         LEFT JOIN ( SELECT DISTINCT s.flow_id,s.STATE, s.node_name,s.action_name,s.update_date,s.dept FROM flow_report_task s WHERE s.dept=#{conditions.deptName} and s.action_name='签收') c ON c.flow_id = f.guid
         LEFT JOIN (SELECT DISTINCT s.flow_id,s.STATE, s.node_name,s.action_name,s.update_date,s.dept FROM flow_report_task s WHERE s.dept=#{conditions.deptName} and s.action_name='分发' ) d ON d.flow_id = f.guid
-        WHERE 1=1 and f.is_delete ='0'
+        WHERE
         <if test=" conditions.qsState=='已签收'">
-            or  c.state ='1'
+            c.action_name ='签收'
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.ffState == '已分发'">
+              c.action_name ='签收' or d.ffState == '分发'
          </if>
+        <if test=" conditions.qsState=='已签收' and conditions.wqsState == '未签收'">
+            c.action_name ='签收' or c.action_name is null
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.wffState =='未分发'">
+            c.action_name ='签收' or d.action_name is null
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.ffState == '已分发'  and conditions.wqsState == '未签收'">
+            c.action_name ='签收' or d.ffState == '分发' or c.action_name is null
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.ffState == '已分发' and  conditions.wffState =='未分发'">
+            c.action_name ='签收' or d.ffState == '分发' or d.action_name is null
+        </if>
+
         <if test=" conditions.ffState == '已分发'">
-            or  d.state ='1'
+            d.action_name == '分发'
         </if>
-        <if test=" conditions.wqsState == '未签收' ">
-            or   c.state ='0'
+        <if test=" conditions.ffState == '已分发' and conditions.wqsState == '未签收'">
+            d.action_name == '分发' or  c.action_name is null
         </if>
-        <if test=" conditions.wffState =='未分发' ">
-            or  d.state ='0'
+
+        <if test=" conditions.ffState == '已分发' and conditions.wffState =='未分发'">
+            d.action_name == '分发' or  d.action_name is null
+        </if>
+        <if test=" conditions.ffState == '已分发' and conditions.wqsState == '未签收' and conditions.wffState =='未分发'">
+            d.action_name == '分发' or  c.action_name is null or  d.action_name is null
+        </if>
+        <if test=" conditions.wqsState == '未签收'">
+            c.action_name is null
+        </if>
+        <if test=" conditions.wqsState == '未签收' and conditions.wffState =='未分发'">
+            c.action_name is null or d.action_name is null
+        </if>
+        <if test=" conditions.wffState =='未分发'">
+            d.action_name is null
         </if>
         <if test=" conditions.allState== '全部'">
-          or  c.state ='1' or d.state ='0'  or d.state ='1'
-            or c.state ='0'
+           c.action_name ='签收' or d.action_name ='分发'  or d.action_name is null
+            or  c.action_name is null
          </if>
-        ORDER BY create_date
     </select>
 
     <insert id="addTask" parameterType="map">
