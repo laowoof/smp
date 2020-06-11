@@ -280,7 +280,30 @@ public class RoadServiceImpl implements RoadService {
     public ApiResult getDataClickCarAndChange(String name, Map map) {
         map.put("name",name);
         List<HashMap> has = roadMapper.getDataClickCarAndChange(map);
-        return new ApiResult().success(200,"获取成功", has);
+        if(has.size()>0){
+            return new ApiResult().success(200,"获取成功", has);
+        }else{
+            return new ApiResult().failure("暂无数据");
+        }
+
+    }
+
+    @Override
+    public ApiResult carYhData(Map map) {
+        List<HashMap> has = roadMapper.carYhData(map);
+        if(has.size()>0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getZdCarData(Map map) {
+        List<HashMap> has = roadMapper.getZdCarData(map);
+        if(has.size()>0){
+            return new ApiResult().success(200,"获取成功", has);
+        }
+        return new ApiResult().failure("暂无数据");
     }
 
     /**

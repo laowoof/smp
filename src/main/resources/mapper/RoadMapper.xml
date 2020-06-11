@@ -402,7 +402,7 @@
             substring(yjsj, 0,11) yjsj,
             bklxmc,
             hphm,
-            COALESCE(czxm,'****') czxm
+            czxm
         FROM
             jcbkxx
         where
@@ -729,5 +729,115 @@
            and ddmc=#{titleName}
         </if>
         GROUP BY lxdm,lxmc ORDER BY lxdm
+    </select>
+
+    <select id="carYhData" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clfx as (SELECT year||'-'||mon as date,year as yearDate,clzt,sl FROM rpt_aqjg_ggjt_clfx WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        SELECT
+            clzt,
+            count(sl)
+        FROM
+            clfx
+        WHERE
+            <if test="firstYear !='' and twoYear !=''">
+                yearDate between #{firstYear} AND #{twoYear} and
+            </if>
+            <if test="month !='' and month2 !=''">
+                date between #{month} AND #{month2} and
+            </if>
+            clzt is not null  GROUP BY clzt ORDER BY clzt
+    </select>
+
+    <select id="getZdCarData" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        with clfx as (
+	        with data as ( SELECT year||'-'||mon as date,year as yearDate,syxz,sl,syxzdm FROM rpt_aqjg_ggjt_clfx WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+	        SELECT
+	            *
+	        FROM
+	            data
+	        WHERE
+                <if test="firstYear !='' and twoYear !=''">
+                    yearDate between #{firstYear} AND #{twoYear}
+                </if>
+                <if test="month !='' and month2 !=''">
+                    date between #{month} AND #{month2}
+                </if>
+	            )
+        select * FROM (
+            SELECT
+                CAST('客运' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm in('B','C','D','E') THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('营运' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='A' THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('货运' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='F' THEN sl ELSE 0 END),0) num
+                FROM clfx
+            UNION all
+            SELECT
+                CAST('租赁' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='G' THEN sl ELSE 0 END),0) num
+                FROM clfx
+            UNION all
+            SELECT
+                CAST('警用' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='H' THEN sl ELSE 0 END),0) num
+                FROM clfx
+            UNION all
+            SELECT
+                CAST('消防' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='I' THEN sl ELSE 0 END),0) num
+                FROM clfx
+            UNION all
+            SELECT
+                CAST('救护' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='J' THEN sl ELSE 0 END),0) num
+                FROM clfx
+            UNION all
+            SELECT
+                CAST('工抢险' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='K' THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('营转非' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='L' THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('出租转非' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='M' THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('教练' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='N' THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('校车' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm in('O','P','S','Q') THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('危化品运输' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='R' THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('预约出租客运' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='T' THEN sl ELSE 0 END),0) num
+            FROM clfx
+            UNION all
+            SELECT
+                CAST('预约出租转非' as text) as title,
+                COALESCE(SUM(CASE WHEN syxzdm='U' THEN sl ELSE 0 END),0) num
+            FROM clfx
+            )  aa
     </select>
 </mapper>

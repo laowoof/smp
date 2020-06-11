@@ -250,4 +250,19 @@ public interface RoadMapper {
      * @return 处理后的数据
      */
     List<HashMap> getDataClickCarAndChange(Map map);
+
+    /**
+     * 违法打击   车辆隐患源头类型分析
+     * @param map
+     * @return 处理后的数据
+     */
+    List<HashMap> carYhData(Map map);
+
+    /**
+     * 违法打击   违法打击 重点车辆
+     * @param map
+     * @return
+     */
+    List<HashMap> getZdCarData(Map map);
+
 }

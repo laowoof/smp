@@ -233,5 +233,9 @@ public interface RoadService {
      */
     ApiResult getDataClickCarAndChange(String name,Map map);
 
+    ApiResult carYhData(Map map);
+
+    ApiResult getZdCarData(Map map);
+
 }
 

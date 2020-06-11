@@ -343,4 +343,14 @@ public class RoadController {
     public ApiResult getDataClickCarAndChange(@PathVariable("name") String name,@RequestBody HashMap map){
         return roadService.getDataClickCarAndChange(name,map);
     }
+
+    @PostMapping("carYhData")
+    public ApiResult carYhData(@RequestBody HashMap map){
+        return roadService.carYhData(map);
+    }
+
+    @PostMapping("getZdCarData")
+    public ApiResult getZdCarData(@RequestBody HashMap map){
+        return roadService.getZdCarData(map);
+    }
 }
