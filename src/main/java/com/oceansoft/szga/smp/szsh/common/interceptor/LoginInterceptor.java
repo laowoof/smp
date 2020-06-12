@@ -34,6 +34,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
                 SysUserService userService= SpringContext.getBean(SysUserService.class);
                 SysUser user=userService.findUserByNameNoRole(userName);
+                if(user==null){//临时处理，未找到用户，使用admin
+                    user=userService.findUserByNameNoRole("admin");
+                }
                 session.setAttribute("session_user",user);
 
 //                session.setAttribute(AbstractCasFilter.CONST_CAS_ASSERTION,null);
