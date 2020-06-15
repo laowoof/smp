@@ -351,7 +351,8 @@ public class FlowReportServiceImpl implements FlowReportService {
         report.setReportDate(json.getString("reportDate"));
         report.setDes(json.getString("des"));
         report.setReportDept(json.getString("reportDept"));
-        report.setFileIds(json.getString("fileIds"));
+//        report.setFileIds(json.getString("fileIds"));
+        report.setFileIds(JSON.toJSONString(json.get("fileIds")));
         report.setCreateUser(json.getString("createUser"));
         report.setCreateUserId(json.getString("createUserId"));
         report.setCreateDate(json.getString("createDate"));
