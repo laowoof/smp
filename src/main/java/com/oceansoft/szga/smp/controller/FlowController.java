@@ -147,4 +147,23 @@ public class FlowController {
     public ApiResult getTask(@PathVariable String guid){
         return new ApiResult(reportService.getTask(guid));
     }
+
+    @ApiOperation("获取未分发数据")
+    @GetMapping("getDataUnFf")
+    public ApiResult getDataUnFf(){
+        return new ApiResult(reportService.getDataUnFf());
+    }
+
+    @ApiOperation("获取未签收数据")
+    @GetMapping("getDataUnQs")
+    public ApiResult getDataUnQs(String dept,String title){
+        return new ApiResult(reportService.getDataUnQs(dept,title));
+    }
+
+    @ApiOperation("获取未分发数据")
+    @GetMapping("getUnFfData")
+    public ApiResult getUnFfData(String dept,String title){
+        return new ApiResult(reportService.getUnFfData(dept,title));
+    }
+
 }

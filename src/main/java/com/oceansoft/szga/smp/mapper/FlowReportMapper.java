@@ -101,4 +101,11 @@ public interface FlowReportMapper
     int qsCount(@Param("id") String id);
 
     String getDeptByFlowId(@Param("id") String id);
+
+    List<HashMap> getDataUnFf();
+
+    List<HashMap> getDataUnFf2(@Param("dept")String dept,@Param("title")String title);
+
+    List<HashMap> getDataUnQs(Map map);
+
 }

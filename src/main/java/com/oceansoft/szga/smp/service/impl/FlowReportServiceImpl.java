@@ -10,11 +10,9 @@ import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.constant.Constant;
 import com.oceansoft.szga.smp.entity.FlowExecute;
 import com.oceansoft.szga.smp.entity.FlowReport;
-import com.oceansoft.szga.smp.entity.FlowTask;
 import com.oceansoft.szga.smp.mapper.FlowReportMapper;
 import com.oceansoft.szga.smp.service.FlowReportService;
 import com.oceansoft.szga.smp.util.GuidUtils;
-import org.apache.shiro.crypto.hash.Hash;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -32,7 +30,9 @@ import java.util.Map;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class FlowReportServiceImpl implements FlowReportService {
+public class FlowReportServiceImpl implements FlowReportService
+
+{
     @Resource
     private FlowReportMapper mapper;
 
@@ -172,13 +172,6 @@ public class FlowReportServiceImpl implements FlowReportService {
         map.put("flow_node_id",mp.get("id"));
         map.put("des",json.getString("instructions"));
         map.put("action_name",mp.get("action_name"));
-//        if("4".equals(json.getString("dept"))){
-//            map.put("node_name",mp.get("4"));
-//        }else if("5".equals(json.getString("dept"))){
-//            map.put("node_name",mp.get("5"));
-//        }else{
-//            map.put("node_name",mp.get("6"));
-//        }
         map.put("node_name",json.getString("dept"));
         if("治安支队".equals(json.get("deptName"))){
             map.put("state","0");
@@ -197,8 +190,8 @@ public class FlowReportServiceImpl implements FlowReportService {
     @Override
     public ApiResult plFfInfo(JSONObject json) {
         Map mp  =  mapper.findSpecal(json.getString("deptName"),json.getString("actionName"));
+        List<Map<String,String>>  list  = (List)JSON.toJSON(json.get("multipleSelection"));
         if("治安支队".equals(json.getString("deptName"))){
-            List<Map<String,String>> list =  mapper.plFfInfo();
             if(list.size()>0){
                 Map map2 = new HashMap();
                 list.forEach(map->{
@@ -215,7 +208,6 @@ public class FlowReportServiceImpl implements FlowReportService {
                     map2.put("des",json.getString("instructions"));
                     map2.put("action_name",mp.get("action_name"));
                     mapper.addTask(map2);
-                    map2.clear();
                 });
                 return new ApiResult(200,true,"分发成功!");
             }else{
@@ -223,16 +215,16 @@ public class FlowReportServiceImpl implements FlowReportService {
             }
         }else{
             // 未分发总数
-           int count = mapper.ffCount((String)mp.get("parent_id"));
-            List<Map<String,String>> list = mapper.findTaskByParentId((String)mp.get("parent_id"));
-           if(count >0){
+//           int count = mapper.ffCount((String)mp.get("parent_id"));
+//            List<Map<String,String>> list = mapper.findTaskByParentId((String)mp.get("parent_id"));
+           if(list.size() >0){
                Map map2 = new HashMap();
                list.forEach(map->{
                    map2.put("guid",GuidUtils.newUUID());
-                   map2.put("flow_id",map.get("flow_id"));
+                   map2.put("flow_id",map.get("id"));
                    map2.put("create_date",map.get("create_date"));
                    map2.put("create_user",map.get("create_user"));
-                   map2.put("node_name",mp.get("node_name"));
+                   map2.put("node_name",json.getString("dept"));
                    map2.put("state","0");
                    map2.put("update_date",json.getString("operationTime"));
                    map2.put("update_user",json.getString("operator"));
@@ -284,52 +276,70 @@ public class FlowReportServiceImpl implements FlowReportService {
 
     @Override
     public ApiResult plQsInfo2(JSONObject json) {
-        List<Map<String,String>> list =  mapper.qs(json.getString("deptName"));
+        List<Map<String,String>>  list  = (List)JSON.toJSON(json.get("multipleSelection"));
         Map mm = mapper.getNodeName(json.getString("deptName"));
-        int count = mapper.qsCount(json.getString("deptName"));
-        if(count>0){
-            if("分县局".equals(json.getString("userDeptName"))){
-                list.forEach(map->{
-                    Map mp = new HashMap();
-                    mp.put("guid",GuidUtils.newUUID());
-                    mp.put("flow_id",map.get("flow_id"));
-                    mp.put("create_date",map.get("create_date"));
-                    mp.put("create_user",map.get("create_user"));
-                    mp.put("node_name",mm.get("node_name"));
-                    mp.put("state","1");
-                    mp.put("update_date",json.getString("operationTime"));
-                    mp.put("update_user",json.getString("operator"));
-                    mp.put("dept",mm.get("dept"));
-                    mp.put("flow_node_id",json.getString("deptName"));
-                    mp.put("des",json.getString("instructions"));
-                    mp.put("action_name",mm.get("action_name"));
-                    mapper.addTask(mp);
-                    mapper.updateId(map.get("guid"));
+        list.forEach(map->{
+            Map mp = new HashMap();
+            mp.put("guid",GuidUtils.newUUID());
+            mp.put("flow_id",map.get("flow_id"));
+            mp.put("create_user",map.get("create_user"));
+            mp.put("node_name",mm.get("node_name"));
+            mp.put("state","1");
+            mp.put("update_user",json.getString("operator"));
+            mp.put("dept",mm.get("dept"));
+            mp.put("flow_node_id",json.getString("deptName"));
+            mp.put("des",json.getString("instructions"));
+            mp.put("action_name",mm.get("action_name"));
+            mapper.addTask(mp);
+            mapper.updateId(map.get("guid"));
                 });
-                return new ApiResult(200,true,"签收成功!");
-            }else{
-                list.forEach(map->{
-                    Map mp = new HashMap();
-                    mp.put("guid",GuidUtils.newUUID());
-                    mp.put("flow_id",map.get("flow_id"));
-                    mp.put("create_date",map.get("create_date"));
-                    mp.put("create_user",map.get("create_user"));
-                    mp.put("node_name",mm.get("node_name"));
-                    mp.put("state","0");
-                    mp.put("update_date",json.getString("operationTime"));
-                    mp.put("update_user",json.getString("operator"));
-                    mp.put("dept",mm.get("dept"));
-                    mp.put("flow_node_id",json.getString("deptName"));
-                    mp.put("des",json.getString("instructions"));
-                    mp.put("action_name",mm.get("action_name"));
-                    mapper.addTask(mp);
-                    mapper.updateId(map.get("guid"));
-                });
-                return new ApiResult(200,true,"签收成功!");
-            }
-        }else{
-            return new ApiResult().failure("暂无签收数据");
-        }
+        return new ApiResult(200,true,"签收成功!");
+//        List<Map<String,String>> list =  mapper.qs(json.getString("deptName"));
+//        Map mm = mapper.getNodeName(json.getString("deptName"));
+//        int count = mapper.qsCount(json.getString("deptName"));
+//        if(count>0){
+//            if("分县局".equals(json.getString("userDeptName"))){
+//                list.forEach(map->{
+//                    Map mp = new HashMap();
+//                    mp.put("guid",GuidUtils.newUUID());
+//                    mp.put("flow_id",map.get("flow_id"));
+//                    mp.put("create_date",map.get("create_date"));
+//                    mp.put("create_user",map.get("create_user"));
+//                    mp.put("node_name",mm.get("node_name"));
+//                    mp.put("state","1");
+//                    mp.put("update_date",json.getString("operationTime"));
+//                    mp.put("update_user",json.getString("operator"));
+//                    mp.put("dept",mm.get("dept"));
+//                    mp.put("flow_node_id",json.getString("deptName"));
+//                    mp.put("des",json.getString("instructions"));
+//                    mp.put("action_name",mm.get("action_name"));
+//                    mapper.addTask(mp);
+//                    mapper.updateId(map.get("guid"));
+//                });
+//                return new ApiResult(200,true,"签收成功!");
+//            }else{
+//                list.forEach(map->{
+//                    Map mp = new HashMap();
+//                    mp.put("guid",GuidUtils.newUUID());
+//                    mp.put("flow_id",map.get("flow_id"));
+//                    mp.put("create_date",map.get("create_date"));
+//                    mp.put("create_user",map.get("create_user"));
+//                    mp.put("node_name",mm.get("node_name"));
+//                    mp.put("state","0");
+//                    mp.put("update_date",json.getString("operationTime"));
+//                    mp.put("update_user",json.getString("operator"));
+//                    mp.put("dept",mm.get("dept"));
+//                    mp.put("flow_node_id",json.getString("deptName"));
+//                    mp.put("des",json.getString("instructions"));
+//                    mp.put("action_name",mm.get("action_name"));
+//                    mapper.addTask(mp);
+//                    mapper.updateId(map.get("guid"));
+//                });
+//                return new ApiResult(200,true,"签收成功!");
+//            }
+//        }else{
+//            return new ApiResult().failure("暂无签收数据");
+//        }
     }
 
     @Override
@@ -341,6 +351,36 @@ public class FlowReportServiceImpl implements FlowReportService {
     public ApiResult findSpecal(String deptName,String actionName) {
         return new ApiResult(200,true,"下层节点部门", mapper.findSpecal(deptName,actionName));
     }
+
+    @Override
+    public ApiResult getDataUnFf() {
+       List<HashMap> has =  mapper.getDataUnFf();
+       if(has.size()>0){
+           return new ApiResult(200,true,has);
+       }else if(has.size() == 0){
+           return new ApiResult(200,true,"暂无数据");
+       }else{
+           return new ApiResult().failure("请稍后再试！");
+       }
+    }
+
+    @Override
+    public ApiResult getUnFfData(String dept,String title) {
+        if("治安支队".equals(dept)){
+            return new ApiResult(200,true,mapper.getDataUnFf());
+        }else{
+            return new ApiResult(200,true,mapper.getDataUnFf2(dept,title));
+        }
+    }
+
+    @Override
+    public ApiResult getDataUnQs(String dept,String title) {
+        Map  has = new HashMap();
+        has.put("dept",dept);
+        has.put("title",title);
+        return new ApiResult(200,true,mapper.getDataUnQs(has));
+    }
+
 
     private FlowReport report(JSONObject json){
         FlowReport report = new FlowReport();

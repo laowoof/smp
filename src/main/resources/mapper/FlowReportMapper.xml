@@ -268,4 +268,44 @@
     <select id="getDeptByFlowId" resultType="String">
         select node_name from flow_node where id=#{id}
     </select>
+    <select id="getDataUnFf"  resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+		    *,
+		    guid as id,
+		    TO_CHAR(create_date,'yyyy-MM-dd hh24:mi') as time
+        FROM
+            flow_report
+        WHERE
+             is_delete = '0'
+			AND guid not in (SELECT flow_id FROM flow_report_task GROUP BY flow_id)
+    </select>
+
+    <select id="getDataUnFf2"  resultType="java.util.HashMap" parameterType="java.util.HashMap">
+       SELECT TO_CHAR(create_date,'yyyy-MM-dd hh24:mi') as time,flow_id as id,guid,create_user FROM flow_report_task
+            WHERE flow_node_id in(
+            select parent_id FROM flow_node WHERE dept=#{dept} and action_name=#{title}) AND state ='0'
+    </select>
+    <select id="getDataUnQs" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+            *,
+            TO_CHAR(create_date,'yyyy-MM-dd hh24:mi') as time,
+            guid as id
+        FROM
+            flow_report_task
+        WHERE
+            flow_node_id = (
+            select parent_id  from flow_node WHERE dept=#{dept} and action_name=#{title}) AND state='0'
+             <if test="dept == '秩序大队'">
+             and node_name='5'
+             </if>
+            <if test="dept == '分县局'">
+                and node_name='8'
+            </if>
+            <if test="dept=='指挥中心'">
+                and node_name='4'
+            </if>
+            <if test="dept=='科研所'">
+                and node_name='6'
+            </if>
+    </select>
 </mapper>

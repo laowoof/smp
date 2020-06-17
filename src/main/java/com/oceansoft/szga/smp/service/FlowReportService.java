@@ -60,4 +60,11 @@ public interface FlowReportService {
     ApiResult findNode(String deptName,String actionName);
 
     ApiResult findSpecal(@Param("deptName") String deptName,@Param("actionName") String actionName);
+
+    ApiResult getDataUnFf();
+
+    ApiResult getUnFfData(String dept,String title);
+
+    ApiResult getDataUnQs(String dept,String title);
+
 }
