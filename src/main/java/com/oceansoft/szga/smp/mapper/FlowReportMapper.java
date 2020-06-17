@@ -1,5 +1,6 @@
 package com.oceansoft.szga.smp.mapper;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.oceansoft.szga.smp.config.domain.ApiQueryBase;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.entity.FlowExecute;
@@ -101,6 +102,8 @@ public interface FlowReportMapper
     int qsCount(@Param("id") String id);
 
     String getDeptByFlowId(@Param("id") String id);
+
+    List<Map<String, Object>> selectPage(Page<Map<String, Object>> page, ApiQueryBase query);
 
     List<HashMap> getDataUnFf();
 

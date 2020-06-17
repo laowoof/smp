@@ -28,7 +28,7 @@ public class UserUpdateDTO {
     private Integer status;
 
     //sj:市局    xfj:县分局（市局）   zxfj:县分局
-    @NotNull(message = "用户来源不能为空")
+//    @NotNull(message = "用户来源不能为空")
     private String source;
 
     @Size(min = 1, message = "请至少选择一个角色")

@@ -63,7 +63,7 @@ public class MybatisPlusConfig {
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor page = new PaginationInterceptor();
 //        page.setDialectType("mysql");
-        page.setDialectType("oracle");
+        page.setDialectType("postgresql");
         return page;
     }
     /**

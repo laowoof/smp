@@ -268,6 +268,108 @@
     <select id="getDeptByFlowId" resultType="String">
         select node_name from flow_node where id=#{id}
     </select>
+
+    <select id="selectPage" resultType="java.util.HashMap">
+        SELECT
+        DISTINCT
+        f.*,
+        TO_CHAR(f.create_date,'yyyy-MM-dd hh24:mi') createdate,
+        --         c.action_name qs_state,
+        --         d.action_name ff_state,
+        COALESCE(c.action_name,'未签收') qs_state,
+        COALESCE(d.action_name,'未分发') ff_state,
+        (SELECT dept FROM flow_node WHERE id=f.report_dept)
+        FROM
+        (
+        SELECT DISTINCT
+        r.*,
+        t.update_user
+        FROM
+        flow_report r,
+        flow_node n,
+        flow_report_task t
+        WHERE
+        t.flow_node_id = n.ID
+        AND r.is_delete = '0'
+        <if test="conditions.deptName =='交警支队'">
+            AND r.guid = t.flow_id
+            and  t.dept= (SELECT dept FROM flow_node WHERE id = (SELECT min(parent_id) from flow_node WHERE dept=#{conditions.deptName}))
+        </if>
+        <if test="conditions.deptName =='指挥中心'">
+            AND r.guid = t.flow_id
+            and t.node_name ='4'
+        </if>
+        <if test="conditions.deptName =='科研所'">
+            AND r.guid = t.flow_id
+            and t.node_name ='6'
+        </if>
+        <if test="conditions.deptName =='秩序大队'">
+            AND r.guid = t.flow_id
+            and t.node_name ='5'
+        </if>
+        <if test="conditions.deptName =='分县局'">
+            AND r.guid = t.flow_id
+            and t.node_name ='8'
+        </if>
+        <if test=" conditions.reportDept!='' and conditions.reportDept !=null ">
+            and r.report_dept =#{conditions.reportDept}
+        </if>
+        <if test=" conditions.flowType!='' and conditions.flowType !=null ">
+            and r.flow_type =#{conditions.flowType}
+        </if>
+        <if test=" conditions.keyword!='' and conditions.keyword !=null ">
+            and (r.report_dept like '%'||#{conditions.keyword}||'%' or r.task_name like '%'||#{conditions.keyword}||'%')
+        </if>
+        ) f
+        LEFT JOIN ( SELECT DISTINCT s.flow_id,s.STATE, s.node_name,s.action_name,s.update_date,s.dept FROM flow_report_task s WHERE s.dept=#{conditions.deptName} and s.action_name='签收') c ON c.flow_id = f.guid
+        LEFT JOIN (SELECT DISTINCT s.flow_id,s.STATE, s.node_name,s.action_name,s.update_date,s.dept FROM flow_report_task s WHERE s.dept=#{conditions.deptName} and s.action_name='分发' ) d ON d.flow_id = f.guid
+        WHERE 1=1
+        <if test=" conditions.qsState=='已签收'">
+           and  c.action_name ='签收'
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.ffState == '已分发'">
+            and c.action_name ='签收' or d.ffState == '分发'
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.wqsState == '未签收'">
+            and c.action_name ='签收' or c.action_name is null
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.wffState =='未分发'">
+            and c.action_name ='签收' or d.action_name is null
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.ffState == '已分发'  and conditions.wqsState == '未签收'">
+            and c.action_name ='签收' or d.ffState == '分发' or c.action_name is null
+        </if>
+        <if test=" conditions.qsState=='已签收' and conditions.ffState == '已分发' and  conditions.wffState =='未分发'">
+            and c.action_name ='签收' or d.ffState == '分发' or d.action_name is null
+        </if>
+
+        <if test=" conditions.ffState == '已分发'">
+            and d.action_name == '分发'
+        </if>
+        <if test=" conditions.ffState == '已分发' and conditions.wqsState == '未签收'">
+            and d.action_name == '分发' or  c.action_name is null
+        </if>
+
+        <if test=" conditions.ffState == '已分发' and conditions.wffState =='未分发'">
+           and d.action_name == '分发' or  d.action_name is null
+        </if>
+        <if test=" conditions.ffState == '已分发' and conditions.wqsState == '未签收' and conditions.wffState =='未分发'">
+           and d.action_name == '分发' or  c.action_name is null or  d.action_name is null
+        </if>
+        <if test=" conditions.wqsState == '未签收'">
+           and  c.action_name is null
+        </if>
+        <if test=" conditions.wqsState == '未签收' and conditions.wffState =='未分发'">
+           and c.action_name is null or d.action_name is null
+        </if>
+        <if test=" conditions.wffState =='未分发'">
+           and d.action_name is null
+        </if>
+        <if test=" conditions.allState== '全部'">
+           and c.action_name ='签收' or d.action_name ='分发'  or d.action_name is null
+            or  c.action_name is null
+        </if>
+    </select>
     <select id="getDataUnFf"  resultType="java.util.HashMap" parameterType="java.util.HashMap">
         SELECT
 		    *,
