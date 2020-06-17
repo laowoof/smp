@@ -51,7 +51,7 @@ cas:
   server-url-prefix: http://172.17.118.238:8081/cas
   server-login-url: http://172.17.118.238:8081/cas/login
   client-host-url: http://localhost:19123
-  validation-type: cas
+#  validation-type: cas
   authentication-url-patterns: /cas/login/index
 prop:
   redirect-url: http://localhost:8088/#/casLogin

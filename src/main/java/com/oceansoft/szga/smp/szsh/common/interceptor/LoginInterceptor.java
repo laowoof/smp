@@ -29,13 +29,12 @@ public class LoginInterceptor implements HandlerInterceptor {
             if (obj != null) {
                 Assertion assertion = (Assertion)obj;
                 AttributePrincipal p= assertion.getPrincipal();
-                String userName= p.getName();//获取警号
-
-
+//                String userName= p.getName();//获取警号
+                String idcard = (String) p.getAttributes().get("idcard");
                 SysUserService userService= SpringContext.getBean(SysUserService.class);
-                SysUser user=userService.findUserByNameNoRole(userName);
+                SysUser user=userService.findUserByNameNoRole(idcard);
                 if(user==null){//临时处理，未找到用户，使用admin
-                    user=userService.findUserByNameNoRole("admin");
+                    user=userService.findUserByNameNoRole("123456");
                 }
                 session.setAttribute("session_user",user);
 
