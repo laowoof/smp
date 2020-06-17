@@ -19,13 +19,13 @@ server:
     uri-encoding: utf-8
 prop:
   cas-ignore-pattern: /api/.*|/account/.*|/static/.*|/project/.*|/system/.*|/evaluate/.*|/sjextract/.*|/xfjextract/.*|/special/.*|/statistics/.*|/supervision/.*|/cas/login/info|/test/.*
-pagehelper:
-  helperDialect: postgresql
-  reasonable: true
-  supportMethodsArguments: true
-  row-bounds-with-count: true
-  offset-as-page-num: true
-  page-size-zero: true
+#pagehelper:
+#  helperDialect: postgresql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  row-bounds-with-count: true
+#  offset-as-page-num: true
+#  page-size-zero: true
 mybatis:
   configuration:
     cache-enabled: true

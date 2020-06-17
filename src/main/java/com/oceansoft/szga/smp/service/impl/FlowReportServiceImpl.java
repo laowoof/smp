@@ -2,8 +2,9 @@ package com.oceansoft.szga.smp.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+//import com.github.pagehelper.Page;
+//import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.oceansoft.szga.smp.config.domain.ApiPager;
 import com.oceansoft.szga.smp.config.domain.ApiQueryBase;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
@@ -87,10 +88,13 @@ public class FlowReportServiceImpl implements FlowReportService {
 
     @Override
     public ApiPager<Map<String, Object>> page(ApiQueryBase query) {
-        PageHelper.startPage(query.getPi(), query.getPs(), true);
-        Page<Map<String,Object>> page = (Page)mapper.page(query);
-        ApiPager<Map<String,Object>> pager = new ApiPager(query.getPs(), query.getPi(), page.getTotal(), page.getResult());
-        return pager;
+//        PageHelper.startPage(query.getPi(), query.getPs(), true);
+//        Page<Map<String,Object>> page = (Page)mapper.page(query);
+//        ApiPager<Map<String,Object>> pager = new ApiPager(query.getPs(), query.getPi(), page.getTotal(), page.getResult());
+//        return pager;
+        Page<Map<String,Object>> page = new Page<>(query.getPi(),query.getPs());
+        page.setRecords(mapper.selectPage(page,query));
+        return new ApiPager<>(query.getPs(),query.getPi(),page.getTotal(),page.getRecords());
     }
 
     @Override
