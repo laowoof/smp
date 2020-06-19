@@ -178,6 +178,17 @@ public class RoadController {
     }
 
     /**
+     * 源头管理/企业车辆违法行为
+     * @param json
+     * @return 处理后的数据
+     */
+    @PostMapping("getIllegalCar")
+    @ResponseBody
+    public ApiResult getIllegalCar(@RequestBody JSONObject json){
+        return roadService.getIllegalCar(json);
+    }
+
+    /**
      * 违法打击 数量总计
      * @return 处理后的数据
      * @param map

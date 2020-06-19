@@ -11,20 +11,21 @@
     </select>
 
     <select id="anTotleNum" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj
+        WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-            COALESCE(sum(yhzl),0) yhzl,
-            COALESCE(sum(yhwcsl),0) yhwcsl,
-            COALESCE(sum(yhwwcsl),0) yhwwcsl
+        COALESCE(sum(yhzl),0) yhzl,
+        COALESCE(sum(yhwcsl),0) yhwcsl,
+        COALESCE(sum(yhwwcsl),0) yhwwcsl
         FROM
-            yhlxtj
+        yhlxtj
         WHERE
-            <if test="firstYear !='' and twoYear !=''">
-                yearDate BETWEEN #{firstYear} AND #{twoYear}
-            </if>
-            <if test="month !='' and month2 !=''">
-                 date between #{month} and #{month2}
-            </if>
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate BETWEEN #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} and #{month2}
+        </if>
     </select>
     <select id="getAddress" resultType="java.util.HashMap">
         select xqdm AS deptid,xqmc AS deptname from (
@@ -37,17 +38,17 @@
     <select id="getSourceSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
         WITH dljtytgltj AS
         (
-            select * from (
-                select t.lx, t.year || '-' || t.mon as ny, sl
-                FROM rpt_aqjg_ggjt_dljtytgltj t
-                where t.tjrq = to_char(CURRENT_DATE -1, 'yyyy-MM-dd') and lx in ('1','2','3')
-            ) dlj where 1=1
-            <if test="type=='nf'">
-                and ny BETWEEN #{nyold} || '-01' and #{nynew} || '-12'
-            </if>
-            <if test="type=='yf'">
-                and ny BETWEEN #{nyold} and #{nynew}
-            </if>
+        select * from (
+        select t.lx, t.year || '-' || t.mon as ny, sl
+        FROM rpt_aqjg_ggjt_dljtytgltj t
+        where t.tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd') and lx in ('1','2','3')
+        ) dlj where 1=1
+        <if test="type=='nf'">
+            and ny BETWEEN #{nyold} || '-01' and #{nynew} || '-12'
+        </if>
+        <if test="type=='yf'">
+            and ny BETWEEN #{nyold} and #{nynew}
+        </if>
 
         )
         select
@@ -57,28 +58,30 @@
     </select>
 
     <select id="yhQusFx" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
-    SELECT
-	    ddmc,
-	    ddbm,
-	    sum(yhzl) yhzl,
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM
+        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        SELECT
+        ddmc,
+        ddbm,
+        sum(yhzl) yhzl,
         sum(yhwcsl) yhwcsl,
         sum(yhwwcsl) yhwwcsl
-    FROM
+        FROM
         yhlxtj
-    WHERE
+        WHERE
         ddbm in('11','12','13','14','15') and
         <if test="firstYear !='' and twoYear !=''">
-          yearDate BETWEEN #{firstYear} AND #{twoYear}
+            yearDate BETWEEN #{firstYear} AND #{twoYear}
         </if>
         <if test="month !='' and month2 !=''">
-             date between #{month} and #{month2}
+            date between #{month} and #{month2}
         </if>
         GROUP BY ddbm,ddmc ORDER BY ddbm
     </select>
 
     <select id="yhQusXs" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM
+        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         ddmc,
         ddbm,
@@ -88,18 +91,19 @@
         FROM
         yhlxtj
         WHERE
-        ddbm in('21','22','23','24','25')  and
+        ddbm in('21','22','23','24','25') and
         <if test="firstYear !='' and twoYear !=''">
-             yearDate BETWEEN #{firstYear} AND #{twoYear}
+            yearDate BETWEEN #{firstYear} AND #{twoYear}
         </if>
         <if test="month !='' and month2 !=''">
-             date between #{month} and #{month2}
+            date between #{month} and #{month2}
         </if>
         GROUP BY ddbm,ddmc ORDER BY ddbm
     </select>
 
     <select id="yhQusGs" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM
+        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         ddmc,
         ddbm,
@@ -109,38 +113,39 @@
         FROM
         yhlxtj
         WHERE
-            ddbm in('31','32','33','34','35','36','37','38','39') and
+        ddbm in('31','32','33','34','35','36','37','38','39') and
         <if test="firstYear !='' and twoYear !=''">
-             yearDate BETWEEN #{firstYear} AND #{twoYear}
+            yearDate BETWEEN #{firstYear} AND #{twoYear}
         </if>
         <if test="month !='' and month2 !=''">
-             date between #{month} and #{month2}
+            date between #{month} and #{month2}
         </if>
         GROUP BY ddbm,ddmc ORDER BY ddbm
     </select>
 
     <select id="zyJdFx" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj  as (SELECT year||'-'||mon as date,year as yearDate,jdlx,jdmc,zblx,zblxmc,sl FROM rpt_aqjg_ggjt_yhjdtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,jdlx,jdmc,zblx,zblxmc,sl FROM
+        rpt_aqjg_ggjt_yhjdtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-			COALESCE(SUM(CASE WHEN jdlx='1' THEN sl ELSE 0 END),0) mjnum,
-			COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='21' THEN sl ELSE 0 END),0) zdlr,
-			COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='22' THEN sl ELSE 0 END),0) zdcl,
-			COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='23' THEN sl ELSE 0 END),0) zdja,
-			COALESCE(SUM(CASE WHEN jdlx='1' AND zblx='24' THEN sl ELSE 0 END),0) zddcl,
-			COALESCE(SUM(CASE WHEN jdlx='3' AND zblx='31' THEN sl ELSE 0 END),0) ddlr,
-			COALESCE(SUM(CASE WHEN jdlx='3' AND zblx='32' THEN sl ELSE 0 END),0) ddcl,
-			COALESCE(SUM(CASE WHEN jdlx='3' AND zblx='33' THEN sl ELSE 0 END),0) ddja,
-			COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='34' THEN sl ELSE 0 END),0) dddcl,
-			COALESCE(SUM(CASE WHEN jdlx='4' AND zblx='41' THEN sl ELSE 0 END),0) ywlr,
-			COALESCE(SUM(CASE WHEN jdlx='4' AND zblx='42' THEN sl ELSE 0 END),0) ywcl,
-			COALESCE(SUM(CASE WHEN jdlx='4' AND zblx='43' THEN sl ELSE 0 END),0) ywja,
-			COALESCE(SUM(CASE WHEN jdlx='4' AND zblx='44' THEN sl ELSE 0 END),0) ywdcl,
-			COALESCE(SUM(CASE WHEN jdlx='5' AND zblx='51' THEN sl ELSE 0 END),0) zhidlr,
-			COALESCE(SUM(CASE WHEN jdlx='5' AND zblx='52' THEN sl ELSE 0 END),0) zhidcl,
-			COALESCE(SUM(CASE WHEN jdlx='5' AND zblx='53' THEN sl ELSE 0 END),0) zhidja,
-			COALESCE(SUM(CASE WHEN jdlx='5' AND zblx='54' THEN sl ELSE 0 END),0) zhiddcl
+        COALESCE(SUM(CASE WHEN jdlx='1' THEN sl ELSE 0 END),0) mjnum,
+        COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='21' THEN sl ELSE 0 END),0) zdlr,
+        COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='22' THEN sl ELSE 0 END),0) zdcl,
+        COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='23' THEN sl ELSE 0 END),0) zdja,
+        COALESCE(SUM(CASE WHEN jdlx='1' AND zblx='24' THEN sl ELSE 0 END),0) zddcl,
+        COALESCE(SUM(CASE WHEN jdlx='3' AND zblx='31' THEN sl ELSE 0 END),0) ddlr,
+        COALESCE(SUM(CASE WHEN jdlx='3' AND zblx='32' THEN sl ELSE 0 END),0) ddcl,
+        COALESCE(SUM(CASE WHEN jdlx='3' AND zblx='33' THEN sl ELSE 0 END),0) ddja,
+        COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='34' THEN sl ELSE 0 END),0) dddcl,
+        COALESCE(SUM(CASE WHEN jdlx='4' AND zblx='41' THEN sl ELSE 0 END),0) ywlr,
+        COALESCE(SUM(CASE WHEN jdlx='4' AND zblx='42' THEN sl ELSE 0 END),0) ywcl,
+        COALESCE(SUM(CASE WHEN jdlx='4' AND zblx='43' THEN sl ELSE 0 END),0) ywja,
+        COALESCE(SUM(CASE WHEN jdlx='4' AND zblx='44' THEN sl ELSE 0 END),0) ywdcl,
+        COALESCE(SUM(CASE WHEN jdlx='5' AND zblx='51' THEN sl ELSE 0 END),0) zhidlr,
+        COALESCE(SUM(CASE WHEN jdlx='5' AND zblx='52' THEN sl ELSE 0 END),0) zhidcl,
+        COALESCE(SUM(CASE WHEN jdlx='5' AND zblx='53' THEN sl ELSE 0 END),0) zhidja,
+        COALESCE(SUM(CASE WHEN jdlx='5' AND zblx='54' THEN sl ELSE 0 END),0) zhiddcl
         FROM
-            yhlxtj
+        yhlxtj
         where
         <if test="firstYear !='' and twoYear !=''">
             yearDate between #{firstYear} AND #{twoYear}
@@ -151,13 +156,14 @@
     </select>
 
     <select id="yhLxFx" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj  as (SELECT year||'-'||mon as date,year as yearDate,yhlxmc,yhwcsl,yhlx,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,yhlxmc,yhwcsl,yhlx,yhzl FROM rpt_aqjg_ggjt_yhlxtj
+        WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-            yhlxmc,
-            sum(yhwcsl) yhwcsl,
-            sum(yhzl) yhzl
+        yhlxmc,
+        sum(yhwcsl) yhwcsl,
+        sum(yhzl) yhzl
         FROM
-            yhlxtj
+        yhlxtj
         where
         <if test="firstYear !='' and twoYear !=''">
             yearDate between #{firstYear} AND #{twoYear}
@@ -167,61 +173,75 @@
         </if>
         GROUP BY yhlxmc,yhlx
     </select>
-    <select id="getFirmAnalzeSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
+    <select id="getFirmAnalzeSum" resultType="java.util.HashMap"
+            parameterType="com.oceansoft.szga.smp.entity.SourceNum">
         WITH qyxzfx AS
-            (
-              select * from (
-                  select t.year || '-' || t.mon as ny, t.xzdl, t.xzdlmc, t.xzxl, coalesce(t.xzxlmc, t.xzdlmc) as xzxlmc, dwsl, xqdm, xqmc
-                from rpt_aqjg_ggjt_qyxzfx t
-                where t.tjrq = to_char(CURRENT_DATE -2, 'yyyy-MM-dd')
-                and t.xzdl in ('1','2','3','4')
-              ) dlj where 1=1
-                <if test="type=='nf'">
-                    and ny between #{nyold} || '-01' and #{nynew} || '-12'
-                </if>
-                <if test="type=='yf'">
-                    and ny between #{nyold} and #{nynew}
-                </if>
-            )
-            select xzdl,xzdlmc,'flhj' xzxlmc, sum(dwsl) dwsl from qyxzfx where 1=1 <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdl,xzdlmc
-            union all
-            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='1' <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdlmc,xzxlmc,xzdl
-            union all
-            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='2' <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdlmc,xzxlmc,xzdl
-            union all
-            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='3' <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdlmc,xzxlmc,xzdl
-            union all
-            select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='4' <if test="deptId!='all'"> and xqdm = #{deptId} </if> group by xzdlmc,xzxlmc,xzdl
+        (
+        select * from (
+        select t.year || '-' || t.mon as ny, t.xzdl, t.xzdlmc, t.xzxl, coalesce(t.xzxlmc, t.xzdlmc) as xzxlmc, dwsl,
+        xqdm, xqmc
+        from rpt_aqjg_ggjt_qyxzfx t
+        where t.tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
+        and t.xzdl in ('1','2','3','4')
+        ) dlj where 1=1
+        <if test="type=='nf'">
+            and ny between #{nyold} || '-01' and #{nynew} || '-12'
+        </if>
+        <if test="type=='yf'">
+            and ny between #{nyold} and #{nynew}
+        </if>
+        )
+        select xzdl,xzdlmc,'flhj' xzxlmc, sum(dwsl) dwsl from qyxzfx where 1=1 <if test="deptId!='all'">and xqdm =
+        #{deptId}
+    </if> group by xzdl,xzdlmc
+        union all
+        select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='1' <if
+            test="deptId!='all'">and xqdm = #{deptId}
+    </if> group by xzdlmc,xzxlmc,xzdl
+        union all
+        select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='2' <if
+            test="deptId!='all'">and xqdm = #{deptId}
+    </if> group by xzdlmc,xzxlmc,xzdl
+        union all
+        select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='3' <if
+            test="deptId!='all'">and xqdm = #{deptId}
+    </if> group by xzdlmc,xzxlmc,xzdl
+        union all
+        select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where 1=1 and xzdl='4' <if
+            test="deptId!='all'">and xqdm = #{deptId}
+    </if> group by xzdlmc,xzxlmc,xzdl
     </select>
 
     <select id="getAchievCount" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
         WITH zllxtj AS (
-          select * from (
-            select t.year || '-' || t.mon as ny, t.lxdm, t.lxmc, dddm, ddmc, zddm, zdmc, rws, wcs
-            from rpt_aqjg_ggjt_zllxtj t where 1=1 and t.tjrq = to_char(CURRENT_DATE -2, 'yyyy-MM-dd')
-            and dddm like ('3205%') and zddm like ('3205%')
-          )dlj where 1=1
-            <if test="type=='nf'">
-                and ny between #{nyold} || '-01' and #{nynew} || '-12'
-            </if>
-            <if test="type=='yf'">
-                and ny between #{nyold} and #{nynew}
-            </if>
+        select * from (
+        select t.year || '-' || t.mon as ny, t.lxdm, t.lxmc, dddm, ddmc, zddm, zdmc, rws, wcs
+        from rpt_aqjg_ggjt_zllxtj t where 1=1 and t.tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
+        and dddm like ('3205%') and zddm like ('3205%')
+        )dlj where 1=1
+        <if test="type=='nf'">
+            and ny between #{nyold} || '-01' and #{nynew} || '-12'
+        </if>
+        <if test="type=='yf'">
+            and ny between #{nyold} and #{nynew}
+        </if>
         )
-        <if test="cgtype=='tj'"> select dddm,ddmc,sum(rws) rws,sum(wcs) wcs,round(sum(wcs)/sum(rws)*100,1) wcl from ( </if>
-        <if test="cgtype=='lx'"> select lxmc,sum(rws) rws,sum(wcs) wcs from ( </if>
-        select lxdm, lxmc, dddm, ddmc, zddm, zdmc,sum(rws) rws,sum(wcs) wcs from zllxtj group by lxdm, lxmc, dddm, ddmc, zddm, zdmc
+        <if test="cgtype=='tj'">select dddm,ddmc,sum(rws) rws,sum(wcs) wcs,round(sum(wcs)/sum(rws)*100,1) wcl from (
+        </if>
+        <if test="cgtype=='lx'">select lxmc,sum(rws) rws,sum(wcs) wcs from (</if>
+        select lxdm, lxmc, dddm, ddmc, zddm, zdmc,sum(rws) rws,sum(wcs) wcs from zllxtj group by lxdm, lxmc, dddm, ddmc,
+        zddm, zdmc
         ) dll group by
-        <if test="cgtype=='tj'"> dddm,ddmc order by wcl desc, wcs desc</if>
-        <if test="cgtype=='lx'"> lxdm,lxmc </if>
---             select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where xzdl='4' group by xzdlmc,xzxlmc,xzdl
+        <if test="cgtype=='tj'">dddm,ddmc order by wcl desc, wcs desc</if>
+        <if test="cgtype=='lx'">lxdm,lxmc</if>
+        -- select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where xzdl='4' group by xzdlmc,xzxlmc,xzdl
     </select>
     <select id="getAnYhDdFx" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT
-            yhddmc,
-            count(*) num
+        yhddmc,
+        count(*) num
         FROM
-            rpt_aqjg_ggjt_yhxx
+        rpt_aqjg_ggjt_yhxx
         WHERE
         <if test="firstYear !='' and twoYeat !=''">
             cjsj between to_DATE(#{firstYear},'yyyy-MM-dd') AND to_date(#{twoYeat}, 'yyyy-MM-dd')
@@ -233,12 +253,12 @@
     </select>
     <select id="getYhZlLb" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT
-            yhddmc,
-            ddms,
-            yhlxmc,
-            TO_CHAR(cjsj,'yyyy-MM-dd hh24:mi') cjsj
+        yhddmc,
+        ddms,
+        yhlxmc,
+        TO_CHAR(cjsj,'yyyy-MM-dd hh24:mi') cjsj
         FROM
-            rpt_aqjg_ggjt_yhxx
+        rpt_aqjg_ggjt_yhxx
         WHERE
         <if test="firstYear !='' and twoYeat !=''">
             cjsj between to_DATE(#{firstYear},'yyyy-MM-dd') AND to_date(#{twoYeat}, 'yyyy-MM-dd')
@@ -250,20 +270,21 @@
 
     </select>
     <select id="getSqTop5" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,dlmc,ddbm,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,dlmc,ddbm,yhwwcsl,yhwcsl,yhzl FROM
+        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-			dlmc,
-	        sum(yhzl) yhzl,
-            sum(yhwcsl) yhwcsl,
-            sum(yhwwcsl) yhwwcsl
+        dlmc,
+        sum(yhzl) yhzl,
+        sum(yhwcsl) yhwcsl,
+        sum(yhwwcsl) yhwwcsl
         FROM
-            yhlxtj
+        yhlxtj
         WHERE
         <if test="typeName == '市区'">
             ddbm in('11','12','13','14','15') and
         </if>
         <if test="typeName =='五县市'">
-            ddbm in('21','22','23','24','25')  and
+            ddbm in('21','22','23','24','25') and
         </if>
         <if test="typeName =='高速'">
             ddbm in('31','32','33','34','35','36','37','38','39') and
@@ -274,19 +295,20 @@
         <if test="month !='' and month2 !=''">
             date between #{month} and #{month2}
         </if>
-            GROUP BY dlmc ORDER BY yhzl desc limit 5
+        GROUP BY dlmc ORDER BY yhzl desc limit 5
     </select>
     <select id="getDataClick" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,zdmc,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,zdmc,yhwwcsl,yhwcsl,yhzl FROM
+        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-	        zdmc,
-	        sum(yhwwcsl) yhwwcsl,
-	        sum(yhwcsl) yhwcsl,
-	        sum(yhzl) yhzl
+        zdmc,
+        sum(yhwwcsl) yhwwcsl,
+        sum(yhwcsl) yhwcsl,
+        sum(yhzl) yhzl
         FROM
-	        yhlxtj
+        yhlxtj
         WHERE
-            ddmc=#{clickName}
+        ddmc=#{clickName}
         <if test="firstYear !='' and twoYear !=''">
             and yearDate BETWEEN #{firstYear} AND #{twoYear}
         </if>
@@ -295,14 +317,15 @@
         </if>GROUP BY zdmc
     </select>
     <select id="getDataClickTop5" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,dlmc,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,dlmc,yhwwcsl,yhwcsl,yhzl FROM
+        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-	        dlmc,
-	        sum(yhzl) yhzl,
-            sum(yhwcsl) yhwcsl,
-            sum(yhwwcsl) yhwwcsl
+        dlmc,
+        sum(yhzl) yhzl,
+        sum(yhwcsl) yhwcsl,
+        sum(yhwwcsl) yhwwcsl
         FROM
-	        yhlxtj
+        yhlxtj
         WHERE ddmc=#{clickName}
         <if test="firstYear !='' and twoYear !=''">
             and yearDate BETWEEN #{firstYear} AND #{twoYear}
@@ -310,16 +333,17 @@
         <if test="month !='' and month2 !=''">
             and date between #{month} and #{month2}
         </if>
-         GROUP BY dlmc ORDER BY yhzl desc LIMIT 5
+        GROUP BY dlmc ORDER BY yhzl desc LIMIT 5
     </select>
     <select id="getWfDj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with wfdj_jcxx as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,sl FROM rpt_aqjg_ggjt_wfdj_jcxx  WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with wfdj_jcxx as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,sl FROM rpt_aqjg_ggjt_wfdj_jcxx
+        WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-            COALESCE(SUM(CASE WHEN lxdm='1' THEN sl ELSE 0 END),0) zfs,
-            COALESCE(SUM(CASE WHEN lxdm='2' THEN sl ELSE 0 END),0) jdcs,
-            COALESCE(SUM(CASE WHEN lxdm='3' THEN sl ELSE 0 END),0) yjs
+        COALESCE(SUM(CASE WHEN lxdm='1' THEN sl ELSE 0 END),0) zfs,
+        COALESCE(SUM(CASE WHEN lxdm='2' THEN sl ELSE 0 END),0) jdcs,
+        COALESCE(SUM(CASE WHEN lxdm='3' THEN sl ELSE 0 END),0) yjs
         FROM
-            wfdj_jcxx
+        wfdj_jcxx
         where
         <if test="firstYear !='' and twoYear !=''">
             yearDate between #{firstYear} AND #{twoYear}
@@ -331,29 +355,30 @@
     <select id="getZfSj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with wfdj_zftj as (SELECT year||'-'||mon as date,year as yearDate,ddmc,lxdm,zfs FROM rpt_aqjg_ggjt_wfdj_zftj)
         SELECT
-            ddmc,
-            COALESCE(SUM(CASE WHEN lxdm='1' THEN zfs ELSE 0 END),0) jycf,
-            COALESCE(SUM(CASE WHEN lxdm='2' THEN zfs ELSE 0 END),0) qzcs
+        ddmc,
+        COALESCE(SUM(CASE WHEN lxdm='1' THEN zfs ELSE 0 END),0) jycf,
+        COALESCE(SUM(CASE WHEN lxdm='2' THEN zfs ELSE 0 END),0) qzcs
         FROM
-            wfdj_zftj
+        wfdj_zftj
         WHERE
-            ddmc is not null and
+        ddmc is not null and
         <if test="firstYear !='' and twoYear !=''">
             yearDate between #{firstYear} AND #{twoYear}
         </if>
         <if test="month !='' and month2 !=''">
             date between #{month} and #{month2}
         </if>
-            GROUP BY ddmc ORDER BY ddmc
+        GROUP BY ddmc ORDER BY ddmc
     </select>
     <select id="getZfSjZd" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with wfdj_zftj as (SELECT year||'-'||mon as date,year as yearDate,ddmc,zdmc,lxdm,zfs FROM rpt_aqjg_ggjt_wfdj_zftj)
+        with wfdj_zftj as (SELECT year||'-'||mon as date,year as yearDate,ddmc,zdmc,lxdm,zfs FROM
+        rpt_aqjg_ggjt_wfdj_zftj)
         SELECT
-            zdmc,
-            COALESCE(SUM(CASE WHEN lxdm='1' THEN zfs ELSE 0 END),0) jycf,
-            COALESCE(SUM(CASE WHEN lxdm='2' THEN zfs ELSE 0 END),0) qzcs
+        zdmc,
+        COALESCE(SUM(CASE WHEN lxdm='1' THEN zfs ELSE 0 END),0) jycf,
+        COALESCE(SUM(CASE WHEN lxdm='2' THEN zfs ELSE 0 END),0) qzcs
         FROM
-            wfdj_zftj
+        wfdj_zftj
         WHERE
         ddmc is not null AND ddmc=#{clickName} and
         <if test="firstYear !='' and twoYear !=''">
@@ -366,11 +391,11 @@
     </select>
     <select id="getWfHmd" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         SELECT
-            hphm,
-            wfsj,
-            wfxwmc
+        hphm,
+        wfsj,
+        wfxwmc
         FROM
-            rpt_aqjg_ggjt_wfxx
+        rpt_aqjg_ggjt_wfxx
         where
         <if test="firstYear !='' and twoYear !=''">
             substring(wfsj, 0,5) between #{firstYear} AND #{twoYear}
@@ -383,11 +408,11 @@
     <select id="getDataCjBk" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with jcbktj as (SELECT year||'-'||mon as date,year as yearDate,ljs,bjs,xycls FROM rpt_aqjg_ggjt_jcbktj)
         SELECT
-            COALESCE(sum(ljs),0) ljs,
-            COALESCE(sum(bjs),0) bjs,
-            COALESCE(sum(xycls),0) xycls
+        COALESCE(sum(ljs),0) ljs,
+        COALESCE(sum(bjs),0) bjs,
+        COALESCE(sum(xycls),0) xycls
         FROM
-            jcbktj
+        jcbktj
         where
         <if test="firstYear !='' and twoYear !=''">
             yearDate between #{firstYear} AND #{twoYear}
@@ -399,12 +424,12 @@
     <select id="getDataRxSb" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with jcbkxx as (SELECT year||'-'||mon as date,year as yearDate,yjsj,hphm,bklxmc,czxm FROM rpt_aqjg_ggjt_jcbkxx)
         SELECT
-            substring(yjsj, 0,11) yjsj,
-            bklxmc,
-            hphm,
-            czxm
+        substring(yjsj, 0,11) yjsj,
+        bklxmc,
+        hphm,
+        czxm
         FROM
-            jcbkxx
+        jcbkxx
         where
         bklxmc is not null and
         <if test="firstYear !='' and twoYear !=''">
@@ -418,17 +443,17 @@
     </select>
     <select id="getDataJtWf" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         SELECT
-            wfrq,
-            SUM(CASE WHEN wfsd='0-7' THEN wfs ELSE 0 END) as one,
-            SUM(CASE WHEN wfsd='7-9' THEN wfs ELSE 0 END) as two,
-            SUM(CASE WHEN wfsd='9-12' THEN wfs ELSE 0 END) as three,
-            SUM(CASE WHEN wfsd='12-16' THEN wfs ELSE 0 END) as four,
-            SUM(CASE WHEN wfsd='16-19' THEN wfs ELSE 0 END) as five,
-            SUM(CASE WHEN wfsd='19-24' THEN wfs ELSE 0 END) as six
+        wfrq,
+        SUM(CASE WHEN wfsd='0-7' THEN wfs ELSE 0 END) as one,
+        SUM(CASE WHEN wfsd='7-9' THEN wfs ELSE 0 END) as two,
+        SUM(CASE WHEN wfsd='9-12' THEN wfs ELSE 0 END) as three,
+        SUM(CASE WHEN wfsd='12-16' THEN wfs ELSE 0 END) as four,
+        SUM(CASE WHEN wfsd='16-19' THEN wfs ELSE 0 END) as five,
+        SUM(CASE WHEN wfsd='19-24' THEN wfs ELSE 0 END) as six
         FROM
-            rpt_aqjg_ggjt_wfsjtj
+        rpt_aqjg_ggjt_wfsjtj
         where
-         wfrq =#{yesterday} and
+        wfrq =#{yesterday} and
         <if test="name == '总体情况'">
             1=1
         </if>
@@ -467,11 +492,11 @@
     <select id="getDataZdWlTj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with zdwf as (SELECT year||'-'||mon as date,year as yearDate,dddm,ddmc,wfs FROM rpt_aqjg_ggjt_zdwf)
         SELECT
-            dddm,
-            ddmc,
-            sum(wfs)
+        dddm,
+        ddmc,
+        sum(wfs)
         FROM
-            zdwf
+        zdwf
         WHERE
         <if test="TypeName == '市区'">
             dddm in('11','12','13','14','15')
@@ -483,10 +508,10 @@
             dddm in('31','32','33','34','35','36','37','38','39')
         </if>
         <if test="firstYear !='' and twoYear !=''">
-           and yearDate between #{firstYear} AND #{twoYear}
+            and yearDate between #{firstYear} AND #{twoYear}
         </if>
         <if test="month !='' and month2 !=''">
-           and date between #{month} AND #{month2}
+            and date between #{month} AND #{month2}
         </if>
         GROUP BY dddm,ddmc order by dddm
     </select>
@@ -494,14 +519,14 @@
     <select id="getDataWfLx" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,lxdm,lxmc FROM rpt_aqjg_ggjt_zdwf)
         SELECT
-            COALESCE(SUM(CASE WHEN lxdm='1' THEN wfs ELSE 0 END),0) one,
-            COALESCE(SUM(CASE WHEN lxdm='2' THEN wfs ELSE 0 END),0) two,
-            COALESCE(SUM(CASE WHEN lxdm='3' THEN wfs ELSE 0 END),0) three,
-            COALESCE(SUM(CASE WHEN lxdm='4' THEN wfs ELSE 0 END),0) four,
-            COALESCE(SUM(CASE WHEN lxdm='5' THEN wfs ELSE 0 END),0) five,
-            COALESCE(SUM(CASE WHEN lxdm='6' THEN wfs ELSE 0 END),0) six
+        COALESCE(SUM(CASE WHEN lxdm='1' THEN wfs ELSE 0 END),0) one,
+        COALESCE(SUM(CASE WHEN lxdm='2' THEN wfs ELSE 0 END),0) two,
+        COALESCE(SUM(CASE WHEN lxdm='3' THEN wfs ELSE 0 END),0) three,
+        COALESCE(SUM(CASE WHEN lxdm='4' THEN wfs ELSE 0 END),0) four,
+        COALESCE(SUM(CASE WHEN lxdm='5' THEN wfs ELSE 0 END),0) five,
+        COALESCE(SUM(CASE WHEN lxdm='6' THEN wfs ELSE 0 END),0) six
         FROM
-            zdwf
+        zdwf
         <if test="typeName !='' ">
             WHERE ddmc#{typeName}
         </if>
@@ -564,77 +589,77 @@
     </select>
     <select id="getDataCarYear" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         SELECT
-            year date,
-            sum(cls)
+        year date,
+        sum(cls)
         FROM
-            rpt_aqjg_ggjt_clwttj
+        rpt_aqjg_ggjt_clwttj
         WHERE
-            year  between #{firstYear} AND #{twoYear} and
-            <if test="typeName == '市区'">
-                dddm in('11','12','13','14','15')
-            </if>
-            <if test="typeName == '五县市'">
-                dddm in('21','22','23','24','25')
-            </if>
-            <if test="typeName == '高速'">
-                dddm in('31','32','33','34','35','36','37','38','39')
-            </if>
-            GROUP BY year  ORDER BY year
+        year between #{firstYear} AND #{twoYear} and
+        <if test="typeName == '市区'">
+            dddm in('11','12','13','14','15')
+        </if>
+        <if test="typeName == '五县市'">
+            dddm in('21','22','23','24','25')
+        </if>
+        <if test="typeName == '高速'">
+            dddm in('31','32','33','34','35','36','37','38','39')
+        </if>
+        GROUP BY year ORDER BY year
     </select>
     <select id="getDataCarMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with clwttj as (SELECT year||'-'||mon as date,year as yearDate,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
         SELECT
-            date,
-            sum(cls)
+        date,
+        sum(cls)
         FROM
-            clwttj
+        clwttj
         WHERE
-            <if test="typeName == '市区'">
-                dddm in('11','12','13','14','15')
-            </if>
-            <if test="typeName == '五县市'">
-                dddm in('21','22','23','24','25')
-            </if>
-            <if test="typeName == '高速'">
-                dddm in('31','32','33','34','35','36','37','38','39')
-            </if>
-            and date between #{month} AND #{month2}
-            GROUP BY date ORDER BY date
+        <if test="typeName == '市区'">
+            dddm in('11','12','13','14','15')
+        </if>
+        <if test="typeName == '五县市'">
+            dddm in('21','22','23','24','25')
+        </if>
+        <if test="typeName == '高速'">
+            dddm in('31','32','33','34','35','36','37','38','39')
+        </if>
+        and date between #{month} AND #{month2}
+        GROUP BY date ORDER BY date
     </select>
     <select id="getDataCarMR" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with clwttj as (SELECT year||'-'||mon as date,year as yearDate,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
         SELECT
-            date,
-            sum(cls)
+        date,
+        sum(cls)
         FROM
-            clwttj
+        clwttj
         WHERE
-            <if test="typeName == '市区'">
-                dddm in('11','12','13','14','15')
-            </if>
-            <if test="typeName == '五县市'">
-                dddm in('21','22','23','24','25')
-             </if>
-            <if test="typeName == '高速'">
-                dddm in('31','32','33','34','35','36','37','38','39')
-            </if>
-                and yearDate  between #{firstYear} AND #{twoYear}
-            GROUP BY date ORDER BY date
+        <if test="typeName == '市区'">
+            dddm in('11','12','13','14','15')
+        </if>
+        <if test="typeName == '五县市'">
+            dddm in('21','22','23','24','25')
+        </if>
+        <if test="typeName == '高速'">
+            dddm in('31','32','33','34','35','36','37','38','39')
+        </if>
+        and yearDate between #{firstYear} AND #{twoYear}
+        GROUP BY date ORDER BY date
     </select>
     <select id="getDataCarQue" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
         SELECT
-            lxdm,
-            lxmc,
-            sum(cls)
+        lxdm,
+        lxmc,
+        sum(cls)
         FROM
-            clwttj
+        clwttj
         where
         <if test="firstYear !='' and twoYear !=''">
-             yearDate between #{firstYear} AND #{twoYear} and
+            yearDate between #{firstYear} AND #{twoYear} and
         </if>
         <if test="month !='' and month2 !=''">
-             date between #{month} AND #{month2}  and
+            date between #{month} AND #{month2} and
         </if>
         <if test="typeName == '市区'">
             dddm in('11','12','13','14','15')
@@ -663,15 +688,16 @@
         GROUP BY ddmc,dddm order by dddm
     </select>
     <select id="getDataDdListChange" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM
+        rpt_aqjg_ggjt_clwttj)
         SELECT
-            lxdm,
-            lxmc,
-            sum(cls)
+        lxdm,
+        lxmc,
+        sum(cls)
         FROM
-            clwttj
+        clwttj
         WHERE
-            ddmc=#{titleName} and
+        ddmc=#{titleName} and
         <if test="firstYear !='' and twoYear !=''">
             yearDate between #{firstYear} AND #{twoYear}
         </if>
@@ -703,12 +729,13 @@
         WHERE ddmc=#{titleName} and date BETWEEN #{month} AND #{month2} GROUP BY date ORDER BY date
     </select>
     <select id="getDataClickCarAndChange" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM
+        rpt_aqjg_ggjt_clwttj)
         SELECT
-            COALESCE(SUM(CASE WHEN lxdm='1' THEN cls ELSE 0 END),0) wf,
-            COALESCE(SUM(CASE WHEN lxdm='2' THEN cls ELSE 0 END),0) sg
+        COALESCE(SUM(CASE WHEN lxdm='1' THEN cls ELSE 0 END),0) wf,
+        COALESCE(SUM(CASE WHEN lxdm='2' THEN cls ELSE 0 END),0) sg
         FROM
-            clwttj
+        clwttj
         WHERE
         <if test="dateType == 'year'">
             yearDate=#{clickTime} and
@@ -726,118 +753,163 @@
             dddm in('31','32','33','34','35','36','37','38','39')
         </if>
         <if test="titleName !='请选择大队'">
-           and ddmc=#{titleName}
+            and ddmc=#{titleName}
         </if>
         GROUP BY lxdm,lxmc ORDER BY lxdm
     </select>
 
     <select id="carYhData" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clfx as (SELECT year||'-'||mon as date,year as yearDate,clzt,sl FROM rpt_aqjg_ggjt_clfx WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        with clfx as (SELECT year||'-'||mon as date,year as yearDate,clzt,sl FROM rpt_aqjg_ggjt_clfx WHERE
+        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
-            clzt,
-            count(sl)
+        clzt,
+        count(sl)
         FROM
-            clfx
+        clfx
         WHERE
-            <if test="firstYear !='' and twoYear !=''">
-                yearDate between #{firstYear} AND #{twoYear} and
-            </if>
-            <if test="month !='' and month2 !=''">
-                date between #{month} AND #{month2} and
-            </if>
-            clzt is not null  GROUP BY clzt ORDER BY clzt
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate between #{firstYear} AND #{twoYear} and
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} AND #{month2} and
+        </if>
+        clzt is not null GROUP BY clzt ORDER BY clzt
     </select>
 
     <select id="getZdCarData" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with clfx as (
-	        with data as ( SELECT year||'-'||mon as date,year as yearDate,syxz,sl,syxzdm FROM rpt_aqjg_ggjt_clfx WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
-	        SELECT
-	            *
-	        FROM
-	            data
-	        WHERE
-                <if test="firstYear !='' and twoYear !=''">
-                    yearDate between #{firstYear} AND #{twoYear}
-                </if>
-                <if test="month !='' and month2 !=''">
-                    date between #{month} AND #{month2}
-                </if>
-	            )
+        with data as ( SELECT year||'-'||mon as date,year as yearDate,syxz,sl,syxzdm FROM rpt_aqjg_ggjt_clfx WHERE
+        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        SELECT
+        *
+        FROM
+        data
+        WHERE
+        <if test="firstYear !='' and twoYear !=''">
+            yearDate between #{firstYear} AND #{twoYear}
+        </if>
+        <if test="month !='' and month2 !=''">
+            date between #{month} AND #{month2}
+        </if>
+        )
         select * FROM (
-            SELECT
-                CAST('客运' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm in('B','C','D','E') THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('营运' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='A' THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('货运' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='F' THEN sl ELSE 0 END),0) num
-                FROM clfx
-            UNION all
-            SELECT
-                CAST('租赁' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='G' THEN sl ELSE 0 END),0) num
-                FROM clfx
-            UNION all
-            SELECT
-                CAST('警用' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='H' THEN sl ELSE 0 END),0) num
-                FROM clfx
-            UNION all
-            SELECT
-                CAST('消防' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='I' THEN sl ELSE 0 END),0) num
-                FROM clfx
-            UNION all
-            SELECT
-                CAST('救护' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='J' THEN sl ELSE 0 END),0) num
-                FROM clfx
-            UNION all
-            SELECT
-                CAST('工抢险' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='K' THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('营转非' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='L' THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('出租转非' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='M' THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('教练' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='N' THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('校车' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm in('O','P','S','Q') THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('危化品运输' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='R' THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('预约出租客运' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='T' THEN sl ELSE 0 END),0) num
-            FROM clfx
-            UNION all
-            SELECT
-                CAST('预约出租转非' as text) as title,
-                COALESCE(SUM(CASE WHEN syxzdm='U' THEN sl ELSE 0 END),0) num
-            FROM clfx
-            )  aa
+        SELECT
+        CAST('客运' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm in('B','C','D','E') THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('营运' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='A' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('货运' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='F' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('租赁' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='G' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('警用' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='H' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('消防' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='I' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('救护' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='J' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('工抢险' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='K' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('营转非' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='L' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('出租转非' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='M' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('教练' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='N' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('校车' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm in('O','P','S','Q') THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('危化品运输' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='R' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('预约出租客运' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='T' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        UNION all
+        SELECT
+        CAST('预约出租转非' as text) as title,
+        COALESCE(SUM(CASE WHEN syxzdm='U' THEN sl ELSE 0 END),0) num
+        FROM clfx
+        ) aa
+    </select>
+    <select id="getIllegalCar" resultType="java.util.HashMap">
+        WITH qyclwffx AS (
+        select * from (
+        select year || '-' || mon as ny, dwmc,sum(sl) sl
+        from rpt_aqjg_ggjt_qyclwffx where 1=1 and tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd') GROUP BY ny,dwmc
+        )dlj where 1=1
+        )SELECT dwmc,sl,ny FROM qyclwffx
+        <where>
+            <if test="type=='nf'">
+                and ny between #{nyold} || '-01' and #{nynew} || '-12'
+            </if>
+            <if test="type=='yf'">
+                and ny between #{nyold} and #{nynew}
+            </if>
+        </where>
+        ORDER BY sl DESC LIMIT 10
+    </select>
+    <select id="getDwmcLxdm" resultType="java.util.HashMap">
+        SELECT dwmc, sum(sl) sl, lxdm FROM
+        (SELECT
+        "year" || '-' || mon AS ny,
+        dwmc,
+        SUM (sl) sl,
+        lxdm
+        FROM
+        rpt_aqjg_ggjt_qyclwffx
+        WHERE
+        tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
+        AND dwmc IN
+        <foreach collection="dwmcList" item="dwmc" open="(" separator="," close=")">
+            #{dwmc}
+        </foreach>
+        GROUP BY ny, dwmc, lxdm) ldm
+        <where>
+            <if test="sourceNum.type=='nf'">
+                and ny between #{sourceNum.nyold} || '-01' and #{sourceNum.nynew} || '-12'
+            </if>
+            <if test="sourceNum.type=='yf'">
+                and ny between #{sourceNum.nyold} and #{sourceNum.nynew}
+            </if>
+        </where>
+        GROUP BY dwmc, lxdm
     </select>
 </mapper>

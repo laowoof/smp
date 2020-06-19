@@ -237,5 +237,6 @@ public interface RoadService {
 
     ApiResult getZdCarData(Map map);
 
+    ApiResult getIllegalCar(JSONObject json);
 }
 

@@ -1,7 +1,7 @@
 package com.oceansoft.szga.smp.mapper;
 
 import com.oceansoft.szga.smp.entity.SourceNum;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -265,4 +265,17 @@ public interface RoadMapper {
      */
     List<HashMap> getZdCarData(Map map);
 
+    /**
+     * 源头管理 企业车辆违法行为分析
+     * @param sourceNum
+     * @return
+     */
+    List<HashMap> getIllegalCar(SourceNum sourceNum);
+
+    /**
+     * 获取单位的数据类型 1、车辆违法数 2、事故数
+     * @param dwmcList
+     * @return
+     */
+    List<HashMap> getDwmcLxdm(@Param("dwmcList") List<String> dwmcList, @Param("sourceNum") SourceNum sourceNum);
 }

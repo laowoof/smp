@@ -1,7 +1,7 @@
 package com.oceansoft.szga.smp.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.entity.SourceNum;
 import com.oceansoft.szga.smp.mapper.RoadMapper;
@@ -9,12 +9,9 @@ import com.oceansoft.szga.smp.service.RoadService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  *  道路交通
@@ -304,6 +301,50 @@ public class RoadServiceImpl implements RoadService {
             return new ApiResult().success(200,"获取成功", has);
         }
         return new ApiResult().failure("暂无数据");
+    }
+
+    @Override
+    public ApiResult getIllegalCar(JSONObject json) {
+        SourceNum sourceNum = checkSourceEntity(json);
+        List<HashMap> has = roadMapper.getIllegalCar(sourceNum);
+        List<String> dwmcList = new ArrayList<>();
+        for (HashMap ha : has) {
+            dwmcList.add((String) ha.get("dwmc"));
+        }
+        Map<String, Map> mapList = new HashMap<>();
+        if (dwmcList != null && !dwmcList.isEmpty()) {
+            List<HashMap> dwmcLxdm = roadMapper.getDwmcLxdm(dwmcList, sourceNum);
+            for (HashMap hashMap : dwmcLxdm) {
+                String dwmcName = (String) hashMap.get("dwmc");
+                if (!mapList.containsKey(dwmcName)) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("dwmc", hashMap.get("dwmc"));
+                    String lxdm = (String) hashMap.get("lxdm");
+                    Integer sl = ((BigDecimal) hashMap.get("sl")).intValue();
+                    if (lxdm.equals("1")) {
+                        map.put("wfs", sl);
+                    } else {
+                        map.put("sgs", sl);
+                    }
+                    mapList.put(dwmcName, map);
+                } else {
+                    Map<String, Object> map = mapList.get(dwmcName);
+                    if (hashMap.get("lxdm").equals("1")) {
+                        map.put("wfs", hashMap.get("sl"));
+                    } else {
+                        map.put("sgs", hashMap.get("sl"));
+                    }
+                }
+            }
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("has", has);
+        if (mapList.values() != null) {
+            map.put("dwmcLxdm", mapList.values());
+        } else {
+            map.put("dwmcLxdm", null);
+        }
+            return new ApiResult().success(200,"获取成功", map);
     }
 
     /**
