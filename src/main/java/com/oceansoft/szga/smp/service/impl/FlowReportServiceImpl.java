@@ -389,12 +389,12 @@ public class FlowReportServiceImpl implements FlowReportService
     private FlowReport report(JSONObject json){
         FlowReport report = new FlowReport();
         report.setGuid(json.getString("guid"));
-        report.setSource(json.getString("source"));
+//        report.setSource(json.getString("source"));
         report.setFlowType(json.getString("flowType"));
         report.setTaskName(json.getString("taskName"));
         report.setReportDate(json.getString("reportDate"));
         report.setDes(json.getString("des"));
-        report.setReportDept(json.getString("reportDept"));
+        report.setReportDept(json.getString("dept"));
 //        report.setFileIds(json.getString("fileIds"));
         report.setFileIds(JSON.toJSONString(json.get("fileIds")));
         report.setCreateUser(json.getString("createUser"));
