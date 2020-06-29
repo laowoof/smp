@@ -3,57 +3,57 @@
 <mapper namespace="com.oceansoft.szga.smp.mapper.HomePageMapper">
     <select id="getRoadBaseInfo" resultType="java.util.Map">
         SELECT
-        (select sum(sl) from rpt_aqjg_ggjt_dljtytgltj where lx = '1' AND year = to_char(CURRENT_DATE, 'yyyy')) as 企业总量,
-        (select sum(sl) from rpt_aqjg_ggjt_dljtytgltj where lx = '2' AND year = to_char(CURRENT_DATE, 'yyyy')) as 重点车辆数,
-        (select sum(sl) from rpt_aqjg_ggjt_dljtytgltj where lx = '3' AND year = to_char(CURRENT_DATE, 'yyyy')) as 重点人员数,
-        (SELECT sum(yhzl) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患发现量,
-        (SELECT sum(yhwcsl) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患处理量,
-        (SELECT sum(yhwwcsl) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患待处理量,
-        (SELECT sum(sl) FROM rpt_aqjg_ggjt_wfdj_jcxx WHERE lxdm = '1' AND year = to_char(CURRENT_DATE, 'yyyy')) as 执法总数量,
-        (SELECT sum(sl) FROM rpt_aqjg_ggjt_wfdj_jcxx WHERE lxdm = '3' AND year = to_char(CURRENT_DATE, 'yyyy')) as 报警,
-        (SELECT sum(wfs) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '1' AND year = to_char(CURRENT_DATE, 'yyyy')) as 国省道重点违法,
-        (SELECT sum(wfs) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '2' AND year = to_char(CURRENT_DATE, 'yyyy')) as 农村公路重点违法,
-        (SELECT sum(wfs) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '3' AND year = to_char(CURRENT_DATE, 'yyyy')) as 两客一危重点违法,
-        (SELECT sum(wfs) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '4' AND year = to_char(CURRENT_DATE, 'yyyy')) as 货车超载非法改装,
-        (SELECT sum(wfs) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '5' AND year = to_char(CURRENT_DATE, 'yyyy')) as 酒驾醉驾,
-        (SELECT sum(wfs) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '6' AND year = to_char(CURRENT_DATE, 'yyyy')) as 假套牌
+        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '1' AND year = to_char(CURRENT_DATE, 'yyyy')) as 企业总量,
+        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '2' AND year = to_char(CURRENT_DATE, 'yyyy')) as 重点车辆数,
+        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '3' AND year = to_char(CURRENT_DATE, 'yyyy')) as 重点人员数,
+        (SELECT COALESCE(sum(yhzl),0) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患发现量,
+        (SELECT COALESCE(sum(yhwcsl),0) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患处理量,
+        (SELECT COALESCE(sum(yhwwcsl),0) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患待处理量,
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_ggjt_wfdj_jcxx WHERE lxdm = '1' AND year = to_char(CURRENT_DATE, 'yyyy')) as 执法总数量,
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_ggjt_wfdj_jcxx WHERE lxdm = '3' AND year = to_char(CURRENT_DATE, 'yyyy')) as 报警,
+        (SELECT COALESCE(sum(wfs),0) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '1' AND year = to_char(CURRENT_DATE, 'yyyy')) as 国省道重点违法,
+        (SELECT COALESCE(sum(wfs),0) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '2' AND year = to_char(CURRENT_DATE, 'yyyy')) as 农村公路重点违法,
+        (SELECT COALESCE(sum(wfs),0) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '3' AND year = to_char(CURRENT_DATE, 'yyyy')) as 两客一危重点违法,
+        (SELECT COALESCE(sum(wfs),0) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '4' AND year = to_char(CURRENT_DATE, 'yyyy')) as 货车超载非法改装,
+        (SELECT COALESCE(sum(wfs),0) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '5' AND year = to_char(CURRENT_DATE, 'yyyy')) as 酒驾醉驾,
+        (SELECT COALESCE(sum(wfs),0) FROM rpt_aqjg_ggjt_zdwf WHERE lxdm = '6' AND year = to_char(CURRENT_DATE, 'yyyy')) as 假套牌
     </select>
     <select id="getRentSafe" resultType="java.util.Map">
         SELECT
-        (SELECT sum(sl) FROM rpt_aqjg_qzf_czfsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 出租房总量,
-        (SELECT sum(sl) FROM rpt_aqjg_qzf_qzfsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 群租房总量,
-        (SELECT sum(sl) FROM rpt_aqjg_qzf_ldrksl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 流动人口总量,
-        (SELECT sum(sl) FROM rpt_aqjg_qzf_qzwzdr WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重点人口总量,
-        (select sum(yhs) FROM rpt_aqjg_qzf_zayhsj where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 治安隐患发现量,
-        (select sum(zgs) FROM rpt_aqjg_qzf_zayhsj where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 治安隐患处理量,
-        (SELECT yhs-zgs as 治安隐患待处理量 FROM (select
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_qzf_czfsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 出租房总量,
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_qzf_qzfsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 群租房总量,
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_qzf_ldrksl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 流动人口总量,
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_qzf_qzwzdr WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重点人口总量,
+        (select COALESCE(sum(yhs),0) FROM rpt_aqjg_qzf_zayhsj where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 治安隐患发现量,
+        (select COALESCE(sum(zgs),0) FROM rpt_aqjg_qzf_zayhsj where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 治安隐患处理量,
+        (SELECT COALESCE(yhs-zgs,0) as 治安隐患待处理量 FROM (select
               sum(yhs) yhs,sum(zgs) zgs
             FROM
                 rpt_aqjg_qzf_zayhsj
             where
                 tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) t),
-        (select sum(yhs) FROM rpt_aqjg_qzf_fzayhsj where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 非治安隐患发现量,
-        (select sum(zgs) FROM rpt_aqjg_qzf_fzayhsj where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 非治安隐患处理量,
-        (SELECT yhs-zgs as 非治安隐患待处理量 FROM (select
+        (select COALESCE(sum(yhs),0) FROM rpt_aqjg_qzf_fzayhsj where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 非治安隐患发现量,
+        (select COALESCE(sum(zgs),0) FROM rpt_aqjg_qzf_fzayhsj where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 非治安隐患处理量,
+        (SELECT COALESCE(yhs-zgs,0) as 非治安隐患待处理量 FROM (select
               sum(yhs) yhs,sum(zgs) zgs
             FROM
                 rpt_aqjg_qzf_fzayhsj
             where
                 tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) t),
-        (SELECT sum(sl) FROM rpt_aqjg_qzf_yhczwsj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患出租屋,
-        (SELECT sum(sl) FROM rpt_aqjg_qzf_yhqzfsj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患群租房,
-        (SELECT sum(sl) FROM rpt_aqjg_qzf_czfsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 出租房屋数,
-        (SELECT sum(sl) FROM rpt_aqjg_qzf_qzfsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 群租房屋数
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_qzf_yhczwsj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患出租屋,
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_qzf_yhqzfsj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患群租房,
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_qzf_czfsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 出租房屋数,
+        (SELECT COALESCE(sum(sl),0) FROM rpt_aqjg_qzf_qzfsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 群租房屋数
     </select>
     <select id="getImpTarget" resultType="java.util.Map">
         SELECT
-        (select sum(dwsl) from rpt_aqjg_zdmb_lzfxtj_sydwsl where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 企业单位总数,
-        (SELECT sum(dwsl) FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE jbdjdm IN ('1','2','3','8') AND tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重点单位总数,
-        (SELECT sum(dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重要设施总数,
-        (SELECT sum(zddwcyrys) FROM rpt_aqjg_zdmb_zddwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重点单位人员数,
-        (SELECT sum(yhsl) FROM rpt_aqjg_zdmb_lzfxtj_yhsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患发现量,
-        (SELECT sum(yhcldwsl) FROM rpt_aqjg_zdmb_yhdwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患处理量,
-        (SELECT yhsl-yhcldwsl as 隐患待处理量 FROM
+        (select COALESCE(sum(dwsl),0) from rpt_aqjg_zdmb_lzfxtj_sydwsl where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 企业单位总数,
+        (SELECT COALESCE(sum(dwsl),0) FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE jbdjdm IN ('1','2','3','8') AND tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重点单位总数,
+        (SELECT COALESCE(sum(dwsl),0) FROM rpt_aqjg_zdmb_zysssl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重要设施总数,
+        (SELECT COALESCE(sum(zddwcyrys),0) FROM rpt_aqjg_zdmb_zddwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重点单位人员数,
+        (SELECT COALESCE(sum(yhsl),0) FROM rpt_aqjg_zdmb_lzfxtj_yhsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患发现量,
+        (SELECT COALESCE(sum(yhcldwsl),0) FROM rpt_aqjg_zdmb_yhdwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患处理量,
+        (SELECT COALESCE(yhsl-yhcldwsl,0) as 隐患待处理量 FROM
         (SELECT
         (SELECT sum(yhsl) yhsl FROM rpt_aqjg_zdmb_lzfxtj_yhsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')),
         (SELECT sum(yhcldwsl) yhcldwsl FROM rpt_aqjg_zdmb_yhdwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd'))) t)
