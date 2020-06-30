@@ -2,8 +2,6 @@ package com.oceansoft.szga.smp.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-//import com.github.pagehelper.Page;
-//import com.github.pagehelper.PageHelper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.oceansoft.szga.smp.config.domain.ApiPager;
 import com.oceansoft.szga.smp.config.domain.ApiQueryBase;
@@ -24,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//import com.github.pagehelper.Page;
+//import com.github.pagehelper.PageHelper;
+
 /**
  * @author zhangxh
  * @create 2020/4/21
@@ -31,9 +32,7 @@ import java.util.Map;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class FlowReportServiceImpl implements FlowReportService
-
-{
+public class FlowReportServiceImpl implements FlowReportService {
     @Resource
     private FlowReportMapper mapper;
 
@@ -41,23 +40,23 @@ public class FlowReportServiceImpl implements FlowReportService
     public ApiResult add(JSONObject json) {
         //1添加一条流转
 //        report.setGuid(GuidUtils.newUUID());
-        int num  =  mapper.getNum(report(json).getGuid());
-        if(num>0){
+        int num = mapper.getNum(report(json).getGuid());
+        if (num > 0) {
             return new ApiResult().failure("单据编号已存在！");
-        }else{
+        } else {
             int count = mapper.add(report(json));
-            if(count==0){
+            if (count == 0) {
                 return new ApiResult().failure("保存失败");
             }
             //2添加代办任务
             List<Map<String, Object>> nodes = mapper.findNodes(report(json).getFlowType(), Constant.BEGIN_NODE_ID);
-            nodes.stream().forEach(map->{
+            nodes.stream().forEach(map -> {
                 map.put("guid", GuidUtils.newUUID());
-                map.put("flow_id",report(json).getGuid());
-                map.put("create_user",report(json).getCreateUser());
-                map.put("des",report(json).getDes());
-                map.put("flow_node_id",report(json).getReportDept());
-                map.put("update_user",report(json).getCreateUser());
+                map.put("flow_id", report(json).getGuid());
+                map.put("create_user", report(json).getCreateUser());
+                map.put("des", report(json).getDes());
+                map.put("flow_node_id", report(json).getReportDept());
+                map.put("update_user", report(json).getCreateUser());
                 System.err.println(map);
                 mapper.addTask(map);
             });
@@ -67,22 +66,22 @@ public class FlowReportServiceImpl implements FlowReportService
 
     @Override
     public ApiResult findAll() {
-        List data =  mapper.findAll();
+        List data = mapper.findAll();
         return new ApiResult<>().success(data);
     }
 
     @Override
     public ApiResult save(JSONObject json) {
         //保存
-        int num  =  mapper.getNum(report(json).getGuid());
-        if(num>0){
+        int num = mapper.getNum(report(json).getGuid());
+        if (num > 0) {
             return new ApiResult().failure("单据编号已存在！");
-        }else{
+        } else {
             int count = mapper.add(report(json));
-            if(count==0){
+            if (count == 0) {
                 return new ApiResult().failure("保存失败");
             }
-            return new ApiResult(200,true,"保存成功");
+            return new ApiResult(200, true, "保存成功");
         }
     }
 
@@ -92,29 +91,29 @@ public class FlowReportServiceImpl implements FlowReportService
 //        Page<Map<String,Object>> page = (Page)mapper.page(query);
 //        ApiPager<Map<String,Object>> pager = new ApiPager(query.getPs(), query.getPi(), page.getTotal(), page.getResult());
 //        return pager;
-        Page<Map<String,Object>> page = new Page<>(query.getPi(),query.getPs());
-        page.setRecords(mapper.selectPage(page,query));
-        return new ApiPager<>(query.getPs(),query.getPi(),page.getTotal(),page.getRecords());
+        Page<Map<String, Object>> page = new Page<>(query.getPi(), query.getPs());
+        page.setRecords(mapper.selectPage(page, query));
+        return new ApiPager<>(query.getPs(), query.getPi(), page.getTotal(), page.getRecords());
     }
 
     @Override
     public ApiResult execute(FlowExecute execute) {
         //1完成当前任务
         int count = mapper.completeTask(execute);
-        if(count==0){
+        if (count == 0) {
             return new ApiResult().failure("操作失败");
         }
         //2添加下个节点任务
         List<Map<String, Object>> nodes = mapper.findNextNodes(execute.getGuid());
-        nodes.stream().forEach(map->{
+        nodes.stream().forEach(map -> {
             map.put("guid", GuidUtils.newUUID());
-            map.put("create_user",execute.getUpdateUser());
-            if(StringUtils.isEmpty(execute.getReceiveDepts())){
+            map.put("create_user", execute.getUpdateUser());
+            if (StringUtils.isEmpty(execute.getReceiveDepts())) {
                 mapper.addTask(map);
-            }else{
+            } else {
                 String[] depts = execute.getReceiveDepts().split(",");
-                Arrays.stream(depts).forEach(dept->{
-                    map.put("dept",dept);
+                Arrays.stream(depts).forEach(dept -> {
+                    map.put("dept", dept);
                     mapper.addTask(map);
                 });
             }
@@ -125,21 +124,21 @@ public class FlowReportServiceImpl implements FlowReportService
     @Override
     public ApiResult updateInfo(JSONObject json) {
         int num = mapper.updateInfo(report(json));
-        if(num ==0){
+        if (num == 0) {
             return new ApiResult().failure("修改失败!");
-        }else{
-            return new ApiResult(200,true,"修改成功!");
+        } else {
+            return new ApiResult(200, true, "修改成功!");
         }
     }
 
     @Override
     public ApiResult updateIsDelete(String guid) {
-         int num = mapper.updateIsDelete(guid);
-         if(num == 0){
-             return new ApiResult().failure("删除失败!");
-         }else{
-             return new ApiResult(200,true,"删除成功!");
-         }
+        int num = mapper.updateIsDelete(guid);
+        if (num == 0) {
+            return new ApiResult().failure("删除失败!");
+        } else {
+            return new ApiResult(200, true, "删除成功!");
+        }
     }
 
     @Override
@@ -159,145 +158,148 @@ public class FlowReportServiceImpl implements FlowReportService
 
     @Override
     public ApiResult userAll(String id) {
-        return new ApiResult().success(200,"成功",mapper.userAll(id));
+        return new ApiResult().success(200, "成功", mapper.userAll(id));
     }
 
     @Override
     public ApiResult addTask(JSONObject json) {
-        Map mp  =  mapper.findSpecal(json.getString("deptName"),json.getString("actionName"));
-        Map map = new HashMap();
-        map.put("guid",GuidUtils.newUUID());
-        map.put("flow_id",json.getString("guid"));
-        map.put("create_date",json.getString("createdate"));
-        map.put("create_user",json.getString("createUser"));
-        map.put("update_date",json.getString("operationTime"));
-        map.put("update_user",json.getString("operator"));
-        map.put("dept",json.getString("deptName"));
-        map.put("flow_node_id",mp.get("id"));
-        map.put("des",json.getString("instructions"));
-        map.put("action_name",mp.get("action_name"));
-        map.put("node_name",json.getString("dept"));
-        if("治安支队".equals(json.get("deptName"))){
-            map.put("state","0");
-        }else{
-            map.put("state","1");
-            mapper.updateIdByFlowId(json.getString("guid"));
+        Map mp = mapper.findSpecal(json.getString("deptName"), json.getString("actionName"));
+        String arrays = json.getString("dept");
+        String[] split = arrays.split(",");
+        for (String id : split) {
+            Map map = new HashMap();
+            map.put("guid", GuidUtils.newUUID());
+            map.put("flow_id", json.getString("guid"));
+            map.put("create_date", json.getString("createdate"));
+            map.put("create_user", json.getString("createUser"));
+            map.put("update_date", json.getString("operationTime"));
+            map.put("update_user", json.getString("operator"));
+            map.put("dept", json.getString("deptName"));
+            map.put("flow_node_id", mp.get("id"));
+            map.put("des", json.getString("instructions"));
+            map.put("action_name", mp.get("action_name"));
+            map.put("node_name", id);
+            if ("治安支队".equals(json.get("deptName"))) {
+                map.put("state", "0");
+            } else {
+                map.put("state", "1");
+                mapper.updateIdByFlowId(json.getString("guid"));
+            }
+            int num = mapper.addTask(map);
+            if (num != 1) {
+                return new ApiResult().failure("分发失败!");
+            }
         }
-        int num = mapper.addTask(map);
-        if(num !=1){
-            return new ApiResult().failure("分发失败!");
-        }else{
-            return new ApiResult(200,true,"分发成功!");
-        }
+        return new ApiResult(200, true, "分发成功!");
     }
 
     @Override
     public ApiResult plFfInfo(JSONObject json) {
-        Map mp  =  mapper.findSpecal(json.getString("deptName"),json.getString("actionName"));
-        List<Map<String,String>>  list  = (List)JSON.toJSON(json.get("multipleSelection"));
-        if("治安支队".equals(json.getString("deptName"))){
-            if(list.size()>0){
+        Map mp = mapper.findSpecal(json.getString("deptName"), json.getString("actionName"));
+        List<Map<String, String>> list = (List) JSON.toJSON(json.get("multipleSelection"));
+        if ("治安支队".equals(json.getString("deptName"))) {
+            if (list.size() > 0) {
                 Map map2 = new HashMap();
-                list.forEach(map->{
-                    map2.put("guid",GuidUtils.newUUID());
-                    map2.put("flow_id",map.get("guid"));
-                    map2.put("create_date",map.get("create_date"));
-                    map2.put("create_user",map.get("create_user"));
-                    map2.put("node_name",mp.get("node_name"));
-                    map2.put("state","0");
-                    map2.put("update_date",json.getString("operationTime"));
-                    map2.put("update_user",json.getString("operator"));
-                    map2.put("dept",mp.get("dept"));
-                    map2.put("flow_node_id",mp.get("id"));
-                    map2.put("des",json.getString("instructions"));
-                    map2.put("action_name",mp.get("action_name"));
+                list.forEach(map -> {
+                    map2.put("guid", GuidUtils.newUUID());
+                    map2.put("flow_id", map.get("guid"));
+                    map2.put("create_date", map.get("create_date"));
+                    map2.put("create_user", map.get("create_user"));
+                    map2.put("node_name", mp.get("node_name"));
+                    map2.put("state", "0");
+                    map2.put("update_date", json.getString("operationTime"));
+                    map2.put("update_user", json.getString("operator"));
+                    map2.put("dept", mp.get("dept"));
+                    map2.put("flow_node_id", mp.get("id"));
+                    map2.put("des", json.getString("instructions"));
+                    map2.put("action_name", mp.get("action_name"));
                     mapper.addTask(map2);
                 });
-                return new ApiResult(200,true,"分发成功!");
-            }else{
+                return new ApiResult(200, true, "分发成功!");
+            } else {
                 return new ApiResult().failure("暂无未分发数据,不可分发！");
             }
-        }else{
+        } else {
             // 未分发总数
 //           int count = mapper.ffCount((String)mp.get("parent_id"));
 //            List<Map<String,String>> list = mapper.findTaskByParentId((String)mp.get("parent_id"));
-           if(list.size() >0){
-               Map map2 = new HashMap();
-               list.forEach(map->{
-                   map2.put("guid",GuidUtils.newUUID());
-                   map2.put("flow_id",map.get("id"));
-                   map2.put("create_date",map.get("create_date"));
-                   map2.put("create_user",map.get("create_user"));
-                   map2.put("node_name",json.getString("dept"));
-                   map2.put("state","0");
-                   map2.put("update_date",json.getString("operationTime"));
-                   map2.put("update_user",json.getString("operator"));
-                   map2.put("dept",mp.get("dept"));
-                   map2.put("flow_node_id",mp.get("id"));
-                   map2.put("des",json.getString("instructions"));
-                   map2.put("action_name",mp.get("action_name"));
-                   mapper.addTask(map2);
-                   mapper.updateId(map.get("guid"));
-               });
-               return new ApiResult(200,true,"分发成功!");
-           }else{
-               return new ApiResult().failure("暂无未分发数据,不可分发！");
-           }
+            if (list.size() > 0) {
+                Map map2 = new HashMap();
+                list.forEach(map -> {
+                    map2.put("guid", GuidUtils.newUUID());
+                    map2.put("flow_id", map.get("id"));
+                    map2.put("create_date", map.get("create_date"));
+                    map2.put("create_user", map.get("create_user"));
+                    map2.put("node_name", json.getString("dept"));
+                    map2.put("state", "0");
+                    map2.put("update_date", json.getString("operationTime"));
+                    map2.put("update_user", json.getString("operator"));
+                    map2.put("dept", mp.get("dept"));
+                    map2.put("flow_node_id", mp.get("id"));
+                    map2.put("des", json.getString("instructions"));
+                    map2.put("action_name", mp.get("action_name"));
+                    mapper.addTask(map2);
+                    mapper.updateId(map.get("guid"));
+                });
+                return new ApiResult(200, true, "分发成功!");
+            } else {
+                return new ApiResult().failure("暂无未分发数据,不可分发！");
+            }
         }
     }
 
     @Override
     public ApiResult findAllTask() {
-        return new ApiResult(200,true,"成功",mapper.findAllTask());
+        return new ApiResult(200, true, "成功", mapper.findAllTask());
     }
 
     @Override
     public ApiResult plQsInfo(JSONObject json) {
-        Map mm =  mapper.getNodeName(json.getString("deptName"));
-        int num =0;
-        if(mm.size()>0){
+        Map mm = mapper.getNodeName(json.getString("deptName"));
+        int num = 0;
+        if (mm.size() > 0) {
             HashMap map = new HashMap();
-            map.put("guid",GuidUtils.newUUID());
-            map.put("flow_id",json.getString("flowId"));
-            map.put("create_user",json.getString("createUser"));
-            map.put("node_name",mm.get("node_name"));
-            map.put("update_user",json.getString("operator"));
-            map.put("dept",mm.get("dept"));
-            map.put("flow_node_id",json.getString("deptName"));
-            map.put("des",json.getString("instructions"));
-            map.put("action_name",mm.get("action_name"));
-             mapper.updateIdByFlowId(json.getString("flowId"));
+            map.put("guid", GuidUtils.newUUID());
+            map.put("flow_id", json.getString("flowId"));
+            map.put("create_user", json.getString("createUser"));
+            map.put("node_name", mm.get("node_name"));
+            map.put("update_user", json.getString("operator"));
+            map.put("dept", mm.get("dept"));
+            map.put("flow_node_id", json.getString("deptName"));
+            map.put("des", json.getString("instructions"));
+            map.put("action_name", mm.get("action_name"));
+            mapper.updateIdByFlowId(json.getString("flowId"));
             num = mapper.addTask(map);
-           if(num != 0){
-               return new ApiResult(200,true,"签收成功!");
-           }else{
-               return new ApiResult().failure("签收失败！");
-           }
-        }else{
+            if (num != 0) {
+                return new ApiResult(200, true, "签收成功!");
+            } else {
+                return new ApiResult().failure("签收失败！");
+            }
+        } else {
             return new ApiResult().failure("暂无可签收数据,不可签收！");
         }
     }
 
     @Override
     public ApiResult plQsInfo2(JSONObject json) {
-        List<Map<String,String>>  list  = (List)JSON.toJSON(json.get("multipleSelection"));
+        List<Map<String, String>> list = (List) JSON.toJSON(json.get("multipleSelection"));
         Map mm = mapper.getNodeName(json.getString("deptName"));
-        list.forEach(map->{
+        list.forEach(map -> {
             Map mp = new HashMap();
-            mp.put("guid",GuidUtils.newUUID());
-            mp.put("flow_id",map.get("flow_id"));
-            mp.put("create_user",map.get("create_user"));
-            mp.put("node_name",mm.get("node_name"));
-            mp.put("state","1");
-            mp.put("update_user",json.getString("operator"));
-            mp.put("dept",mm.get("dept"));
-            mp.put("flow_node_id",json.getString("deptName"));
-            mp.put("des",json.getString("instructions"));
-            mp.put("action_name",mm.get("action_name"));
+            mp.put("guid", GuidUtils.newUUID());
+            mp.put("flow_id", map.get("flow_id"));
+            mp.put("create_user", map.get("create_user"));
+            mp.put("node_name", mm.get("node_name"));
+            mp.put("state", "1");
+            mp.put("update_user", json.getString("operator"));
+            mp.put("dept", mm.get("dept"));
+            mp.put("flow_node_id", json.getString("deptName"));
+            mp.put("des", json.getString("instructions"));
+            mp.put("action_name", mm.get("action_name"));
             mapper.addTask(mp);
             mapper.updateId(map.get("guid"));
-                });
-        return new ApiResult(200,true,"签收成功!");
+        });
+        return new ApiResult(200, true, "签收成功!");
 //        List<Map<String,String>> list =  mapper.qs(json.getString("deptName"));
 //        Map mm = mapper.getNodeName(json.getString("deptName"));
 //        int count = mapper.qsCount(json.getString("deptName"));
@@ -347,46 +349,46 @@ public class FlowReportServiceImpl implements FlowReportService
     }
 
     @Override
-    public ApiResult findNode(String deptName,String actionName) {
-        return new ApiResult(200,true,"下层节点部门", mapper.findNode(deptName,actionName));
+    public ApiResult findNode(String deptName, String actionName) {
+        return new ApiResult(200, true, "下层节点部门", mapper.findNode(deptName, actionName));
     }
 
     @Override
-    public ApiResult findSpecal(String deptName,String actionName) {
-        return new ApiResult(200,true,"下层节点部门", mapper.findSpecal(deptName,actionName));
+    public ApiResult findSpecal(String deptName, String actionName) {
+        return new ApiResult(200, true, "下层节点部门", mapper.findSpecal(deptName, actionName));
     }
 
     @Override
     public ApiResult getDataUnFf() {
-       List<HashMap> has =  mapper.getDataUnFf();
-       if(has.size()>0){
-           return new ApiResult(200,true,has);
-       }else if(has.size() == 0){
-           return new ApiResult(200,true,"暂无数据");
-       }else{
-           return new ApiResult().failure("请稍后再试！");
-       }
-    }
-
-    @Override
-    public ApiResult getUnFfData(String dept,String title) {
-        if("治安支队".equals(dept)){
-            return new ApiResult(200,true,mapper.getDataUnFf());
-        }else{
-            return new ApiResult(200,true,mapper.getDataUnFf2(dept,title));
+        List<HashMap> has = mapper.getDataUnFf();
+        if (has.size() > 0) {
+            return new ApiResult(200, true, has);
+        } else if (has.size() == 0) {
+            return new ApiResult(200, true, "暂无数据");
+        } else {
+            return new ApiResult().failure("请稍后再试！");
         }
     }
 
     @Override
-    public ApiResult getDataUnQs(String dept,String title) {
-        Map  has = new HashMap();
-        has.put("dept",dept);
-        has.put("title",title);
-        return new ApiResult(200,true,mapper.getDataUnQs(has));
+    public ApiResult getUnFfData(String dept, String title) {
+        if ("治安支队".equals(dept)) {
+            return new ApiResult(200, true, mapper.getDataUnFf());
+        } else {
+            return new ApiResult(200, true, mapper.getDataUnFf2(dept, title));
+        }
+    }
+
+    @Override
+    public ApiResult getDataUnQs(String dept, String title) {
+        Map has = new HashMap();
+        has.put("dept", dept);
+        has.put("title", title);
+        return new ApiResult(200, true, mapper.getDataUnQs(has));
     }
 
 
-    private FlowReport report(JSONObject json){
+    private FlowReport report(JSONObject json) {
         FlowReport report = new FlowReport();
         report.setGuid(json.getString("guid"));
 //        report.setSource(json.getString("source"));
@@ -394,7 +396,7 @@ public class FlowReportServiceImpl implements FlowReportService
         report.setTaskName(json.getString("taskName"));
         report.setReportDate(json.getString("reportDate"));
         report.setDes(json.getString("des"));
-        report.setReportDept(json.getString("dept"));
+        report.setReportDept(json.getString("reportDept"));
 //        report.setFileIds(json.getString("fileIds"));
         report.setFileIds(JSON.toJSONString(json.get("fileIds")));
         report.setCreateUser(json.getString("createUser"));
