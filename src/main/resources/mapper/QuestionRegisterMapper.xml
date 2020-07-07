@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.QuestionRegisterMapper">
+
+    <!-- 问题登记map -->
+    <resultMap id="RecordResultMap" type="com.oceansoft.szga.smp.entity.QuestionRecordEntity">
+        <id column="guid" jdbcType="VARCHAR" property="guid" />
+        <result column="source" jdbcType="VARCHAR" property="source" />
+        <result column="happen_date" jdbcType="DATE" property="happenDate" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="duty_unit" jdbcType="VARCHAR" property="dutyUnit" />
+        <result column="finish_date" jdbcType="DATE" property="finishDate" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="performance" jdbcType="VARCHAR" property="performance" />
+        <result column="file_ids" jdbcType="VARCHAR" property="fileIds" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="create_dept_name" jdbcType="VARCHAR" property="createDeptName" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="execute_dept_code" jdbcType="VARCHAR" property="executeDeptCode" />
+        <result column="create_dept_code" jdbcType="VARCHAR" property="createDeptCode" />
+    </resultMap>
+    <sql id="Record_Column_List">
+    guid, source, happen_date, area, duty_unit, finish_date, address, performance,
+    file_ids, create_date, create_user_name, create_user_id, create_dept_name, state,
+    execute_dept_code, create_dept_code
+  </sql>
+    <update id="deleteRecord">
+        update question_record set state = -1 where guid = #{guid}
+    </update>
+    <select id="getRecordByGuid" resultMap="RecordResultMap">
+        select
+        <include refid="Record_Column_List" />
+        from question_record
+        where guid = #{guid}
+    </select>
+    <select id="getExecuteTaskEntity" resultMap="ExecuteTaskResultMap">
+        select
+        <include refid="ExecuteTask_Column_List" />
+        from question_execute_task
+        where question_guid = #{guid} and state = 0
+    </select>
+    <select id="getHistoryTask" resultType="com.oceansoft.szga.smp.entity.QuestionExecuteTaskEntity">
+        select
+        <include refid="ExecuteTask_Column_List" />
+        from question_execute_task
+        where question_guid = #{guid} and state = 1 order by create_date ASC
+    </select>
+    <select id="queryPageRecord" resultType="java.util.Map">
+        select guid, create_date, source, area, duty_unit, finish_date, state
+        from question_record
+        where create_dept_code = #{departmentId} and state != -1
+        <if test="questionQueryBean.state != null">
+            and state = #{questionQueryBean.state}
+        </if>
+        <if test="questionQueryBean.keyWord != null">
+            and guid like #{questionQueryBean.keyWord} or area like #{questionQueryBean.keyWord} or source like #{questionQueryBean.keyWord} or duty_unit like #{questionQueryBean.keyWord}
+        </if>
+        <if test="questionQueryBean.startTime != null and questionQueryBean.endTime != null">
+            and create_date between #{questionQueryBean.startTime} and #{questionQueryBean.startTime}
+        </if>
+    </select>
+    <update id="updateRecordStateAndCode">
+        update question_record
+        set state = #{state},
+        execute_dept_code = #{executeDeptCode}
+        where guid = #{guid}
+    </update>
+    <update id="updateExecuteTask">
+        update question_execute_task
+        set execute_date = #{executeDate},
+        execute_user_id = #{executeUserId},
+        execute_user_name = #{executeUserName},
+        opinion = #{opinion},
+        finish_date = #{finishDate},
+        execute_dept_name = #{executeDeptName},
+        execute_dept_code = #{executeDeptCode},
+        execute_name = #{executeName},
+        file_ids = #{fileIds},
+        state = #{state},
+        execute_node_name = #{executeNodeName,jdbcType=VARCHAR}
+        where guid = #{guid}
+    </update>
+    <update id="updateRecord">
+        update question_record
+        set source = #{source},
+        happen_date = #{happenDate},
+        area = #{area},
+        duty_unit = #{dutyUnit},
+        finish_date = #{finishDate},
+        address = #{address},
+        performance = #{performance},
+        file_ids = #{fileIds}
+        where guid = #{guid}
+    </update>
+    <update id="updateRecordStateByGuid">
+        update question_record
+        set state = #{state}
+        where guid = #{guid}
+    </update>
+
+    <!-- 问题执行任务map -->
+    <resultMap id="ExecuteTaskResultMap" type="com.oceansoft.szga.smp.entity.QuestionExecuteTaskEntity">
+        <id column="guid" jdbcType="VARCHAR" property="guid" />
+        <result column="question_guid" jdbcType="VARCHAR" property="questionGuid" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="execute_date" jdbcType="TIMESTAMP" property="executeDate" />
+        <result column="execute_user_id" jdbcType="VARCHAR" property="executeUserId" />
+        <result column="execute_user_name" jdbcType="VARCHAR" property="executeUserName" />
+        <result column="opinion" jdbcType="VARCHAR" property="opinion" />
+        <result column="finish_date" jdbcType="DATE" property="finishDate" />
+        <result column="execute_dept_name" jdbcType="VARCHAR" property="executeDeptName" />
+        <result column="execute_dept_code" jdbcType="VARCHAR" property="executeDeptCode" />
+        <result column="execute_name" jdbcType="VARCHAR" property="executeName" />
+        <result column="file_ids" jdbcType="VARCHAR" property="fileIds" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="execute_node_name" jdbcType="VARCHAR" property="executeNodeName" />
+    </resultMap>
+    <sql id="ExecuteTask_Column_List">
+    guid, question_guid, create_date, create_user_id, execute_date, execute_user_id,
+    execute_user_name, opinion, finish_date, execute_dept_name, execute_dept_code, execute_name,
+    file_ids, state, execute_node_name
+  </sql>
+
+    <!-- sql -->
+    <insert id="addRecord">
+        insert into question_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="guid != null">
+                guid,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+            <if test="happenDate != null">
+                happen_date,
+            </if>
+            <if test="area != null">
+                area,
+            </if>
+            <if test="dutyUnit != null">
+                duty_unit,
+            </if>
+            <if test="finishDate != null">
+                finish_date,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="performance != null">
+                performance,
+            </if>
+            <if test="fileIds != null">
+                file_ids,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createUserName != null">
+                create_user_name,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="createDeptName != null">
+                create_dept_name,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="executeDeptCode != null">
+                execute_dept_code,
+            </if>
+            <if test="createDeptCode != null">
+                create_dept_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="guid != null">
+                #{guid,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="happenDate != null">
+                #{happenDate,jdbcType=DATE},
+            </if>
+            <if test="area != null">
+                #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="dutyUnit != null">
+                #{dutyUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="finishDate != null">
+                #{finishDate,jdbcType=DATE},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="performance != null">
+                #{performance,jdbcType=VARCHAR},
+            </if>
+            <if test="fileIds != null">
+                #{fileIds,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserName != null">
+                #{createUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDeptName != null">
+                #{createDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="executeDeptCode != null">
+                #{executeDeptCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createDeptCode != null">
+                #{createDeptCode,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="addTask">
+        insert into question_execute_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="guid != null">
+                guid,
+            </if>
+            <if test="questionGuid != null">
+                question_guid,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="executeDate != null">
+                execute_date,
+            </if>
+            <if test="executeUserId != null">
+                execute_user_id,
+            </if>
+            <if test="executeUserName != null">
+                execute_user_name,
+            </if>
+            <if test="opinion != null">
+                opinion,
+            </if>
+            <if test="finishDate != null">
+                finish_date,
+            </if>
+            <if test="executeDeptName != null">
+                execute_dept_name,
+            </if>
+            <if test="executeDeptCode != null">
+                execute_dept_code,
+            </if>
+            <if test="executeName != null">
+                execute_name,
+            </if>
+            <if test="fileIds != null">
+                file_ids,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="executeNodeName != null">
+                execute_node_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="guid != null">
+                #{guid,jdbcType=VARCHAR},
+            </if>
+            <if test="questionGuid != null">
+                #{questionGuid,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="executeDate != null">
+                #{executeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="executeUserId != null">
+                #{executeUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="executeUserName != null">
+                #{executeUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="opinion != null">
+                #{opinion,jdbcType=VARCHAR},
+            </if>
+            <if test="finishDate != null">
+                #{finishDate,jdbcType=DATE},
+            </if>
+            <if test="executeDeptName != null">
+                #{executeDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="executeDeptCode != null">
+                #{executeDeptCode,jdbcType=VARCHAR},
+            </if>
+            <if test="executeName != null">
+                #{executeName,jdbcType=VARCHAR},
+            </if>
+            <if test="fileIds != null">
+                #{fileIds,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="executeNodeName != null">
+                #{executeNodeName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

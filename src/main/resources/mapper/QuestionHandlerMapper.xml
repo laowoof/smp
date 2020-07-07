@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.QuestionHandlerMapper">
+    <!-- 问题整改map -->
+    <resultMap id="planResultMap" type="com.oceansoft.szga.smp.entity.QuestionPlanEntity">
+        <id column="guid" jdbcType="VARCHAR" property="guid" />
+        <result column="plan" jdbcType="VARCHAR" property="plan" />
+        <result column="file_ids" jdbcType="VARCHAR" property="fileIds" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="question_guid" jdbcType="VARCHAR" property="questionGuid" />
+    </resultMap>
+    <sql id="Plan_Column_List">
+    guid, plan, file_ids, create_date, create_user_id, update_date, update_user_id,
+    state, question_guid
+  </sql>
+
+    <!-- 问题复函map -->
+    <resultMap id="ResponseResultMap" type="com.oceansoft.szga.smp.entity.QuestionResponseEntity">
+        <id column="guid" jdbcType="VARCHAR" property="guid" />
+        <result column="response_no" jdbcType="VARCHAR" property="responseNo" />
+        <result column="response_date" jdbcType="DATE" property="responseDate" />
+        <result column="file_ids" jdbcType="VARCHAR" property="fileIds" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="question_guid" jdbcType="VARCHAR" property="questionGuid" />
+    </resultMap>
+    <sql id="Response_Column_List">
+    guid, response_no, response_date, file_ids, create_date, create_user_id, update_date,
+    update_user_id, state, question_guid
+  </sql>
+
+    <!-- 问题整改落实map -->
+    <resultMap id="ImplementionResultMap" type="com.oceansoft.szga.smp.entity.QuestionImplementionEntity">
+        <id column="guid" jdbcType="VARCHAR" property="guid" />
+        <result column="implemention" jdbcType="VARCHAR" property="implemention" />
+        <result column="file_ids" jdbcType="VARCHAR" property="fileIds" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="question_guid" jdbcType="VARCHAR" property="questionGuid" />
+    </resultMap>
+    <sql id="Implemention_Column_List">
+    guid, implemention, file_ids, create_date, create_user_id, update_date, update_user_id,
+    state, question_guid
+  </sql>
+    <!-- 问题回头看map -->
+    <resultMap id="LookBackResultMap" type="com.oceansoft.szga.smp.entity.QuestionLookBackEntity">
+        <id column="guid" jdbcType="VARCHAR" property="guid" />
+        <result column="look_back_user" jdbcType="VARCHAR" property="lookBackUser" />
+        <result column="look_back_date" jdbcType="DATE" property="lookBackDate" />
+        <result column="look_back_result" jdbcType="VARCHAR" property="lookBackResult" />
+        <result column="file_ids" jdbcType="VARCHAR" property="fileIds" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="question_guid" jdbcType="VARCHAR" property="questionGuid" />
+    </resultMap>
+    <sql id="LookBack_Column_List">
+    guid, look_back_user, look_back_date, look_back_result, file_ids, create_date, create_user_id,
+    update_date, update_user_id, state, question_guid
+  </sql>
+
+    <!-- sql -->
+    <insert id="addQuestionPlan">
+        INSERT INTO question_plan ( guid, question_guid, plan, file_ids, create_date, create_user_id, update_date, update_user_id, state )
+        VALUES
+        ( #{ guid }, #{ questionGuid }, #{ plan }, #{ fileIds }, now()::timestamp(0)without time zone, #{ createUserId }, NULL, NULL, 0 )
+    </insert>
+    <insert id="addQuestionResponse">
+        INSERT INTO question_response ( guid, question_guid, response_no, response_date, file_ids, create_date, create_user_id, update_date, update_user_id, state )
+        VALUES
+	( #{ guid }, #{ questionGuid }, #{ responseNo }, #{ responseDate }, #{ fileIds }, now()::timestamp(0)without time zone, #{ createUserId }, NULL, NULL, 0 )
+    </insert>
+    <insert id="addQuestionImplemention">
+        INSERT INTO question_implemention ( guid, question_guid, implemention, file_ids, create_date, create_user_id, update_date, update_user_id, state )
+        VALUES
+	( #{ guid }, #{ questionGuid }, #{ implemention }, #{ fileIds }, now()::timestamp(0)without time zone, #{ createUserId }, NULL, NULL, 0 )
+    </insert>
+    <insert id="addQuestionLookBack">
+        INSERT INTO question_look_back ( guid, question_guid, look_back_user, look_back_date, look_back_result, file_ids, create_date, create_user_id, update_date, update_user_id, STATE )
+        VALUES
+	( #{ guid }, #{ questionGuid }, #{ lookBackUser }, #{ lookBackDate }, #{ lookBackResult }, #{ fileIds }, now()::timestamp(0)without time zone, #{ createUserId }, NULL, NULL, 0 )
+    </insert>
+    <update id="updateQuestionPlan">
+        UPDATE question_plan SET plan = #{plan}, file_ids = #{fileIds}, update_date = now()::timestamp(0)without time zone, update_user_id = #{updateUserId} WHERE guid = #{guid}
+    </update>
+    <update id="updateQuestionResponse">
+        UPDATE question_response SET response_no = #{ responseNo }, response_date = #{ responseDate }, file_ids = #{ fileIds }, update_date = now()::timestamp(0)without time zone, update_user_id = #{ updateUserId }
+        WHERE
+	    guid = #{ guid }
+    </update>
+    <update id="updateQuestionImplemention">
+        UPDATE question_implemention SET implemention = #{ implemention },
+            file_ids = #{ fileIds },
+            update_date = now()::timestamp(0)without time zone,
+            update_user_id = #{ updateUserId }
+        WHERE
+            guid = #{ guid }
+    </update>
+    <update id="updateQuestionLookBack">
+        UPDATE question_look_back SET look_back_user = #{ lookBackUser },
+						look_back_date = #{ lookBackDate },
+						look_back_result = #{ lookBackResult }
+            file_ids = #{ fileIds },
+            update_date = now()::timestamp(0)without time zone,
+            update_user_id = #{ updateUserId }
+        WHERE
+            guid = #{ guid }
+    </update>
+    <update id="updateFeedBackState">
+        UPDATE #{tableName} SET state = 1 WHERE guid = #{guid}
+    </update>
+    <delete id="deleteQuestionPlan">
+        UPDATE question_plan SET state = 1 WHERE guid = #{guid}
+    </delete>
+    <delete id="deleteQuestionResponse">
+        UPDATE question_response SET state = 1 WHERE guid = #{guid}
+    </delete>
+    <delete id="deleteQuestionImplemention">
+        UPDATE question_implemention SET state = 1 WHERE guid = #{guid}
+    </delete>
+    <delete id="deleteQuestionLookBack">
+        UPDATE question_look_back SET state = 1 WHERE guid = #{guid}
+    </delete>
+    <select id="queryQuestionPlan" resultMap="planResultMap">
+        select
+        <include refid="Plan_Column_List" />
+        from question_plan where question_guid = #{questionGuid} and state = 0
+    </select>
+    <select id="queryQuestionResponse" resultMap="ResponseResultMap">
+        select
+        <include refid="Response_Column_List" />
+        from question_response where question_guid = #{questionGuid} and state = 0
+    </select>
+    <select id="queryQuestionLookBack" resultMap="LookBackResultMap">
+        select
+        <include refid="LookBack_Column_List" />
+        from question_look_back where question_guid = #{questionGuid} and state = 0
+    </select>
+    <select id="queryQuestionImplemention" resultMap="ImplementionResultMap">
+        select
+        <include refid="Implemention_Column_List" />
+        from question_implemention where question_guid = #{questionGuid} and state = 0
+    </select>
+    <select id="queryCreateDeptCode" resultType="java.lang.String">
+        select department_id
+        from sys_user where id = #{createUserId}
+    </select>
+    <select id="queryPageHandler" resultType="java.util.Map">
+        SELECT
+            r.guid,
+            r.SOURCE,
+            r.area,
+            r.duty_unit,
+            r.finish_date,
+            r.STATE,
+            e.execute_date
+        FROM
+            question_record r
+            LEFT JOIN ( SELECT * FROM "question_execute_task" WHERE execute_dept_code = #{departmentId} AND execute_name = '派发' AND "state" = 1 ORDER BY create_date LIMIT 1 ) e ON r.execute_dept_code = e.execute_dept_code
+        WHERE
+            r.execute_dept_code = #{departmentId} and state != -1
+        <if test="questionQueryBean.state != null">
+            and r.state = #{questionQueryBean.state}
+        </if>
+        <if test="questionQueryBean.keyWord != null">
+            and r.guid like #{questionQueryBean.keyWord} or r.area like #{questionQueryBean.keyWord} or r.source like #{questionQueryBean.keyWord} or r.duty_unit like #{questionQueryBean.keyWord}
+        </if>
+        <if test="questionQueryBean.reactionDept != null">
+            and r.duty_unit = #{questionQueryBean.reactionDept}
+        </if>
+    </select>
+</mapper>

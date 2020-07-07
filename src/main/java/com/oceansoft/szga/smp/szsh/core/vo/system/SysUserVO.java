@@ -23,6 +23,8 @@ public class SysUserVO {
     private Integer status;
     private List<SysRole> roles;
     private Date createDate;
+    private String departmentId;
+    private String departmentName;
     private List<SysResource> resources;
 
 }
