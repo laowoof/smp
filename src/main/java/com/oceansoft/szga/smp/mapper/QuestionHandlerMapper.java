@@ -48,7 +48,7 @@ public interface QuestionHandlerMapper {
 
     String queryCreateDeptCode(String createUserId);
 
-    List<Map<String, Object>> queryPageHandler(@Param("questionQueryBean") QuestionQueryBean questionQueryBean, @Param("departmentId") String departmentId);
+    List<Map<String, Object>> queryPageHandler(@Param("questionQueryBean") QuestionQueryBean questionQueryBean, @Param("departmentId") String departmentId, @Param("integerList") List<Integer> integerList);
 
     void updateFeedBackState(@Param("tableName") String tableName, @Param("guid") String guid);
 }

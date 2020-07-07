@@ -52,7 +52,10 @@
         from question_record
         where create_dept_code = #{departmentId} and state != -1
         <if test="questionQueryBean.state != null">
-            and state = #{questionQueryBean.state}
+            and state IN
+            <foreach item="item" index="index" collection="integerList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
         </if>
         <if test="questionQueryBean.keyWord != null">
             and guid like #{questionQueryBean.keyWord} or area like #{questionQueryBean.keyWord} or source like #{questionQueryBean.keyWord} or duty_unit like #{questionQueryBean.keyWord}

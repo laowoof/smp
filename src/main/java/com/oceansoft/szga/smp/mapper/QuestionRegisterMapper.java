@@ -32,5 +32,5 @@ public interface QuestionRegisterMapper {
 
     int updateRecordStateByGuid(@Param("guid") String guid, @Param("state") int state);
 
-    List<Map<String, Object>> queryPageRecord(@Param("questionQueryBean") QuestionQueryBean questionQueryBean, @Param("departmentId") String departmentId);
+    List<Map<String, Object>> queryPageRecord(@Param("questionQueryBean") QuestionQueryBean questionQueryBean, @Param("departmentId") String departmentId, @Param("integerList") List<Integer> integerList);
 }

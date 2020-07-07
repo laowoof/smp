@@ -17,7 +17,7 @@ public class QuestionQueryBean {
     private Integer pageSize;
 
     // 问题状态
-    private Integer state;
+    private Integer[] state;
 
     // 关键字
     private String keyWord;
@@ -47,11 +47,11 @@ public class QuestionQueryBean {
         this.pageSize = pageSize;
     }
 
-    public Integer getState() {
+    public Integer[] getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(Integer[] state) {
         this.state = state;
     }
 

@@ -213,8 +213,12 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
         int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
         int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
         String departmentId = userData.getDepartmentId();
+        List<Integer> integerList = null;
+        if (questionQueryBean.getState() != null) {
+             integerList = Arrays.asList(questionQueryBean.getState());
+        }
         PageHelper.startPage(pageNum, pageSize);
-        List<Map<String, Object>> mapList = questionRegisterMapper.queryPageRecord(questionQueryBean, departmentId.trim());
+        List<Map<String, Object>> mapList = questionRegisterMapper.queryPageRecord(questionQueryBean, departmentId.trim(), integerList);
         return mapList;
     }
 
