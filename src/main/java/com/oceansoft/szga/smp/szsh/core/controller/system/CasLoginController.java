@@ -1,6 +1,5 @@
 package com.oceansoft.szga.smp.szsh.core.controller.system;
 
-import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.service.FlowReportService;
 import com.oceansoft.szga.smp.szsh.common.bean.ResponseCode;
 import com.oceansoft.szga.smp.szsh.common.bean.ResponseResult;
@@ -14,7 +13,10 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +52,7 @@ public class CasLoginController {
             signUserV1.setDepartmentId(data.getDepartmentId());
             signUserV1.setDepartmentName(data.getDepartmentName());
             signUserV1.setUserId(data.getId());
+            signUserV1.setLoginName(data.getName());
             signUserV1.setName(jwtToken.getUsername());
             signUserV1.setToken(jwtToken.getToken());
             signUserV1.setPermission(userService.getAllPermissionTag(jwtToken.getUid()));

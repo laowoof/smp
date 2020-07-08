@@ -1,9 +1,7 @@
 package com.oceansoft.szga.smp.mapper;
 
-import com.oceansoft.szga.smp.entity.CzfNum;
-import com.oceansoft.szga.smp.entity.CzfPersonNum;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -110,7 +108,7 @@ public interface ZfMapper {
      * @return 数据
      */
 
-    List<HashMap> areaAddNum(@Param("time2") String time2,@Param("time") String time);
+    List<HashMap> areaAddNum(@Param("time2") String time2, @Param("time") String time);
 
 
     /**

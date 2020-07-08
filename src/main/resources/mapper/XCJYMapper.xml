@@ -34,12 +34,12 @@
           lxdm IN ('1','2','3','4-1','4-2','5','7','8','9')
           <choose>
              <when test="param== null">
-               AND to_date(concat_ws('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
-               AND to_date(concat_ws('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
+               AND to_date(concat('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
+               AND to_date(concat('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
              </when>
              <otherwise>
-               AND to_date(concat_ws('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
-               AND to_date(concat_ws('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
+               AND to_date(concat('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
+               AND to_date(concat('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
              </otherwise>
           </choose>
 

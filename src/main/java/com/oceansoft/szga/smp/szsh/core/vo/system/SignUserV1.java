@@ -33,4 +33,6 @@ public class SignUserV1 {
     private String departmentId;
 
     private String userId;
+
+    private String loginName;
 }
