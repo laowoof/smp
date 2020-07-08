@@ -10,6 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -82,7 +83,11 @@ public class NbServiceImpl implements NbService {
     @Override
     public ApiResult findDataByOrder() {
         List<HashMap> data = nbMapper.findDataByOrder();
-        return new ApiResult().success(200, "成功", changeData(data));
+        List<HashMap> mapList = null;
+        if (!CollectionUtils.isEmpty(data)) {
+            mapList = changeData(data);
+        }
+        return new ApiResult().success(200, "成功", mapList);
     }
 
     @Override
@@ -885,12 +890,16 @@ public class NbServiceImpl implements NbService {
         String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
         String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
         for(HashMap map : list){
-            for(int i=0; i<oldList.length; i++){
-                //判断是否集合里存在此名字
-                if(map.get("ssfjmc").equals(oldList[i])) {
-                    map.put("ssfjmc", newList[i]);
-                    break;
+            if (map.get("ssfjmc") != null) {
+                for (int i = 0; i < oldList.length; i++) {
+                    //判断是否集合里存在此名字
+                    if (map.get("ssfjmc").equals(oldList[i])) {
+                        map.put("ssfjmc", newList[i]);
+                        break;
+                    }
                 }
+            } else {
+                continue;
             }
         }
         return list;
