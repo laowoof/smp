@@ -10,10 +10,7 @@ import com.oceansoft.szga.smp.szsh.core.service.system.impl.SysUserServiceImpl;
 import com.oceansoft.szga.smp.szsh.core.vo.system.SysUserVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +37,7 @@ public class OprQuestionRegisterController {
      * @return
      */
     @ApiOperation(value = "问题登记分页查询", notes = "", httpMethod = "POST")
-    @PostMapping("query-page-record")
+    @GetMapping("query-page-record")
     public ApiResult queryPageRecord(QuestionQueryBean questionQueryBean) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
@@ -90,7 +87,7 @@ public class OprQuestionRegisterController {
 
     @ApiOperation(value = "派发提交操作", notes = "", httpMethod = "POST")
     @PostMapping("confirm-distribute")
-    public ApiResult confirmDistribute(String guid, QuestionExecuteTaskBean questionExecuteTaskBean) {
+    public ApiResult confirmDistribute(String guid, @RequestBody QuestionExecuteTaskBean questionExecuteTaskBean) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
@@ -109,7 +106,7 @@ public class OprQuestionRegisterController {
     }
 
     @ApiOperation(value = "删除记录操作", notes = "", httpMethod = "POST")
-    @PostMapping("remove-record")
+    @GetMapping("remove-record")
     public ApiResult removeRecord(String guid) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
@@ -129,7 +126,7 @@ public class OprQuestionRegisterController {
     }
 
     @ApiOperation(value = "根据guid获取一条记录", notes = "", httpMethod = "POST")
-    @PostMapping("query-record")
+    @GetMapping("query-record")
     public ApiResult queryQuestionRecord(String guid) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
@@ -148,7 +145,7 @@ public class OprQuestionRegisterController {
     }
 
     @ApiOperation(value = "获取当前信息的历史任务", notes = "", httpMethod = "POST")
-    @PostMapping("history-task")
+    @GetMapping("history-task")
     public ApiResult queryHistoryTask(String guid) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;

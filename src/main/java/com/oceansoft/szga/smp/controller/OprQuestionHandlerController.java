@@ -12,10 +12,7 @@ import com.oceansoft.szga.smp.szsh.core.service.system.impl.SysUserServiceImpl;
 import com.oceansoft.szga.smp.szsh.core.vo.system.SysUserVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +40,7 @@ public class OprQuestionHandlerController {
      * @return
      */
     @ApiOperation(value = "问题处置分页查询", notes = "", httpMethod = "POST")
-    @PostMapping("query-page-handler")
+    @GetMapping("query-page-handler")
     public ApiResult queryPageHandler(QuestionQueryBean questionQueryBean) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
@@ -68,7 +65,7 @@ public class OprQuestionHandlerController {
      * 查询问题所有反馈结果
      */
     @ApiOperation(value = "查询问题所有方案", notes = "", httpMethod = "POST")
-    @PostMapping("query-all")
+    @GetMapping("query-all")
     public ApiResult queryQuestionPlan(String questionGuid) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
@@ -282,7 +279,7 @@ public class OprQuestionHandlerController {
      * 问题签收/批量签收
      */
     @ApiOperation(value = "问题签收", notes = "", httpMethod = "POST")
-    @PostMapping("sign-for")
+    @GetMapping("sign-for")
     public ApiResult signForQuestion(String guid) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
@@ -306,7 +303,7 @@ public class OprQuestionHandlerController {
      * 问题退回
      */
     @ApiOperation(value = "问题退回", notes = "", httpMethod = "POST")
-    @PostMapping("question-return")
+    @GetMapping("question-return")
     public ApiResult questionReturn(String guid) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
@@ -331,7 +328,7 @@ public class OprQuestionHandlerController {
      */
     @ApiOperation(value = "问题处置提交", notes = "", httpMethod = "POST")
     @PostMapping("question-manage")
-    public ApiResult questionManage(String guid, String operation, QuestionExecuteTaskBean questionExecuteTaskBean) {
+    public ApiResult questionManage(String guid, String operation, @RequestBody QuestionExecuteTaskBean questionExecuteTaskBean) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
