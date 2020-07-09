@@ -171,7 +171,7 @@
             LEFT JOIN ( SELECT * FROM "question_execute_task" WHERE execute_dept_code = #{departmentId} AND execute_name = '派发' AND "state" = 1 ORDER BY create_date LIMIT 1 ) e ON r.execute_dept_code = e.execute_dept_code
         WHERE
             r.execute_dept_code = #{departmentId} and r.state != -1
-        <if test="questionQueryBean.state != null">
+        <if test="integerList != null">
             and r.state IN
             <foreach item="item" index="index" collection="integerList" open="(" separator="," close=")">
                 #{item}

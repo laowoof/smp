@@ -1,5 +1,7 @@
 package com.oceansoft.szga.smp.entity.bean;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -23,9 +25,11 @@ public class QuestionQueryBean {
     private String keyWord;
 
     // 开始时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     // 结束时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     // 反应部门

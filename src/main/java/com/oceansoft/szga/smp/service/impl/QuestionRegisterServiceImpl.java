@@ -214,7 +214,7 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
         int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
         String departmentId = userData.getDepartmentId();
         List<Integer> integerList = null;
-        if (questionQueryBean.getState() != null) {
+        if (questionQueryBean.getState() != null && questionQueryBean.getState().length != 0) {
              integerList = Arrays.asList(questionQueryBean.getState());
         }
         PageHelper.startPage(pageNum, pageSize);

@@ -51,7 +51,7 @@
         select guid, create_date, source, area, duty_unit, finish_date, state
         from question_record
         where create_dept_code = #{departmentId} and state != -1
-        <if test="questionQueryBean.state != null">
+        <if test="integerList != null">
             and state IN
             <foreach item="item" index="index" collection="integerList" open="(" separator="," close=")">
                 #{item}

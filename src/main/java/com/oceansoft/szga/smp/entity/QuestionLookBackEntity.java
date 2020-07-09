@@ -1,5 +1,7 @@
 package com.oceansoft.szga.smp.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +25,7 @@ public class QuestionLookBackEntity implements Serializable {
     private String lookBackUser;
 
     // 回头看时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lookBackDate;
 
     // 回头看结果
@@ -32,12 +35,14 @@ public class QuestionLookBackEntity implements Serializable {
     private String fileIds;
 
     // 创建日期
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
 
     // 创建人id
     private String createUserId;
 
     // 更新日期
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateDate;
 
     // 更新人id
