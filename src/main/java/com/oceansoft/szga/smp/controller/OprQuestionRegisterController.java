@@ -3,6 +3,7 @@ package com.oceansoft.szga.smp.controller;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.entity.QuestionExecuteTaskEntity;
 import com.oceansoft.szga.smp.entity.QuestionRecordEntity;
+import com.oceansoft.szga.smp.entity.bean.QuestionAllBean;
 import com.oceansoft.szga.smp.entity.bean.QuestionExecuteTaskBean;
 import com.oceansoft.szga.smp.entity.bean.QuestionQueryBean;
 import com.oceansoft.szga.smp.service.QuestionRegisterService;
@@ -60,17 +61,18 @@ public class OprQuestionRegisterController {
 
     /**
      * 新增保存问题登记/登记并派发
-     * @param questionRecordEntity 问题登记实体
-     * @param questionExecuteTaskBean 问题派发bean
+     * @param questionAllBean 接口参数集合
      * @param type 1保存/2保存并派发
      */
     @ApiOperation(value = "新增保存/修改问题登记", notes = "", httpMethod = "POST")
     @PostMapping("add-update-record")
-    public ApiResult addQuestionRecord(@RequestBody QuestionRecordEntity questionRecordEntity, QuestionExecuteTaskBean questionExecuteTaskBean, Integer type) {
+    public ApiResult addQuestionRecord(@RequestBody QuestionAllBean questionAllBean, Integer type) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
         try {
+            QuestionRecordEntity questionRecordEntity = questionAllBean.getQuestionRecordEntity();
+            QuestionExecuteTaskBean questionExecuteTaskBean = questionAllBean.getQuestionExecuteTaskBean();
             SysUserVO userData = sysUserService.getCurrentUser();
             isSuccess = questionRegisterService.addQuestionRecord(questionRecordEntity, questionExecuteTaskBean, type, userData);
             if (isSuccess) {
