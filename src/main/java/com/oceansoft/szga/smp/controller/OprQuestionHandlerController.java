@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,10 +46,10 @@ public class OprQuestionHandlerController {
         String message = "";
         try {
             SysUserVO userData = sysUserService.getCurrentUser();
-            List<Map<String, Object>> mapList = questionHandlerService.queryPageHandler(questionQueryBean, userData);
+            Map<String, Object> map = questionHandlerService.queryPageHandler(questionQueryBean, userData);
             message = "查询成功";
             isSuccess = true;
-            apiResult.setData(mapList);
+            apiResult.setData(map);
         } catch (Exception e) {
             message = e.getMessage();
             e.printStackTrace();

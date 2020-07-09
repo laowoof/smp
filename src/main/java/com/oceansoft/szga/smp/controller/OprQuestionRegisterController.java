@@ -45,10 +45,10 @@ public class OprQuestionRegisterController {
         String message = "";
         try {
             SysUserVO userData = sysUserService.getCurrentUser();
-            List<Map<String, Object>> mapList = questionRegisterService.queryPageRecord(questionQueryBean, userData);
+            Map<String, Object> map = questionRegisterService.queryPageRecord(questionQueryBean, userData);
             message = "查询成功";
             isSuccess = true;
-            apiResult.setData(mapList);
+            apiResult.setData(map);
         } catch (Exception e) {
             message = e.getMessage();
             e.printStackTrace();

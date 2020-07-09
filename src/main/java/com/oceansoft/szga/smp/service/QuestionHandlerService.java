@@ -9,7 +9,6 @@ import com.oceansoft.szga.smp.entity.bean.QuestionQueryBean;
 import com.oceansoft.szga.smp.szsh.core.vo.system.SysUserVO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -45,5 +44,5 @@ public interface QuestionHandlerService {
 
     boolean questionManage(String guid, String operation, QuestionExecuteTaskBean questionExecuteTaskBean, SysUserVO userData);
 
-    List<Map<String, Object>> queryPageHandler(QuestionQueryBean questionQueryBean, SysUserVO userData);
+    Map<String, Object> queryPageHandler(QuestionQueryBean questionQueryBean, SysUserVO userData);
 }

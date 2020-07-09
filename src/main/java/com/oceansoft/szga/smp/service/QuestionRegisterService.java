@@ -25,5 +25,5 @@ public interface QuestionRegisterService {
 
     boolean questionConfirm(String guid, String operation, QuestionExecuteTaskBean questionExecuteTaskBean, SysUserVO userData);
 
-    List<Map<String, Object>> queryPageRecord(QuestionQueryBean questionQueryBean, SysUserVO userData);
+    Map<String, Object> queryPageRecord(QuestionQueryBean questionQueryBean, SysUserVO userData);
 }

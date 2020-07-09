@@ -1,5 +1,6 @@
 package com.oceansoft.szga.smp.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.oceansoft.szga.smp.entity.QuestionExecuteTaskEntity;
 import com.oceansoft.szga.smp.entity.QuestionRecordEntity;
@@ -209,7 +210,8 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
     }
 
     @Override
-    public List<Map<String, Object>> queryPageRecord(QuestionQueryBean questionQueryBean, SysUserVO userData) {
+    public Map<String, Object> queryPageRecord(QuestionQueryBean questionQueryBean, SysUserVO userData) {
+        Map<String, Object> map = new HashMap<>();
         int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
         int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
         String departmentId = userData.getDepartmentId();
@@ -217,9 +219,12 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
         if (questionQueryBean.getState() != null && questionQueryBean.getState().length != 0) {
              integerList = Arrays.asList(questionQueryBean.getState());
         }
-        PageHelper.startPage(pageNum, pageSize);
+        Page<Object> objects = PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> mapList = questionRegisterMapper.queryPageRecord(questionQueryBean, departmentId.trim(), integerList);
-        return mapList;
+        map.put("结果集", mapList);
+        map.put("页数", objects.getPages());
+        map.put("总记录数", objects.getTotal());
+        return map;
     }
 
     public boolean updateQuestionRecord(QuestionRecordEntity questionRecordEntity, SysUserVO userData) {
