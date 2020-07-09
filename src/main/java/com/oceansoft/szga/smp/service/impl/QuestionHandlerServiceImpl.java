@@ -317,9 +317,11 @@ public class QuestionHandlerServiceImpl implements QuestionHandlerService {
         }
         Page<Object> objects = PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> mapList = questionHandlerMapper.queryPageHandler(questionQueryBean, departmentId.trim(), integerList);
-        map.put("结果集", mapList);
-        map.put("页数", objects.getPages());
-        map.put("总记录数", objects.getTotal());
+        map.put("mapList", mapList);
+        map.put("pages", objects.getPages());
+        map.put("total", objects.getTotal());
+        map.put("pageNum", objects.getPageNum());
+        map.put("pageSize", objects.getPageSize());
         return map;
     }
 
