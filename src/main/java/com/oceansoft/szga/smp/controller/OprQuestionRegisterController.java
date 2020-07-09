@@ -38,8 +38,8 @@ public class OprQuestionRegisterController {
      * @return
      */
     @ApiOperation(value = "问题登记分页查询", notes = "", httpMethod = "POST")
-    @GetMapping("query-page-record")
-    public ApiResult queryPageRecord(QuestionQueryBean questionQueryBean) {
+    @PostMapping("query-page-record")
+    public ApiResult queryPageRecord(@RequestBody QuestionQueryBean questionQueryBean) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";

@@ -39,8 +39,8 @@ public class OprQuestionHandlerController {
      * @return
      */
     @ApiOperation(value = "问题处置分页查询", notes = "", httpMethod = "POST")
-    @GetMapping("query-page-handler")
-    public ApiResult queryPageHandler(QuestionQueryBean questionQueryBean) {
+    @PostMapping("query-page-handler")
+    public ApiResult queryPageHandler(@RequestBody QuestionQueryBean questionQueryBean) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
