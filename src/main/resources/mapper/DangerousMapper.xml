@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.DangerousMapper">
+
+    <select id="queryBaseInfo" resultType="java.util.Map">
+        select * from rpt_aqjg_za_zbxx
+    </select>
+    <select id="querySuperviseUnit" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' and hwlb like concat('%',#{str},'%')
+    </select>
+    <select id="queryAllSuperviseUnit" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01'
+    </select>
+    <select id="querySfgyl" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfgly = '1'
+    </select>
+    <select id="querySfczy" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfczy = '1'
+    </select>
+    <select id="querySfzabwy" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfczy = '1'
+    </select>
+    <select id="queryDangerousDw" resultType="java.util.Map">
+        SELECT
+            fjmc,
+        sum ( sl )
+        FROM
+            "rpt_aqjg_za_dwxx"
+        WHERE
+            yyzt = '01'
+        <if test="zawxpdjdmList != null">
+            AND zawxpdjdm IN
+        <foreach item="item" index="index" collection="zawxpdjdmList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        </if>
+        <if test="hwlxList != null">
+            AND hwlb IN
+        <foreach item="item" index="index" collection="hwlxList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        </if>
+        GROUP BY
+            fjmc
+    </select>
+    <select id="queryImportDw" resultType="java.util.Map">
+        SELECT
+            fjmc,
+            SUM ( sl )
+        FROM
+            "rpt_aqjg_za_ryxx"
+        WHERE
+            sfzx = '0'
+        <if test="ywlxdmList != null">
+            AND ywlxdm IN
+        <foreach item="item" index="index" collection="ywlxdmList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        </if>
+        GROUP BY
+            fjmc
+    </select>
+
+
+</mapper>
