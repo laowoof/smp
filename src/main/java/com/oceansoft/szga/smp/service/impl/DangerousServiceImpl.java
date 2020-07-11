@@ -89,13 +89,13 @@ public class DangerousServiceImpl implements DangerousService {
         List<String> zawxpdjdmList;
         List<String> hwlxList;
         String zawxpdjdm = json.getString("zawxpdjdm");
-        String hwlx = json.getString("hwlx");
         if (!StringUtils.isEmpty(zawxpdjdm)) {
             String[] zawxpdjdmArr = zawxpdjdm.split(",");
             zawxpdjdmList = Arrays.asList(zawxpdjdmArr);
         } else {
             zawxpdjdmList = null;
         }
+        String hwlx = json.getString("hwlx");
         if (!StringUtils.isEmpty(hwlx)) {
             String[] hwlbArr = hwlx.split(",");
             hwlxList = Arrays.asList(hwlbArr);

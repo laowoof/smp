@@ -35,9 +35,8 @@
         </foreach>
         </if>
         <if test="hwlxList != null">
-            AND hwlb IN
-        <foreach item="item" index="index" collection="hwlxList" open="(" separator="," close=")">
-            #{item}
+        <foreach item="item" index="index" collection="hwlxList">
+            AND hwlb LIKE concat('%',#{item},'%')
         </foreach>
         </if>
         GROUP BY
