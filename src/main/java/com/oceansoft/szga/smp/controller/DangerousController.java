@@ -1,7 +1,6 @@
 package com.oceansoft.szga.smp.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.service.DangerousService;
 import io.swagger.annotations.ApiOperation;
@@ -157,6 +156,103 @@ public class DangerousController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity request = new HttpEntity( headers);
         return restTemplate.postForObject(json.getString("url"), request, JSONObject.class);
+    }
+
+    /**
+     * 全面分析/剧毒
+     * @return
+     */
+    @ApiOperation(value = "全面分析/剧毒", notes = "", httpMethod = "POST")
+    @PostMapping("all/high-poison")
+    public ApiResult queryHighPoison() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryHighPoison();
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    /**
+     * 全面分析/剧毒折线图
+     * @return
+     */
+    @ApiOperation(value = "全面分析/剧毒折线图", notes = "", httpMethod = "POST")
+    @GetMapping("all/high-poison-line")
+    public ApiResult queryHighPoisonLine(Integer type) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryHighPoisonLine(type);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    /**
+     * 全面分析/易制爆
+     * @return
+     */
+    @ApiOperation(value = "全面分析/易制爆", notes = "", httpMethod = "POST")
+    @PostMapping("all/easy-boom")
+    public ApiResult queryEasyBoom() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryEasyBoom();
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    /**
+     * 全面分析/易制爆折线图
+     * @param type
+     * @return
+     */
+    @ApiOperation(value = "全面分析/易制爆折线图", notes = "", httpMethod = "POST")
+    @GetMapping("all/easy-boom-line")
+    public ApiResult queryEasyBoomLine(Integer type) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryEasyBoomLine(type);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
     }
 
 

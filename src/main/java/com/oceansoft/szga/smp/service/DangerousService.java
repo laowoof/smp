@@ -19,4 +19,12 @@ public interface DangerousService {
     List<Map<String, Object>> queryDangerousDw(JSONObject json);
 
     List<Map<String, Object>> queryImportDw(JSONObject json);
+
+    List<Map<String, Object>> queryHighPoison();
+
+    List<Map<String, Object>> queryEasyBoom();
+
+    List<Map<String, Object>> queryHighPoisonLine(Integer type);
+
+    List<Map<String, Object>> queryEasyBoomLine(Integer type);
 }

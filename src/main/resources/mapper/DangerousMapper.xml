@@ -34,10 +34,11 @@
             #{item}
         </foreach>
         </if>
-        <if test="hwlxList != null">
-        <foreach item="item" index="index" collection="hwlxList">
-            AND hwlb LIKE concat('%',#{item},'%')
-        </foreach>
+        <if test="zawxpdjdmList != null">
+            AND hwlb IN
+            <foreach item="item" index="index" collection="zawxpdjdmList" open="(" separator="," close=")">
+            #{item}
+            </foreach>
         </if>
         GROUP BY
             fjmc
@@ -58,6 +59,32 @@
         </if>
         GROUP BY
             fjmc
+    </select>
+    <select id="queryHighPoison" resultType="java.util.Map">
+        SELECT wpmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY wpmc
+    </select>
+    <select id="queryEasyBoom" resultType="java.util.Map">
+        SELECT wpmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY wpmc
+    </select>
+    <select id="queryHighPoisonLine" resultType="java.util.Map">
+        <choose>
+        <when test="type == 1">
+            SELECT date,sum(sl) FROM (SELECT year||'-'||mon as date, sl FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1')t GROUP BY date ORDER BY date ASC
+        </when>
+        <otherwise>
+            SELECT year,sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY year
+        </otherwise>
+        </choose>
+    </select>
+    <select id="queryEasyBoomLine" resultType="java.util.Map">
+        <choose>
+            <when test="type == 1">
+                SELECT date,sum(sl) FROM (SELECT year||'-'||mon as date, sl FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2')t GROUP BY date ORDER BY date ASC
+            </when>
+            <otherwise>
+                SELECT year,sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY year
+            </otherwise>
+        </choose>
     </select>
 
 

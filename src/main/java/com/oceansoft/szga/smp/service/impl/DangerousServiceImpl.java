@@ -150,4 +150,28 @@ public class DangerousServiceImpl implements DangerousService {
         }
         return resultList;
     }
+
+    @Override
+    public List<Map<String, Object>> queryHighPoison() {
+        List<Map<String, Object>> mapList = dangerousMapper.queryHighPoison();
+        return mapList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryEasyBoom() {
+        List<Map<String, Object>> mapList = dangerousMapper.queryEasyBoom();
+        return mapList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryHighPoisonLine(Integer type) {
+        List<Map<String, Object>> mapList = dangerousMapper.queryHighPoisonLine(type);
+        return mapList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryEasyBoomLine(Integer type) {
+        List<Map<String, Object>> mapList = dangerousMapper.queryEasyBoomLine(type);
+        return mapList;
+    }
 }
