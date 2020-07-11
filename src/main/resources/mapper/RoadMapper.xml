@@ -456,19 +456,19 @@
         <if test="name == '总体情况'">
             1=1
         </if>
-        <if test="name == '张家港'">
+        <if test="name == '张家港市'">
             dddm ='21'
         </if>
-        <if test="name == '常熟'">
+        <if test="name == '常熟市'">
             dddm ='22'
         </if>
-        <if test="name == '昆山'">
+        <if test="name == '昆山市'">
             dddm ='23'
         </if>
-        <if test="name == '太仓'">
+        <if test="name == '太仓市'">
             dddm ='25'
         </if>
-        <if test="name == '吴江'">
+        <if test="name == '吴江区'">
             dddm ='24'
         </if>
         <if test="name == '工业园区'">
@@ -480,8 +480,11 @@
         <if test="name == '高新区'">
             dddm ='13'
         </if>
-        <if test="name == '吴中'">
+        <if test="name == '吴中区'">
             dddm ='14'
+        </if>
+        <if test="name == '相城区'">
+            dddm ='15'
         </if>
         <if test="name == '度假区'">
             dddm ='16'
@@ -512,7 +515,7 @@
         <if test="month !='' and month2 !=''">
             and date between #{month} AND #{month2}
         </if>
-        GROUP BY dddm,ddmc order by dddm
+        GROUP BY dddm,ddmc order by sum(wfs) desc
     </select>
 
     <select id="getDataWfLx" resultType="java.util.HashMap" parameterType="java.util.HashMap">
@@ -771,7 +774,7 @@
         <if test="month !='' and month2 !=''">
             date between #{month} AND #{month2} and
         </if>
-        clzt is not null GROUP BY clzt ORDER BY clzt
+        clzt is not null GROUP BY clzt ORDER BY count(sl) desc
     </select>
 
     <select id="getZdCarData" resultType="java.util.HashMap" parameterType="java.util.HashMap">
