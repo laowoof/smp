@@ -1,14 +1,16 @@
 package com.oceansoft.szga.smp.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.service.DangerousService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("dangerous/analysis")
 public class DangerousController {
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private DangerousService dangerousService;
@@ -144,6 +148,15 @@ public class DangerousController {
         apiResult.setMsg(message);
         apiResult.setSucc(isSuccess);
         return apiResult;
+    }
+
+    @ApiOperation(value = "调第三方接口", notes = "", httpMethod = "POST")
+    @PostMapping("api")
+    public JSONObject api(@RequestBody JSONObject json) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity request = new HttpEntity( headers);
+        return restTemplate.postForObject(json.getString("url"), request, JSONObject.class);
     }
 
 
