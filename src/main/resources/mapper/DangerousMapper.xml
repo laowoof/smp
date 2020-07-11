@@ -51,6 +51,7 @@
             "rpt_aqjg_za_ryxx"
         WHERE
             sfzx = '0'
+        <if test="ywlxdmList != null">
         <if test="ywlxdmList.contains(&quot;管理员&quot;)">
             and sfgly = '1'
         </if>
@@ -59,6 +60,7 @@
         </if>
         <if test="ywlxdmList.contains(&quot;治安保卫员&quot;)">
             and sfzabwy = '1'
+        </if>
         </if>
         GROUP BY
             fjmc
