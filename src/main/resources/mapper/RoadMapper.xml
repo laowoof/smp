@@ -76,7 +76,7 @@
         <if test="month !='' and month2 !=''">
             date between #{month} and #{month2}
         </if>
-        GROUP BY ddbm,ddmc ORDER BY ddbm
+        GROUP BY ddbm,ddmc ORDER BY yhzl desc
     </select>
 
     <select id="yhQusXs" resultType="java.util.Map" parameterType="java.util.Map">
@@ -98,7 +98,7 @@
         <if test="month !='' and month2 !=''">
             date between #{month} and #{month2}
         </if>
-        GROUP BY ddbm,ddmc ORDER BY ddbm
+        GROUP BY ddbm,ddmc ORDER BY yhzl desc
     </select>
 
     <select id="yhQusGs" resultType="java.util.Map" parameterType="java.util.Map">
@@ -120,7 +120,7 @@
         <if test="month !='' and month2 !=''">
             date between #{month} and #{month2}
         </if>
-        GROUP BY ddbm,ddmc ORDER BY ddbm
+        GROUP BY ddbm,ddmc ORDER BY yhzl desc
     </select>
 
     <select id="zyJdFx" resultType="java.util.Map" parameterType="java.util.Map">
@@ -314,7 +314,7 @@
         </if>
         <if test="month !='' and month2 !=''">
             and date between #{month} and #{month2}
-        </if>GROUP BY zdmc
+        </if>GROUP BY zdmc order by yhzl desc
     </select>
     <select id="getDataClickTop5" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,dlmc,yhwwcsl,yhwcsl,yhzl FROM

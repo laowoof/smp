@@ -51,11 +51,14 @@
             "rpt_aqjg_za_ryxx"
         WHERE
             sfzx = '0'
-        <if test="ywlxdmList != null">
-            AND ywlxdm IN
-        <foreach item="item" index="index" collection="ywlxdmList" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        <if test="ywlxdmList.contains(&quot;管理员&quot;)">
+            and sfgly = '1'
+        </if>
+        <if test="ywlxdmList.contains(&quot;操作员&quot;)">
+            and sfczy = '1'
+        </if>
+        <if test="ywlxdmList.contains(&quot;治安保卫员&quot;)">
+            and sfzabwy = '1'
         </if>
         GROUP BY
             fjmc
