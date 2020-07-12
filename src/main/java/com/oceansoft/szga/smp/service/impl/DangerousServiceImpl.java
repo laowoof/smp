@@ -106,7 +106,7 @@ public class DangerousServiceImpl implements DangerousService {
         List<Map<String, Object>> mapList = dangerousMapper.queryDangerousDw(zawxpdjdmList, hwlxList);
         for (Map<String, Object> map : mapList) {
             Map<String, Object> newMap = new HashMap<>();
-            newMap.put("name", map.get("fjmc"));
+            newMap.put("fjmc", map.get("fjmc"));
             newMap.put("sum", map.get("sum"));
             count = count + Integer.parseInt(newMap.get("sum").toString());
             resultList.add(newMap);
@@ -118,7 +118,8 @@ public class DangerousServiceImpl implements DangerousService {
             String result = numberFormat.format((float)  Integer.parseInt(map.get("sum").toString())/ (float)count* 100);//所占百分比
             map.put("percent", result+"%");
         }
-        return resultList;
+        List<Map<String, Object>> lastResult = orderList(resultList);
+        return lastResult;
     }
 
     @Override
@@ -148,7 +149,8 @@ public class DangerousServiceImpl implements DangerousService {
             String result = numberFormat.format((float)  Integer.parseInt(map.get("sum").toString())/ (float)count* 100);//所占百分比
             map.put("percent", result+"%");
         }
-        return resultList;
+        List<Map<String, Object>> lastResult = orderList(resultList);
+        return lastResult;
     }
 
     @Override
@@ -173,5 +175,33 @@ public class DangerousServiceImpl implements DangerousService {
     public List<Map<String, Object>> queryEasyBoomLine(Integer type) {
         List<Map<String, Object>> mapList = dangerousMapper.queryEasyBoomLine(type);
         return mapList;
+    }
+
+    private List<Map<String, Object>> orderList(List<Map<String, Object>> mapList) {
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
+        List<Map<String, Object>> resultList = new ArrayList<>();
+//        List<Map<String, Object>> otherList = new ArrayList<>();
+        for (String depeName : orderList) {
+            for (Map<String, Object> map : mapList) {
+                if (map.get("fjmc").toString().contains(depeName)) {
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("fjmc",depeName);
+                    resultMap.put("sum",map.get("sum"));
+                    resultMap.put("percent",map.get("percent"));
+                    resultList.add(resultMap);
+                } else {
+                    continue;
+//                    Map<String, Object> otherMap = new HashMap<>();
+//                    otherMap.put("fjmc",depeName);
+//                    otherMap.put("sum",map.get("sum"));
+//                    otherMap.put("percent",map.get("percent"));
+//                    otherList.add(otherMap);
+                }
+            }
+        }
+//        for (Map<String, Object> map : otherList) {
+//            resultList.add(map);
+//        }
+        return resultList;
     }
 }
