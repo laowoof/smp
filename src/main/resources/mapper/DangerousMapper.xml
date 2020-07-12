@@ -3,7 +3,7 @@
 <mapper namespace="com.oceansoft.szga.smp.mapper.DangerousMapper">
 
     <select id="queryBaseInfo" resultType="java.util.Map">
-        select * from rpt_aqjg_za_zbxx
+        select * from rpt_aqjg_za_zbxx order by  zbbm
     </select>
     <select id="querySuperviseUnit" resultType="java.lang.Integer">
         SELECT sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' and hwlb like concat('%',#{str},'%')
