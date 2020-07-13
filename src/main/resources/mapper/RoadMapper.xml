@@ -233,7 +233,7 @@
         zddm, zdmc
         ) dll group by
         <if test="cgtype=='tj'">dddm,ddmc order by wcl desc, wcs desc</if>
-        <if test="cgtype=='lx'">lxdm,lxmc</if>
+        <if test="cgtype=='lx'">lxdm,lxmc order by rws desc</if>
         -- select xzdl,xzdlmc,xzxlmc,coalesce(sum(dwsl),0) dwsl from qyxzfx where xzdl='4' group by xzdlmc,xzxlmc,xzdl
     </select>
     <select id="getAnYhDdFx" resultType="java.util.Map" parameterType="java.util.Map">

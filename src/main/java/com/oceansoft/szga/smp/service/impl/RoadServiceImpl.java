@@ -34,7 +34,25 @@ public class RoadServiceImpl implements RoadService {
 
     @Override
     public ApiResult getAddress() {
-        return new ApiResult().success(200,"获取地址成功",roadMapper.getAddress());
+        return new ApiResult().success(200,"获取地址成功",handleData(roadMapper.getAddress()));
+    }
+
+    private List<HashMap> handleData(List<HashMap> list) {
+        List<String> orderList = Arrays.asList("全市信息","张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("deptname"))) {
+                    HashMap result = new HashMap();
+                    result.put("deptname", hashMap.get("deptname"));
+                    result.put("deptid", hashMap.get("deptid"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -94,7 +112,27 @@ public class RoadServiceImpl implements RoadService {
         SourceNum sourceNum = checkSourceEntity(json);
         List<HashMap> has = roadMapper.getAchievCount(sourceNum);
         if(has.size() > 0){
-            return new ApiResult().success(200,"获取成功", has);
+            List<HashMap> resultList = new ArrayList<>();
+            resultList = has;
+            if (json.getString("cgtype") == "tj") {
+                List<String> orderList = Arrays.asList("张家港大队", "常熟大队", "昆山大队", "太仓大队", "吴江大队", "园区大队", "姑苏大队", "虎丘大队", "吴中大队", "相城大队", "度假大队", "交警支队");
+                for (String name : orderList) {
+                    for (HashMap hashMap : has) {
+                        if (hashMap.get("ddmc").toString().contains(name)) {
+                            HashMap result = new HashMap();
+                            result.put("ddmc", hashMap.get("ddmc"));
+                            result.put("wcl", hashMap.get("wcl"));
+                            result.put("wcs", hashMap.get("wcs"));
+                            result.put("dddm", hashMap.get("dddm"));
+                            result.put("rws", hashMap.get("rws"));
+                            resultList.add(result);
+                        } else {
+                            continue;
+                        }
+                    }
+                }
+            }
+            return new ApiResult().success(200,"获取成功", resultList);
         }
         return new ApiResult().failure("暂无数据");
     }
@@ -128,7 +166,22 @@ public class RoadServiceImpl implements RoadService {
             map1.put("qzcs", qzcs);
             has.add(map1);
             has.removeAll(removeList);
-            return new ApiResult().success(200,"获取成功", has);
+            List<String> orderList = Arrays.asList("张家港大队","常熟大队","昆山大队","太仓大队","吴江大队","园区大队","姑苏大队","虎丘大队","吴中大队","相城大队","度假大队","苏州高速公路");
+            List<HashMap> resultList = new ArrayList<>();
+            for (String name : orderList) {
+                for (HashMap hashMap : has) {
+                    if (hashMap.get("ddmc").toString().contains(name)) {
+                        HashMap result = new HashMap();
+                        result.put("ddmc", hashMap.get("ddmc"));
+                        result.put("jycf", hashMap.get("jycf"));
+                        result.put("qzcs", hashMap.get("qzcs"));
+                        resultList.add(result);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+            return new ApiResult().success(200,"获取成功", resultList);
         }
         return new ApiResult().failure("暂无数据");
     }

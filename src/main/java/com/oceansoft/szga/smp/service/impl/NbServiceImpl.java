@@ -202,7 +202,40 @@ public class NbServiceImpl implements NbService {
     @Override
     public ApiResult findDataByZz() {
         List<HashMap> data = nbMapper.findDataByZz();
-        return new ApiResult().success(200, "成功", changeData(data));
+        return new ApiResult().success(200, "成功", handleData6(data));
+    }
+
+    private List<HashMap> handleData6(List<HashMap> list) {
+        String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
+        String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
+        for(HashMap map : list){
+            if (map.get("ssfjmc") != null) {
+                for (int i = 0; i < oldList.length; i++) {
+                    //判断是否集合里存在此名字
+                    if (map.get("ssfjmc").equals(oldList[i])) {
+                        map.put("ssfjmc", newList[i]);
+                        break;
+                    }
+                }
+            } else {
+                continue;
+            }
+        }
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("ssfjmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("ssfjmc", hashMap.get("ssfjmc"));
+                    result.put("sum", hashMap.get("sum"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -307,7 +340,40 @@ public class NbServiceImpl implements NbService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> data = nbMapper.findDataZySsLimit(tjrq);
-        return new ApiResult().success(200, "成功",changeData(data));
+        return new ApiResult().success(200, "成功",handleData5(data));
+    }
+
+    private List<HashMap> handleData5(List<HashMap> list) {
+        String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
+        String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
+        for(HashMap map : list){
+            if (map.get("ssfjmc") != null) {
+                for (int i = 0; i < oldList.length; i++) {
+                    //判断是否集合里存在此名字
+                    if (map.get("ssfjmc").equals(oldList[i])) {
+                        map.put("ssfjmc", newList[i]);
+                        break;
+                    }
+                }
+            } else {
+                continue;
+            }
+        }
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("ssfjmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("ssfjmc", hashMap.get("ssfjmc"));
+                    result.put("num", hashMap.get("num"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -322,7 +388,7 @@ public class NbServiceImpl implements NbService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> data = nbMapper.findDataYhFx(tjrq);
-        return new ApiResult().success(200, "成功",changeData(data));
+        return new ApiResult().success(200, "成功",handleData5(data));
     }
 
     @Override
