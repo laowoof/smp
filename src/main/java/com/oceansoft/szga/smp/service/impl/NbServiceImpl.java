@@ -68,7 +68,42 @@ public class NbServiceImpl implements NbService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> data = nbMapper.findDataByJj(tjrq);
-        return new ApiResult().success(200, "成功", changeData(data));
+        return new ApiResult().success(200, "成功", handleData2(data));
+    }
+
+    private List<HashMap> handleData2(List<HashMap> list) {
+        String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
+        String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
+        for(HashMap map : list){
+            if (map.get("ssfjmc") != null) {
+                for (int i = 0; i < oldList.length; i++) {
+                    //判断是否集合里存在此名字
+                    if (map.get("ssfjmc").equals(oldList[i])) {
+                        map.put("ssfjmc", newList[i]);
+                        break;
+                    }
+                }
+            } else {
+                continue;
+            }
+        }
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("ssfjmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("tjrq", hashMap.get("tjrq"));
+                    result.put("num", hashMap.get("num"));
+                    result.put("ssfjmc", hashMap.get("ssfjmc"));
+                    result.put("percent", hashMap.get("percent"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -179,7 +214,34 @@ public class NbServiceImpl implements NbService {
     @Override
     public ApiResult findDataByZzOne() {
         List<HashMap> data = nbMapper.findDataByZzOne();
-        return new ApiResult().success(200, "成功",data);
+        return new ApiResult().success(200, "成功",handleData(data));
+    }
+
+    private List<HashMap> handleData(List<HashMap> list) {
+        List<String> orderList = Arrays.asList("张家港市局","常熟市局","昆山市局","太仓市局","吴江区局","园区分局","姑苏分局","高新区分局","吴中分局","相城分局","度假区分局");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("ssfjmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("percent", hashMap.get("percent"));
+                    result.put("sjname", hashMap.get("sjname"));
+                    result.put("sjsnum", hashMap.get("sjsnum"));
+                    result.put("sname", hashMap.get("sname"));
+                    result.put("sqname", hashMap.get("sqname"));
+                    result.put("sqsnum", hashMap.get("sqsnum"));
+                    result.put("ssfjdm", hashMap.get("ssfjdm"));
+                    result.put("ssfjmc", hashMap.get("ssfjmc"));
+                    result.put("ssnum", hashMap.get("ssnum"));
+                    result.put("xname", hashMap.get("xname"));
+                    result.put("xsnum", hashMap.get("xsnum"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -566,7 +628,7 @@ public class NbServiceImpl implements NbService {
         if(data.size()<1){
             return new ApiResult().failure("没有获取到任何数据!");
         }
-        return new ApiResult().success(200, "成功",changeData(data));
+        return new ApiResult().success(200, "成功",changeData6(data,type));
     }
 
     @Override
@@ -673,7 +735,41 @@ public class NbServiceImpl implements NbService {
     @Override
     public ApiResult findNumByQmZyss() {
         List<HashMap> data = nbMapper.findNumByQmZyss();
-        return new ApiResult().success(200, "成功",changeData(data));
+        return new ApiResult().success(200, "成功",handleData3(data));
+    }
+
+    private List<HashMap> handleData3(List<HashMap> list) {
+        String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
+        String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
+        for(HashMap map : list){
+            if (map.get("ssfjmc") != null) {
+                for (int i = 0; i < oldList.length; i++) {
+                    //判断是否集合里存在此名字
+                    if (map.get("ssfjmc").equals(oldList[i])) {
+                        map.put("ssfjmc", newList[i]);
+                        break;
+                    }
+                }
+            } else {
+                continue;
+            }
+        }
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("ssfjmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("ssfjmc", hashMap.get("ssfjmc"));
+                    result.put("num", hashMap.get("num"));
+                    result.put("percent", hashMap.get("percent"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -694,7 +790,42 @@ public class NbServiceImpl implements NbService {
                 break;
             }
         }
-        return new ApiResult().success(200, "成功",changeData(data));
+        return new ApiResult().success(200, "成功",handleData4(data));
+    }
+
+    private List<HashMap> handleData4(List<HashMap> list) {
+        String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
+        String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
+        for(HashMap map : list){
+            if (map.get("ssfjmc") != null) {
+                for (int i = 0; i < oldList.length; i++) {
+                    //判断是否集合里存在此名字
+                    if (map.get("ssfjmc").equals(oldList[i])) {
+                        map.put("ssfjmc", newList[i]);
+                        break;
+                    }
+                }
+            } else {
+                continue;
+            }
+        }
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("ssfjmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("ssfjmc", hashMap.get("ssfjmc"));
+                    result.put("wjznum", hashMap.get("wjznum"));
+                    result.put("jznum", hashMap.get("jznum"));
+                    result.put("zdnum", hashMap.get("zdnum"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -742,7 +873,7 @@ public class NbServiceImpl implements NbService {
     public ApiResult zdssZdjc(Map map) {
         List<Map> list = nbMapper.zdssZdjc(map);
         int total = list.stream().collect(Collectors.summingInt(m-> ((BigDecimal) m.get("count")).intValue()));
-        return new ApiResult(ImmutableMap.of("list",list,"total",total));
+        return new ApiResult(ImmutableMap.of("list",orderList3(list),"total",total));
     }
 
     @Override
@@ -867,7 +998,7 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult yhslfx(Map map) {
-        return new ApiResult(nbMapper.yhslfx(map));
+        return new ApiResult(orderList(nbMapper.yhslfx(map)));
     }
 
     @Override
@@ -883,7 +1014,48 @@ public class NbServiceImpl implements NbService {
 
     @Override
     public ApiResult getDataJcFx(String titleDateType) {
-        return new ApiResult(nbMapper.getDataJcFx(titleDateType));
+        return new ApiResult(orderList2(nbMapper.getDataJcFx(titleDateType)));
+    }
+
+    private List<HashMap> orderList2(List<HashMap> list) {
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("dept_name"))) {
+                    HashMap result = new HashMap();
+                    result.put("dept_name", hashMap.get("dept_name"));
+                    result.put("djc", hashMap.get("djc"));
+                    result.put("jcsl", hashMap.get("jcsl"));
+                    result.put("xfjc", hashMap.get("xfjc"));
+                    result.put("ycq", hashMap.get("ycq"));
+                    result.put("yjc", hashMap.get("yjc"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
+    }
+
+    private List<Map> orderList3(List<Map> list) {
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<Map> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (Map hashMap : list) {
+                if (name.equals(hashMap.get("dept_name"))) {
+                    HashMap result = new HashMap();
+                    result.put("dept_name", hashMap.get("dept_name"));
+                    result.put("dept_code", hashMap.get("dept_code"));
+                    result.put("count", hashMap.get("count"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     private List<HashMap> changeData(List<HashMap> list){
@@ -902,7 +1074,82 @@ public class NbServiceImpl implements NbService {
                 continue;
             }
         }
-        return list;
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("ssfjmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("ssfjmc", hashMap.get("ssfjmc"));
+                    result.put("addnum", hashMap.get("addnum"));
+                    result.put("totlenum", hashMap.get("totlenum"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
+    }
+
+    private List<HashMap> changeData6(List<HashMap> list, String type){
+        String  oldList [] = {"吴中分局","吴江区局","姑苏分局","度假区分局","相城分局","常熟市局","张家港市局","太仓市局","昆山市局","高新区分局","园区分局"};
+        String  newList [] = {"吴中区","吴江区","姑苏区","度假区","相城区","常熟市","张家港市","太仓市","昆山市","虎丘区","工业园区"};
+        for(HashMap map : list){
+            if (map.get("ssfjmc") != null) {
+                for (int i = 0; i < oldList.length; i++) {
+                    //判断是否集合里存在此名字
+                    if (map.get("ssfjmc").equals(oldList[i])) {
+                        map.put("ssfjmc", newList[i]);
+                        break;
+                    }
+                }
+            } else {
+                continue;
+            }
+        }
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        switch (type) {
+            case "findZxjc":
+                for (String name : orderList) {
+                    for (HashMap hashMap : list) {
+                        if (name.equals(hashMap.get("ssfjmc"))) {
+                            HashMap result = new HashMap();
+                            result.put("ssfjmc", hashMap.get("ssfjmc"));
+                            result.put("ssfxj", hashMap.get("ssfxj"));
+                            result.put("zl", hashMap.get("zl"));
+                            result.put("yjc", hashMap.get("yjc"));
+                            result.put("qjc", hashMap.get("qjc"));
+                            result.put("djc", hashMap.get("djc"));
+                            resultList.add(result);
+                        } else {
+                            continue;
+                        }
+                    }
+                }
+                break;
+            case "findZdjc":
+                for (String name : orderList) {
+                    for (HashMap hashMap : list) {
+                        if (name.equals(hashMap.get("ssfjmc"))) {
+                            HashMap result = new HashMap();
+                            result.put("ssfjmc", hashMap.get("ssfjmc"));
+                            result.put("zl", hashMap.get("zl"));
+                            result.put("jcsl", hashMap.get("jcsl"));
+                            result.put("nf", hashMap.get("nf"));
+                            result.put("percent", hashMap.get("percent"));
+                            resultList.add(result);
+                        } else {
+                            continue;
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return resultList;
     }
 
     private List<HashMap> changeData2(List<HashMap> list){
@@ -1219,6 +1466,26 @@ public class NbServiceImpl implements NbService {
         }
         ArrayUtils.reverse(monthArr);
         return String.join(",",monthArr);
+    }
+
+    private List<Map<String, Object>> orderList(List<Map<String, Object>> mapList) {
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        for (String depeName : orderList) {
+            for (Map<String, Object> map : mapList) {
+                if (map.get("dept_name").toString().equals(depeName)) {
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("dept_name",depeName);
+                    resultMap.put("dept_code",map.get("dept_code"));
+                    resultMap.put("zgl",map.get("zgl"));
+                    resultMap.put("wzgl",map.get("wzgl"));
+                    resultList.add(resultMap);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
 

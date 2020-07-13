@@ -1,14 +1,21 @@
 package com.oceansoft.szga.smp.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.service.RoadService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author  wzj
@@ -19,6 +26,9 @@ import java.util.HashMap;
 public class RoadController {
     @Autowired
     private RoadService roadService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
 
     @GetMapping("test")
@@ -364,4 +374,36 @@ public class RoadController {
     public ApiResult getZdCarData(@RequestBody HashMap map){
         return roadService.getZdCarData(map);
     }
+
+    @ApiOperation(value = "调第三方接口", notes = "", httpMethod = "POST")
+    @PostMapping("api-getDataGcs")
+    public JSONArray api(@RequestBody String name) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity request = new HttpEntity( headers);
+        JSONArray jsonArray = new JSONArray();
+        JSONArray resultArray = new JSONArray();
+        switch (name) {
+            case "总体情况":
+                jsonArray = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, JSONArray.class);
+                for (int i = jsonArray.size()-8; i<jsonArray.size();i++) {
+                    resultArray.add(jsonArray.getJSONObject(i));
+                }
+                break;
+            case "各地区":
+                jsonArray = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, JSONArray.class);
+                List<Map<String, Object>> list = new ArrayList<>();
+                for (int i = 0; i<jsonArray.size();i++) {
+//                    Map<String, Object> map = new HashMap<>();
+//                    if (map.get("name"). jsonArray.getJSONObject(i).getString("NAME")) {
+//
+//                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return resultArray;
+    }
+
 }

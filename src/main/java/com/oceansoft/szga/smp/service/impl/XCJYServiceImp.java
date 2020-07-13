@@ -7,8 +7,7 @@ import com.oceansoft.szga.smp.util.ParamUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author ：pc
@@ -76,7 +75,21 @@ public class XCJYServiceImp implements XCJYService {
             return new ApiResult().failure("数据错误！！！！");
         }
         List<HashMap> data= xcjyMapper.Unitpublicity(hashMap);
-        return new ApiResult().success(200, "成功", data);
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区","交警支队");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String depeName : orderList) {
+            for (HashMap datum : data) {
+                if (datum.get("ddmc").toString().contains(depeName)) {
+                    HashMap resultMap = new HashMap<>();
+                    resultMap.put("ddmc", datum.get("ddmc"));
+                    resultMap.put("rate", datum.get("rate"));
+                    resultList.add(resultMap);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return new ApiResult().success(200, "成功", resultList);
 
     }
     /**

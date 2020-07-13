@@ -112,6 +112,22 @@ public class RoadServiceImpl implements RoadService {
     public ApiResult getZfSj(HashMap map) {
         List<HashMap> has = roadMapper.getZfSj(map);
         if(has.size() > 0){
+            Integer jycj = 0;
+            Integer qzcs = 0;
+            HashMap map1 = new HashMap();
+            List<HashMap> removeList = new ArrayList<>();
+            for (HashMap ha : has) {
+                if (ha.get("ddmc").toString().contains("苏州高速公路")) {
+                    jycj =  jycj + Integer.parseInt(ha.get("jycf").toString());
+                    qzcs = qzcs + Integer.parseInt(ha.get("qzcs").toString());
+                    removeList.add(ha);
+                }
+            }
+            map1.put("ddmc", "苏州高速公路");
+            map1.put("jycf", jycj);
+            map1.put("qzcs", qzcs);
+            has.add(map1);
+            has.removeAll(removeList);
             return new ApiResult().success(200,"获取成功", has);
         }
         return new ApiResult().failure("暂无数据");

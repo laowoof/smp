@@ -1,7 +1,5 @@
 package com.oceansoft.szga.smp.mapper;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -565,7 +563,7 @@ public interface NbMapper {
      * @param map
      * @return
      */
-    List<Map> yhslfx(Map map);
+    List<Map<String, Object>> yhslfx(Map map);
 
     /**
      * 隐患数量分析-按月

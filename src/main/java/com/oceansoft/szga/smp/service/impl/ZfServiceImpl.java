@@ -27,8 +27,27 @@ public class ZfServiceImpl implements ZfService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> czfNums = zfMapper.czfNum(tjrq);
-        return new ApiResult().success(200,"返回数据",czfNums);
+        return new ApiResult().success(200,"返回数据",handleData5(czfNums));
 
+    }
+
+    private List<HashMap> handleData5(List<HashMap> list) {
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("xzqhmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("xzqhmc", hashMap.get("xzqhmc"));
+                    result.put("tjrq", hashMap.get("tjrq"));
+                    result.put("sl", hashMap.get("sl"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -44,7 +63,7 @@ public class ZfServiceImpl implements ZfService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> qzfNum = zfMapper.qzfNum(tjrq);
-        return new ApiResult().success(200,"返回数据",qzfNum);
+        return new ApiResult().success(200,"返回数据",handleData5(qzfNum));
     }
 
     @Override
@@ -78,7 +97,25 @@ public class ZfServiceImpl implements ZfService {
         calendar.set( calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), MaxDay);
         String time2 = sdf.format(calendar.getTime());
         List<HashMap> areaAddNum = zfMapper.areaAddNum(time2,time);
-        return new ApiResult().success(200,"成功",areaAddNum);
+        return new ApiResult().success(200,"成功",handleData(areaAddNum));
+    }
+
+    private List<HashMap> handleData(List<HashMap> list) {
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("xzqhmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("xzqhmc", hashMap.get("xzqhmc"));
+                    result.put("addnum", hashMap.get("addnum"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
 
@@ -134,7 +171,25 @@ public class ZfServiceImpl implements ZfService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> dangerQzfNum = zfMapper.yhQzfTotleNum(tjrq);
-        return new ApiResult().success(200,"返回成功",dangerQzfNum);
+        return new ApiResult().success(200,"返回成功",handleData2(dangerQzfNum));
+    }
+
+    private List<HashMap> handleData2(List<HashMap> list) {
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("xzqhmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("xzqhmc", hashMap.get("xzqhmc"));
+                    result.put("sum", hashMap.get("sum"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -242,7 +297,29 @@ public class ZfServiceImpl implements ZfService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> num = zfMapper.zaYhNum(tjrq);
-        return new ApiResult().success(200,"返回数据",num);
+        return new ApiResult().success(200,"返回数据",handleData4(num));
+    }
+
+    private List<HashMap> handleData4(List<HashMap> list) {
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("xzqhmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("fws", hashMap.get("fws"));
+                    result.put("percent", hashMap.get("percent"));
+                    result.put("tjrq", hashMap.get("tjrq"));
+                    result.put("xzqhmc", hashMap.get("xzqhmc"));
+                    result.put("yhs", hashMap.get("yhs"));
+                    result.put("zgs", hashMap.get("zgs"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -323,7 +400,31 @@ public class ZfServiceImpl implements ZfService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tjrq = sdf.format(calendar.getTime());
         List<HashMap> data = zfMapper.yhsData(tjrq);
-        return new ApiResult().success(200,"返回数据",data);
+        return new ApiResult().success(200,"返回数据",handleData3(data));
+    }
+
+    private List<HashMap> handleData3(List<HashMap> list) {
+        List<String> orderList = Arrays.asList("张家港市","常熟市","昆山市","太仓市","吴江区","工业园区","姑苏区","虎丘区","吴中区","相城区","度假区");
+        List<HashMap> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (HashMap hashMap : list) {
+                if (name.equals(hashMap.get("xzqhmc"))) {
+                    HashMap result = new HashMap();
+                    result.put("fzayh_fxsl", hashMap.get("fzayh_fxsl"));
+                    result.put("fzayh_tssl", hashMap.get("fzayh_tssl"));
+                    result.put("fzayh_zgsl", hashMap.get("fzayh_zgsl"));
+                    result.put("percent", hashMap.get("percent"));
+                    result.put("tjrq", hashMap.get("tjrq"));
+                    result.put("xzqhmc", hashMap.get("xzqhmc"));
+                    result.put("zayh_fxsl", hashMap.get("zayh_fxsl"));
+                    result.put("zayh_zgsl", hashMap.get("zayh_zgsl"));
+                    resultList.add(result);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override

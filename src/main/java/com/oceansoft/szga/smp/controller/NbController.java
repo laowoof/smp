@@ -7,7 +7,6 @@ import com.oceansoft.szga.smp.service.NbService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.alibaba.fastjson.JSONObject;
 
 import java.util.Map;
 
@@ -744,7 +743,7 @@ public class NbController {
      * @author wzj
      * @return 数据
      */
-    @GetMapping("findNumByZdgcYear")
+    @GetMapping("findNumByZdgcear")
     public ApiResult findNumByZdgcYear(String name){
         ApiResult data = nbService.findNumByZdgcYear(name);
         return data;

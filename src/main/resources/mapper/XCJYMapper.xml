@@ -117,7 +117,7 @@
                AND to_date(concat('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
            </otherwise>
        </choose>
-       GROUP BY SUBSTRING(lxmc,"length"(lxmc)-1,2)
+       GROUP BY SUBSTRING(lxmc,"length"(lxmc)-1,2) ORDER BY rws desc
    </select>
 
 
