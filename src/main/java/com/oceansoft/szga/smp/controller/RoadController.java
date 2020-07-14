@@ -12,9 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -377,32 +375,11 @@ public class RoadController {
 
     @ApiOperation(value = "调第三方接口", notes = "", httpMethod = "POST")
     @PostMapping("api-getDataGcs")
-    public JSONArray api(@RequestBody String name) {
+    public JSONArray getDataGcs(@RequestBody String name) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity request = new HttpEntity( headers);
-        JSONArray jsonArray = new JSONArray();
-        JSONArray resultArray = new JSONArray();
-        switch (name) {
-            case "总体情况":
-                jsonArray = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, JSONArray.class);
-                for (int i = jsonArray.size()-8; i<jsonArray.size();i++) {
-                    resultArray.add(jsonArray.getJSONObject(i));
-                }
-                break;
-            case "各地区":
-                jsonArray = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, JSONArray.class);
-                List<Map<String, Object>> list = new ArrayList<>();
-                for (int i = 0; i<jsonArray.size();i++) {
-//                    Map<String, Object> map = new HashMap<>();
-//                    if (map.get("name"). jsonArray.getJSONObject(i).getString("NAME")) {
-//
-//                    }
-                }
-                break;
-            default:
-                break;
-        }
+        JSONArray resultArray = roadService.getDataGcs(name, request);
         return resultArray;
     }
 

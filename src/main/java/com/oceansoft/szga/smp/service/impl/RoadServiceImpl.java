@@ -6,7 +6,10 @@ import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.entity.SourceNum;
 import com.oceansoft.szga.smp.mapper.RoadMapper;
 import com.oceansoft.szga.smp.service.RoadService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -24,6 +27,9 @@ public class RoadServiceImpl implements RoadService {
 
     @Resource
     private RoadMapper roadMapper;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
 
@@ -414,6 +420,41 @@ public class RoadServiceImpl implements RoadService {
             map.put("dwmcLxdm", null);
         }
             return new ApiResult().success(200,"获取成功", map);
+    }
+
+    @Override
+    public JSONArray getDataGcs(String name, HttpEntity request) {
+        JSONArray jsonArray = new JSONArray();
+        JSONArray resultArray = new JSONArray();
+        switch (name) {
+            case "总体情况":
+                jsonArray = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, JSONArray.class);
+                for (int i = jsonArray.size()-8; i<jsonArray.size();i++) {
+                    resultArray.add(jsonArray.getJSONObject(i));
+                }
+                break;
+            case "张家港市":
+            case "常熟市":
+            case "昆山市":
+            case "太仓市":
+            case "吴江区":
+            case "工业园区":
+            case "姑苏区":
+            case "虎丘区":
+            case "吴中区":
+            case "相城区":
+            case "度假区":
+                jsonArray = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, JSONArray.class);
+                for (int i = 0; i<jsonArray.size();i++) {
+                    if (name.contains(jsonArray.getJSONObject(i).getString("NAME"))) {
+                        resultArray.add(jsonArray.getJSONObject(i));
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return resultArray;
     }
 
     /**

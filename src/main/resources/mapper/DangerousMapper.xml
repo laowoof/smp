@@ -91,6 +91,41 @@
             </otherwise>
         </choose>
     </select>
+    <select id="queryCurrentStockNum" resultType="java.util.Map">
+        select * from rpt_aqjg_za_zbxx where zbbm = 'ZB_0003'
+    </select>
+    <select id="queryHalfYearNum" resultType="java.util.Map">
+        select * from rpt_aqjg_za_zbxx where zbbm = 'ZB_0012'
+    </select>
+    <select id="queryHousingAllNum" resultType="java.lang.Long">
+        select sum(sl) sl from rpt_aqjg_za_wpcrk where lbdm like '1%'
+    </select>
+    <select id="queryBuyNum" resultType="java.lang.Long">
+        select sl from rpt_aqjg_za_wpcrk where lbdm = '11'
+    </select>
+    <select id="queryProductNum" resultType="java.lang.Long">
+        select sl from rpt_aqjg_za_wpcrk where lbdm = '12'
+    </select>
+    <select id="queryWpcrk" resultType="java.util.Map">
+        select * from rpt_aqjg_za_wpcrk
+    </select>
+    <select id="queryUseHousingNum" resultType="java.lang.Long">
+        select sum(sl) sl from rpt_aqjg_za_wpcrk where lbdm like '5%'
+    </select>
+    <select id="queryDangerHighPoisonDw" resultType="java.util.Map">
+        SELECT a.fjmc,a.jd,b.jy FROM
+        ((SELECT fjmc,sum(sl) jd FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like concat('%',#{hwlb},'%') and year = #{year} GROUP BY fjmc) a LEFT JOIN
+        (SELECT fjmc,sum(sl) jy FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like '%1%8%' and year = #{year} GROUP BY fjmc) b ON a.fjmc = b.fjmc)
+    </select>
+    <select id="queryDangerHighPoisonLxAllCount" resultType="java.lang.Long">
+        SELECT sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl}
+    </select>
+    <select id="queryEveryKindNum" resultType="java.util.Map">
+        SELECT wpmc,sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type} AND year = #{year} GROUP BY wpmc
+    </select>
+    <select id="queryDangerHighPoisonRank" resultType="java.util.Map">
+        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type} and year = #{year} GROUP BY fjmc ORDER BY sum(sl) desc LIMIT 10
+    </select>
 
 
 </mapper>

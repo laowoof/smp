@@ -33,4 +33,26 @@ public interface DangerousMapper {
     List<Map<String, Object>> queryHighPoisonLine(@Param("type") Integer type);
 
     List<Map<String, Object>> queryEasyBoomLine(@Param("type") Integer type);
+
+    Map<String, Object> queryCurrentStockNum();
+
+    Map<String, Object> queryHalfYearNum();
+
+    Long queryHousingAllNum();
+
+    Long queryBuyNum();
+
+    Long queryProductNum();
+
+    List<Map<String, Object>> queryWpcrk();
+
+    Long queryUseHousingNum();
+
+    List<Map<String, Object>> queryDangerHighPoisonDw(@Param("hwlb") String hwlb,@Param("year") String year);
+
+    Long queryDangerHighPoisonLxAllCount(String wpdl);
+
+    List<Map<String, Object>> queryEveryKindNum(@Param("wpdl") String wpdl, @Param("year") String year,@Param("type") String type);
+
+    List<Map<String, Object>> queryDangerHighPoisonRank(@Param("wpdl") String wpdl,@Param("year") String year,@Param("type") String type);
 }

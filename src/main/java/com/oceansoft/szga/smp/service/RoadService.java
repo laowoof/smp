@@ -1,7 +1,9 @@
 package com.oceansoft.szga.smp.service;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.http.HttpEntity;
 
 import java.util.Map;
 
@@ -238,5 +240,7 @@ public interface RoadService {
     ApiResult getZdCarData(Map map);
 
     ApiResult getIllegalCar(JSONObject json);
+
+    JSONArray getDataGcs(String name, HttpEntity request);
 }
 

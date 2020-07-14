@@ -27,4 +27,12 @@ public interface DangerousService {
     List<Map<String, Object>> queryHighPoisonLine(Integer type);
 
     List<Map<String, Object>> queryEasyBoomLine(Integer type);
+
+    Map<String, Object> queryDangerBaseInfo();
+
+    List<Map<String, Object>> queryDangerHighPoisonDw(JSONObject jsonObject);
+
+    List<Map<String, Object>> queryDangerHighPoisonLx(JSONObject jsonObject);
+
+    List<Map<String, Object>> queryDangerHighPoisonRank(JSONObject jsonObject);
 }

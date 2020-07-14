@@ -5,6 +5,7 @@ import com.oceansoft.szga.smp.mapper.DangerousMapper;
 import com.oceansoft.szga.smp.service.DangerousService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.NumberFormat;
@@ -174,6 +175,102 @@ public class DangerousServiceImpl implements DangerousService {
     @Override
     public List<Map<String, Object>> queryEasyBoomLine(Integer type) {
         List<Map<String, Object>> mapList = dangerousMapper.queryEasyBoomLine(type);
+        return mapList;
+    }
+
+    @Override
+    public Map<String, Object> queryDangerBaseInfo() {
+        Map<String, Object> resultMap = new HashMap<>();
+        // 当前库存总量
+        Map<String, Object> map1 = dangerousMapper.queryCurrentStockNum();
+        resultMap.put("currentStockNum", map1.get("sl"));
+        // 上年度结余库存
+        Map<String, Object> map2 = dangerousMapper.queryHalfYearNum();
+        resultMap.put("halfYearNum", map2.get("sl"));
+        // 入库总量
+        Long housingAllNum = dangerousMapper.queryHousingAllNum();
+        resultMap.put("housingAllNum", housingAllNum);
+        // 各种数据
+        List<Map<String, Object>> mapList = dangerousMapper.queryWpcrk();
+        for (Map<String, Object> map : mapList) {
+            if (String.valueOf(map.get("lbdm")).equals("11")) {
+                resultMap.put("buyNum", map.get("sl"));
+            }
+            if (String.valueOf(map.get("lbdm")).equals("12")) {
+                resultMap.put("productNum", map.get("sl"));
+            }
+            if (String.valueOf(map.get("lbdm")).equals("14")) {
+                resultMap.put("otherHouingNum", map.get("sl"));
+            }
+            if (String.valueOf(map.get("lbdm")).equals("51")) {
+                resultMap.put("saleNum", map.get("sl"));
+            }
+            if (String.valueOf(map.get("lbdm")).equals("52")) {
+                resultMap.put("useNum", map.get("sl"));
+            }
+            if (String.valueOf(map.get("lbdm")).equals("53")) {
+                resultMap.put("otherUseNum", map.get("sl"));
+            }
+        }
+        Long useHousingNum = dangerousMapper.queryUseHousingNum();
+        resultMap.put("useHousingNum", useHousingNum);
+        return resultMap;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryDangerHighPoisonDw(JSONObject jsonObject) {
+        Integer count = 0;
+        List<Map<String, Object>> mapList = dangerousMapper.queryDangerHighPoisonDw(jsonObject.getString("hwlb"), jsonObject.getString("year"));
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(mapList)) {
+            // 排序
+            List<String> orderList = Arrays.asList("张家港", "常熟", "昆山", "太仓", "吴江", "园区", "姑苏", "高新区", "吴中", "相城", "度假区");
+            for (String name : orderList) {
+                for (Map<String, Object> map : mapList) {
+                    if (map.get("fjmc").toString().contains(name)) {
+                        Map<String, Object> resultMap = new HashMap<>();
+                        resultMap.put("fjmc", map.get("fjmc"));
+                        if (map.get("jd") != null) {
+                            resultMap.put("jd", map.get("jd"));
+                            count = count + Integer.parseInt(map.get("jd").toString());
+                        }
+                        if (map.get("jy") != null) {
+                            resultMap.put("jy", map.get("jy"));
+                            count = count + Integer.parseInt(map.get("jy").toString());
+                        }
+                        resultList.add(resultMap);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("count", count);
+        resultList.add(map);
+        return resultList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryDangerHighPoisonLx(JSONObject jsonObject) {
+        // 获取剧毒类型总数
+        String wpdl = jsonObject.getString("wpdl");
+        Long allCount = dangerousMapper.queryDangerHighPoisonLxAllCount(wpdl);
+        // 根据条件获取各品种数量
+        String type = jsonObject.getString("type");
+        String year = jsonObject.getString("year");
+        List<Map<String, Object>> resultList = dangerousMapper.queryEveryKindNum(wpdl,year, type);
+        Map<String, Object> map = new HashMap<>();
+        map.put("allCount", allCount);
+        return resultList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryDangerHighPoisonRank(JSONObject jsonObject) {
+        String type = jsonObject.getString("type");
+        String year = jsonObject.getString("year");
+        String wpdl = jsonObject.getString("wpdl");
+        List<Map<String, Object>> mapList = dangerousMapper.queryDangerHighPoisonRank(wpdl,year, type);
         return mapList;
     }
 

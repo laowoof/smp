@@ -135,6 +135,7 @@ public class OprQuestionRegisterController {
         String message = "";
         try {
             QuestionRecordEntity questionRecordEntity = questionRegisterService.queryQuestionRecordById(guid);
+            isSuccess = true;
             message = "查询成功";
             apiResult.setData(questionRecordEntity);
         } catch (Exception e) {
@@ -154,6 +155,7 @@ public class OprQuestionRegisterController {
         String message = "";
         try {
             List<QuestionExecuteTaskEntity> questionExecuteTaskEntities = questionRegisterService.queryHistoryTask(guid);
+            isSuccess = true;
             message = "查询成功";
             apiResult.setData(questionExecuteTaskEntities);
         } catch (Exception e) {

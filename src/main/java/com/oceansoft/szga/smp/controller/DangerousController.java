@@ -255,6 +255,101 @@ public class DangerousController {
         return apiResult;
     }
 
+    @ApiOperation(value = "危险品分析/基本信息", notes = "", httpMethod = "POST")
+    @PostMapping("danger/base-info")
+    public ApiResult queryDangerBaseInfo() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> map = dangerousService.queryDangerBaseInfo();
+            apiResult.setData(map);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    /**
+     * 危险品分析/剧毒化学品分析-单位
+     * @param jsonObject
+     * @return
+     */
+    @ApiOperation(value = "危险品分析/剧毒化学品分析-单位", notes = "", httpMethod = "POST")
+    @PostMapping("danger/high-poison-dw")
+    public ApiResult queryDangerHighPoisonDw(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryDangerHighPoisonDw(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    /**
+     * 危险品分析/剧毒化学品分析-类型
+     * @param jsonObject
+     * @return
+     */
+    @ApiOperation(value = "危险品分析/剧毒化学品分析-类型", notes = "", httpMethod = "POST")
+    @PostMapping("danger/high-poison-lx")
+    public ApiResult queryDangerHighPoisonLx(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryDangerHighPoisonLx(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    /**
+     * 危险品分析/剧毒化学品分析-排行榜
+     * @param jsonObject
+     * @return
+     */
+    @ApiOperation(value = "危险品分析/剧毒化学品分析-排行榜", notes = "", httpMethod = "POST")
+    @PostMapping("danger/high-poison-rank")
+    public ApiResult queryDangerHighPoisonRank(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryDangerHighPoisonRank(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
 
 
 }
