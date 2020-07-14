@@ -114,17 +114,54 @@
     </select>
     <select id="queryDangerHighPoisonDw" resultType="java.util.Map">
         SELECT a.fjmc,a.jd,b.jy FROM
-        ((SELECT fjmc,sum(sl) jd FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like concat('%',#{hwlb},'%') and year = #{year} GROUP BY fjmc) a LEFT JOIN
-        (SELECT fjmc,sum(sl) jy FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like '%1%8%' and year = #{year} GROUP BY fjmc) b ON a.fjmc = b.fjmc)
+        ((SELECT fjmc,sum(sl) jd FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like concat('%',#{hwlb},'%')
+        <if test="year != null">
+        and year = #{year}
+        </if>
+        GROUP BY fjmc) a LEFT JOIN
+        (SELECT fjmc,sum(sl) jy FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like '%1%8%'
+        <if test="year != null">
+            and year = #{year}
+        </if>
+        GROUP BY fjmc) b ON a.fjmc = b.fjmc)
     </select>
     <select id="queryDangerHighPoisonLxAllCount" resultType="java.lang.Long">
         SELECT sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl}
     </select>
     <select id="queryEveryKindNum" resultType="java.util.Map">
-        SELECT wpmc,sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type} AND year = #{year} GROUP BY wpmc
+        SELECT wpmc,sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type}
+        <if test="year != null">
+            and year = #{year}
+        </if>
+         GROUP BY wpmc
     </select>
     <select id="queryDangerHighPoisonRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type} and year = #{year} GROUP BY fjmc ORDER BY sum(sl) desc LIMIT 10
+        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type}
+        <if test="year != null">
+            and year = #{year}
+        </if>
+         GROUP BY fjmc ORDER BY sum(sl) desc LIMIT 10
+    </select>
+    <select id="queryCompanyRank" resultType="java.util.Map">
+        SELECT fjmc,sum(sl) FROM "rpt_aqjg_za_dwxx" GROUP BY fjmc
+    </select>
+    <select id="queryImpPostRank" resultType="java.util.Map">
+        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' GROUP BY fjmc
+    </select>
+    <select id="queryCompanyCheckRank" resultType="java.util.Map">
+        SELECT ssfxjmc, sum(sl) FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc
+    </select>
+    <select id="queryHiddenDiscoverRank" resultType="java.util.Map">
+        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_dwyhxx" GROUP BY fjmc
+    </select>
+    <select id="queryHiddenHandleRank" resultType="java.util.Map">
+        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE sfzg = '1' GROUP BY fjmc
+    </select>
+    <select id="queryHiddenNoHandleRank" resultType="java.util.Map">
+        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE sfzg = '0' GROUP BY fjmc
+    </select>
+    <select id="queryEarlyHandleRank" resultType="java.util.Map">
+        SELECT fjmc,sum(sl) FROM "rpt_aqjg_za_yjxx" GROUP BY fjmc
     </select>
 
 

@@ -55,4 +55,18 @@ public interface DangerousMapper {
     List<Map<String, Object>> queryEveryKindNum(@Param("wpdl") String wpdl, @Param("year") String year,@Param("type") String type);
 
     List<Map<String, Object>> queryDangerHighPoisonRank(@Param("wpdl") String wpdl,@Param("year") String year,@Param("type") String type);
+
+    List<Map<String, Object>> queryCompanyRank();
+
+    List<Map<String, Object>> queryImpPostRank();
+
+    List<Map<String, Object>> queryCompanyCheckRank();
+
+    List<Map<String, Object>> queryHiddenDiscoverRank();
+
+    List<Map<String, Object>> queryHiddenHandleRank();
+
+    List<Map<String, Object>> queryHiddenNoHandleRank();
+
+    List<Map<String, Object>> queryEarlyHandleRank();
 }

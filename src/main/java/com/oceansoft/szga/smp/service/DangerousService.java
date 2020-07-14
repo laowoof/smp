@@ -35,4 +35,18 @@ public interface DangerousService {
     List<Map<String, Object>> queryDangerHighPoisonLx(JSONObject jsonObject);
 
     List<Map<String, Object>> queryDangerHighPoisonRank(JSONObject jsonObject);
+
+    List<Map<String, Object>> queryCompanyRank();
+
+    List<Map<String, Object>> queryImpPostRank();
+
+    List<Map<String, Object>> queryCompanyCheckRank();
+
+    List<Map<String, Object>> queryHiddenDiscoverRank();
+
+    List<Map<String, Object>> queryHiddenHandleRank();
+
+    List<Map<String, Object>> queryHiddenNoHandleRank();
+
+    List<Map<String, Object>> queryEarlyHandleRank();
 }
