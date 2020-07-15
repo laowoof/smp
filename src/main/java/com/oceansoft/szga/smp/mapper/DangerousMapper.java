@@ -87,4 +87,10 @@ public interface DangerousMapper {
     List<Map<String, Object>> queryDrillRank7(String fjmc);
 
     List<Map<String, Object>> queryDrillRank8(String fjmc);
+
+    List<Map<String, Object>> queryNumSituation(@Param("type") String type,@Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    Integer queryAjAllCount();
+
+    List<Map<String, Object>> queryCheckHit(@Param("ajlbdm") String ajlbdm);
 }

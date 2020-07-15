@@ -190,6 +190,59 @@
     <select id="queryDrillRank8" resultType="java.util.Map">
         SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_yjxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
     </select>
+    <select id="queryNumSituation" resultType="java.util.Map">
+        <if test="type == 'yf'">
+            SELECT b.date,b.zgs,c.wzgs
+            FROM
+            (SELECT date, COALESCE(sum(sl),0) zgs FROM
+            (
+            SELECT date,yearDate,sfzg,sl FROM (
+            SELECT year||'-'||mon as date,year as yearDate,sfzg,sl FROM "rpt_aqjg_za_dwyhxx"
+            ) a
+            WHERE date BETWEEN #{beginTime} AND #{endTime}
+            ) a WHERE sfzg = '1' GROUP BY date) b
+            LEFT JOIN
+            (SELECT date, COALESCE(sum(sl),0) wzgs FROM
+            (
+            SELECT date,yearDate,sfzg,sl FROM (
+            SELECT year||'-'||mon as date,year as yearDate,sfzg,sl FROM "rpt_aqjg_za_dwyhxx"
+            ) a
+            WHERE date BETWEEN #{beginTime} AND #{endTime}
+            ) a WHERE sfzg = '0' GROUP BY date) c
+            ON b.date = c.date order by b.date
+        </if>
+        <if test="type == 'nf'">
+            SELECT b.yearDate,b.zgs,c.wzgs FROM
+            (SELECT yearDate, COALESCE(sum(sl),0) zgs
+            FROM
+            (SELECT year||'-'||mon as date,year as yearDate,sfzg,sl FROM "rpt_aqjg_za_dwyhxx") a WHERE sfzg = '1' GROUP BY yeardate) b
+            LEFT JOIN
+            (SELECT yearDate, COALESCE(sum(sl),0) wzgs
+            FROM
+            (SELECT year||'-'||mon as date,year as yearDate,sfzg,sl FROM "rpt_aqjg_za_dwyhxx") a WHERE sfzg = '0' GROUP BY yeardate) c
+            ON b.yearDate = c.yearDate order by b.yearDate
+        </if>
+    </select>
+    <select id="queryAjAllCount" resultType="java.lang.Integer">
+        SELECT sum(sl) allCount FROM "rpt_aqjg_za_ajxx"
+    </select>
+    <select id="queryCheckHit" resultType="java.util.Map">
+        SELECT a.fjmc, COALESCE(b.xz,0) xz, COALESCE(c.xs,0)xs
+        FROM
+        (SELECT fjmc FROM "rpt_aqjg_za_ajxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc,COALESCE(sum(sl),0) xz FROM "rpt_aqjg_za_ajxx" WHERE ajdlmc = '行政案件'
+         <if test="ajlbdm != null and ajlbdm != ''">
+             and ajlbdm = #{ajlbdm}
+         </if>
+         GROUP BY fjmc) b ON a.fjmc = b.fjmc
+        LEFT JOIN
+        (SELECT fjmc,COALESCE(sum(sl),0) xs FROM "rpt_aqjg_za_ajxx" WHERE ajdlmc = '刑事案件'
+        <if test="ajlbdm != null and ajlbdm != ''">
+            and ajlbdm = #{ajlbdm}
+        </if>
+         GROUP BY fjmc) c ON a.fjmc = c.fjmc
+    </select>
 
 
 </mapper>

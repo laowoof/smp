@@ -351,7 +351,7 @@ public class DangerousController {
         return apiResult;
     }
 
-    @ApiOperation(value = "履职分析/单位登记量排名", notes = "", httpMethod = "POST")
+    @ApiOperation(value = "履职分析/所有排名", notes = "", httpMethod = "POST")
     @PostMapping("duty/all-rank")
     public ApiResult queryCompanyRank() {
         ApiResult apiResult = new ApiResult();
@@ -393,7 +393,7 @@ public class DangerousController {
         return apiResult;
     }
 
-    @ApiOperation(value = "履职分析/单位登记量排名", notes = "", httpMethod = "POST")
+    @ApiOperation(value = "履职分析/钻取排名", notes = "", httpMethod = "POST")
     @PostMapping("duty/drill-rank")
     public ApiResult queryDrillRank(@RequestBody JSONObject jsonObject) {
         ApiResult apiResult = new ApiResult();
@@ -421,6 +421,46 @@ public class DangerousController {
         String message = "";
         try {
             List<Map<String, Object>> mapList = dangerousService.queryNumAnalysis(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "隐患查处分析/隐患数量态势", notes = "", httpMethod = "POST")
+    @PostMapping("hidden/num-situation")
+    public ApiResult queryNumSituation(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryNumSituation(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "隐患查处分析/查处打击统计", notes = "", httpMethod = "POST")
+    @PostMapping("hidden/check-hit")
+    public ApiResult queryCheckHit(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryCheckHit(jsonObject);
             apiResult.setData(mapList);
             isSuccess = true;
             message = "查询成功";

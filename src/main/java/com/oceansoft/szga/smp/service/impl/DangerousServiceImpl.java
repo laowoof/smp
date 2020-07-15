@@ -437,6 +437,64 @@ public class DangerousServiceImpl implements DangerousService {
         return mapList;
     }
 
+    @Override
+    public List<Map<String, Object>> queryNumSituation(JSONObject jsonObject) {
+        String type = jsonObject.getString("type");
+        // 获取按月份时间
+        String beginTime = null;
+        String endTime = null;
+        String[] yfTime = getYfTime();
+        for (int i=0;i<yfTime.length-1;i++) {
+            beginTime = yfTime[0];
+            endTime = yfTime[11];
+        }
+        List<Map<String, Object>> mapList = dangerousMapper.queryNumSituation(type, beginTime, endTime);
+        return mapList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryCheckHit(JSONObject jsonObject) {
+        String ajlbdm = jsonObject.getString("ajlbdm");
+        // 获取案件总数
+        Integer allCount = dangerousMapper.queryAjAllCount();
+        // 获取各地区案件数
+        List<Map<String, Object>> mapList = dangerousMapper.queryCheckHit(ajlbdm);
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区","轨交分局");
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (Map<String, Object> map : mapList) {
+                if (map.get("fjmc").toString().contains(name)) {
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("fjmc",map.get("fjmc"));
+                    resultMap.put("xz",map.get("xz"));
+                    resultMap.put("xs",map.get("xs"));
+                    Integer count = Integer.valueOf(map.get("xz").toString()) + Integer.valueOf(map.get("xs").toString());
+                    NumberFormat numberFormat = NumberFormat.getInstance();
+                    // 设置精确到小数点后2位
+                    numberFormat.setMaximumFractionDigits(2);
+                    String percent = numberFormat.format((float)  count/ (float)allCount* 100);//所占百分比
+                    resultMap.put("percent", percent+"%");
+                    resultList.add(resultMap);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
+    }
+
+    private String[] getYfTime() {
+        String[] months = new String[12];
+        Calendar cal = Calendar.getInstance();
+        //如果当前日期大于二月份的天数28天或者29天会导致计算月份错误，会多出一个三月份，故设置一个靠前日期解决此问题
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        for (int i = 0; i < 12; i++) {
+            months[11 - i] = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1);
+            cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 1); //逐次往前推1个月
+        }
+        return months;
+    }
+
     private List<Map<String, Object>> orderList(List<Map<String, Object>> mapList) {
         List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
         List<Map<String, Object>> resultList = new ArrayList<>();

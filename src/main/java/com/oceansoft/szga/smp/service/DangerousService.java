@@ -53,4 +53,8 @@ public interface DangerousService {
     List<Map<String, Object>> queryNumAnalysis(JSONObject jsonObject);
 
     List<Map<String, Object>> queryDrillRank(JSONObject jsonObject);
+
+    List<Map<String, Object>> queryNumSituation(JSONObject jsonObject);
+
+    List<Map<String, Object>> queryCheckHit(JSONObject jsonObject);
 }
