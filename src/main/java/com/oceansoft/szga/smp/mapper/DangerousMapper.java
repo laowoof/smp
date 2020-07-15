@@ -69,4 +69,22 @@ public interface DangerousMapper {
     List<Map<String, Object>> queryHiddenNoHandleRank();
 
     List<Map<String, Object>> queryEarlyHandleRank();
+
+    List<Map<String, Object>> queryNumAnalysisZg(@Param("hwlb") String hwlb,@Param("jcjg") String jcjg);
+
+    List<Map<String, Object>> queryNumAnalysisWzg(@Param("hwlb") String hwlb,@Param("jcjg") String jcjg);
+
+    List<Map<String, Object>> queryDrillRank1(String fjmc);
+
+    List<Map<String, Object>> queryDrillRank2(String fjmc);
+
+    List<Map<String, Object>> queryDrillRank3(String fjmc);
+
+    List<Map<String, Object>> queryDrillRank5(String fjmc);
+
+    List<Map<String, Object>> queryDrillRank6(String fjmc);
+
+    List<Map<String, Object>> queryDrillRank7(String fjmc);
+
+    List<Map<String, Object>> queryDrillRank8(String fjmc);
 }

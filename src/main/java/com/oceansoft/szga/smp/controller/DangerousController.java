@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -351,13 +352,55 @@ public class DangerousController {
     }
 
     @ApiOperation(value = "履职分析/单位登记量排名", notes = "", httpMethod = "POST")
-    @PostMapping("duty/company-rank")
+    @PostMapping("duty/all-rank")
     public ApiResult queryCompanyRank() {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
         try {
-            List<Map<String, Object>> mapList = dangerousService.queryCompanyRank();
+            // 单位登记量排名
+            List<Map<String, Object>> companyRankList = dangerousService.queryCompanyRank();
+            // 重点岗位人员登记量排名
+            List<Map<String, Object>> impPostRankList = dangerousService.queryImpPostRank();
+            // 单位缺检查量排名
+            List<Map<String, Object>> companyCheckRankList = dangerousService.queryCompanyCheckRank();
+            // 隐患发现量排名
+            List<Map<String, Object>> hiddenDiscoverRankList = dangerousService.queryHiddenDiscoverRank();
+            // 隐患整改量排名
+            List<Map<String, Object>> hiddenHandleRankList = dangerousService.queryHiddenHandleRank();
+            // 隐患未整改量排名
+            List<Map<String, Object>> hiddenNoHandleRankList = dangerousService.queryHiddenNoHandleRank();
+            // 预警处理量排名
+            List<Map<String, Object>> earlyHandleRankList = dangerousService.queryEarlyHandleRank();
+            // 最终结果Map
+            Map<String, List<Map<String, Object>>> resultList = new HashMap<>();
+            resultList.put("companyRankList", companyRankList);
+            resultList.put("impPostRankList", impPostRankList);
+            resultList.put("companyCheckRankList", companyCheckRankList);
+            resultList.put("hiddenDiscoverRankList", hiddenDiscoverRankList);
+            resultList.put("hiddenHandleRankList", hiddenHandleRankList);
+            resultList.put("hiddenNoHandleRankList", hiddenNoHandleRankList);
+            resultList.put("earlyHandleRankList", earlyHandleRankList);
+            apiResult.setData(resultList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "履职分析/单位登记量排名", notes = "", httpMethod = "POST")
+    @PostMapping("duty/drill-rank")
+    public ApiResult queryDrillRank(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryDrillRank(jsonObject);
             apiResult.setData(mapList);
             isSuccess = true;
             message = "查询成功";
@@ -370,114 +413,14 @@ public class DangerousController {
         return apiResult;
     }
 
-    @ApiOperation(value = "履职分析/重点岗位人员登记量排名", notes = "", httpMethod = "POST")
-    @PostMapping("duty/imp-post-rank")
-    public ApiResult queryImpPostRank() {
+    @ApiOperation(value = "隐患查处分析/隐患数量分析", notes = "", httpMethod = "POST")
+    @PostMapping("hidden/num-analysis")
+    public ApiResult queryNumAnalysis(@RequestBody JSONObject jsonObject) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
         try {
-            List<Map<String, Object>> mapList = dangerousService.queryImpPostRank();
-            apiResult.setData(mapList);
-            isSuccess = true;
-            message = "查询成功";
-        } catch (Exception e) {
-            message = e.getMessage();
-        }
-        apiResult.setCode(200);
-        apiResult.setMsg(message);
-        apiResult.setSucc(isSuccess);
-        return apiResult;
-    }
-
-    @ApiOperation(value = "履职分析/单位缺检查量排名", notes = "", httpMethod = "POST")
-    @PostMapping("duty/company-check-rank")
-    public ApiResult queryCompanyCheckRank() {
-        ApiResult apiResult = new ApiResult();
-        boolean isSuccess = false;
-        String message = "";
-        try {
-            List<Map<String, Object>> mapList = dangerousService.queryCompanyCheckRank();
-            apiResult.setData(mapList);
-            isSuccess = true;
-            message = "查询成功";
-        } catch (Exception e) {
-            message = e.getMessage();
-        }
-        apiResult.setCode(200);
-        apiResult.setMsg(message);
-        apiResult.setSucc(isSuccess);
-        return apiResult;
-    }
-
-    @ApiOperation(value = "履职分析/隐患发现量排名", notes = "", httpMethod = "POST")
-    @PostMapping("duty/hidden-discover-rank")
-    public ApiResult queryHiddenDiscoverRank() {
-        ApiResult apiResult = new ApiResult();
-        boolean isSuccess = false;
-        String message = "";
-        try {
-            List<Map<String, Object>> mapList = dangerousService.queryHiddenDiscoverRank();
-            apiResult.setData(mapList);
-            isSuccess = true;
-            message = "查询成功";
-        } catch (Exception e) {
-            message = e.getMessage();
-        }
-        apiResult.setCode(200);
-        apiResult.setMsg(message);
-        apiResult.setSucc(isSuccess);
-        return apiResult;
-    }
-
-    @ApiOperation(value = "履职分析/隐患整改量排名", notes = "", httpMethod = "POST")
-    @PostMapping("duty/hidden-handle-rank")
-    public ApiResult queryHiddenHandleRank() {
-        ApiResult apiResult = new ApiResult();
-        boolean isSuccess = false;
-        String message = "";
-        try {
-            List<Map<String, Object>> mapList = dangerousService.queryHiddenHandleRank();
-            apiResult.setData(mapList);
-            isSuccess = true;
-            message = "查询成功";
-        } catch (Exception e) {
-            message = e.getMessage();
-        }
-        apiResult.setCode(200);
-        apiResult.setMsg(message);
-        apiResult.setSucc(isSuccess);
-        return apiResult;
-    }
-
-    @ApiOperation(value = "履职分析/隐患未整改量排名", notes = "", httpMethod = "POST")
-    @PostMapping("duty/hidden-no-handle-rank")
-    public ApiResult queryHiddenNoHandleRank() {
-        ApiResult apiResult = new ApiResult();
-        boolean isSuccess = false;
-        String message = "";
-        try {
-            List<Map<String, Object>> mapList = dangerousService.queryHiddenNoHandleRank();
-            apiResult.setData(mapList);
-            isSuccess = true;
-            message = "查询成功";
-        } catch (Exception e) {
-            message = e.getMessage();
-        }
-        apiResult.setCode(200);
-        apiResult.setMsg(message);
-        apiResult.setSucc(isSuccess);
-        return apiResult;
-    }
-
-    @ApiOperation(value = "履职分析/预警处理量排名", notes = "", httpMethod = "POST")
-    @PostMapping("duty/early-handle-rank")
-    public ApiResult queryEarlyHandleRank() {
-        ApiResult apiResult = new ApiResult();
-        boolean isSuccess = false;
-        String message = "";
-        try {
-            List<Map<String, Object>> mapList = dangerousService.queryEarlyHandleRank();
+            List<Map<String, Object>> mapList = dangerousService.queryNumAnalysis(jsonObject);
             apiResult.setData(mapList);
             isSuccess = true;
             message = "查询成功";

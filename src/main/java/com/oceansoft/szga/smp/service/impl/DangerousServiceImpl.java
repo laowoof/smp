@@ -262,6 +262,7 @@ public class DangerousServiceImpl implements DangerousService {
         List<Map<String, Object>> resultList = dangerousMapper.queryEveryKindNum(wpdl,year, type);
         Map<String, Object> map = new HashMap<>();
         map.put("allCount", allCount);
+        resultList.add(map);
         return resultList;
     }
 
@@ -356,6 +357,84 @@ public class DangerousServiceImpl implements DangerousService {
         List<Map<String, Object>> mapList = dangerousMapper.queryEarlyHandleRank();
         List<Map<String, Object>> resultList = orderMethod(mapList);
         return resultList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryNumAnalysis(JSONObject jsonObject) {
+        String hwlb = jsonObject.getString("hwlb");
+        String jcjg = jsonObject.getString("jcjg");
+        // 整改量
+        List<Map<String, Object>> zgList = dangerousMapper.queryNumAnalysisZg(hwlb,jcjg);
+        // 未整改量
+        List<Map<String, Object>> wzgList = dangerousMapper.queryNumAnalysisWzg(hwlb,jcjg);
+        // 组织数据
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("fjmc", name);
+            resultList.add(resultMap);
+        }
+        for (Map<String, Object> map : resultList) {
+            if (!CollectionUtils.isEmpty(zgList)) {
+                for (Map<String, Object> objectMap : zgList) {
+                    if (objectMap.get("fjmc").toString().contains(map.get("fjmc").toString())) {
+                        map.put("zgl", objectMap.get("zgl"));
+                    } else {
+                        map.put("zgl", 0);
+                    }
+                }
+            } else {
+                map.put("zgl", 0);
+            }
+        }
+        for (Map<String, Object> map : resultList) {
+            if (!CollectionUtils.isEmpty(wzgList)) {
+                for (Map<String, Object> objectMap : wzgList) {
+                    if (objectMap.get("fjmc").toString().contains(map.get("fjmc").toString())) {
+                        map.put("wzgl", objectMap.get("wzgl"));
+                    } else {
+                        map.put("wzgl", 0);
+                    }
+                }
+            } else {
+                map.put("wzgl", 0);
+            }
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryDrillRank(JSONObject jsonObject) {
+        String id = jsonObject.getString("id");
+        String fjmc = jsonObject.getString("fjmc");
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        switch (id) {
+            case "1":
+                mapList = dangerousMapper.queryDrillRank1(fjmc);
+                break;
+            case "2":
+                mapList = dangerousMapper.queryDrillRank2(fjmc);
+                break;
+            case "3":
+                mapList = dangerousMapper.queryDrillRank3(fjmc);
+                break;
+            case "5":
+                mapList = dangerousMapper.queryDrillRank5(fjmc);
+                break;
+            case "6":
+                mapList = dangerousMapper.queryDrillRank6(fjmc);
+                break;
+            case "7":
+                mapList = dangerousMapper.queryDrillRank7(fjmc);
+                break;
+            case "8":
+                mapList = dangerousMapper.queryDrillRank8(fjmc);
+                break;
+            default:
+                break;
+        }
+        return mapList;
     }
 
     private List<Map<String, Object>> orderList(List<Map<String, Object>> mapList) {

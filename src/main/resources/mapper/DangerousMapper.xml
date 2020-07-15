@@ -163,6 +163,33 @@
     <select id="queryEarlyHandleRank" resultType="java.util.Map">
         SELECT fjmc,sum(sl) FROM "rpt_aqjg_za_yjxx" GROUP BY fjmc
     </select>
+    <select id="queryNumAnalysisZg" resultType="java.util.Map">
+        SELECT fjmc, SUM ( sl ) zgl FROM "rpt_aqjg_za_dwyhxx" WHERE hwlb LIKE concat('%',#{hwlb},'%') AND sfzg = '1' AND jcjg = #{jcjg} GROUP BY fjmc
+    </select>
+    <select id="queryNumAnalysisWzg" resultType="java.util.Map">
+        SELECT fjmc, SUM ( sl ) wzgl FROM "rpt_aqjg_za_dwyhxx" WHERE hwlb LIKE concat('%',#{hwlb},'%') AND sfzg = '0' AND jcjg = #{jcjg} GROUP BY fjmc
+    </select>
+    <select id="queryDrillRank1" resultType="java.util.Map">
+        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
+    </select>
+    <select id="queryDrillRank2" resultType="java.util.Map">
+        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
+    </select>
+    <select id="queryDrillRank3" resultType="java.util.Map">
+        SELECT sspcsmc,sum(sl) FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' AND ssfxjmc = #{fjmc} GROUP BY sspcsmc ORDER BY sum desc
+    </select>
+    <select id="queryDrillRank5" resultType="java.util.Map">
+        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
+    </select>
+    <select id="queryDrillRank6" resultType="java.util.Map">
+        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} AND sfzg = '1' GROUP BY pcsmc ORDER BY sum desc
+    </select>
+    <select id="queryDrillRank7" resultType="java.util.Map">
+        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} AND sfzg = '0' GROUP BY pcsmc ORDER BY sum desc
+    </select>
+    <select id="queryDrillRank8" resultType="java.util.Map">
+        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_yjxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
+    </select>
 
 
 </mapper>
