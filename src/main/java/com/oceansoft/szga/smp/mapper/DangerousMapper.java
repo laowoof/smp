@@ -70,9 +70,9 @@ public interface DangerousMapper {
 
     List<Map<String, Object>> queryEarlyHandleRank();
 
-    List<Map<String, Object>> queryNumAnalysisZg(@Param("hwlb") String hwlb,@Param("jcjg") String jcjg);
+    List<Map<String, Object>> queryNumAnalysisZg(@Param("hwlb") String hwlb,@Param("jcjgList") List<String> jcjgList);
 
-    List<Map<String, Object>> queryNumAnalysisWzg(@Param("hwlb") String hwlb,@Param("jcjg") String jcjg);
+    List<Map<String, Object>> queryNumAnalysisWzg(@Param("hwlb") String hwlb,@Param("jcjgList") List<String> jcjgList);
 
     List<Map<String, Object>> queryDrillRank1(String fjmc);
 
@@ -88,7 +88,7 @@ public interface DangerousMapper {
 
     List<Map<String, Object>> queryDrillRank8(String fjmc);
 
-    List<Map<String, Object>> queryNumSituation(@Param("type") String type,@Param("beginTime") String beginTime,@Param("endTime") String endTime);
+    List<Map<String, Object>> queryNumSituation(@Param("type") String type,@Param("hwlb") String hwlb,@Param("beginTime") String beginTime,@Param("endTime") String endTime);
 
     Integer queryAjAllCount();
 

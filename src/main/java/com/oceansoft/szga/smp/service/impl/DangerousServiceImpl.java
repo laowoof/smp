@@ -363,10 +363,15 @@ public class DangerousServiceImpl implements DangerousService {
     public List<Map<String, Object>> queryNumAnalysis(JSONObject jsonObject) {
         String hwlb = jsonObject.getString("hwlb");
         String jcjg = jsonObject.getString("jcjg");
+        List<String> jcjgList = null;
+        if (!StringUtils.isEmpty(jcjg)) {
+            String[] split = jcjg.split(",");
+            jcjgList = Arrays.asList(split);
+        }
         // 整改量
-        List<Map<String, Object>> zgList = dangerousMapper.queryNumAnalysisZg(hwlb,jcjg);
+        List<Map<String, Object>> zgList = dangerousMapper.queryNumAnalysisZg(hwlb,jcjgList);
         // 未整改量
-        List<Map<String, Object>> wzgList = dangerousMapper.queryNumAnalysisWzg(hwlb,jcjg);
+        List<Map<String, Object>> wzgList = dangerousMapper.queryNumAnalysisWzg(hwlb,jcjgList);
         // 组织数据
         List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
         List<Map<String, Object>> resultList = new ArrayList<>();
@@ -440,6 +445,7 @@ public class DangerousServiceImpl implements DangerousService {
     @Override
     public List<Map<String, Object>> queryNumSituation(JSONObject jsonObject) {
         String type = jsonObject.getString("type");
+        String hwlb = jsonObject.getString("hwlb");
         // 获取按月份时间
         String beginTime = null;
         String endTime = null;
@@ -448,7 +454,7 @@ public class DangerousServiceImpl implements DangerousService {
             beginTime = yfTime[0];
             endTime = yfTime[11];
         }
-        List<Map<String, Object>> mapList = dangerousMapper.queryNumSituation(type, beginTime, endTime);
+        List<Map<String, Object>> mapList = dangerousMapper.queryNumSituation(type,hwlb, beginTime, endTime);
         return mapList;
     }
 
