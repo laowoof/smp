@@ -374,11 +374,12 @@ public class RoadController {
     }
 
     @ApiOperation(value = "调第三方接口", notes = "", httpMethod = "POST")
-    @PostMapping("api-getDataGcs")
-    public JSONArray getDataGcs(@RequestBody String name) {
+    @PostMapping("get-data-gcs")
+    public JSONArray getDataGcs(@RequestBody JSONObject jsonObject) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity request = new HttpEntity( headers);
+        String name = jsonObject.getString("name");
         JSONArray resultArray = roadService.getDataGcs(name, request);
         return resultArray;
     }

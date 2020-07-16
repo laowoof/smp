@@ -66,10 +66,10 @@
             fjmc
     </select>
     <select id="queryHighPoison" resultType="java.util.Map">
-        SELECT wpmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY wpmc order by sum(sl) desc
+        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY fjmc
     </select>
     <select id="queryEasyBoom" resultType="java.util.Map">
-        SELECT wpmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY wpmc order by sum(sl) desc
+        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY fjmc
     </select>
     <select id="queryHighPoisonLine" resultType="java.util.Map">
         <choose>
@@ -256,6 +256,192 @@
             and ajlbdm = #{ajlbdm}
         </if>
          GROUP BY fjmc) c ON a.fjmc = c.fjmc
+    </select>
+    <select id="queryPeopleBackgroud" resultType="java.util.Map">
+        SELECT a.fjmc, COALESCE(b.yqk,0) yqk, COALESCE(c.wqk,0) wqk FROM
+        (SELECT fjmc FROM "rpt_aqjg_za_ryxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc,COALESCE(sum(sl),0) yqk FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND ywqk = '1' GROUP BY fjmc) b ON a.fjmc = b.fjmc
+        LEFT JOIN
+        (SELECT fjmc,COALESCE(sum(sl),0) wqk FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND ywqk = '0' GROUP BY fjmc) c ON a.fjmc = c.fjmc
+    </select>
+    <select id="queryFjmc" resultType="java.lang.String">
+        SELECT fjmc FROM rpt_aqjg_za_ryxx GROUP BY fjmc
+    </select>
+    <select id="queryAllPeopleCount" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0'
+    </select>
+    <select id="queryPeopleBusiness" resultType="java.util.Map">
+        SELECT ywlxmc,sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0'
+        <if test="fjmcList != null">
+        AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY ywlxmc
+    </select>
+    <select id="queryPeopleZcState1" resultType="java.util.Map">
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        <choose>
+            <when test="type=='yf'">
+                SELECT date,sum(sl) FROM new_ryxx WHERE date BETWEEN #{beginTime} AND #{endTime}
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY date ORDER BY date
+            </when>
+            <otherwise>
+                SELECT yearDate,sum(sl) FROM new_ryxx where 1=1
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY yearDate ORDER BY yearDate
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryPeopleZcState2" resultType="java.util.Map">
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        <choose>
+            <when test="type=='yf'">
+                SELECT date,sum(sl) FROM new_ryxx WHERE sfzx = '1' and date BETWEEN #{beginTime} AND #{endTime}
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY date ORDER BY date
+            </when>
+            <otherwise>
+                SELECT yearDate,sum(sl) FROM new_ryxx where sfzx = '1'
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY yearDate ORDER BY yearDate
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryPeopleZcState3" resultType="java.util.Map">
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        <choose>
+            <when test="type=='yf'">
+                SELECT date,sum(sl) FROM new_ryxx WHERE sfzx = '0' and date BETWEEN #{beginTime} AND #{endTime}
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY date ORDER BY date
+            </when>
+            <otherwise>
+                SELECT yearDate,sum(sl) FROM new_ryxx where sfzx = '0'
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY yearDate ORDER BY yearDate
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryPeopleBaState1" resultType="java.util.Map">
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        <choose>
+            <when test="type=='yf'">
+                SELECT date,sum(sl) FROM new_ryxx WHERE date BETWEEN #{beginTime} AND #{endTime}
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY date ORDER BY date
+            </when>
+            <otherwise>
+                SELECT yearDate,sum(sl) FROM new_ryxx where 1=1
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY yearDate ORDER BY yearDate
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryPeopleBaState2" resultType="java.util.Map">
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        <choose>
+            <when test="type=='yf'">
+                SELECT date,sum(sl) FROM new_ryxx WHERE baztdm = '0' and date BETWEEN #{beginTime} AND #{endTime}
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY date ORDER BY date
+            </when>
+            <otherwise>
+                SELECT yearDate,sum(sl) FROM new_ryxx where baztdm = '0'
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY yearDate ORDER BY yearDate
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryPeopleBaState3" resultType="java.util.Map">
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        <choose>
+            <when test="type=='yf'">
+                SELECT date,sum(sl) FROM new_ryxx WHERE sfzx = '1' and date BETWEEN #{beginTime} AND #{endTime}
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY date ORDER BY date
+            </when>
+            <otherwise>
+                SELECT yearDate,sum(sl) FROM new_ryxx where sfzx = '1'
+                <if test="fjmcList != null">
+                    AND fjmc IN
+                    <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                GROUP BY yearDate ORDER BY yearDate
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryPeopleRecord" resultType="java.util.Map">
+        SELECT fjmc,sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and ywlxdm = #{ywlxdm} GROUP BY fjmc
+    </select>
+    <select id="queryPeopleNumByDm" resultType="java.util.Map">
+        SELECT * FROM (
+        SELECT '管理员' as name, sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfgly = '1' AND ywlxdm = #{ywlxdm}
+        UNION
+        SELECT '操作员', sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfczy = '1' AND ywlxdm = #{ywlxdm}
+        UNION
+        SELECT '治安保卫员', sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfzabwy = '1' AND ywlxdm = #{ywlxdm}
+        ) t ORDER BY t.sum desc
     </select>
 
 

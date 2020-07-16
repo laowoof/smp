@@ -57,4 +57,14 @@ public interface DangerousService {
     List<Map<String, Object>> queryNumSituation(JSONObject jsonObject);
 
     List<Map<String, Object>> queryCheckHit(JSONObject jsonObject);
+
+    List<Map<String, Object>> queryPeopleBackgroud();
+
+    List<Map<String, Object>> queryPeopleBusiness(JSONObject jsonObject);
+
+    List<String> queryFjmc();
+
+    Map<String, Object> queryPeopleState(JSONObject jsonObject);
+
+    Map<String, Object> queryPeopleRecord(JSONObject jsonObject);
 }

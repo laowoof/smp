@@ -424,12 +424,14 @@ public class RoadServiceImpl implements RoadService {
 
     @Override
     public JSONArray getDataGcs(String name, HttpEntity request) {
+        String object = null;
         JSONArray jsonArray = new JSONArray();
         JSONArray resultArray = new JSONArray();
         switch (name) {
             case "总体情况":
-                jsonArray = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, JSONArray.class);
-                for (int i = jsonArray.size()-8; i<jsonArray.size();i++) {
+                object = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, String.class);
+                jsonArray= JSONArray.parseArray(object);
+                for (int i = jsonArray.size()-7; i<jsonArray.size();i++) {
                     resultArray.add(jsonArray.getJSONObject(i));
                 }
                 break;
@@ -444,7 +446,8 @@ public class RoadServiceImpl implements RoadService {
             case "吴中区":
             case "相城区":
             case "度假区":
-                jsonArray = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_2.xhtml", request, JSONArray.class);
+                object = restTemplate.postForObject("http://50.73.94.34:8080/sjmh/dataClkk/sjhj_data_month_3.xhtml", request, String.class);
+                jsonArray= JSONArray.parseArray(object);
                 for (int i = 0; i<jsonArray.size();i++) {
                     if (name.contains(jsonArray.getJSONObject(i).getString("NAME"))) {
                         resultArray.add(jsonArray.getJSONObject(i));

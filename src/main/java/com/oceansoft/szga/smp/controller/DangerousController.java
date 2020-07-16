@@ -473,6 +473,106 @@ public class DangerousController {
         return apiResult;
     }
 
+    @ApiOperation(value = "重点岗位人员分析/从业人员背景审查情况", notes = "", httpMethod = "POST")
+    @PostMapping("important/people-backgroud")
+    public ApiResult queryPeopleBackgroud() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryPeopleBackgroud();
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "重点岗位人员分析/人员业务类型分析", notes = "", httpMethod = "POST")
+    @PostMapping("important/people-business")
+    public ApiResult queryPeopleBusiness(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> mapList = dangerousService.queryPeopleBusiness(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "重点岗位人员分析/获取排序好的分局名称", notes = "", httpMethod = "POST")
+    @PostMapping("important/fjmc")
+    public ApiResult queryFjmc() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<String> list = dangerousService.queryFjmc();
+            apiResult.setData(list);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "重点岗位人员分析/重点岗位人员状态监测", notes = "", httpMethod = "POST")
+    @PostMapping("important/people-state")
+    public ApiResult queryPeopleState(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryPeopleState(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "重点岗位人员分析/重点岗位人员登记分析", notes = "", httpMethod = "POST")
+    @PostMapping("important/people-record")
+    public ApiResult queryPeopleRecord(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryPeopleRecord(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
 
 
 }

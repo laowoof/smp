@@ -9,6 +9,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -157,13 +158,15 @@ public class DangerousServiceImpl implements DangerousService {
     @Override
     public List<Map<String, Object>> queryHighPoison() {
         List<Map<String, Object>> mapList = dangerousMapper.queryHighPoison();
-        return mapList;
+        List<Map<String, Object>> resultList = orderMethod(mapList);
+        return resultList;
     }
 
     @Override
     public List<Map<String, Object>> queryEasyBoom() {
         List<Map<String, Object>> mapList = dangerousMapper.queryEasyBoom();
-        return mapList;
+        List<Map<String, Object>> resultList = orderMethod(mapList);
+        return resultList;
     }
 
     @Override
@@ -289,10 +292,7 @@ public class DangerousServiceImpl implements DangerousService {
             for (String name : orderList) {
                 for (Map<String, Object> map : mapList) {
                     if (map.get("fjmc").toString().contains(name)) {
-                        Map<String, Object> resultMap = new HashMap<>();
-                        resultMap.put("fjmc", map.get("fjmc"));
-                        resultMap.put("sum", map.get("sum"));
-                        resultList.add(resultMap);
+                        resultList.add(map);
                     } else {
                         continue;
                     }
@@ -447,13 +447,8 @@ public class DangerousServiceImpl implements DangerousService {
         String type = jsonObject.getString("type");
         String hwlb = jsonObject.getString("hwlb");
         // 获取按月份时间
-        String beginTime = null;
-        String endTime = null;
-        String[] yfTime = getYfTime();
-        for (int i=0;i<yfTime.length-1;i++) {
-            beginTime = yfTime[0];
-            endTime = yfTime[11];
-        }
+        String beginTime = getLast12Months(11);
+        String endTime = getLast12Months(0);
         List<Map<String, Object>> mapList = dangerousMapper.queryNumSituation(type,hwlb, beginTime, endTime);
         return mapList;
     }
@@ -489,6 +484,191 @@ public class DangerousServiceImpl implements DangerousService {
         return resultList;
     }
 
+    @Override
+    public List<Map<String, Object>> queryPeopleBackgroud() {
+        List<Map<String, Object>> mapList = dangerousMapper.queryPeopleBackgroud();
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
+        if (!CollectionUtils.isEmpty(mapList)) {
+            for (String name : orderList) {
+                for (Map<String, Object> map : mapList) {
+                    if (map.get("fjmc").toString().contains(name)) {
+                        Map<String, Object> resultMap = new HashMap<>();
+                        resultMap.put("fjmc", map.get("fjmc"));
+                        resultMap.put("yqk", map.get("yqk"));
+                        resultMap.put("wqk", map.get("wqk"));
+                        resultList.add(resultMap);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryPeopleBusiness(JSONObject jsonObject) {
+        // 获取人员总数
+        Integer allPeopleCount = dangerousMapper.queryAllPeopleCount();
+        // 组织参数 查询信息
+        String fjmc = jsonObject.getString("fjmc");
+        List<String> fjmcList = null;
+        if (!StringUtils.isEmpty(fjmc)) {
+            String[] split = fjmc.split(",");
+            fjmcList = Arrays.asList(split);
+        }
+        List<Map<String, Object>> mapList = dangerousMapper.queryPeopleBusiness(fjmcList);
+        for (Map<String, Object> map : mapList) {
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            // 设置精确到小数点后2位
+            numberFormat.setMaximumFractionDigits(2);
+            String percent = numberFormat.format((float)  Integer.valueOf(map.get("sum").toString())/ (float)allPeopleCount* 100);//所占百分比
+            map.put("percent", percent+"%");
+        }
+        return mapList;
+    }
+
+    @Override
+    public List<String> queryFjmc() {
+        List<String> fjmcList = dangerousMapper.queryFjmc();
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
+        List<String> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (String fjmc : fjmcList) {
+                if (fjmc.contains(name)) {
+                    resultList.add(fjmc);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
+    }
+
+    @Override
+    public Map<String, Object> queryPeopleState(JSONObject jsonObject) {
+        Map<String, Object> resultMap = new HashMap<>();
+        // 分局名称集合
+        String fjmc = jsonObject.getString("fjmc");
+        List<String> fjmcList = null;
+        if (!StringUtils.isEmpty(fjmc)) {
+            String[] split = fjmc.split(",");
+            fjmcList = Arrays.asList(split);
+        }
+        // 年份  月份
+        String type = jsonObject.getString("type");
+        // 注册状态  备案状态
+        String state = jsonObject.getString("state");
+        // 获取按月份时间
+        String beginTime = getLast12Months(11);
+        String endTime = getLast12Months(0);
+        // 总量集合
+        List<Map<String, Object>> allCountList = null;
+        // 已注销集合
+        List<Map<String, Object>> isCancelList = null;
+        // 新增集合
+        List<Map<String, Object>> noCancelList = null;
+        // 已办结
+        List<Map<String, Object>> isHandleList = null;
+        // 未办结
+        List<Map<String, Object>> noHandleList = null;
+        // 新增总量
+        Integer newAddNum = 0;
+        // 注销总量
+        Integer isCancelNum = 0;
+        // 备案总量
+        Integer hasRecordNum = 0;
+        switch (state) {
+            case "注册状态":
+                // 总量
+                allCountList = dangerousMapper.queryPeopleZcState1(fjmcList, type, beginTime, endTime);
+                // 已注销
+                isCancelList = dangerousMapper.queryPeopleZcState2(fjmcList, type, beginTime, endTime);
+                // 新增
+                noCancelList = dangerousMapper.queryPeopleZcState3(fjmcList, type, beginTime, endTime);
+                // 新增总量
+                if (!CollectionUtils.isEmpty(noCancelList)) {
+                    for (Map<String, Object> map : noCancelList) {
+                        newAddNum = newAddNum + Integer.valueOf(map.get("sum").toString());
+                    }
+                }
+                // 注销总量
+                if (!CollectionUtils.isEmpty(isCancelList)) {
+                    for (Map<String, Object> map : isCancelList) {
+                        isCancelNum = isCancelNum + Integer.valueOf(map.get("sum").toString());
+                    }
+                }
+                resultMap.put("allCountList", allCountList);
+                resultMap.put("isCancelList", isCancelList);
+                resultMap.put("noCancelList", noCancelList);
+                resultMap.put("newAddNum", newAddNum);
+                resultMap.put("isCancelNum", isCancelNum);
+                break;
+            case "备案状态":
+                // 总量
+                allCountList = dangerousMapper.queryPeopleBaState1(fjmcList, type, beginTime, endTime);
+                // 未办结
+                noHandleList = dangerousMapper.queryPeopleBaState2(fjmcList, type, beginTime, endTime);
+                // 已办结
+                isHandleList = dangerousMapper.queryPeopleBaState3(fjmcList, type, beginTime, endTime);
+                if (!StringUtils.isEmpty(allCountList)) {
+                    for (Map<String, Object> map : allCountList) {
+                        hasRecordNum = hasRecordNum + Integer.valueOf(map.get("sum").toString());
+                    }
+                }
+                resultMap.put("allCountList", allCountList);
+                resultMap.put("noHandleList", noHandleList);
+                resultMap.put("isHandleList", isHandleList);
+                resultMap.put("hasRecordNum", hasRecordNum);
+                break;
+            default:
+                break;
+        }
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> queryPeopleRecord(JSONObject jsonObject) {
+        Map<String, Object> resultMap = new HashMap<>();
+        String ywlxdm = jsonObject.getString("ywlxdm");
+        // 总数
+        Integer allCount = dangerousMapper.queryAllPeopleCount();
+        // 各地区占比处理
+        List<Map<String, Object>> mapList = dangerousMapper.queryPeopleRecord(ywlxdm);
+        for (Map<String, Object> map : mapList) {
+            // 创建一个数值格式化对象
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            // 设置精确到小数点后2位
+            numberFormat.setMaximumFractionDigits(2);
+            String result = numberFormat.format((float)  Integer.valueOf(map.get("sum").toString())/ (float)allCount* 100);//所占百分比
+            map.put("percent", result+"%");
+        }
+        // 人员数量排名
+        List<Map<String, Integer>> peopleList = dangerousMapper.queryPeopleNumByDm(ywlxdm);
+        resultMap.put("mapList", mapList);
+        resultMap.put("peopleList", peopleList);
+        return resultMap;
+    }
+
+    /**
+     * 获取前多少月的月份 带0
+     * @param i
+     * @return
+     */
+    public String getLast12Months(int i) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, -i);
+        Date m = c.getTime();
+        return sdf.format(m);
+    }
+
+    /**
+     * 获取前多少月的月份 所有  不带0
+     * @return
+     */
     private String[] getYfTime() {
         String[] months = new String[12];
         Calendar cal = Calendar.getInstance();
