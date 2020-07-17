@@ -523,7 +523,7 @@ public class DangerousServiceImpl implements DangerousService {
             NumberFormat numberFormat = NumberFormat.getInstance();
             // 设置精确到小数点后2位
             numberFormat.setMaximumFractionDigits(2);
-            String percent = numberFormat.format((float)  Integer.valueOf(map.get("sum").toString())/ (float)allPeopleCount* 100);//所占百分比
+            String percent = numberFormat.format((float)  Integer.valueOf(map.get("value").toString())/ (float)allPeopleCount* 100);//所占百分比
             map.put("percent", percent+"%");
         }
         return mapList;
@@ -641,7 +641,7 @@ public class DangerousServiceImpl implements DangerousService {
             NumberFormat numberFormat = NumberFormat.getInstance();
             // 设置精确到小数点后2位
             numberFormat.setMaximumFractionDigits(2);
-            String result = numberFormat.format((float)  Integer.valueOf(map.get("sum").toString())/ (float)allCount* 100);//所占百分比
+            String result = numberFormat.format((float)  Integer.valueOf(map.get("value").toString())/ (float)allCount* 100);//所占百分比
             map.put("percent", result+"%");
         }
         // 人员数量排名
@@ -794,6 +794,138 @@ public class DangerousServiceImpl implements DangerousService {
         return resultMap;
     }
 
+    @Override
+    public Map<String, Object> queryCheckSituation() {
+        Map<String, Object> resultMap = new HashMap<>();
+        // 检查总量
+        Integer checkAllCount = dangerousMapper.queryCheckAllCount();
+        resultMap.put("checkAllCount", checkAllCount);
+        // 各地区三项
+        List<Map<String, Object>> everyCountList = dangerousMapper.queryEveryCount();
+        if (!CollectionUtils.isEmpty(everyCountList)) {
+            for (Map<String, Object> map : everyCountList) {
+                Integer count = 0;
+                count = count + Integer.valueOf(map.get("yjcs").toString()) + Integer.valueOf(map.get("djcs").toString()) + Integer.valueOf(map.get("qjcs").toString());
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                // 设置精确到小数点后2位
+                numberFormat.setMaximumFractionDigits(2);
+                String result = numberFormat.format((float)  count/ (float)checkAllCount* 100);//所占百分比
+                map.put("percent", result+"%");
+            }
+            List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
+            List<Map<String, Object>> resultList = new ArrayList<>();
+            for (String name : orderList) {
+                for (Map<String, Object> map : everyCountList) {
+                    if (map.get("ssfxjmc").toString().contains(name)) {
+                        resultList.add(map);
+                    }
+                }
+            }
+            resultMap.put("resultList", resultList);
+        }
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> queryCompanySupervise(JSONObject jsonObject) {
+        Map<String, Object> resultMap = new HashMap<>();
+        String type = jsonObject.getString("type");
+        switch (type) {
+            case "按月":
+                // 获取按月份时间
+                String beginTime = getLast12Months(11);
+                String endTime = getLast12Months(0);
+                List<Map<String, Object>> companySuperviseByMon = dangerousMapper.queryCompanySuperviseByMon(beginTime, endTime);
+                resultMap.put("companySuperviseByMon", companySuperviseByMon);
+                break;
+            case "按日":
+                String beginDay = getLast7Days(7);
+                String endDay = getLast12Months(0);
+                List<Map<String, Object>> companySuperviseByDay = dangerousMapper.queryCompanySuperviseByDay(beginDay, endDay);
+                resultMap.put("companySuperviseByDay", companySuperviseByDay);
+                break;
+            default:
+                break;
+        }
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> queryEarlyWarning() {
+        Map<String, Object> resultMap = new HashMap<>();
+        // 预警总数
+        Integer allCount = dangerousMapper.queryEarlyWarningAllCount();
+        resultMap.put("all", allCount);
+        // 各地区占比
+        List<Map<String, Object>> mapList = dangerousMapper.queryEarlyWarning();
+        if (!CollectionUtils.isEmpty(mapList)) {
+            for (Map<String, Object> map : mapList) {
+                Integer count = 0;
+                count = count + Integer.valueOf(map.get("wcy").toString()) + Integer.valueOf(map.get("wcz").toString()) + Integer.valueOf(map.get("czz").toString()) + Integer.valueOf(map.get("ycz").toString());
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                // 设置精确到小数点后2位
+                numberFormat.setMaximumFractionDigits(2);
+                String result = numberFormat.format((float)  count/ (float)allCount* 100);//所占百分比
+                map.put("percent", result+"%");
+            }
+            // 排序
+            List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
+            List<Map<String, Object>> resultList = new ArrayList<>();
+            for (String name : orderList) {
+                for (Map<String, Object> map : mapList) {
+                    if (map.get("fjmc").toString().contains(name)) {
+                        resultList.add(map);
+                    }
+                }
+            }
+            resultMap.put("resultList", resultList);
+        }
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> queryEarlyProject(JSONObject jsonObject) {
+        Map<String, Object> resultMap = new HashMap<>();
+        String dwlxdm = jsonObject.getString("dwlxdm");
+        switch (dwlxdm) {
+            case "1":
+                // 剧毒总数
+                Integer jdCount = dangerousMapper.queryJdCount();
+                // 剧毒化学品单位
+                List<Map<String, Object>> jdList = dangerousMapper.queryEarlyProjectJd();
+                if (!CollectionUtils.isEmpty(jdList)) {
+                    for (Map<String, Object> map : jdList) {
+                        NumberFormat numberFormat = NumberFormat.getInstance();
+                        // 设置精确到小数点后2位
+                        numberFormat.setMaximumFractionDigits(2);
+                        String result = numberFormat.format((float)  Integer.valueOf(map.get("sum").toString())/ (float)jdCount* 100);//所占百分比
+                        map.put("percent", result+"%");
+                    }
+                }
+                resultMap.put("jdList", jdList);
+                break;
+            case "2":
+                // 易制爆总数
+                Integer yzbCount = dangerousMapper.queryYzbCount();
+                // 易制爆单位
+                List<Map<String, Object>> yzbList = dangerousMapper.queryEarlyProjectYzb();
+                if (!CollectionUtils.isEmpty(yzbList)) {
+                    for (Map<String, Object> map : yzbList) {
+                        NumberFormat numberFormat = NumberFormat.getInstance();
+                        // 设置精确到小数点后2位
+                        numberFormat.setMaximumFractionDigits(2);
+                        String result = numberFormat.format((float)  Integer.valueOf(map.get("sum").toString())/ (float)yzbCount* 100);//所占百分比
+                        map.put("percent", result+"%");
+                    }
+                }
+                resultMap.put("yzbList", yzbList);
+                break;
+            default:
+                break;
+        }
+        return resultMap;
+    }
+
     /**
      * 获取前多少月的月份 带0
      * @param i
@@ -804,6 +936,15 @@ public class DangerousServiceImpl implements DangerousService {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         c.add(Calendar.MONTH, -i);
+        Date m = c.getTime();
+        return sdf.format(m);
+    }
+
+    public String getLast7Days(int i) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DAY_OF_WEEK, -i);
         Date m = c.getTime();
         return sdf.format(m);
     }

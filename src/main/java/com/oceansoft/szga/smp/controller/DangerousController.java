@@ -633,6 +633,87 @@ public class DangerousController {
         return apiResult;
     }
 
+    @ApiOperation(value = "危险品单位分析/检查情况统计", notes = "", httpMethod = "POST")
+    @PostMapping("analysis/check-situation")
+    public ApiResult queryCheckSituation() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryCheckSituation();
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "危险品单位分析/单位监管分析", notes = "", httpMethod = "POST")
+    @PostMapping("analysis/company-supervise")
+    public ApiResult queryCompanySupervise(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryCompanySupervise(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "危险品单位分析/预警情况统计", notes = "", httpMethod = "POST")
+    @PostMapping("analysis/early-warning")
+    public ApiResult queryEarlyWarning() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryEarlyWarning();
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "危险品单位分析/预警项目统计", notes = "", httpMethod = "POST")
+    @PostMapping("analysis/early-project")
+    public ApiResult queryEarlyProject(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryEarlyProject(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+
 
 
 }

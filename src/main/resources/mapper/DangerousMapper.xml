@@ -272,7 +272,7 @@
         SELECT sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0'
     </select>
     <select id="queryPeopleBusiness" resultType="java.util.Map">
-        SELECT ywlxmc,sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0'
+        SELECT ywlxmc as name,sum(sl) as value FROM rpt_aqjg_za_ryxx WHERE sfzx = '0'
         <if test="fjmcList != null">
         AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -575,6 +575,68 @@
             </foreach>
         </if>
         GROUP BY date ORDER BY date
+    </select>
+    <select id="queryCheckAllCount" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM "rpt_aqjg_za_dwjcxx"
+    </select>
+    <select id="queryEveryCount" resultType="java.util.Map">
+        SELECT a.ssfxjmc, COALESCE(b.yjcs, 0) yjcs, COALESCE(c.djcs, 0) djcs, COALESCE(d.qjcs, 0) qjcs FROM (
+        (SELECT ssfxjmc FROM rpt_aqjg_za_dwjcxx GROUP BY ssfxjmc) a
+        LEFT JOIN
+        (SELECT ssfxjmc, sum(sl) yjcs FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '1' GROUP BY ssfxjmc) b ON a.ssfxjmc = b.ssfxjmc
+        LEFT JOIN
+        (SELECT ssfxjmc, sum(sl) djcs FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '0' GROUP BY ssfxjmc) c ON a.ssfxjmc = c.ssfxjmc
+        LEFT JOIN
+        (SELECT ssfxjmc, sum(sl) qjcs FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc) d ON a.ssfxjmc = d.ssfxjmc
+        )
+    </select>
+    <select id="queryCompanySuperviseByMon" resultType="java.util.Map">
+        SELECT a.date, COALESCE(a.dwzs, 0) dwzs, COALESCE(b.dwxzs, 0) dwxzs FROM (
+        (WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        SELECT date, sum(sl) dwzs FROM new_dwxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
+        LEFT JOIN
+        (WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        SELECT date, sum(sl) dwxzs FROM new_dwxx WHERE yyzt = '01' AND date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) b
+        ON a.date = b.date
+        )
+    </select>
+    <select id="queryCompanySuperviseByDay" resultType="java.util.Map">
+        SELECT COALESCE(a.tjrq, TO_CHAR(now(), 'yyyy-mm-dd')) tjrq, COALESCE(a.dwzs, 0) dwzs, COALESCE(b.dwxzs, 0) dwxzs FROM
+        (
+        (SELECT tjrq, sum(sl) dwzs FROM rpt_aqjg_za_dwxx WHERE tjrq BETWEEN #{beginDay} AND #{endDay} GROUP BY tjrq ORDER BY tjrq) a
+        LEFT JOIN
+        (SELECT tjrq, sum(sl) dwxzs FROM rpt_aqjg_za_dwxx WHERE yyzt = '01' AND tjrq BETWEEN #{beginDay} AND #{endDay} GROUP BY tjrq ORDER BY tjrq) b
+        ON a.tjrq = b.tjrq
+        )
+    </select>
+    <select id="queryEarlyWarningAllCount" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM rpt_aqjg_za_yjxx
+    </select>
+    <select id="queryEarlyWarning" resultType="java.util.Map">
+        SELECT a.fjmc, COALESCE(b.wcy, 0) wcy, COALESCE(c.wcz, 0) wcz, COALESCE(d.czz, 0) czz, COALESCE(e.ycz, 0) ycz
+        FROM (
+        (SELECT fjmc FROM rpt_aqjg_za_yjxx GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc, sum(sl) wcy FROM rpt_aqjg_za_yjxx WHERE ztdm = '-1' GROUP BY fjmc) b ON a.fjmc = b.fjmc
+        LEFT JOIN
+        (SELECT fjmc, sum(sl) wcz FROM rpt_aqjg_za_yjxx WHERE ztdm = '0' GROUP BY fjmc) c ON a.fjmc = c.fjmc
+        LEFT JOIN
+        (SELECT fjmc, sum(sl) czz FROM rpt_aqjg_za_yjxx WHERE ztdm = '1' GROUP BY fjmc) d ON a.fjmc = d.fjmc
+        LEFT JOIN
+        (SELECT fjmc, sum(sl) ycz FROM rpt_aqjg_za_yjxx WHERE ztdm = '2' GROUP BY fjmc) e ON a.fjmc = e.fjmc
+        )
+    </select>
+    <select id="queryEarlyProjectJd" resultType="java.util.Map">
+        SELECT yjmc, sum(sl) FROM rpt_aqjg_za_yjxx WHERE dwlxdm = '1' GROUP BY yjmc
+    </select>
+    <select id="queryJdCount" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM rpt_aqjg_za_yjxx WHERE dwlxdm = '1'
+    </select>
+    <select id="queryYzbCount" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM rpt_aqjg_za_yjxx WHERE dwlxdm = '2'
+    </select>
+    <select id="queryEarlyProjectYzb" resultType="java.util.Map">
+        SELECT yjmc, sum(sl) FROM rpt_aqjg_za_yjxx WHERE dwlxdm = '2' GROUP BY yjmc
     </select>
 
 
