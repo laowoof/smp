@@ -117,4 +117,26 @@ public interface DangerousMapper {
     List<Map<String, Object>> queryPeopleRecord(String ywlxdm);
 
     List<Map<String, Integer>> queryPeopleNumByDm(String ywlxdm);
+
+    List<String> queryAnalysisFjmc();
+
+    List<Map<String, Object>> queryPostKind1(@Param("fjmcList") List<String> fjmcList);
+
+    List<Map<String, Object>> queryPostKind3(@Param("fjmcList") List<String> fjmcList);
+
+    Integer queryNormalCount();
+
+    List<Map<String, Object>> queryPostState1(@Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryPostState2(@Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryPostState3(@Param("lockTypeList") List<String> lockTypeList, @Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryPostState4(@Param("lockTypeList") List<String> lockTypeList, @Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    Integer queryHasRecordCount();
+
+    List<Map<String, Object>> queryHasRecordList(@Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryNoRecordingList(@Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
 }

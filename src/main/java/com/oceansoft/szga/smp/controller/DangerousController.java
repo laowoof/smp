@@ -573,6 +573,66 @@ public class DangerousController {
         return apiResult;
     }
 
+    @ApiOperation(value = "危险品单位分析/获取排序好的分局名称", notes = "", httpMethod = "POST")
+    @PostMapping("analysis/fjmc")
+    public ApiResult queryAnalysisFjmc() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<String> list = dangerousService.queryAnalysisFjmc();
+            apiResult.setData(list);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "危险品单位分析/危险品单位分类分析", notes = "", httpMethod = "POST")
+    @PostMapping("analysis/post-kind")
+    public ApiResult queryPostKind(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryPostKind(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "危险品单位分析/危险品单位状态监测", notes = "", httpMethod = "POST")
+    @PostMapping("analysis/post-state")
+    public ApiResult queryPostState(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryPostState(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
 
 
 }

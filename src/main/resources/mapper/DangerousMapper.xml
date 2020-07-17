@@ -136,11 +136,11 @@
          GROUP BY wpmc
     </select>
     <select id="queryDangerHighPoisonRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type}
+        SELECT wpmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type}
         <if test="year != null">
             and year = #{year}
         </if>
-         GROUP BY fjmc ORDER BY sum(sl) desc LIMIT 10
+         GROUP BY wpmc ORDER BY sum(sl) desc LIMIT 10
     </select>
     <select id="queryCompanyRank" resultType="java.util.Map">
         SELECT fjmc,sum(sl) FROM "rpt_aqjg_za_dwxx" GROUP BY fjmc
@@ -432,7 +432,7 @@
         </choose>
     </select>
     <select id="queryPeopleRecord" resultType="java.util.Map">
-        SELECT fjmc,sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and ywlxdm = #{ywlxdm} GROUP BY fjmc
+        SELECT fjmc as name,sum(sl) as value FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and ywlxdm = #{ywlxdm} GROUP BY fjmc
     </select>
     <select id="queryPeopleNumByDm" resultType="java.util.Map">
         SELECT * FROM (
@@ -442,6 +442,139 @@
         UNION
         SELECT '治安保卫员', sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfzabwy = '1' AND ywlxdm = #{ywlxdm}
         ) t ORDER BY t.sum desc
+    </select>
+    <select id="queryAnalysisFjmc" resultType="java.lang.String">
+        SELECT fjmc FROM "rpt_aqjg_za_dwxx" GROUP BY fjmc
+    </select>
+    <select id="queryPostKind1" resultType="java.util.Map">
+        SELECT * FROM (
+        SELECT '生产单位' as dwlx, sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%01%'
+        <if test="fjmcList != null">
+        AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        UNION
+        SELECT '经营单位', sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%02%'
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        UNION
+        SELECT '使用单位', sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%03%'
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        UNION
+        SELECT '运输单位', sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%05%'
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) t
+    </select>
+    <select id="queryPostKind3" resultType="java.util.Map">
+        SELECT zawxpdjdm, zawxpdjmc, sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01'
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY zawxpdjdm, zawxpdjmc
+    </select>
+    <select id="queryNormalCount" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM rpt_aqjg_za_dwxx WHERE yyzt = '01'
+    </select>
+    <select id="queryPostState1" resultType="java.util.Map">
+        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        SELECT date, sum(sl) FROM new_dwxx WHERE yyzt = '01' AND date BETWEEN #{beginTime} AND #{endTime}
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY date ORDER BY date
+
+    </select>
+    <select id="queryPostState2" resultType="java.util.Map">
+        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        SELECT date, sum(sl) FROM new_dwxx WHERE yyzt != '01' AND date BETWEEN #{beginTime} AND #{endTime}
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY date ORDER BY date
+    </select>
+    <select id="queryPostState3" resultType="java.util.Map">
+        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
+        SELECT date, sum(sl) FROM new_dwsdxx WHERE ztmc = '锁定' AND date BETWEEN #{beginTime} AND #{endTime}
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="lockTypeList != null">
+            AND lxmc IN
+            <foreach item="item" index="index" collection="lockTypeList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY date ORDER BY date
+    </select>
+    <select id="queryPostState4" resultType="java.util.Map">
+        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
+        SELECT date, sum(sl) FROM new_dwsdxx WHERE ztmc = '已解锁' AND date BETWEEN #{beginTime} AND #{endTime}
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="lockTypeList != null">
+            AND lxmc IN
+            <foreach item="item" index="index" collection="lockTypeList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY date ORDER BY date
+    </select>
+    <select id="queryHasRecordCount" resultType="java.lang.Integer">
+        SELECT sum(sl) FROM rpt_aqjg_za_dwbaxx WHERE baztmc = '已备案'
+    </select>
+    <select id="queryHasRecordList" resultType="java.util.Map">
+        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
+        SELECT date, sum(sl) FROM new_dwbaxx WHERE baztmc = '已备案' AND date BETWEEN #{beginTime} AND #{endTime}
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY date ORDER BY date
+    </select>
+    <select id="queryNoRecordingList" resultType="java.util.Map">
+        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
+        SELECT date, sum(sl) FROM new_dwbaxx WHERE baztmc = '未备案' AND date BETWEEN #{beginTime} AND #{endTime}
+        <if test="fjmcList != null">
+            AND fjmc IN
+            <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY date ORDER BY date
     </select>
 
 

@@ -651,6 +651,149 @@ public class DangerousServiceImpl implements DangerousService {
         return resultMap;
     }
 
+    @Override
+    public List<String> queryAnalysisFjmc() {
+        List<String> fjmcList = dangerousMapper.queryAnalysisFjmc();
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
+        List<String> resultList = new ArrayList<>();
+        for (String name : orderList) {
+            for (String fjmc : fjmcList) {
+                if (fjmc.contains(name)) {
+                    resultList.add(fjmc);
+                } else {
+                    continue;
+                }
+            }
+        }
+        return resultList;
+    }
+
+    @Override
+    public Map<String, Object> queryPostKind(JSONObject jsonObject) {
+        Map<String, Object> resultMap = new HashMap<>();
+        // 分局名称
+        String fjmc = jsonObject.getString("fjmc");
+        List<String> fjmcList = null;
+        if (!StringUtils.isEmpty(fjmc)) {
+            String[] split = fjmc.split(",");
+            fjmcList = Arrays.asList(split);
+        }
+        // 生成、使用、经营、运输单位
+        Integer count = 0;
+        List<Map<String, Object>> mapList = dangerousMapper.queryPostKind1(fjmcList);
+        if (!CollectionUtils.isEmpty(mapList)) {
+            for (Map<String, Object> map : mapList) {
+                count = count + Integer.valueOf(map.get("sum").toString());
+            }
+            for (Map<String, Object> map : mapList) {
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                // 设置精确到小数点后2位
+                numberFormat.setMaximumFractionDigits(2);
+                String result = numberFormat.format((float)  Integer.parseInt(map.get("sum").toString())/ (float)count* 100);//所占百分比
+                map.put("percent", result+"%");
+            }
+        }
+        // 单位风险等级  治安防范等级
+        String level = jsonObject.getString("level");
+        List<Map<String, Object>> levelList = new ArrayList<>();
+        Integer levelCount = 0;
+        switch (level) {
+            case "单位风险等级":
+                levelList = null;
+                break;
+            case "治安防范等级":
+                levelList = dangerousMapper.queryPostKind3(fjmcList);
+                break;
+            default:
+                break;
+        }
+        if (!CollectionUtils.isEmpty(levelList)) {
+            for (Map<String, Object> map : levelList) {
+                levelCount = levelCount + Integer.valueOf(map.get("sum").toString());
+            }
+            for (Map<String, Object> map : levelList) {
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                // 设置精确到小数点后2位
+                numberFormat.setMaximumFractionDigits(2);
+                String result = numberFormat.format((float)  Integer.parseInt(map.get("sum").toString())/ (float)count* 100);//所占百分比
+                map.put("percent", result+"%");
+            }
+        }
+        resultMap.put("mapList", mapList);
+        resultMap.put("levelList", levelList);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> queryPostState(JSONObject jsonObject) {
+        Map<String, Object> resultMap = new HashMap<>();
+        // 分局名称
+        String fjmc = jsonObject.getString("fjmc");
+        List<String> fjmcList = null;
+        if (!StringUtils.isEmpty(fjmc)) {
+            String[] split = fjmc.split(",");
+            fjmcList = Arrays.asList(split);
+        }
+        String situation = jsonObject.getString("situation");
+        // 获取按月份时间
+        String beginTime = getLast12Months(11);
+        String endTime = getLast12Months(0);
+        Integer normalCount = 0;
+        // 正常
+        List<Map<String, Object>> normalList = new ArrayList<>();
+        // 注销
+        List<Map<String, Object>> cancellationList = new ArrayList<>();
+        // 锁定
+        List<Map<String, Object>> lockingList = new ArrayList<>();
+        // 自动解锁
+        List<Map<String, Object>> autoUnlockingList = new ArrayList<>();
+        // 已备案总量
+        Integer hasRecordCount = 0;
+        // 已备案
+        List<Map<String, Object>> hasRecordList = new ArrayList<>();
+        // 未备案
+        List<Map<String, Object>> noRecordingList = new ArrayList<>();
+        switch (situation) {
+            case "营业情况":
+                normalCount = dangerousMapper.queryNormalCount();
+                normalList = dangerousMapper.queryPostState1(fjmcList, beginTime, endTime);
+                cancellationList = dangerousMapper.queryPostState2(fjmcList, beginTime, endTime);
+                resultMap.put("normalCount", normalCount);
+                resultMap.put("normalList", normalList);
+                resultMap.put("cancellationList", cancellationList);
+                break;
+            case "锁定情况":
+                // 锁定类型
+                String lockingType = jsonObject.getString("lockingType");
+                List<String> lockTypeList = null;
+                if (!StringUtils.isEmpty(lockingType)) {
+                    String[] split = fjmc.split(",");
+                    lockTypeList = Arrays.asList(split);
+                }
+                // 锁定中
+                lockingList = dangerousMapper.queryPostState3(lockTypeList, fjmcList, beginTime, endTime);
+                // 自动解锁
+                autoUnlockingList = dangerousMapper.queryPostState4(lockTypeList, fjmcList, beginTime, endTime);
+                resultMap.put("lockingList", lockingList);
+                resultMap.put("autoUnlockingList", autoUnlockingList);
+                break;
+            case "备案情况":
+                // 已备案总量
+                hasRecordCount = dangerousMapper.queryHasRecordCount();
+                // 已备案
+                hasRecordList = dangerousMapper.queryHasRecordList(fjmcList, beginTime, endTime);
+                // 未备案
+                noRecordingList = dangerousMapper.queryNoRecordingList(fjmcList, beginTime, endTime);
+                resultMap.put("hasRecordCount", hasRecordCount);
+                resultMap.put("hasRecordList", hasRecordList);
+                resultMap.put("noRecordingList", noRecordingList);
+                break;
+            default:
+                break;
+        }
+        return resultMap;
+    }
+
     /**
      * 获取前多少月的月份 带0
      * @param i
