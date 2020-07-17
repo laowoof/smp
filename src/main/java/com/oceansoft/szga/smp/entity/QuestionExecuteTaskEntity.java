@@ -22,14 +22,14 @@ public class QuestionExecuteTaskEntity implements Serializable {
     private String questionGuid;
 
     // 创建日期
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date createDate;
 
     // 创建人id
     private String createUserId;
 
     // 操作日期
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date executeDate;
 
     // 操作人id
@@ -42,7 +42,7 @@ public class QuestionExecuteTaskEntity implements Serializable {
     private String opinion;
 
     // 完成时限
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date finishDate;
 
     // 操作部门名称

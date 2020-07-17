@@ -22,7 +22,7 @@ public class QuestionRecordEntity implements Serializable {
     private String source;
 
     // 问题发生日期
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date happenDate;
 
     // 行政区划
@@ -32,7 +32,7 @@ public class QuestionRecordEntity implements Serializable {
     private String dutyUnit;
 
     // 完成时限
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date finishDate;
 
     // 问题地址
@@ -45,7 +45,7 @@ public class QuestionRecordEntity implements Serializable {
     private String fileIds;
 
     // 创建日期
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date createDate;
 
     // 创建人姓名

@@ -25,21 +25,21 @@ public class QuestionResponseEntity implements Serializable {
     private String responseNo;
 
     // 复函时间
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date responseDate;
 
     // 附件ids
     private String fileIds;
 
     // 创建日期
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date createDate;
 
     // 创建人id
     private String createUserId;
 
     // 更新日期
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private Date updateDate;
 
     // 更新人id

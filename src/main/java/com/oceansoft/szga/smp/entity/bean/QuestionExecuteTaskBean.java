@@ -1,7 +1,5 @@
 package com.oceansoft.szga.smp.entity.bean;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 /**
@@ -13,7 +11,6 @@ import java.util.Date;
 public class QuestionExecuteTaskBean {
 
     // 操作日期
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date executeDate;
 
     // 操作人id
