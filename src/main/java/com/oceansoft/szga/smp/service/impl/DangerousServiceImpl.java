@@ -839,9 +839,39 @@ public class DangerousServiceImpl implements DangerousService {
                 resultMap.put("companySuperviseByMon", companySuperviseByMon);
                 break;
             case "按日":
-                String beginDay = getLast7Days(7);
-                String endDay = getLast12Months(0);
+                List<Map<String, Object>> resultByDay = new ArrayList<>();
+                String beginDay = getLast7Days(6);
+                String endDay = getLast7Days(0);
                 List<Map<String, Object>> companySuperviseByDay = dangerousMapper.queryCompanySuperviseByDay(beginDay, endDay);
+                // 组织七天数据
+                List<String> dayList = new ArrayList<>();
+                for (int i = 6;i >= 0;i--) {
+                    dayList.add(getLast7Days(i));
+                }
+                for (String day : dayList) {
+                    if (CollectionUtils.isEmpty(companySuperviseByDay)) {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("tjrq", day);
+                        map.put("dwzs", 0);
+                        map.put("dwxzs", 0);
+                        resultByDay.add(map);
+                    } else {
+                        Map<String, Map<String, Object>> superviseByDay = new HashMap<>();
+                        for (Map<String, Object> map : companySuperviseByDay) {
+                            superviseByDay.put(map.get("tjrq").toString(), map);
+                        }
+                            if (superviseByDay.containsKey(day)) {
+                                resultByDay.add(superviseByDay.get(day));
+                            } else {
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("tjrq", day);
+                                map.put("dwzs", 0);
+                                map.put("dwxzs", 0);
+                                resultByDay.add(map);
+                            }
+                    }
+                }
+                companySuperviseByDay = resultByDay;
                 resultMap.put("companySuperviseByDay", companySuperviseByDay);
                 break;
             default:
