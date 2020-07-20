@@ -443,6 +443,8 @@
         SELECT '治安保卫员', sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfzabwy = '1' AND ywlxdm = #{ywlxdm}
         ) t ORDER BY t.sum desc
     </select>
-
+    <select id="test" resultType="java.util.Map">
+        select * from io_bas_users
+    </select>
 
 </mapper>

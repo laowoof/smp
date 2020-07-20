@@ -36,12 +36,18 @@ mybatis:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:postgresql://172.17.118.239:5432/smp?charSet=utf-8&currentSchema=rpt
-    username: smp
-    password: 123456
-    driver-class-name: org.postgresql.Driver
-    maximumPoolSize: 30
-    maxLifetime: 1800000
+    dynamic:
+      datasource:
+        master: #数据源1
+          url: jdbc:postgresql://172.17.118.239:5432/smp?charSet=utf-8&currentSchema=rpt
+          username: smp
+          password: 123456
+          driver-class-name: org.postgresql.Driver
+        second: # 数据源2
+          url: jdbc:postgresql://172.17.118.239:5432/smp?charSet=utf-8&currentSchema=ods
+          username: smp
+          password: 123456
+          driver-class-name: org.postgresql.Driver
   redis:
     host: 172.17.118.238
     port: 6379
@@ -61,12 +67,18 @@ file:
 spring:
   profiles: pro
   datasource:
-    url: jdbc:postgresql://50.73.126.6:20003/szga_aqjg?charSet=utf-8&currentSchema=rpt
-    username: aqjg_os
-    password: Szgaos@123
-    driver-class-name: org.postgresql.Driver
-    maximumPoolSize: 30
-    maxLifetime: 1800000
+    dynamic:
+      datasource:
+        master: #数据源1
+          url: jdbc:postgresql://50.73.126.6:20003/szga_aqjg?charSet=utf-8&currentSchema=rpt
+          username: aqjg_os
+          password: Szgaos@123
+          driver-class-name: org.postgresql.Driver
+        second: # 数据源2
+          url: jdbc:postgresql://50.73.126.6:20003/szga_aqjg?charSet=utf-8&currentSchema=ods
+          username: aqjg_os
+          password: Szgaos@123
+          driver-class-name: org.postgresql.Driver
   redis:
     host: 127.0.0.1
     port: 6379

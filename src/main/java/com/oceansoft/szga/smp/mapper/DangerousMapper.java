@@ -117,4 +117,6 @@ public interface DangerousMapper {
     List<Map<String, Object>> queryPeopleRecord(String ywlxdm);
 
     List<Map<String, Integer>> queryPeopleNumByDm(String ywlxdm);
+
+    void test();
 }

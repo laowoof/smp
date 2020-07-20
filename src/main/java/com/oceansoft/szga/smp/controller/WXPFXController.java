@@ -3,7 +3,9 @@ package com.oceansoft.szga.smp.controller;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
+import com.oceansoft.szga.smp.service.DangerousService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -19,9 +21,20 @@ import java.util.Map;
 @RestController
 public class WXPFXController {
 
+    @Autowired
+    private DangerousService dangerousService;
+
+
+    @RequestMapping("test")
+    public ApiResult test(){
+        dangerousService.test();
+        return new ApiResult();
+    }
     @ApiOperation("总数")
     @RequestMapping("total-count")
     public ApiResult totalCount(){
+
+
         //TODO data 模拟数据，待实现
         Map data = new HashMap(){{
             put("dqkczs",100);//当前库存总数

@@ -1,6 +1,7 @@
 package com.oceansoft.szga.smp.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.oceansoft.szga.smp.mapper.DangerousMapper;
 import com.oceansoft.szga.smp.service.DangerousService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -649,6 +650,12 @@ public class DangerousServiceImpl implements DangerousService {
         resultMap.put("mapList", mapList);
         resultMap.put("peopleList", peopleList);
         return resultMap;
+    }
+
+    @Override
+    @DS("second")
+    public void test() {
+        dangerousMapper.test();
     }
 
     /**
