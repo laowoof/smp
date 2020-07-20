@@ -14,4 +14,5 @@ import java.util.Map;
 @Repository
 public interface TestMapper {
     List<Map> list();
+    List<Map> test();
 }

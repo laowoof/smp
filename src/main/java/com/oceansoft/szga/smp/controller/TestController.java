@@ -3,6 +3,7 @@ package com.oceansoft.szga.smp.controller;
 import com.alibaba.fastjson.JSON;
 //import com.github.pagehelper.Page;
 //import com.github.pagehelper.PageHelper;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.oceansoft.szga.smp.config.domain.ApiPager;
 import com.oceansoft.szga.smp.config.domain.ApiQueryBase;
@@ -33,4 +34,11 @@ public class TestController{
     public String test1(ApiQueryBase query){
        return JSON.toJSONString(query);
     }
+
+    @RequestMapping("test2")
+    @DS("second")
+    public String test2(){
+        return JSON.toJSONString(mapper.test());
+    }
+
 }

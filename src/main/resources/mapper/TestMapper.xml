@@ -5,4 +5,8 @@
 <select id="list" resultType="map">
    select * from test
 </select>
+
+   <select id="test" resultType="map">
+   select * from io_bas_users
+</select>
 </mapper>
