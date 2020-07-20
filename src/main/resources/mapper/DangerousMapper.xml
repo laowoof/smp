@@ -495,8 +495,14 @@
         SELECT sum(sl) FROM rpt_aqjg_za_dwxx WHERE yyzt = '01'
     </select>
     <select id="queryPostState1" resultType="java.util.Map">
+        SELECT a.date, COALESCE(b.sum, 0) sum FROM
+        (
         WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
-        SELECT date, sum(sl) FROM new_dwxx WHERE yyzt = '01' AND date BETWEEN #{beginTime} AND #{endTime}
+        SELECT date FROM new_dwxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
+        LEFT JOIN
+        (
+        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwxx WHERE yyzt = '01' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -504,11 +510,17 @@
             </foreach>
         </if>
         GROUP BY date ORDER BY date
-
+        ) b ON a.date = b.date
     </select>
     <select id="queryPostState2" resultType="java.util.Map">
+        SELECT a.date, COALESCE(b.sum, 0) sum FROM
+        (
         WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
-        SELECT date, sum(sl) FROM new_dwxx WHERE yyzt != '01' AND date BETWEEN #{beginTime} AND #{endTime}
+        SELECT date FROM new_dwxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
+        LEFT JOIN
+        (
+        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwxx WHERE yyzt != '01' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -516,10 +528,17 @@
             </foreach>
         </if>
         GROUP BY date ORDER BY date
+        ) b ON a.date = b.date
     </select>
     <select id="queryPostState3" resultType="java.util.Map">
+        SELECT a.date, COALESCE(b.sum, 0) sum FROM
+        (
         WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
-        SELECT date, sum(sl) FROM new_dwsdxx WHERE ztmc = '锁定' AND date BETWEEN #{beginTime} AND #{endTime}
+        SELECT date FROM new_dwsdxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
+        LEFT JOIN
+        (
+        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
+        SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwsdxx WHERE ztmc = '锁定' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -533,10 +552,17 @@
             </foreach>
         </if>
         GROUP BY date ORDER BY date
+        ) b ON a.date = b.date
     </select>
     <select id="queryPostState4" resultType="java.util.Map">
+        SELECT a.date, COALESCE(b.sum, 0) sum FROM
+        (
         WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
-        SELECT date, sum(sl) FROM new_dwsdxx WHERE ztmc = '已解锁' AND date BETWEEN #{beginTime} AND #{endTime}
+        SELECT date FROM new_dwsdxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
+        LEFT JOIN
+        (
+        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
+        SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwsdxx WHERE ztmc = '已解锁' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -550,13 +576,20 @@
             </foreach>
         </if>
         GROUP BY date ORDER BY date
+        ) b ON a.date = b.date
     </select>
     <select id="queryHasRecordCount" resultType="java.lang.Integer">
         SELECT sum(sl) FROM rpt_aqjg_za_dwbaxx WHERE baztmc = '已备案'
     </select>
     <select id="queryHasRecordList" resultType="java.util.Map">
+        SELECT a.date, COALESCE(b.sum, 0) sum FROM
+        (
         WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
-        SELECT date, sum(sl) FROM new_dwbaxx WHERE baztmc = '已备案' AND date BETWEEN #{beginTime} AND #{endTime}
+        SELECT date FROM new_dwbaxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
+        LEFT JOIN
+        (
+        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
+        SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwbaxx WHERE baztmc = '已备案' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -564,10 +597,17 @@
             </foreach>
         </if>
         GROUP BY date ORDER BY date
+        ) b ON a.date = b.date
     </select>
     <select id="queryNoRecordingList" resultType="java.util.Map">
+        SELECT a.date, COALESCE(b.sum, 0) sum FROM
+        (
         WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
-        SELECT date, sum(sl) FROM new_dwbaxx WHERE baztmc = '未备案' AND date BETWEEN #{beginTime} AND #{endTime}
+        SELECT date FROM new_dwbaxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
+        LEFT JOIN
+        (
+        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
+        SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwbaxx WHERE baztmc = '未备案' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -575,6 +615,7 @@
             </foreach>
         </if>
         GROUP BY date ORDER BY date
+        ) b ON a.date = b.date
     </select>
     <select id="queryCheckAllCount" resultType="java.lang.Integer">
         SELECT sum(sl) FROM "rpt_aqjg_za_dwjcxx"

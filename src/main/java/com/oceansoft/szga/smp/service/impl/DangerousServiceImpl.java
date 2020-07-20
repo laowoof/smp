@@ -767,7 +767,7 @@ public class DangerousServiceImpl implements DangerousService {
                 String lockingType = jsonObject.getString("lockingType");
                 List<String> lockTypeList = null;
                 if (!StringUtils.isEmpty(lockingType)) {
-                    String[] split = fjmc.split(",");
+                    String[] split = lockingType.split(",");
                     lockTypeList = Arrays.asList(split);
                 }
                 // 锁定中
