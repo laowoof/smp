@@ -118,5 +118,45 @@ public interface DangerousMapper {
 
     List<Map<String, Integer>> queryPeopleNumByDm(String ywlxdm);
 
-    void test();
+    List<String> queryAnalysisFjmc();
+
+    List<Map<String, Object>> queryPostKind1(@Param("fjmcList") List<String> fjmcList);
+
+    List<Map<String, Object>> queryPostKind3(@Param("fjmcList") List<String> fjmcList);
+
+    Integer queryNormalCount();
+
+    List<Map<String, Object>> queryPostState1(@Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryPostState2(@Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryPostState3(@Param("lockTypeList") List<String> lockTypeList, @Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryPostState4(@Param("lockTypeList") List<String> lockTypeList, @Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    Integer queryHasRecordCount();
+
+    List<Map<String, Object>> queryHasRecordList(@Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryNoRecordingList(@Param("fjmcList") List<String> fjmcList, @Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    Integer queryCheckAllCount();
+
+    List<Map<String, Object>> queryEveryCount();
+
+    List<Map<String, Object>> queryCompanySuperviseByMon(@Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
+    List<Map<String, Object>> queryCompanySuperviseByDay(@Param("beginDay") String beginDay,@Param("endDay") String endDay);
+
+    Integer queryEarlyWarningAllCount();
+
+    List<Map<String, Object>> queryEarlyWarning();
+
+    List<Map<String, Object>> queryEarlyProjectJd();
+
+    Integer queryJdCount();
+
+    Integer queryYzbCount();
+
+    List<Map<String, Object>> queryEarlyProjectYzb();
 }

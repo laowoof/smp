@@ -68,5 +68,17 @@ public interface DangerousService {
 
     Map<String, Object> queryPeopleRecord(JSONObject jsonObject);
 
-    void test();
+    List<String> queryAnalysisFjmc();
+
+    Map<String, Object> queryPostKind(JSONObject jsonObject);
+
+    Map<String, Object> queryPostState(JSONObject jsonObject);
+
+    Map<String, Object> queryCheckSituation();
+
+    Map<String, Object> queryCompanySupervise(JSONObject jsonObject);
+
+    Map<String, Object> queryEarlyWarning();
+
+    Map<String, Object> queryEarlyProject(JSONObject jsonObject);
 }
