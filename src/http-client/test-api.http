@@ -20,4 +20,5 @@ Content-Type: application/json
 
 GET {{baseUrl}}/test2
 
+#> {% client.global.set("auth_token",response.body.json.token); %}
 ###
