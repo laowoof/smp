@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.ProcessChargeMapper">
+
+    <select id="queryRoadSafeTable" resultType="java.util.Map">
+        SELECT a.yhbh, a.cjsj, a.sjly, a.yhddmc, b.mc, a.lczt, a.clzt, c.name, a.wcsj FROM "ods_rt_jj_v_tb_yhpc" a
+        LEFT JOIN "ods_rt_dm_v_yhpc_lx" b ON a.yhlx = b.dm
+        LEFT JOIN "ods_rt_psms_sec_org" c ON a.mjbm = c.id
+        <where>
+            <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
+                a.sjly like #{questionQueryBean.keyWord} or a.yhddmc like #{questionQueryBean.keyWord} or b.mc like #{questionQueryBean.keyWord}
+            </if>
+            <if test="questionQueryBean.reactionDept == '民警录入'">
+                and a.lczt = 1
+            </if>
+            <if test="questionQueryBean.reactionDept == '中队审核'">
+                and a.lczt IN (2,3,4,5)
+            </if>
+            <if test="questionQueryBean.reactionDept == '大队审核'">
+                and a.lczt IN (6,7,8,9)
+            </if>
+            <if test="questionQueryBean.reactionDept == '业务部门审核'">
+                and a.lczt IN (10,11,12,13)
+            </if>
+            <if test="questionQueryBean.reactionDept == '支队审核'">
+                and a.lczt IN (14,15,16,17)
+            </if>
+        </where>
+    </select>
+    <select id="queryRoadSafePointById" resultType="java.util.Map">
+        SELECT cjsj, lczt FROM "ods_rt_jj_v_tb_yhpc" WHERE yhbh = #{id}
+    </select>
+</mapper>
