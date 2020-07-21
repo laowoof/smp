@@ -100,12 +100,18 @@ file:
 spring:
   profiles: test
   datasource:
-    url: jdbc:postgresql://172.17.118.239:5432/smp?charSet=utf-8&currentSchema=rpt
-    username: smp
-    password: 123456
-    driver-class-name: org.postgresql.Driver
-    maximumPoolSize: 30
-    maxLifetime: 1800000
+    dynamic:
+      datasource:
+        master: #数据源1
+          url: jdbc:postgresql://172.17.118.239:5432/smp?charSet=utf-8&currentSchema=rpt
+          username: smp
+          password: 123456
+          driver-class-name: org.postgresql.Driver
+        second: # 数据源2
+          url: jdbc:postgresql://172.17.118.239:5432/smp?charSet=utf-8&currentSchema=ods
+          username: smp
+          password: 123456
+          driver-class-name: org.postgresql.Driver
   redis:
     host: 172.17.118.238
     port: 6379
