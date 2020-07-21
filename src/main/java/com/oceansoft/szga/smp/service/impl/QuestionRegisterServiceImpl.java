@@ -233,7 +233,7 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
         if (questionRecordEntity == null) {
             throw new RuntimeException("更新记录不能为空");
         }
-        boolean isSuccess = (questionRecordEntity.getState() == 0 || questionRecordEntity.getState() == 4) && questionRecordEntity.getCreateDeptCode() == userData.getDepartmentId();
+        boolean isSuccess = (questionRecordEntity.getState() == 0 || questionRecordEntity.getState() == 4) && questionRecordEntity.getCreateDeptCode().equals(userData.getDepartmentId());
         if (isSuccess) {
             return questionRegisterMapper.updateRecord(questionRecordEntity) > 0;
         } else {

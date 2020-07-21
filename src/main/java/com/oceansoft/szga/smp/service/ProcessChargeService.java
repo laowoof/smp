@@ -11,4 +11,8 @@ public interface ProcessChargeService {
     Map<String, Object> queryRoadSafeTable(QuestionQueryBean questionQueryBean);
 
     Map<String, Object> queryRoadSafePoint(String id);
+
+    Map<String, Object> queryQzfTable(QuestionQueryBean questionQueryBean, Integer type);
+
+    Map<String, Object> queryQzfPoint(Integer id);
 }

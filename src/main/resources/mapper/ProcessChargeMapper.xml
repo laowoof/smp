@@ -30,4 +30,39 @@
     <select id="queryRoadSafePointById" resultType="java.util.Map">
         SELECT cjsj, lczt FROM "ods_rt_jj_v_tb_yhpc" WHERE yhbh = #{id}
     </select>
+    <select id="queryQzfTable" resultType="java.util.Map">
+        SELECT a.bh, a.gxsj, a.xxly, a.czwdz, a.yhxxms, a.zzzt, a.shzt, a.lzzt, a.ffzt, a.rlzt, a.zgzt, b.name, a.zzsj, a.yhdl FROM "ods_rt_czfw_yhxx" a
+        LEFT JOIN ods_rt_dict_sqxx b ON a.sqdm = b.url
+        <where>
+        <choose>
+            <when test="type != null and type != ''">
+                a.yhdl = '1'
+            </when>
+            <otherwise>
+                a.yhdl != '1'
+            </otherwise>
+        </choose>
+        <if test="questionQueryBean.keyWord">
+            and a.xxly like #{questionQueryBean.keyWord} or a.czwdz like #{questionQueryBean.keyWord} or a.yhxxms like #{questionQueryBean.keyWord}
+        </if>
+        <if test="questionQueryBean.reactionDept == '上报'">
+            and a.lzzt IN ('0','1')
+        </if>
+        <if test="questionQueryBean.reactionDept == '审核'">
+            and a.shzt IN ('2','3')
+        </if>
+        <if test="questionQueryBean.reactionDept == '分发'">
+            and a.ffzt IN ('5')
+        </if>
+        <if test="questionQueryBean.reactionDept == '认领'">
+            and a.rlzt IN ('1005')
+        </if>
+        <if test="questionQueryBean.reactionDept == '整改'">
+            and a.zgzt IN (1006)
+        </if>
+        </where>
+    </select>
+    <select id="queryQzfPoint" resultType="java.util.Map">
+        SELECT gxsj, lzzt, shzt, ffzt, rlzt, zgzt FROM "ods_rt_czfw_yhxx" WHERE bh = #{id}
+    </select>
 </mapper>

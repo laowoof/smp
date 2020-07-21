@@ -13,4 +13,8 @@ public interface ProcessChargeMapper {
     List<Map<String, Object>> queryRoadSafeTable(@Param("questionQueryBean") QuestionQueryBean questionQueryBean);
 
     Map<String, Object> queryRoadSafePointById(String id);
+
+    List<Map<String, Object>> queryQzfTable(@Param("questionQueryBean") QuestionQueryBean questionQueryBean, @Param("type") Integer type);
+
+    Map<String, Object> queryQzfPoint(Integer id);
 }

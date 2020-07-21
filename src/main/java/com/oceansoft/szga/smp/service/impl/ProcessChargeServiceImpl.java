@@ -57,16 +57,16 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
                     if (objectMap.get("lczt").toString().equals("1")) {
                         objectMap.put("dqlcjd", "民警录入");
                     }
-                    if (zdCheck.contains(objectMap.get("lczt"))) {
+                    if (zdCheck.contains(Integer.valueOf(objectMap.get("lczt").toString()))) {
                         objectMap.put("dqlcjd", "中队审核");
                     }
-                    if (ddCheck.contains(objectMap.get("lczt"))) {
+                    if (ddCheck.contains(Integer.valueOf(objectMap.get("lczt").toString()))) {
                         objectMap.put("dqlcjd", "大队审核");
                     }
-                    if (ywCheck.contains(objectMap.get("lczt"))) {
+                    if (ywCheck.contains(Integer.valueOf(objectMap.get("lczt").toString()))) {
                         objectMap.put("dqlcjd", "业务部门审核");
                     }
-                    if (detachmentCheck.contains(objectMap.get("lczt"))) {
+                    if (detachmentCheck.contains(Integer.valueOf(objectMap.get("lczt").toString()))) {
                         objectMap.put("dqlcjd", "支队审核");
                     }
                 }
@@ -90,20 +90,188 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
             if (map.get("lczt").toString().equals("1")) {
                 map.put("dqlcjd", "民警录入");
             }
-            if (zdCheck.contains(map.get("lczt"))) {
+            if (zdCheck.contains(Integer.valueOf(map.get("lczt").toString()))) {
                 map.put("dqlcjd", "中队审核");
             }
-            if (ddCheck.contains(map.get("lczt"))) {
+            if (ddCheck.contains(Integer.valueOf(map.get("lczt").toString()))) {
                 map.put("dqlcjd", "大队审核");
             }
-            if (ywCheck.contains(map.get("lczt"))) {
+            if (ywCheck.contains(Integer.valueOf(map.get("lczt").toString()))) {
                 map.put("dqlcjd", "业务部门审核");
             }
-            if (detachmentCheck.contains(map.get("lczt"))) {
+            if (detachmentCheck.contains(Integer.valueOf(map.get("lczt").toString()))) {
                 map.put("dqlcjd", "支队审核");
             }
         }
         getPointName(map);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> queryQzfTable(QuestionQueryBean questionQueryBean, Integer type) {
+        Map<String, Object> map = new HashMap<>();
+        int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
+        int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
+        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
+        List<Map<String, Object>> mapList = processChargeMapper.queryQzfTable(questionQueryBean, type);
+        String dqlcjd = "";
+        if (!CollectionUtils.isEmpty(mapList)) {
+            for (Map<String, Object> stringObjectMap : mapList) {
+                if (stringObjectMap.get("lzzt") != null) {
+                    if (stringObjectMap.get("lzzt").toString().equals("0") || stringObjectMap.get("lzzt").toString().equals("1")) {
+                        dqlcjd = "上报";
+                    }
+                }
+                if (stringObjectMap.get("shzt") != null) {
+                    if (stringObjectMap.get("shzt").toString().equals("2") || stringObjectMap.get("shzt").toString().equals("3")) {
+                        dqlcjd = "审核";
+                    }
+                }
+                if (stringObjectMap.get("ffzt") != null) {
+                    if (stringObjectMap.get("ffzt").toString().equals("5")) {
+                        dqlcjd = "分发";
+                    }
+                }
+                if (stringObjectMap.get("rlzt") != null) {
+                    if (stringObjectMap.get("rlzt").toString().equals("1005")) {
+                        dqlcjd = "认领";
+                    }
+                }
+                if (stringObjectMap.get("zgzt") != null) {
+                    if (stringObjectMap.get("zgzt").toString().equals("1006")) {
+                        dqlcjd = "整改";
+                    }
+                }
+                stringObjectMap.put("dqlcjd", dqlcjd);
+                if (type == 1) {
+                    stringObjectMap.put("lcmc", "治安隐患处置流程");
+                } else {
+                    stringObjectMap.put("lcmc", "非治安隐患处置流程");
+                }
+                // 状态
+                if (stringObjectMap.get("dqlcjd") != null) {
+                    // 上报
+                    if (stringObjectMap.get("dqlcjd").toString().equals("上报")) {
+                        if (stringObjectMap.get("lzzt").toString().equals("0")) {
+                            map.put("state", "未流转");
+                        }
+                        if (stringObjectMap.get("lzzt").toString().equals("1")) {
+                            map.put("state", "已流转");
+                        }
+                    }
+                    // 审核
+                    if (stringObjectMap.get("dqlcjd").toString().equals("审核")) {
+                        if (stringObjectMap.get("shzt").toString().equals("2")) {
+                            map.put("state", "信息审核通过");
+                        }
+                        if (stringObjectMap.get("shzt").toString().equals("3")) {
+                            map.put("state", "信息审核不通过");
+                        }
+                    }
+                    // 分发
+                    if (stringObjectMap.get("dqlcjd").toString().equals("分发")) {
+                        if (stringObjectMap.get("ffzt").toString().equals("5")) {
+                            map.put("state", "已分发");
+                        }
+                    }
+                    // 认领
+                    if (stringObjectMap.get("dqlcjd").toString().equals("认领")) {
+                        if (stringObjectMap.get("rlzt").toString().equals("1005")) {
+                            map.put("state", "已认领");
+                        }
+                    }
+                    // 整改
+                    if (stringObjectMap.get("dqlcjd").toString().equals("整改")) {
+                        if (stringObjectMap.get("rlzt").toString().equals("1006")) {
+                            map.put("state", "已处理");
+                        }
+                    }
+                }
+            }
+        }
+        map.put("mapList", mapList);
+        map.put("pages", page.getPages());
+        map.put("total", page.getTotal());
+        map.put("pageNum", page.getPageNum());
+        map.put("pageSize", page.getPageSize());
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> queryQzfPoint(Integer id) {
+        if (StringUtils.isEmpty(id)) {
+            throw new RuntimeException("id不能为空");
+        }
+        Map<String, Object> map = processChargeMapper.queryQzfPoint(id);
+        String dqlcjd = "";
+        if (!CollectionUtils.isEmpty(map)) {
+            if (map.get("lzzt") != null) {
+                if (map.get("lzzt").toString().equals("0") || map.get("lzzt").toString().equals("1")) {
+                    dqlcjd = "上报";
+                }
+            }
+            if (map.get("shzt") != null) {
+                if (map.get("lzzt").toString().equals("2") || map.get("shzt").toString().equals("3")) {
+                    dqlcjd = "审核";
+                }
+            }
+            if (map.get("ffzt") != null) {
+                if (map.get("ffzt").toString().equals("5")) {
+                    dqlcjd = "分发";
+                }
+            }
+            if (map.get("rlzt") != null) {
+                if (map.get("rlzt").toString().equals("1005")) {
+                    dqlcjd = "认领";
+                }
+            }
+            if (map.get("zgzt") != null) {
+                if (map.get("zgzt").toString().equals("1006")) {
+                    dqlcjd = "整改";
+                }
+            }
+            map.put("dqlcjd", dqlcjd);
+            // 状态
+            if (map.get("dqlcjd") != null) {
+                // 上报
+                if (map.get("dqlcjd").toString().equals("上报")) {
+                    if (map.get("lzzt").toString().equals("0")) {
+                        map.put("state", "未流转");
+                    }
+                    if (map.get("lzzt").toString().equals("1")) {
+                        map.put("state", "已流转");
+                    }
+                }
+                // 审核
+                if (map.get("dqlcjd").toString().equals("审核")) {
+                    if (map.get("shzt").toString().equals("2")) {
+                        map.put("state", "信息审核通过");
+                    }
+                    if (map.get("shzt").toString().equals("3")) {
+                        map.put("state", "信息审核不通过");
+                    }
+                }
+                // 分发
+                if (map.get("dqlcjd").toString().equals("分发")) {
+                    if (map.get("ffzt").toString().equals("5")) {
+                        map.put("state", "已分发");
+                    }
+                }
+                // 认领
+                if (map.get("dqlcjd").toString().equals("认领")) {
+                    if (map.get("rlzt").toString().equals("1005")) {
+                        map.put("state", "已认领");
+                    }
+                }
+                // 整改
+                if (map.get("dqlcjd").toString().equals("整改")) {
+                    if (map.get("rlzt").toString().equals("1006")) {
+                        map.put("state", "已处理");
+                    }
+                }
+            }
+
+        }
         return map;
     }
 
@@ -115,7 +283,7 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
      * @return
      */
     private Map<String, Object> getPointName(Map<String, Object> map) {
-        if (!StringUtils.isEmpty(map.get("lczt").toString())) {
+        if (map.get("lczt") != null) {
             switch (map.get("lczt").toString()) {
                 case "1":
                     map.put("state", "中队录入");

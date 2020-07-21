@@ -65,6 +65,49 @@ public class ProcessChargeController {
         return apiResult;
     }
 
+    @ApiOperation(value = "群租房表格", notes = "", httpMethod = "POST")
+    @PostMapping("qzf-table")
+    @DS("second")
+    public ApiResult queryQzfTable(@RequestBody QuestionQueryBean questionQueryBean, Integer type) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = processChargeService.queryQzfTable(questionQueryBean, type);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "群租房流程节点", notes = "", httpMethod = "POST")
+    @GetMapping("qzf-point")
+    @DS("second")
+    public ApiResult queryQzfPoint(Integer id) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = processChargeService.queryQzfPoint(id);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+
 
 
 

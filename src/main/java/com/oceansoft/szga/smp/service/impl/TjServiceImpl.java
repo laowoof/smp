@@ -3,12 +3,12 @@ package com.oceansoft.szga.smp.service.impl;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
 import com.oceansoft.szga.smp.mapper.TjMapper;
 import com.oceansoft.szga.smp.service.TjService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -244,7 +244,7 @@ public class TjServiceImpl implements TjService {
         }else if("pcs".equals(map.get("type"))){
             data = tjMapper.zdDwYhPcs(map);
         }
-        if(data.size() > 0){
+        if(!CollectionUtils.isEmpty(data)){
             return new ApiResult().success(200,"获取成功", data);
         }
         return new ApiResult().failure("暂无数据");
