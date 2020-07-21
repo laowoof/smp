@@ -107,6 +107,48 @@ public class ProcessChargeController {
         return apiResult;
     }
 
+    @ApiOperation(value = "重点目标表格", notes = "", httpMethod = "POST")
+    @PostMapping("imp-table")
+    @DS("second")
+    public ApiResult queryImpTable(@RequestBody QuestionQueryBean questionQueryBean) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = processChargeService.queryImpTable(questionQueryBean);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "重点目标节点", notes = "", httpMethod = "POST")
+    @GetMapping("imp-point")
+    @DS("second")
+    public ApiResult queryImpPoint(String id) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = processChargeService.queryImpPoint(id);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
 
 
 

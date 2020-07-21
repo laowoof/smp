@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 流程监管实现层
@@ -115,7 +112,7 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         Page<Object> page = PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> mapList = processChargeMapper.queryQzfTable(questionQueryBean, type);
         String dqlcjd = "";
-        if (!CollectionUtils.isEmpty(mapList)) {
+        if (!CollectionUtils.isEmpty(mapList) && type != 1) {
             for (Map<String, Object> stringObjectMap : mapList) {
                 if (stringObjectMap.get("lzzt") != null) {
                     if (stringObjectMap.get("lzzt").toString().equals("0") || stringObjectMap.get("lzzt").toString().equals("1")) {
@@ -143,47 +140,74 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
                     }
                 }
                 stringObjectMap.put("dqlcjd", dqlcjd);
-                if (type == 1) {
-                    stringObjectMap.put("lcmc", "治安隐患处置流程");
-                } else {
-                    stringObjectMap.put("lcmc", "非治安隐患处置流程");
-                }
+                stringObjectMap.put("lcmc", "非治安隐患处置流程");
                 // 状态
                 if (stringObjectMap.get("dqlcjd") != null) {
                     // 上报
                     if (stringObjectMap.get("dqlcjd").toString().equals("上报")) {
                         if (stringObjectMap.get("lzzt").toString().equals("0")) {
-                            map.put("state", "未流转");
+                            stringObjectMap.put("state", "未流转");
                         }
                         if (stringObjectMap.get("lzzt").toString().equals("1")) {
-                            map.put("state", "已流转");
+                            stringObjectMap.put("state", "已流转");
                         }
                     }
                     // 审核
                     if (stringObjectMap.get("dqlcjd").toString().equals("审核")) {
                         if (stringObjectMap.get("shzt").toString().equals("2")) {
-                            map.put("state", "信息审核通过");
+                            stringObjectMap.put("state", "信息审核通过");
                         }
                         if (stringObjectMap.get("shzt").toString().equals("3")) {
-                            map.put("state", "信息审核不通过");
+                            stringObjectMap.put("state", "信息审核不通过");
                         }
                     }
                     // 分发
                     if (stringObjectMap.get("dqlcjd").toString().equals("分发")) {
                         if (stringObjectMap.get("ffzt").toString().equals("5")) {
-                            map.put("state", "已分发");
+                            stringObjectMap.put("state", "已分发");
                         }
                     }
                     // 认领
                     if (stringObjectMap.get("dqlcjd").toString().equals("认领")) {
                         if (stringObjectMap.get("rlzt").toString().equals("1005")) {
-                            map.put("state", "已认领");
+                            stringObjectMap.put("state", "已认领");
                         }
                     }
                     // 整改
                     if (stringObjectMap.get("dqlcjd").toString().equals("整改")) {
                         if (stringObjectMap.get("rlzt").toString().equals("1006")) {
-                            map.put("state", "已处理");
+                            stringObjectMap.put("state", "已处理");
+                        }
+                    }
+                }
+            }
+        }
+        if (!CollectionUtils.isEmpty(mapList) && type == 1) {
+            for (Map<String, Object> stringObjectMap : mapList) {
+                stringObjectMap.put("lcmc", "治安隐患处置流程");
+                if (stringObjectMap.get("lzzt") != null) {
+                    if (stringObjectMap.get("lzzt").toString().equals("0") || stringObjectMap.get("lzzt").toString().equals("1")) {
+                        dqlcjd = "发现";
+                    }
+                }
+                if (stringObjectMap.get("zgzt") != null) {
+                    if (stringObjectMap.get("zgzt").toString().equals("1006")) {
+                        dqlcjd = "整改";
+                    }
+                }
+                stringObjectMap.put("dqlcjd", dqlcjd);
+                // 状态
+                if (stringObjectMap.get("dqlcjd") != null) {
+                    // 发现
+                    if (stringObjectMap.get("dqlcjd").toString().equals("发现")) {
+                        if (stringObjectMap.get("lzzt").toString().equals("0") || stringObjectMap.get("lzzt").toString().equals("1")) {
+                            stringObjectMap.put("state", "已发现");
+                        }
+                    }
+                    // 整改
+                    if (stringObjectMap.get("dqlcjd").toString().equals("整改")) {
+                        if (stringObjectMap.get("rlzt").toString().equals("1006")) {
+                            stringObjectMap.put("state", "已处理");
                         }
                     }
                 }
@@ -204,7 +228,7 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         }
         Map<String, Object> map = processChargeMapper.queryQzfPoint(id);
         String dqlcjd = "";
-        if (!CollectionUtils.isEmpty(map)) {
+        if (!CollectionUtils.isEmpty(map) && !map.get("yhdl").toString().equals("1")) {
             if (map.get("lzzt") != null) {
                 if (map.get("lzzt").toString().equals("0") || map.get("lzzt").toString().equals("1")) {
                     dqlcjd = "上报";
@@ -270,8 +294,122 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
                     }
                 }
             }
-
         }
+        if (!CollectionUtils.isEmpty(map) && map.get("yhdl").toString().equals("1")) {
+            if (map.get("lzzt") != null) {
+                if (map.get("lzzt").toString().equals("0") || map.get("lzzt").toString().equals("1")) {
+                    dqlcjd = "发现";
+                }
+            }
+            if (map.get("zgzt") != null) {
+                if (map.get("zgzt").toString().equals("1006")) {
+                    dqlcjd = "整改";
+                }
+            }
+            map.put("dqlcjd", dqlcjd);
+            // 状态
+            if (map.get("dqlcjd") != null) {
+                // 分发
+                if (map.get("dqlcjd").toString().equals("发现")) {
+                    if (map.get("lzzt").toString().equals("0") || map.get("lzzt").toString().equals("1")) {
+                        map.put("state", "已发现");
+                    }
+                }
+                // 整改
+                if (map.get("dqlcjd").toString().equals("整改")) {
+                    if (map.get("rlzt").toString().equals("1006")) {
+                        map.put("state", "已处理");
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> queryImpTable(QuestionQueryBean questionQueryBean) {
+        Map<String, Object> map = new HashMap<>();
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("bh", 201);
+        map1.put("cjsj", "2020-06-15 18:30:20");
+        map1.put("sjly", "隐患系统");
+        map1.put("dwmc", "苏州市鹏程五金件有限公司");
+        map1.put("yhxx", "车间安全防范措施未标识");
+        map1.put("dqljjd", "复查");
+        map1.put("jcjj", "逾期不整改");
+        map1.put("clzt", "已完成");
+        map1.put("ssqy", "吴中区");
+        map1.put("czsx", "2020-06-18 15:42:25");
+
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("bh", 228);
+        map2.put("cjsj", "2020-06-15 18:30:20");
+        map2.put("sjly", "隐患系统");
+        map2.put("dwmc", "苏州市蓬勃有限公司");
+        map2.put("yhxx", "车间安全防范措施未标识");
+        map2.put("dqljjd", "复查");
+        map2.put("jcjj", "逾期不整改");
+        map2.put("clzt", "已完成");
+        map2.put("ssqy", "吴中区");
+        map2.put("czsx", "2020-06-18 15:42:25");
+
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("bh", 201);
+        map3.put("cjsj", "2020-06-15 18:30:20");
+        map3.put("sjly", "隐患系统");
+        map3.put("dwmc", "苏州市铜管有限公司");
+        map3.put("yhxx", "车间安全防范措施未标识");
+        map3.put("dqljjd", "复查");
+        map3.put("jcjj", "逾期不整改");
+        map3.put("clzt", "已完成");
+        map3.put("ssqy", "吴中区");
+        map3.put("czsx", "2020-06-18 15:42:25");
+
+        Map<String, Object> map4 = new HashMap<>();
+        map4.put("bh", 201);
+        map4.put("cjsj", "2020-06-15 18:30:20");
+        map4.put("sjly", "隐患系统");
+        map4.put("dwmc", "苏州市工业炉生产公司");
+        map4.put("yhxx", "车间安全防范措施未标识");
+        map4.put("dqljjd", "复查");
+        map4.put("jcjj", "逾期不整改");
+        map4.put("clzt", "已完成");
+        map4.put("ssqy", "吴中区");
+        map4.put("czsx", "2020-06-18 15:42:25");
+
+        Map<String, Object> map5 = new HashMap<>();
+        map5.put("bh", 201);
+        map5.put("cjsj", "2020-06-15 18:30:20");
+        map5.put("sjly", "隐患系统");
+        map5.put("dwmc", "苏州市寰亚有限公司");
+        map5.put("yhxx", "车间安全防范措施未标识");
+        map5.put("dqljjd", "复查");
+        map5.put("jcjj", "逾期不整改");
+        map5.put("clzt", "已完成");
+        map5.put("ssqy", "吴中区");
+        map5.put("czsx", "2020-06-18 15:42:25");
+
+        mapList.add(map1);
+        mapList.add(map2);
+        mapList.add(map3);
+        mapList.add(map4);
+        mapList.add(map5);
+
+        map.put("mapList", mapList);
+        map.put("pages", 12012);
+        map.put("total", 2404);
+        map.put("pageNum", 1);
+        map.put("pageSize", 5);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> queryImpPoint(String id) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("dqlcjd", "上报");
+        map.put("czsj", "2020-06-18 09:52:38");
+        map.put("state", "已流转");
         return map;
     }
 

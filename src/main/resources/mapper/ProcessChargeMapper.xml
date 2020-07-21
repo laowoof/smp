@@ -35,17 +35,17 @@
         LEFT JOIN ods_rt_dict_sqxx b ON a.sqdm = b.url
         <where>
         <choose>
-            <when test="type != null and type != ''">
+            <when test="type == 1">
                 a.yhdl = '1'
             </when>
             <otherwise>
                 a.yhdl != '1'
             </otherwise>
         </choose>
-        <if test="questionQueryBean.keyWord">
+        <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
             and a.xxly like #{questionQueryBean.keyWord} or a.czwdz like #{questionQueryBean.keyWord} or a.yhxxms like #{questionQueryBean.keyWord}
         </if>
-        <if test="questionQueryBean.reactionDept == '上报'">
+        <if test="questionQueryBean.reactionDept == '上报' || questionQueryBean.reactionDept == '分发'">
             and a.lzzt IN ('0','1')
         </if>
         <if test="questionQueryBean.reactionDept == '审核'">
@@ -58,11 +58,11 @@
             and a.rlzt IN ('1005')
         </if>
         <if test="questionQueryBean.reactionDept == '整改'">
-            and a.zgzt IN (1006)
+            and a.zgzt IN ('1006')
         </if>
         </where>
     </select>
     <select id="queryQzfPoint" resultType="java.util.Map">
-        SELECT gxsj, lzzt, shzt, ffzt, rlzt, zgzt FROM "ods_rt_czfw_yhxx" WHERE bh = #{id}
+        SELECT gxsj, lzzt, shzt, ffzt, rlzt, zgzt, yhdl FROM "ods_rt_czfw_yhxx" WHERE bh = #{id}
     </select>
 </mapper>
