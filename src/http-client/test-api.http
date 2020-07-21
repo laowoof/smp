@@ -1,0 +1,23 @@
+###示例接口1
+
+POST {{baseUrl}}/test
+Accept: */*
+Content-Type: application/x-www-form-urlencoded
+
+type=aa
+
+###示例接口2
+
+POST {{baseUrl}}/test3
+Content-Type: application/json
+
+{
+  "key": "value"
+}
+
+
+###示例接口3
+
+GET {{baseUrl}}/test2
+
+###

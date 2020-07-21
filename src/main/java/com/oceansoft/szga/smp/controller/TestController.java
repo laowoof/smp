@@ -3,6 +3,7 @@ package com.oceansoft.szga.smp.controller;
 import com.alibaba.fastjson.JSON;
 //import com.github.pagehelper.Page;
 //import com.github.pagehelper.PageHelper;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.oceansoft.szga.smp.config.domain.ApiPager;
@@ -22,8 +23,9 @@ import java.util.Map;
 public class TestController{
     @Autowired
     private TestMapper mapper;
-    @GetMapping("test")
-    public Object test(){
+    @RequestMapping("test")
+    public Object test(@RequestParam String type){
+        System.out.println(type);
 //        PageHelper.startPage(1, 20, true);
 //        Page<Map<String,Object>> page = (Page)mapper.list();
 //        ApiPager<Map<String,Object>> pager = new ApiPager(20, 1, page.getTotal(), page.getResult());
@@ -39,6 +41,11 @@ public class TestController{
     @DS("second")
     public String test2(){
         return JSON.toJSONString(mapper.test());
+    }
+
+    @RequestMapping("test3")
+    public JSONObject test3(@RequestBody JSONObject json){
+        return json;
     }
 
 }
