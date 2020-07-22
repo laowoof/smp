@@ -110,12 +110,12 @@ public class ProcessChargeController {
     @ApiOperation(value = "重点目标表格", notes = "", httpMethod = "POST")
     @PostMapping("imp-table")
     @DS("second")
-    public ApiResult queryImpTable(@RequestBody QuestionQueryBean questionQueryBean) {
+    public ApiResult queryImpTable(@RequestBody QuestionQueryBean questionQueryBean, Integer type) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
         try {
-            Map<String, Object> mapList = processChargeService.queryImpTable(questionQueryBean);
+            Map<String, Object> mapList = processChargeService.queryImpTable(questionQueryBean, type);
             apiResult.setData(mapList);
             isSuccess = true;
             message = "查询成功";

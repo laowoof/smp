@@ -16,7 +16,7 @@ public interface ProcessChargeService {
 
     Map<String, Object> queryQzfPoint(Integer id);
 
-    Map<String, Object> queryImpTable(QuestionQueryBean questionQueryBean);
+    Map<String, Object> queryImpTable(QuestionQueryBean questionQueryBean, Integer type);
 
     Map<String, Object> queryImpPoint(String id);
 }

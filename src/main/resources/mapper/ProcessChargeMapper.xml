@@ -8,7 +8,7 @@
         LEFT JOIN "ods_rt_psms_sec_org" c ON a.mjbm = c.id
         <where>
             <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
-                a.sjly like #{questionQueryBean.keyWord} or a.yhddmc like #{questionQueryBean.keyWord} or b.mc like #{questionQueryBean.keyWord}
+                (a.sjly like concat('%',#{questionQueryBean.keyWord},'%') or a.yhddmc like concat('%',#{questionQueryBean.keyWord},'%') or b.mc like concat('%',#{questionQueryBean.keyWord},'%'))
             </if>
             <if test="questionQueryBean.reactionDept == '民警录入'">
                 and a.lczt = 1
@@ -43,7 +43,7 @@
             </otherwise>
         </choose>
         <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
-            and a.xxly like #{questionQueryBean.keyWord} or a.czwdz like #{questionQueryBean.keyWord} or a.yhxxms like #{questionQueryBean.keyWord}
+            and (a.xxly like concat('%',#{questionQueryBean.keyWord},'%') or a.czwdz like concat('%',#{questionQueryBean.keyWord},'%') or a.yhxxms like concat('%',#{questionQueryBean.keyWord},'%'))
         </if>
         <if test="questionQueryBean.reactionDept == '上报' || questionQueryBean.reactionDept == '分发'">
             and a.lzzt IN ('0','1')
@@ -64,5 +64,21 @@
     </select>
     <select id="queryQzfPoint" resultType="java.util.Map">
         SELECT gxsj, lzzt, shzt, ffzt, rlzt, zgzt, yhdl FROM "ods_rt_czfw_yhxx" WHERE bh = #{id}
+    </select>
+    <select id="queryImpTable" resultType="java.util.Map">
+        SELECT a.rwzj, a.jcsj, a.jcd, a.dwmc, a.jclx, a.clzt, a.dwdz, a.jzsj FROM "ods_rt_zypt_jcrw_new_yhxx" a
+        INNER JOIN ods_rt_zypt_sydw_jbxx b ON a.glzj = b.dwzj
+        <if test="type == 1">
+        WHERE b.glbm like '%2%' AND b.yyzt = '01' AND b.jbspzt = '3'
+        </if>
+        <if test="type == 2">
+            WHERE b.glbm like '%6%' AND b.yyzt = '01' AND b.zawxpspzt = '3' AND b.dwfl = '%14%'
+        </if>
+        <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
+            and (a.jcd like concat('%',#{questionQueryBean.keyWord},'%') or a.dwmc like concat('%',#{questionQueryBean.keyWord},'%'))
+        </if>
+    </select>
+    <select id="queryImpPoint" resultType="java.util.Map">
+        SELECT jcsj, jclx, clzt FROM ods_rt_zypt_jcrw_new_yhxx WHERE rwzj = #{id}
     </select>
 </mapper>

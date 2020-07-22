@@ -327,89 +327,136 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
     }
 
     @Override
-    public Map<String, Object> queryImpTable(QuestionQueryBean questionQueryBean) {
+    public Map<String, Object> queryImpTable(QuestionQueryBean questionQueryBean, Integer type) {
         Map<String, Object> map = new HashMap<>();
-        List<Map<String, Object>> mapList = new ArrayList<>();
-        Map<String, Object> map1 = new HashMap<>();
-        map1.put("bh", 201);
-        map1.put("cjsj", "2020-06-15 18:30:20");
-        map1.put("sjly", "隐患系统");
-        map1.put("dwmc", "苏州市鹏程五金件有限公司");
-        map1.put("yhxx", "车间安全防范措施未标识");
-        map1.put("dqljjd", "复查");
-        map1.put("jcjj", "逾期不整改");
-        map1.put("clzt", "已完成");
-        map1.put("ssqy", "吴中区");
-        map1.put("czsx", "2020-06-18 15:42:25");
-
-        Map<String, Object> map2 = new HashMap<>();
-        map2.put("bh", 228);
-        map2.put("cjsj", "2020-06-15 18:30:20");
-        map2.put("sjly", "隐患系统");
-        map2.put("dwmc", "苏州市蓬勃有限公司");
-        map2.put("yhxx", "车间安全防范措施未标识");
-        map2.put("dqljjd", "复查");
-        map2.put("jcjj", "逾期不整改");
-        map2.put("clzt", "已完成");
-        map2.put("ssqy", "吴中区");
-        map2.put("czsx", "2020-06-18 15:42:25");
-
-        Map<String, Object> map3 = new HashMap<>();
-        map3.put("bh", 201);
-        map3.put("cjsj", "2020-06-15 18:30:20");
-        map3.put("sjly", "隐患系统");
-        map3.put("dwmc", "苏州市铜管有限公司");
-        map3.put("yhxx", "车间安全防范措施未标识");
-        map3.put("dqljjd", "复查");
-        map3.put("jcjj", "逾期不整改");
-        map3.put("clzt", "已完成");
-        map3.put("ssqy", "吴中区");
-        map3.put("czsx", "2020-06-18 15:42:25");
-
-        Map<String, Object> map4 = new HashMap<>();
-        map4.put("bh", 201);
-        map4.put("cjsj", "2020-06-15 18:30:20");
-        map4.put("sjly", "隐患系统");
-        map4.put("dwmc", "苏州市工业炉生产公司");
-        map4.put("yhxx", "车间安全防范措施未标识");
-        map4.put("dqljjd", "复查");
-        map4.put("jcjj", "逾期不整改");
-        map4.put("clzt", "已完成");
-        map4.put("ssqy", "吴中区");
-        map4.put("czsx", "2020-06-18 15:42:25");
-
-        Map<String, Object> map5 = new HashMap<>();
-        map5.put("bh", 201);
-        map5.put("cjsj", "2020-06-15 18:30:20");
-        map5.put("sjly", "隐患系统");
-        map5.put("dwmc", "苏州市寰亚有限公司");
-        map5.put("yhxx", "车间安全防范措施未标识");
-        map5.put("dqljjd", "复查");
-        map5.put("jcjj", "逾期不整改");
-        map5.put("clzt", "已完成");
-        map5.put("ssqy", "吴中区");
-        map5.put("czsx", "2020-06-18 15:42:25");
-
-        mapList.add(map1);
-        mapList.add(map2);
-        mapList.add(map3);
-        mapList.add(map4);
-        mapList.add(map5);
-
+        int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
+        int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
+        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
+        List<Map<String, Object>> mapList = processChargeMapper.queryImpTable(questionQueryBean, type);
+        List<String> jclxList = Arrays.asList("01","1","2","3");
+        List<String> clztList1 = Arrays.asList("01","1","2","4");
+        List<String> clztList2 = Arrays.asList("5","6");
+        if (CollectionUtils.isEmpty(mapList)) {
+            for (Map<String, Object> stringObjectMap : mapList) {
+                // 当前流程节点
+                if (stringObjectMap.get("jclx") != null && stringObjectMap.get("clzt") != null) {
+                    if (jclxList.contains(stringObjectMap.get("jclx"))) {
+                        stringObjectMap.put("dqlcjd", "隐患上报");
+                    }
+                    if (stringObjectMap.get("jclx").toString().equals("4") && clztList1.contains(stringObjectMap.get("clzt"))) {
+                        stringObjectMap.put("dqlcjd", "复查");
+                    }
+                    if (stringObjectMap.get("jclx").toString().equals("4") && clztList2.contains(stringObjectMap.get("clzt"))) {
+                        stringObjectMap.put("dqlcjd", "复查审批");
+                    }
+                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").equals("3")) {
+                        stringObjectMap.put("dqlcjd", "隐患处置完成");
+                    }
+                    // 检查结果
+                    // 初查
+                    if (jclxList.contains(stringObjectMap.get("jclx")) && (stringObjectMap.get("clzt").toString().equals("1") || stringObjectMap.get("clzt").toString().equals("01"))) {
+                        stringObjectMap.put("jcjg", "当场改正");
+                        stringObjectMap.put("cljg", "当场改正");
+                    }
+                    if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").toString().equals("2")) {
+                        stringObjectMap.put("jcjg", "责令限期整改");
+                        stringObjectMap.put("cljg", "责令限期整改");
+                    }
+                    if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").toString().equals("3")) {
+                        stringObjectMap.put("jcjg", "责令限期整改并处警告");
+                        stringObjectMap.put("cljg", "责令限期整改并处警告");
+                    }
+                    // 复查
+                    if (stringObjectMap.get("jclx").toString().equals("4") && (stringObjectMap.get("clzt").toString().equals("1") || stringObjectMap.get("clzt").toString().equals("01"))) {
+                        stringObjectMap.put("jcjg", "因客观原因整改未达到规定要求");
+                        stringObjectMap.put("cljg", "因客观原因整改未达到规定要求");
+                    }
+                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("2")) {
+                        stringObjectMap.put("jcjg", "无正当理由整改未达到规定要求");
+                        stringObjectMap.put("cljg", "无正当理由整改未达到规定要求");
+                    }
+                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("4")) {
+                        stringObjectMap.put("jcjg", "逾期不整改");
+                        stringObjectMap.put("cljg", "逾期不整改");
+                    }
+                    // 复查审批
+                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("5")) {
+                        stringObjectMap.put("jcjg", "协调解决");
+                        stringObjectMap.put("cljg", "协调解决");
+                    }
+                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("6")) {
+                        stringObjectMap.put("jcjg", "罚款");
+                        stringObjectMap.put("cljg", "罚款");
+                    }
+                }
+            }
+        }
         map.put("mapList", mapList);
-        map.put("pages", 12012);
-        map.put("total", 2404);
-        map.put("pageNum", 1);
-        map.put("pageSize", 5);
+        map.put("pages", page.getPages());
+        map.put("total", page.getTotal());
+        map.put("pageNum", page.getPageNum());
+        map.put("pageSize", page.getPageSize());
         return map;
     }
 
     @Override
     public Map<String, Object> queryImpPoint(String id) {
         Map<String, Object> map = new HashMap<>();
-        map.put("dqlcjd", "上报");
-        map.put("czsj", "2020-06-18 09:52:38");
-        map.put("state", "已流转");
+        if (StringUtils.isEmpty(id)) {
+            throw new RuntimeException("id不能为空");
+        }
+        Map<String, Object> stringObjectMap = processChargeMapper.queryImpPoint(id);
+        List<String> jclxList = Arrays.asList("01","1","2","3");
+        List<String> clztList1 = Arrays.asList("01","1","2","4");
+        List<String> clztList2 = Arrays.asList("5","6");
+        if (!CollectionUtils.isEmpty(stringObjectMap)) {
+            map.put("czsj", stringObjectMap.get("jcsj"));
+            // 当前流程节点
+            if (jclxList.contains(stringObjectMap.get("jclx"))) {
+                map.put("dqlcjd", "隐患上报");
+            }
+            if (stringObjectMap.get("jclx").toString().equals("4") && clztList1.contains(stringObjectMap.get("clzt"))) {
+                map.put("dqlcjd", "复查");
+            }
+            if (stringObjectMap.get("jclx").toString().equals("4") && clztList2.contains(stringObjectMap.get("clzt"))) {
+                map.put("dqlcjd", "复查审批");
+            }
+            if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("3")) {
+                map.put("dqlcjd", "隐患处置完成");
+            }
+            // 当前状态
+            if (jclxList.contains(stringObjectMap.get("jclx")) && (stringObjectMap.get("clzt").toString().equals("1") || stringObjectMap.get("clzt").toString().equals("01"))) {
+                map.put("state", "当场改正");
+            }
+            if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").toString().equals("2")) {
+                map.put("state", "责令限期整改");
+            }
+            if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").toString().equals("3")) {
+                map.put("state", "责令限期整改并处警告");
+            }
+            // 复查
+            if (stringObjectMap.get("jclx").toString().equals("4") && (stringObjectMap.get("clzt").toString().equals("1") || stringObjectMap.get("clzt").toString().equals("01"))) {
+                map.put("state", "因客观原因整改未达到规定要求");
+            }
+            if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("2")) {
+                map.put("state", "无正当理由整改未达到规定要求");
+            }
+            if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("4")) {
+                map.put("state", "逾期不整改");
+            }
+            // 复查审批
+            if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("5")) {
+                map.put("state", "协调解决");
+            }
+            if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("6")) {
+                map.put("state", "罚款");
+            }
+        }
+
+
+//        map.put("dqlcjd", "上报");
+//        map.put("czsj", "2020-06-18 09:52:38");
+//        map.put("state", "已流转");
         return map;
     }
 
