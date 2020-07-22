@@ -8,7 +8,7 @@
         xzqhmc,
         sl
         from
-        rpt_aqjg_qzf_czfsl
+        rpt.rpt_aqjg_qzf_czfsl
         where
         tjrq =#{tjrq}
 </select>
@@ -18,7 +18,7 @@
       sum(yhs) yhs,
       sum(zgs) zgs
     FROM
-        rpt_aqjg_qzf_zayhsj
+        rpt.rpt_aqjg_qzf_zayhsj
     where
         tjrq = to_char(CURRENT_DATE,'yyyy-mm-dd')
 </select>
@@ -29,7 +29,7 @@
         xzqhmc,
         sl
     from
-        rpt_aqjg_qzf_czfsl
+        rpt.rpt_aqjg_qzf_czfsl
     where
         tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND xzqhmc is not null order by sl desc
 </select>
@@ -41,7 +41,7 @@
         xzqhmc,
         sl as sl
     from
-        rpt_aqjg_qzf_qzfsl
+        rpt.rpt_aqjg_qzf_qzfsl
     where
         tjrq =#{tjrq} and xzqhmc is not null
 </select>
@@ -53,7 +53,7 @@
         sum(sl) as totle_yhs,
         sum(sl) as totle_zgs
     from
-        rpt_aqjg_qzf_qzfsl
+        rpt.rpt_aqjg_qzf_qzfsl
     where
         tjrq between #{time} and #{time2} GROUP BY tjrq ORDER BY tjrq ASC
 </select>
@@ -67,7 +67,7 @@
         sl as totle_yhs,
         sl as totle_zgs
     from
-        rpt_aqjg_qzf_qzfsl
+        rpt.rpt_aqjg_qzf_qzfsl
     where
         tjrq between #{time} and #{time2} and xzqhmc =#{xzqhmc}
 </select>
@@ -76,7 +76,7 @@
     SELECT
         COALESCE(SUM(sl),0) as num
     FROM
-        rpt_aqjg_qzf_qzfsl
+        rpt.rpt_aqjg_qzf_qzfsl
     WHERE
         tjrq like '%' || #{time} ||'%'
 </select>
@@ -87,7 +87,7 @@
 		 a.yhlxmc,
 		 sum(a.sl) AS sl
 		 FROM
-		    (SELECT	tjrq, yhlxmc,sl from rpt_aqjg_qzf_qzfyhfx where tjrq =#{tjrq} AND
+		    (SELECT	tjrq, yhlxmc,sl from rpt.rpt_aqjg_qzf_qzfyhfx where tjrq =#{tjrq} AND
 		    yhlxdm like '10%') a
         GROUP BY yhlxmc ORDER BY sl DESC
 </select>
@@ -97,7 +97,7 @@
 		 a.yhlxmc,
 		 sum(a.sl) AS sl
 		 FROM
-		    (SELECT	tjrq, yhlxmc,sl from rpt_aqjg_qzf_qzfyhfx where tjrq =#{tjrq} AND
+		    (SELECT	tjrq, yhlxmc,sl from rpt.rpt_aqjg_qzf_qzfyhfx where tjrq =#{tjrq} AND
 		    yhlxdm NOT like '10%') a
         GROUP BY yhlxmc ORDER BY sl DESC
 </select>
@@ -108,7 +108,7 @@
         xzqhmc as xzqhmc,
         sl as sl
     from
-        rpt_aqjg_qzf_qzwzdr
+        rpt.rpt_aqjg_qzf_qzwzdr
     where
         tjrq =#{tjrq}
 </select>
@@ -119,7 +119,7 @@
         flmc,
         sl
     from
-        rpt_aqjg_qzf_qzfzdry
+        rpt.rpt_aqjg_qzf_qzfzdry
     where
         tjrq =#{tjrq}
 </select>
@@ -131,7 +131,7 @@
         xzqhmc,
         sl as sl
     from
-        rpt_aqjg_qzf_yhqzfsj
+        rpt.rpt_aqjg_qzf_yhqzfsj
     where
         tjrq =#{tjrq}
 </select>
@@ -142,7 +142,7 @@
         xzqhmc,
         sum(sl)
     from
-        rpt_aqjg_qzf_yhqzfsj
+        rpt.rpt_aqjg_qzf_yhqzfsj
     where
         tjrq =#{tjrq} group by xzqhmc order by xzqhmc
 </select>
@@ -154,7 +154,7 @@
         sum(sl) as totle_yhs,
         sum(sl) as totle_zgs
     from
-        rpt_aqjg_qzf_yhqzfsj
+        rpt.rpt_aqjg_qzf_yhqzfsj
     where
         tjrq between #{time} and #{time2} GROUP BY tjrq ORDER BY tjrq ASC
 </select>
@@ -166,10 +166,10 @@
         a.yhlbmc,
         ceiling(a.num/b.totlenum*100) as percent
      FROM
-        (select	tjrq, sum(sl) as num, yhlbmc from rpt_aqjg_qzf_yhdlfx where
+        (select	tjrq, sum(sl) as num, yhlbmc from rpt.rpt_aqjg_qzf_yhdlfx where
        yhlbmc is not null and  tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') group by tjrq,yhlbmc order by num) a
 	LEFT JOIN
-		(select tjrq,sum(sl) as totlenum from rpt_aqjg_qzf_yhdlfx where
+		(select tjrq,sum(sl) as totlenum from rpt.rpt_aqjg_qzf_yhdlfx where
        yhlbmc is not null and  tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY tjrq) b
 	on a.tjrq = b.tjrq
 
@@ -182,7 +182,7 @@
         sbwcs,
         sbwwcs
     from
-        rpt_aqjg_qzf_fzayhsb
+        rpt.rpt_aqjg_qzf_fzayhsb
     where
         tjrq =#{tjrq}
 </select>
@@ -196,7 +196,7 @@
         zgs,
         ceiling(zgs/yhs*100) as percent
     from
-        rpt_aqjg_qzf_fzayhsj
+        rpt.rpt_aqjg_qzf_fzayhsj
     where
         tjrq =#{tjrq} order by yhs
     </select>
@@ -211,7 +211,7 @@
         zgs,
         ceiling(zgs/yhs*100) as percent
     from
-        rpt_aqjg_qzf_fzayhsj
+        rpt.rpt_aqjg_qzf_fzayhsj
     where
         tjrq =#{tjrq} order by xzqhmc
     </select>
@@ -221,7 +221,7 @@
         sum(zgs) as totleZg,
         sum(yhs) - sum(zgs) as totleWzg
     from
-        rpt_aqjg_qzf_fzayhsj
+        rpt.rpt_aqjg_qzf_fzayhsj
     where
         tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')
     </select>
@@ -231,7 +231,7 @@
         sum(yhs) totle_yhs,
         sum(zgs) as totle_zgs
     from
-        rpt_aqjg_qzf_fzayhsj
+        rpt.rpt_aqjg_qzf_fzayhsj
         where xzqhmc =#{xzqhmc}
     </select>
 
@@ -244,7 +244,7 @@
         yhs as totle_yhs,
         zgs as totle_zgs
     from
-        rpt_aqjg_qzf_fzayhsj
+        rpt.rpt_aqjg_qzf_fzayhsj
         where xzqhmc =#{xzqhmc} and tjrq  between #{time} and #{time2} ORDER BY tjrq
     </select>
 
@@ -257,7 +257,7 @@
         yhs as totle_yhs,
         zgs as totle_zgs
     from
-        rpt_aqjg_qzf_zayhsj
+        rpt.rpt_aqjg_qzf_zayhsj
         where xzqhmc =#{xzqhmc} and tjrq  between #{time} and #{time2} ORDER BY tjrq
     </select>
 
@@ -268,7 +268,7 @@
        sum(yhs) totle_yhs,
        sum(zgs) totle_zgs
     from
-        rpt_aqjg_qzf_fzayhsj
+        rpt.rpt_aqjg_qzf_fzayhsj
         where tjrq between #{time} and #{time2} group by tjrq ORDER BY tjrq ASC
     </select>
 
@@ -279,7 +279,7 @@
        sum(yhs) totle_yhs,
        sum(zgs) totle_zgs
     from
-        rpt_aqjg_qzf_zayhsj
+        rpt.rpt_aqjg_qzf_zayhsj
         where tjrq between #{time} and #{time2} group by tjrq ORDER BY tjrq ASC
     </select>
 
@@ -293,7 +293,7 @@
       zgs,
       ceiling(zgs/yhs*100) as percent
     from
-        rpt_aqjg_qzf_zayhsj
+        rpt.rpt_aqjg_qzf_zayhsj
     where
         tjrq =#{tjrq} order by xzqhmc
     </select>
@@ -310,7 +310,7 @@
         nld,
         sum(sl) as slNum
     from
-        rpt_aqjg_qzf_ldrksl
+        rpt.rpt_aqjg_qzf_ldrksl
     where
         tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') group by nld,tjrq) a
 	LEFT JOIN
@@ -318,7 +318,7 @@
 		tjrq,
         sum(sl) as totleNum
     from
-        rpt_aqjg_qzf_ldrksl
+        rpt.rpt_aqjg_qzf_ldrksl
     where
         tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') gROUP BY tjrq) b
 				on a.tjrq = b.tjrq
@@ -333,7 +333,7 @@
         nld,
         sl
     from
-        rpt_aqjg_qzf_ldrksl
+        rpt.rpt_aqjg_qzf_ldrksl
     where
         tjrq=#{tjrq} ORDER BY xzqhmc,nld
 </select>
@@ -346,7 +346,7 @@
         wcsl as wcsl,
         wwcsl as wwcsl
     from
-        rpt_aqjg_qzf_fzayhff
+        rpt.rpt_aqjg_qzf_fzayhff
     where
         tjrq =#{tjrq}
 </select>
@@ -358,7 +358,7 @@
         wcsl as wcsl,
         wwcsl as wwcsl
     from
-        rpt_aqjg_qzf_fzayhrl
+        rpt.rpt_aqjg_qzf_fzayhrl
     where
         tjrq =#{tjrq}
 </select>
@@ -370,7 +370,7 @@
         wcsl,
         wwcsl
     from
-        rpt_aqjg_qzf_fzayhsh
+        rpt.rpt_aqjg_qzf_fzayhsh
     where
         tjrq =#{tjrq}
 </select>
@@ -382,7 +382,7 @@
         wcsl as wcsl,
         wwcsl as wwcsl
     from
-        rpt_aqjg_qzf_fzayhza
+        rpt.rpt_aqjg_qzf_fzayhza
 </select>
     <select id="qyldrysl" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -391,7 +391,7 @@
         xzqhmc,
         ldrysl
     from
-        rpt_aqjg_qzf_qyldrysl
+        rpt.rpt_aqjg_qzf_qyldrysl
     where
         tjrq=#{tjrq} order by ldrysl desc
 </select>
@@ -403,7 +403,7 @@
         xzqhmc as xzqhmc,
         sl as sl
     from
-        rpt_aqjg_qzf_yhczwsj
+        rpt.rpt_aqjg_qzf_yhczwsj
     where
         tjrq =#{tjrq}
 </select>
@@ -415,7 +415,7 @@
         sum(fzayh_tssl) as totle_yhs,
         sum(fzayh_zgsl) as totle_zgs
     from
-        rpt_aqjg_qzf_yhqs
+        rpt.rpt_aqjg_qzf_yhqs
     where
         tjrq  between #{time} and #{time2} GROUP BY tjrq  ORDER BY tjrq
 </select>
@@ -427,7 +427,7 @@
         sum(zayh_fxsl) as totle_fws,
         sum(zayh_zgsl) as totle_zgs
     from
-        rpt_aqjg_qzf_yhqs
+        rpt.rpt_aqjg_qzf_yhqs
     where
         tjrq  between #{time} and #{time2} GROUP BY tjrq  ORDER BY tjrq
 </select>
@@ -442,7 +442,7 @@
         zgs,
         ceiling(zgs/yhs*100) as percent
     from
-        rpt_aqjg_qzf_zayhsj
+        rpt.rpt_aqjg_qzf_zayhsj
     where
     tjrq =#{tjrq} order by yhs
 </select>
@@ -454,7 +454,7 @@
         sum(fzayh_tssl) as totle_yhs,
         sum(fzayh_zgsl) as totle_zgs
     from
-        rpt_aqjg_qzf_yhqs
+        rpt.rpt_aqjg_qzf_yhqs
     where
         tjrq between #{time} and #{time2} group by tjrq ORDER BY tjrq
 </select>
@@ -466,7 +466,7 @@
         fzayh_tssl as totle_yhs,
         fzayh_zgsl as totle_zgs
     from
-        rpt_aqjg_qzf_yhqs
+        rpt.rpt_aqjg_qzf_yhqs
     where
         tjrq between #{time} and #{time2} AND xzqhmc = #{xzqhmc} order by tjrq
 </select>
@@ -482,7 +482,7 @@
         fzayh_zgsl,
         ceiling(fzayh_zgsl/fzayh_fxsl*100) as percent
     from
-        rpt_aqjg_qzf_yhqs
+        rpt.rpt_aqjg_qzf_yhqs
     where
     tjrq =#{tjrq} order by xzqhmc
 </select>
@@ -493,7 +493,7 @@
         pcsname as pcsname,
         fxsl as fxsl
     from
-        rpt_aqjg_qzf_zayhzg_fxsl
+        rpt.rpt_aqjg_qzf_zayhzg_fxsl
 </select>
     <select id="zayhWzgsl" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -501,7 +501,7 @@
         pcsname as pcsname,
         wzgsl as wzgsl
     from
-        rpt_aqjg_qzf_zayhzg_wzgsl
+        rpt.rpt_aqjg_qzf_zayhzg_wzgsl
 </select>
     <select id="zayhZgsl" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -509,7 +509,7 @@
         pcsname as pcsname,
         zgsl as zgsl
     from
-        rpt_aqjg_qzf_zayhzg_zgsl
+        rpt.rpt_aqjg_qzf_zayhzg_zgsl
 </select>
     <select id="zdrysl" resultType="java.util.HashMap" parameterType="java.util.List">
     select
@@ -519,25 +519,25 @@
         nld as nld,
         sl as sl
     from
-        rpt_aqjg_qzf_zdrysl
+        rpt.rpt_aqjg_qzf_zdrysl
 </select>
     <select id="lzFxDataByLdrk" resultType="java.util.HashMap" parameterType="java.util.List">
         SELECT
             xzqhmc,
             sum(sl)
         FROM
-            rpt_aqjg_qzf_ldrksys
+            rpt.rpt_aqjg_qzf_ldrksys
         WHERE
         tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND xzqhmc !='其他' GROUP BY xzqhmc ORDER BY sum DESC
 </select>
     <select id="areaAddNum" resultType="java.util.HashMap">
         select * from (
     select qxmc.xzqhmc,(jt.sl-zt.sl) AS addNum from (
-        (select xzqhmc from rpt_aqjg_qzf_qzfsl where xzqhmc is not null GROUP BY xzqhmc) as qxmc
+        (select xzqhmc from rpt.rpt_aqjg_qzf_qzfsl where xzqhmc is not null GROUP BY xzqhmc) as qxmc
         LEFT JOIN
-       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time} and xzqhmc is not null) as jt on qxmc.xzqhmc = jt.xzqhmc
+       (select sl,xzqhmc from rpt.rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time} and xzqhmc is not null) as jt on qxmc.xzqhmc = jt.xzqhmc
         LEFT JOIN
-       (select sl,xzqhmc from rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time2} and xzqhmc is not null) as zt on qxmc.xzqhmc = zt.xzqhmc
+       (select sl,xzqhmc from rpt.rpt_aqjg_qzf_qzfsl WHERE tjrq = #{time2} and xzqhmc is not null) as zt on qxmc.xzqhmc = zt.xzqhmc
     )GROUP BY qxmc.xzqhmc,addNum
         ) foo ORDER BY xzqhmc ASC
     </select>

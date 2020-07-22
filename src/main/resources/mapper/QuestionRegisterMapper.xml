@@ -27,29 +27,29 @@
     execute_dept_code, create_dept_code
   </sql>
     <update id="deleteRecord">
-        update question_record set state = -1 where guid = #{guid}
+        update rpt.question_record set state = -1 where guid = #{guid}
     </update>
     <select id="getRecordByGuid" resultMap="RecordResultMap">
         select
         <include refid="Record_Column_List" />
-        from question_record
+        from rpt.question_record
         where guid = #{guid}
     </select>
     <select id="getExecuteTaskEntity" resultMap="ExecuteTaskResultMap">
         select
         <include refid="ExecuteTask_Column_List" />
-        from question_execute_task
+        from rpt.question_execute_task
         where question_guid = #{guid} and state = 0
     </select>
     <select id="getHistoryTask" resultType="com.oceansoft.szga.smp.entity.QuestionExecuteTaskEntity">
         select
         <include refid="ExecuteTask_Column_List" />
-        from question_execute_task
+        from rpt.question_execute_task
         where question_guid = #{guid} and state = 1 order by create_date ASC
     </select>
     <select id="queryPageRecord" resultType="java.util.Map">
         select guid, create_date, source, area, duty_unit, finish_date, state
-        from question_record
+        from rpt.question_record
         where create_dept_code = #{departmentId} and state != -1
         <if test="integerList != null">
             and state IN
@@ -65,13 +65,13 @@
         </if>
     </select>
     <update id="updateRecordStateAndCode">
-        update question_record
+        update rpt.question_record
         set state = #{state},
         execute_dept_code = #{executeDeptCode}
         where guid = #{guid}
     </update>
     <update id="updateExecuteTask">
-        update question_execute_task
+        update rpt.question_execute_task
         set execute_date = #{executeDate},
         execute_user_id = #{executeUserId},
         execute_user_name = #{executeUserName},
@@ -86,7 +86,7 @@
         where guid = #{guid}
     </update>
     <update id="updateRecord">
-        update question_record
+        update rpt.question_record
         set source = #{source},
         happen_date = #{happenDate},
         area = #{area},
@@ -98,7 +98,7 @@
         where guid = #{guid}
     </update>
     <update id="updateRecordStateByGuid">
-        update question_record
+        update rpt.question_record
         set state = #{state}
         where guid = #{guid}
     </update>
@@ -129,7 +129,7 @@
 
     <!-- sql -->
     <insert id="addRecord">
-        insert into question_record
+        insert into rpt.question_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="guid != null">
                 guid,
@@ -232,7 +232,7 @@
         </trim>
     </insert>
     <insert id="addTask">
-        insert into question_execute_task
+        insert into rpt.question_execute_task
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="guid != null">
                 guid,

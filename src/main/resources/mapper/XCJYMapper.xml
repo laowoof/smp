@@ -7,7 +7,7 @@
         SELECT SUM
             ( dwsl ) AS cjdwNum
         FROM
-           "rpt_aqjg_ggjt_xcdwcj"
+           rpt."rpt_aqjg_ggjt_xcdwcj"
         WHERE
             dwlx IN ( '1', '2', '3', '4-1', '4-2', '5', '7', '8', '9' )
         <choose>
@@ -29,7 +29,7 @@
        SELECT
           sum(wcs) as xczsNum
        FROM
-         "rpt_aqjg_ggjt_xcxxtj"
+         rpt."rpt_aqjg_ggjt_xcxxtj"
        WHERE
           lxdm IN ('1','2','3','4-1','4-2','5','7','8','9')
           <choose>
@@ -52,7 +52,7 @@
        SELECT
           sum(dwsl) as dwsl , SUBSTRING(dwlxmc,"length"(dwlxmc)-1,2) as dwlxmc
        FROM
-           "rpt_aqjg_ggjt_xcdwcj"
+           rpt."rpt_aqjg_ggjt_xcdwcj"
        where
           dwlx in ('1','2','3','4-1','4-2','5','7','8','9')
           <choose>
@@ -76,7 +76,7 @@
        SELECT
           ddmc , round(sum(wcs)/sum(rws),3)*(100) as rate
        FROM
-          rpt_aqjg_ggjt_xcxxtj
+          rpt.rpt_aqjg_ggjt_xcxxtj
        WHERE
            ddmc is not null
            <choose>
@@ -103,7 +103,7 @@
        SELECT
           sum(rws) as rws  ,SUBSTRING(lxmc,"length"(lxmc)-1,2) as lxmc , round(sum(wcs)/sum(rws),3)*(100) as rate
        FROM
-          rpt_aqjg_ggjt_xcxxtj
+          rpt.rpt_aqjg_ggjt_xcxxtj
        WHERE
            lxdm in ('1','2','3','4-1','4-2','5','7','8','9')
           AND ddmc =#{dd}
@@ -128,7 +128,7 @@
          SELECT
               sum(rws) as rws
          FROM
-            rpt_aqjg_ggjt_xcxxtj
+            rpt.rpt_aqjg_ggjt_xcxxtj
           WHERE
             ddmc = #{dd}
           <choose>
@@ -145,7 +145,7 @@
        SELECT
           sum(xcs) as xcs, xcmjmc ,(SELECT ali.rws from ali) as dwru, round(sum(xcs)/(SELECT ali.rws from ali),3)*(100) as rate
        FROM
-          rpt_aqjg_ggjt_xcmjtj
+          rpt.rpt_aqjg_ggjt_xcmjtj
        WHERE
           ddmc =#{dd}
           and xcmjmc is not null
@@ -163,7 +163,7 @@
    </select>
     <!--大队名称集合-->
     <select id="DDMC" resultType="java.util.HashMap" >
-        SELECT  ddmc FROM rpt_aqjg_ggjt_xcmjtj where ddmc is not NULL GROUP BY  ddmc
+        SELECT  ddmc FROM rpt.rpt_aqjg_ggjt_xcmjtj where ddmc is not NULL GROUP BY  ddmc
     </select>
 
 </mapper>

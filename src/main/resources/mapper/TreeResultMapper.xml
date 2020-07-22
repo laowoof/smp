@@ -8,7 +8,7 @@
                         org_name,
                         parent_id
                     FROM
-                        "cm_org"
+                        rpt."cm_org"
                     WHERE
                         deep = '0';
     </select>
@@ -18,7 +18,7 @@
                             org_name,
                             parent_id
                         FROM
-                            "cm_org"
+                            rpt."cm_org"
                         WHERE
                             parent_id = #{parentId}
 <!--                            IN-->
@@ -33,7 +33,7 @@
         org_name,
         parent_id
         FROM
-        "cm_org"
+        rpt."cm_org"
         <!--                            IN-->
         <!--        <foreach item="item" index="index" collection="parentId" open="(" separator="," close=")">-->
         <!--        #{item}-->

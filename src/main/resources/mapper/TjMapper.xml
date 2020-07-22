@@ -8,20 +8,20 @@
         b.*,
         (b.fsznum+b.sygdnum+b.cqknum+b.mnnum+b.fsnum+b.jlznum+b.sqgdnum+b.bdsnum) as num
     FROM
-        dept_table a
+        rpt.dept_table a
     LEFT JOIN (
     SELECT
     DISTINCT ssfjdm,
-    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND ssfjdm = t.ssfjdm),0 ) as fsznum,
-    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND ssfjdm = t.ssfjdm ),0 ) as sygdnum,
-    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND ssfjdm = t.ssfjdm),0 ) as cqknum,
-    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND ssfjdm = t.ssfjdm),0 ) as mnnum,
-    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND ssfjdm = t.ssfjdm),0 ) as fsnum,
-    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND ssfjdm = t.ssfjdm),0 ) as jlznum,
-    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND ssfjdm = t.ssfjdm),0 ) as sqgdnum,
-    COALESCE (( SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND ssfjdm = t.ssfjdm),0 ) as bdsnum
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND ssfjdm = t.ssfjdm),0 ) as fsznum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND ssfjdm = t.ssfjdm ),0 ) as sygdnum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND ssfjdm = t.ssfjdm),0 ) as cqknum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND ssfjdm = t.ssfjdm),0 ) as mnnum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND ssfjdm = t.ssfjdm),0 ) as fsnum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND ssfjdm = t.ssfjdm),0 ) as jlznum,
+    COALESCE (( SELECT SUM (dwsl) xsnum FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND ssfjdm = t.ssfjdm),0 ) as sqgdnum,
+    COALESCE (( SELECT SUM ( dwsl ) xsnum FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND ssfjdm = t.ssfjdm),0 ) as bdsnum
     FROM
-        rpt_aqjg_zdmb_zysssl t
+        rpt.rpt_aqjg_zdmb_zysssl t
     WHERE
         1=1
         GROUP BY ssfjdm ORDER BY ssfjdm) b
@@ -36,16 +36,16 @@
     (SELECT
     DISTINCT sspcsdm,
 	case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end as dept_name,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND sspcsdm = t.sspcsdm),0 ) as fsznum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND sspcsdm = t.sspcsdm ),0 ) as sygdnum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND sspcsdm = t.sspcsdm),0 ) as cqknum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND sspcsdm = t.sspcsdm),0 ) as mnnum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND sspcsdm = t.sspcsdm),0 ) as fsnum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND sspcsdm = t.sspcsdm),0 ) as jlznum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND sspcsdm = t.sspcsdm),0 ) as sqgdnum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND sspcsdm = t.sspcsdm),0 ) as bdsnum
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND sspcsdm = t.sspcsdm),0 ) as fsznum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND sspcsdm = t.sspcsdm ),0 ) as sygdnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND sspcsdm = t.sspcsdm),0 ) as cqknum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND sspcsdm = t.sspcsdm),0 ) as mnnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND sspcsdm = t.sspcsdm),0 ) as fsnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND sspcsdm = t.sspcsdm),0 ) as jlznum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND sspcsdm = t.sspcsdm),0 ) as sqgdnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND sspcsdm = t.sspcsdm),0 ) as bdsnum
     FROM
-        rpt_aqjg_zdmb_zysssl t
+        rpt.rpt_aqjg_zdmb_zysssl t
     WHERE
         1=1 AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsdm,sspcsmc) b
 </select>
@@ -55,16 +55,16 @@
         (SELECT
         DISTINCT sszrqmc as dept_name,
 		sszrqdm,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND sszrqdm = t.sszrqdm),0 ) as fsznum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND sszrqdm = t.sszrqdm ),0 ) as sygdnum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND sszrqdm = t.sszrqdm),0 ) as cqknum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND sszrqdm = t.sszrqdm),0 ) as mnnum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND sszrqdm = t.sszrqdm),0 ) as fsnum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND sszrqdm = t.sszrqdm),0 ) as jlznum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND sszrqdm = t.sszrqdm),0 ) as sqgdnum,
-    COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND sszrqdm = t.sszrqdm),0 ) as bdsnum
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '9' AND sszrqdm = t.sszrqdm),0 ) as fsznum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '7' AND sszrqdm = t.sszrqdm ),0 ) as sygdnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '8' AND sszrqdm = t.sszrqdm),0 ) as cqknum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1 AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND lbdm = '10' AND sszrqdm = t.sszrqdm),0 ) as mnnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '11' AND sszrqdm = t.sszrqdm),0 ) as fsnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '12' AND sszrqdm = t.sszrqdm),0 ) as jlznum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '13' AND sszrqdm = t.sszrqdm),0 ) as sqgdnum,
+    COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE 1 = 1  AND tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND lbdm = '15' AND sszrqdm = t.sszrqdm),0 ) as bdsnum
     FROM
-        rpt_aqjg_zdmb_zysssl t
+        rpt.rpt_aqjg_zdmb_zysssl t
     WHERE
         1=1 AND sspcsdm=#{code} and sszrqmc is not null GROUP BY sszrqdm,sszrqmc) b
 </select>
@@ -95,7 +95,7 @@
             COALESCE(d.fknum,0) fknum,
             COALESCE(d.xtjj,0) xtjj
         FROM
-            dept_table a
+            rpt.dept_table a
         LEFT JOIN
         (select
 		    ssfjdm,
@@ -112,12 +112,12 @@
             sum(case when (jcztdm = '2' AND jclxdm='3') then jcsl else 0 end) as zxqjcnum,
             sum(case when (jcztdm = '2' AND jclxdm='4') then jcsl else 0 end) as fcqjcnum
 		from
-			rpt_aqjg_zdmb_lzfxtj_jcsl
+			rpt.rpt_aqjg_zdmb_lzfxtj_jcsl
 		WHERE
 		    tjrq=#{tjrq} group by ssfjdm ) b
 				on a.dept_code = b.ssfjdm
 		LEFT JOIN (
-		    select ssfjdm,sum(yhdwsl) yhdwsl,sum(yhsl) yhsl FROM rpt_aqjg_zdmb_lzfxtj_yhsl  WHERE tjrq=#{tjrq} GROUP BY ssfjdm) c
+		    select ssfjdm,sum(yhdwsl) yhdwsl,sum(yhsl) yhsl FROM rpt.rpt_aqjg_zdmb_lzfxtj_yhsl  WHERE tjrq=#{tjrq} GROUP BY ssfjdm) c
 			on a.dept_code = c.ssfjdm
 		LEFT JOIN(
 			SELECT
@@ -130,7 +130,7 @@
 			    sum(case when (jclx='4' AND gljcjg='罚款' AND ssfxjmc is not null) then yhsl else 0 end) as fknum,
 			    sum(case when (jclx='4' AND gljcjg='协调处理' AND ssfxjmc is not null) then yhsl else 0 end) as xtjj
                 FROM
-                    rpt_aqjg_zdmb_yhdwtj
+                    rpt.rpt_aqjg_zdmb_yhdwtj
                 where
                     tjrq=#{tjrq} GROUP BY ssfxj) d
 				on a.dept_code = d.ssfxj
@@ -159,11 +159,11 @@
 			sum(case when (jcztdm = '2' AND jclxdm='3') then jcsl else 0 end) as zxqjcnum,
 			sum(case when (jcztdm = '2' AND jclxdm='4') then jcsl else 0 end) as fcqjcnum
 		from
-			rpt_aqjg_zdmb_lzfxtj_jcsl
+			rpt.rpt_aqjg_zdmb_lzfxtj_jcsl
 		WHERE
 		    tjrq=#{tjrq} AND ssfjdm=#{code} and sspcsmc is not null group by sspcsmc,sspcsdm) a
 		LEFT JOIN (
-			select sspcsdm,sum(yhdwsl) yhdwsl,sum(yhsl) yhsl FROM rpt_aqjg_zdmb_lzfxtj_yhsl  WHERE tjrq=#{tjrq} AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsdm)b
+			select sspcsdm,sum(yhdwsl) yhdwsl,sum(yhsl) yhsl FROM rpt.rpt_aqjg_zdmb_lzfxtj_yhsl  WHERE tjrq=#{tjrq} AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsdm)b
 			on a.sspcsdm = b.sspcsdm
 	LEFT JOIN(
 		SELECT
@@ -176,7 +176,7 @@
 			sum(case when (jclx='4' AND gljcjg='罚款' AND ssfxjmc is not null) then yhsl else 0 end) as fknum,
 			sum(case when (jclx='4' AND gljcjg='协调处理' AND ssfxjmc is not null) then yhsl else 0 end) as xtjj
         FROM
-            rpt_aqjg_zdmb_yhdwtj
+            rpt.rpt_aqjg_zdmb_yhdwtj
 		WHERE tjrq=#{tjrq} AND ssfxj=#{code} and sspcs is not null GROUP BY sspcs)c
 	on a.sspcsdm = c.sspcs
 	WHERE
@@ -205,7 +205,7 @@
 				sum(case when (jcztdm = '2' AND jclxdm='3') then jcsl else 0 end) as zxqjcnum,
 				sum(case when (jcztdm = '2' AND jclxdm='4') then jcsl else 0 end) as fcqjcnum
 		    from
-			    rpt_aqjg_zdmb_lzfxtj_jcsl
+			    rpt.rpt_aqjg_zdmb_lzfxtj_jcsl
 		    WHERE
 		    tjrq=#{tjrq} AND sspcsdm=#{code} group by sszrqmc,sszrqdm) a
 		LEFT JOIN (
@@ -214,7 +214,7 @@
 			    sum(yhdwsl) yhdwsl,
 			    sum(yhsl) yhsl
 			FROM
-			    rpt_aqjg_zdmb_lzfxtj_yhsl
+			    rpt.rpt_aqjg_zdmb_lzfxtj_yhsl
 			WHERE
 			    tjrq=#{tjrq} AND sspcsdm=#{code} GROUP BY sszrqdm)b
 		on a.sszrqdm = b.sszrqdm
@@ -229,7 +229,7 @@
 			    sum(case when (jclx='4' AND gljcjg='罚款' AND ssfxjmc is not null) then yhsl else 0 end) as fknum,
 			    sum(case when (jclx='4' AND gljcjg='协调处理' AND ssfxjmc is not null) then yhsl else 0 end) as xtjj
             FROM
-                rpt_aqjg_zdmb_yhdwtj
+                rpt.rpt_aqjg_zdmb_yhdwtj
 			WHERE
 			    tjrq=#{tjrq} AND sspcs=#{code} GROUP BY sszrq)c
 			on a.sszrqdm = c.sszrq
@@ -257,7 +257,7 @@
 		        SUM ( yhzgs ) yhzgs,
 		        SUM ( yhwzgs ) yhwzgs
 	        FROM
-		        rpt_aqjg_zdmb_zyssyhtj
+		        rpt.rpt_aqjg_zdmb_zyssyhtj
 	        WHERE
 		        tjrq = #{tjrq} GROUP BY ssfjdm ) b
 		ON a.dept_code = b.ssfjdm
@@ -274,7 +274,7 @@
 		    SUM (yhzgs) yhzgs,
 		    SUM (yhwzgs) yhwzgs
 	    FROM
-		    rpt_aqjg_zdmb_zyssyhtj
+		    rpt.rpt_aqjg_zdmb_zyssyhtj
 	    WHERE
 		    tjrq = #{tjrq} AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsmc,sspcsdm
     </select>
@@ -288,7 +288,7 @@
 		    SUM (yhzgs) yhzgs,
 		    SUM (yhwzgs) yhwzgs
 	    FROM
-		    rpt_aqjg_zdmb_zyssyhtj
+		    rpt.rpt_aqjg_zdmb_zyssyhtj
 	    WHERE
 		    tjrq =#{tjrq} AND sspcsdm=#{code} AND sszrqmc is not null GROUP BY sszrqmc
     </select>
@@ -322,7 +322,7 @@
 			sum(azsxtsl) as azsxtsl,
 			sum(wazsxtsl) as wazsxtsl
 	 	FROM
-      		rpt_aqjg_zdmb_qsydwtj
+      		rpt.rpt_aqjg_zdmb_qsydwtj
    		WHERE
       		ssfxj not in('320597000000','320598000000') AND tjrq=#{tjrq} GROUP BY ssfxj) b
 			on a.dept_code = b.ssfxj
@@ -331,7 +331,7 @@
 		 	ssfjdm,
 		 	sum(dwsl) dwsl
 		FROM
-			rpt_aqjg_zdmb_zysssl
+			rpt.rpt_aqjg_zdmb_zysssl
 		WHERE tjrq=#{tjrq} GROUP BY ssfjdm) c
 		on a.dept_code = c.ssfjdm
      </select>
@@ -364,7 +364,7 @@
 			sum(azsxtsl) as azsxtsl,
 			sum(wazsxtsl) as wazsxtsl
 	 	FROM
-      		rpt_aqjg_zdmb_qsydwtj
+      		rpt.rpt_aqjg_zdmb_qsydwtj
    		WHERE
       		ssfxj not in('320597000000','320598000000') AND tjrq=#{tjrq} AND ssfxj=#{code} AND pcs is not null GROUP BY pcs,sspcs) a
 		LEFT JOIN(
@@ -373,7 +373,7 @@
 				sspcsmc,
 				sum(dwsl) dwsl
 			FROM
-				"rpt_aqjg_zdmb_zysssl"
+				rpt."rpt_aqjg_zdmb_zysssl"
 			WHERE
 				tjrq=#{tjrq}AND ssfjdm=#{code} GROUP BY sspcsdm,sspcsmc ) b
 		on a.sspcs = b.sspcsdm
@@ -406,7 +406,7 @@
 				sum(azsxtsl) as azsxtsl,
 				sum(wazsxtsl) as wazsxtsl
 	 		FROM
-      			rpt_aqjg_zdmb_qsydwtj
+      			rpt.rpt_aqjg_zdmb_qsydwtj
    			WHERE
       			ssfxj not in('320597000000','320598000000') AND tjrq=#{tjrq} AND sspcs=#{code} AND zrq is not null GROUP BY zrq,sssq) a
 			LEFT JOIN(
@@ -415,7 +415,7 @@
 					sszrqdm,
 					sum(dwsl) dwsl
 				FROM
-					"rpt_aqjg_zdmb_zysssl"
+					rpt."rpt_aqjg_zdmb_zysssl"
 				WHERE
 					tjrq=#{tjrq} AND sspcsdm=#{code} GROUP BY sszrqmc,sszrqdm ) b
 		 	on a.sssq = b.sszrqdm
@@ -451,7 +451,7 @@
 	        COALESCE(b.sqzdyhzgs,0) as sqzdyhzgs,
 	        COALESCE(b.sqzdyhwzgs,0) as sqzdyhwzgs
 	    from
-	        dept_table a
+	        rpt.dept_table a
         LEFT JOIN (
 	    select
 		    ssfxj,
@@ -481,7 +481,7 @@
 		    sum(CASe WHEN (jbdj='8' and clzt = '6' AND jclx != '4' AND gljcjg = '1')OR (jclx = '4' AND clzt = '6' AND (gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sqzdyhzgs,
 		    sum(case when jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') then  yhsl else 0 end) as sqzdyhwzgs
 		from
-			rpt_aqjg_zdmb_yhdwtj
+			rpt.rpt_aqjg_zdmb_yhdwtj
 		WHERE
 		    tjrq=#{tjrq} group by ssfxj) b
         on a.dept_code = b.ssfxj
@@ -517,7 +517,7 @@
 		sum(CASe WHEN (jbdj='8' and clzt = '6' AND jclx != '4' AND gljcjg = '1')OR (jclx = '4' AND clzt = '6' AND (gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sqzdyhzgs,
 		sum(case when jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') then  yhsl else 0 end) as sqzdyhwzgs
 		from
-			rpt_aqjg_zdmb_yhdwtj WHERE tjrq=#{tjrq} AND ssfxj=#{code} AND sspcsmc IS NOT NULL
+			rpt.rpt_aqjg_zdmb_yhdwtj WHERE tjrq=#{tjrq} AND ssfxj=#{code} AND sspcsmc IS NOT NULL
 			group by sspcsmc,sspcs
     </select>
     <select id="zdDwYhTjSsZrq" resultType="java.util.HashMap" parameterType="java.util.HashMap">
@@ -549,7 +549,7 @@
 		sum(CASe WHEN (jbdj='8' and clzt = '6' AND jclx != '4' AND gljcjg = '1')OR (jclx = '4' AND clzt = '6' AND (gljcjg = '0' OR gljcjg IS NULL)) THEN yhsl ELSE 0 END ) as sqzdyhzgs,
 		sum(case when jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') then  yhsl else 0 end) as sqzdyhwzgs
 		from
-			rpt_aqjg_zdmb_yhdwtj WHERE tjrq=#{tjrq} AND sspcs=#{code} AND sszrqmc IS NOT NULL
+			rpt.rpt_aqjg_zdmb_yhdwtj WHERE tjrq=#{tjrq} AND sspcs=#{code} AND sszrqmc IS NOT NULL
 			group by sszrqmc
     </select>
     <select id="zySsXzTjSs" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -560,17 +560,17 @@
             b.sum,
             (c.num2-c.num) as num
         FROM
-            dept_table a
+            rpt.dept_table a
         LEFT JOIN
-            (SELECT ssfjmc,ssfjdm,sum(dwsl) FROM "rpt_aqjg_zdmb_zysssl_zl" where tjrq &lt;=#{tjrq} GROUP BY ssfjmc,ssfjdm) b
+            (SELECT ssfjmc,ssfjdm,sum(dwsl) FROM rpt."rpt_aqjg_zdmb_zysssl_zl" where tjrq &lt;=#{tjrq} GROUP BY ssfjmc,ssfjdm) b
             on a.dept_code = b.ssfjdm
         LEFT JOIN
         (SELECT
             DISTINCT ssfjdm,
-            COALESCE((SELECT sum(dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND ssfjdm=t.ssfjdm and tjrq=#{time}),0) as num,
-            COALESCE((SELECT sum(dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND ssfjdm=t.ssfjdm and tjrq=#{tjrq}),0) as num2
+            COALESCE((SELECT sum(dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND ssfjdm=t.ssfjdm and tjrq=#{time}),0) as num,
+            COALESCE((SELECT sum(dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND ssfjdm=t.ssfjdm and tjrq=#{tjrq}),0) as num2
         FROM
-            rpt_aqjg_zdmb_zysssl_zl t
+            rpt.rpt_aqjg_zdmb_zysssl_zl t
         WHERE 1=1 GROUP BY ssfjdm)c
             on a.dept_code = c.ssfjdm
     </select>
@@ -582,15 +582,15 @@
 			a.sum,
 			(b.num2-b.num) as num
         FROM
-		    (SELECT sspcsmc,sspcsdm,sum(dwsl) FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq &lt;=#{tjrq} and ssfjdm=#{code} GROUP BY sspcsdm,sspcsmc) a
+		    (SELECT sspcsmc,sspcsdm,sum(dwsl) FROM rpt."rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq &lt;=#{tjrq} and ssfjdm=#{code} GROUP BY sspcsdm,sspcsmc) a
         LEFT JOIN
             (SELECT
                 DISTINCT sspcsdm,
 		        case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end as area,
-                COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sspcsdm=t.sspcsdm and tjrq=#{time}),0) as num,
-                COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sspcsdm=t.sspcsdm and tjrq=#{tjrq}),0) as num2
+                COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sspcsdm=t.sspcsdm and tjrq=#{time}),0) as num,
+                COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sspcsdm=t.sspcsdm and tjrq=#{tjrq}),0) as num2
             FROM
-                rpt_aqjg_zdmb_zysssl_zl t
+                rpt.rpt_aqjg_zdmb_zysssl_zl t
             WHERE
                 1=1 AND ssfjdm=#{code} and sspcsmc is not null GROUP BY sspcsdm,sspcsmc) b
 	    on a.sspcsdm = b.sspcsdm
@@ -601,15 +601,15 @@
 			a.sum,
 			(b.num2-b.num) as num
         FROM
-		    (SELECT sszrqdm,sszrqmc,sum(dwsl) FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq &lt;=#{tjrq} and sspcsdm=#{code} GROUP BY sszrqdm,sszrqmc) a
+		    (SELECT sszrqdm,sszrqmc,sum(dwsl) FROM rpt."rpt_aqjg_zdmb_zysssl_zl" WHERE tjrq &lt;=#{tjrq} and sspcsdm=#{code} GROUP BY sszrqdm,sszrqmc) a
         LEFT JOIN
             (SELECT
                 DISTINCT sszrqdm,
 		        sszrqmc as area,
-                COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sszrqdm=t.sszrqdm and tjrq=#{time}),0) as num,
-                COALESCE (( SELECT SUM (dwsl) FROM rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sszrqdm=t.sszrqdm and tjrq=#{tjrq}),0) as num2
+                COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sszrqdm=t.sszrqdm and tjrq=#{time}),0) as num,
+                COALESCE (( SELECT SUM (dwsl) FROM rpt.rpt_aqjg_zdmb_zysssl_zl WHERE 1=1 AND sszrqdm=t.sszrqdm and tjrq=#{tjrq}),0) as num2
             FROM
-                rpt_aqjg_zdmb_zysssl_zl t
+                rpt.rpt_aqjg_zdmb_zysssl_zl t
             WHERE
                 1=1 AND sspcsdm=#{code} and sszrqmc is not null GROUP BY sszrqdm,sszrqmc) b
 	        on a.sszrqdm = b.sszrqdm
@@ -628,7 +628,7 @@
 			COALESCE(b.ynum,0) as ynum,
 			COALESCE(b.gnum,0) as gnum
 		FROM
-			dept_table a
+			rpt.dept_table a
 		LEFT JOIN
 			(SELECT
 				ssfjdm,
@@ -641,7 +641,7 @@
 				sum(case when (tjrq=#{tjrq} AND jbdjdm='9') then dwsl else 0 end) as ynum,
 				sum(case when (tjrq=#{tjrq} AND jbdjdm='7') then dwsl else 0 end) as gnum
 			FROM
-				rpt_aqjg_zdmb_sydwsl_zl
+				rpt.rpt_aqjg_zdmb_sydwsl_zl
 			where ssfjmc is not null
 			GROUP BY ssfjdm) b
 		on a.dept_code = b.ssfjdm
@@ -660,7 +660,7 @@
 			sum(case when (tjrq=#{tjrq} AND jbdjdm='9') then dwsl else 0 end) as ynum,
 			sum(case when (tjrq=#{tjrq} AND jbdjdm='7') then dwsl else 0 end) as gnum
 		FROM
-			rpt_aqjg_zdmb_sydwsl_zl
+			rpt.rpt_aqjg_zdmb_sydwsl_zl
 		WHERE
 			ssfjdm=#{code} AND sspcsdm is not null GROUP BY sspcsdm,sspcsmc
 	</select>
@@ -677,7 +677,7 @@
 			sum(case when (tjrq=#{tjrq} AND jbdjdm='9') then dwsl else 0 end) as ynum,
 			sum(case when (tjrq=#{tjrq} AND jbdjdm='7') then dwsl else 0 end) as gnum
 		FROM
-			rpt_aqjg_zdmb_sydwsl_zl
+			rpt.rpt_aqjg_zdmb_sydwsl_zl
 		WHERE
 			sspcsdm=#{code} AND sspcsdm is not null and sszrqmc is not null GROUP BY sszrqmc
 	</select>
@@ -711,7 +711,7 @@
 			b.eleven,
 			b.twelve
 		FROM
-			dept_table a
+			rpt.dept_table a
 		LEFT JOIN
 		(SELECT
 			ssfjdm,
@@ -740,7 +740,7 @@
 			SUM(CASE WHEN tjrq &lt;=#{year} ||'11'THEN dwsl ELSE 0 END) as eleven,
 			SUM(CASE WHEN tjrq &lt;=#{year} ||'12'THEN dwsl ELSE 0 END) as twelve
 		FROM
-			rpt_aqjg_zdmb_zysssl_zl
+			rpt.rpt_aqjg_zdmb_zysssl_zl
 		GROUP BY ssfjdm) b
 		on a.dept_code = b.ssfjdm
 	</select>
@@ -802,7 +802,7 @@
 			SUM(CASE WHEN tjrq &lt;=#{year} ||'11'THEN dwsl ELSE 0 END) as eleven,
 			SUM(CASE WHEN tjrq &lt;=#{year} ||'12'THEN dwsl ELSE 0 END) as twelve
 		FROM
-			rpt_aqjg_zdmb_zysssl_zl
+			rpt.rpt_aqjg_zdmb_zysssl_zl
 		WHERE
 			ssfjdm=#{code} GROUP BY sspcsmc,sspcsdm) b
 	</select>
@@ -861,7 +861,7 @@
 			SUM(CASE WHEN tjrq &lt;=#{year} ||'11'THEN dwsl ELSE 0 END) as eleven,
 			SUM(CASE WHEN tjrq &lt;=#{year} ||'12'THEN dwsl ELSE 0 END) as twelve
 		FROM
-		rpt_aqjg_zdmb_zysssl_zl
+		rpt.rpt_aqjg_zdmb_zysssl_zl
 		WHERE sspcsdm=#{code}
 		GROUP BY sszrqmc) b
 	</select>
@@ -879,7 +879,7 @@
   					yhsss,
   					yhfxs
 				FROM
-  					rpt_aqjg_zdmb_zyssyhtj
+  					rpt.rpt_aqjg_zdmb_zyssyhtj
 				WHERE
  					to_char(to_DATE(tjrq, 'yyyy-MM-dd'), 'yyyy') =#{year})
   		SELECT
@@ -982,7 +982,7 @@
         GROUP BY year, ssfjmc,ssfjdm)t ORDER BY year , ssfjmc,param
 			) b
 			LEFT JOIN
-			dept_table a
+			rpt.dept_table a
 		on a.dept_code = b.ssfjdm
 	</select>
 	<select id="zySsYhTjYdPcs" resultType="java.util.HashMap" parameterType="java.util.HashMap">
@@ -1000,7 +1000,7 @@
   					yhsss,
   					yhfxs
 				FROM
-  					rpt_aqjg_zdmb_zyssyhtj
+  					rpt.rpt_aqjg_zdmb_zyssyhtj
 				WHERE
  					to_char(to_DATE(tjrq, 'yyyy-MM-dd'), 'yyyy') =#{year} AND ssfjdm =#{code}
 					)
@@ -1107,7 +1107,7 @@
   					yhsss,
   					yhfxs
 				FROM
-  					rpt_aqjg_zdmb_zyssyhtj
+  					rpt.rpt_aqjg_zdmb_zyssyhtj
 				WHERE
  					to_char(to_DATE(tjrq, 'yyyy-MM-dd'), 'yyyy') =#{year} AND sspcsdm =#{code}
 					)
@@ -1215,7 +1215,7 @@
   					split_part( tjrq, '-', 1 ) AS YEAR ,
   					dwsl
 				FROM
-  					rpt_aqjg_zdmb_zysssl
+  					rpt.rpt_aqjg_zdmb_zysssl
 				WHERE
  					to_char(to_DATE(tjrq, 'yyyy-MM-dd'), 'yyyy') =#{year})
   		SELECT
@@ -1393,7 +1393,7 @@
 			COALESCE(c.dwsl11,0) dwsl11,
 			COALESCE(c.dwsl12,0) dwsl12
 		FROM
-			dept_table a
+			rpt.dept_table a
 		LEFT JOIN
 		(SELECT
 			ssfxj,
@@ -1494,7 +1494,7 @@
 			SUM(CASE WHEN  yf= '11' THEN wazsxtsl ELSE 0 END  ) as waz11,
 			SUM(CASE WHEN  yf= '12' THEN wazsxtsl ELSE 0 END )  as waz12
 		FROM
-			rpt_aqjg_zdmb_qsydwtj
+			rpt.rpt_aqjg_zdmb_qsydwtj
 		WHERE
 			tjrq=to_char(CURRENT_DATE,'yyyy-MM-dd')  AND nf=#{year}  GROUP BY ssfxj) b
 		on a.dept_code = b.ssfxj
@@ -1528,7 +1528,7 @@
 					split_part( tjrq, '-', 1 ) AS YEAR,
 					dwsl
 				FROM
-					rpt_aqjg_zdmb_zysssl
+					rpt.rpt_aqjg_zdmb_zysssl
 				WHERE
 					to_char( to_DATE( tjrq, 'yyyy-MM-dd' ), 'yyyy' ) =#{year} AND ssfjdm = #{code}
 		) SELECT YEAR
@@ -1838,7 +1838,7 @@ FROM
 				SUM ( CASE WHEN yf = '11' THEN wazsxtsl ELSE 0 END ) AS waz11,
 				SUM ( CASE WHEN yf = '12' THEN wazsxtsl ELSE 0 END ) AS waz12
 			FROM
-				rpt_aqjg_zdmb_qsydwtj
+				rpt.rpt_aqjg_zdmb_qsydwtj
 			WHERE
 				tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
 				AND nf = #{year}
@@ -1860,7 +1860,7 @@ FROM
 					split_part( tjrq, '-', 1 ) AS YEAR,
 					dwsl
 				FROM
-					rpt_aqjg_zdmb_zysssl
+					rpt.rpt_aqjg_zdmb_zysssl
 				WHERE
 					to_char( to_DATE( tjrq, 'yyyy-MM-dd' ), 'yyyy' ) =#{year} AND sspcsdm = #{code} AND sszrqmc is not null
 		)
@@ -2171,7 +2171,7 @@ FROM
 				SUM ( CASE WHEN yf = '11' THEN wazsxtsl ELSE 0 END ) AS waz11,
 				SUM ( CASE WHEN yf = '12' THEN wazsxtsl ELSE 0 END ) AS waz12
 			FROM
-				rpt_aqjg_zdmb_qsydwtj
+				rpt.rpt_aqjg_zdmb_qsydwtj
 			WHERE
 				tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
 				AND nf = #{year}
@@ -2192,7 +2192,7 @@ FROM
 			a.dept_name area,
 			a.dept_code code
 		FROM
-			dept_table a
+			rpt.dept_table a
 		right JOIN
 		(SELECT
 			ssfjdm,
@@ -2282,7 +2282,7 @@ FROM
 			COALESCE(SUM ( CASE WHEN (jbdjdm='9' and subString(tjrq,6,7) = '11') THEN dwsl ELSE 0 END )) AS jbn11,
 			COALESCE(SUM ( CASE WHEN (jbdjdm='9' and subString(tjrq,6,7) = '12') THEN dwsl ELSE 0 END )) AS jbn12
 		FROM
-			rpt_aqjg_zdmb_sydwsl_zl
+			rpt.rpt_aqjg_zdmb_sydwsl_zl
 		WHERE
 		subString(tjrq,0,5) =#{year} GROUP BY ssfjdm,ssfjmc) b
 	on a .dept_code = b.ssfjdm
@@ -2377,7 +2377,7 @@ FROM
 		COALESCE(SUM ( CASE WHEN (jbdjdm='9' and subString(tjrq,6,7) = '11') THEN dwsl ELSE 0 END )) AS jbn11,
 		COALESCE(SUM ( CASE WHEN (jbdjdm='9' and subString(tjrq,6,7) = '12') THEN dwsl ELSE 0 END )) AS jbn12
 	FROM
-			rpt_aqjg_zdmb_sydwsl_zl
+			rpt.rpt_aqjg_zdmb_sydwsl_zl
 		WHERE
 		subString(tjrq,0,5) =#{year} AND ssfjdm=#{code} GROUP BY sspcsdm,sspcsmc
 	</select>
@@ -2470,7 +2470,7 @@ FROM
 		COALESCE(SUM ( CASE WHEN (jbdjdm='9' and subString(tjrq,6,7) = '11') THEN dwsl ELSE 0 END )) AS jbn11,
 		COALESCE(SUM ( CASE WHEN (jbdjdm='9' and subString(tjrq,6,7) = '12') THEN dwsl ELSE 0 END )) AS jbn12
 	FROM
-			rpt_aqjg_zdmb_sydwsl_zl
+			rpt.rpt_aqjg_zdmb_sydwsl_zl
 		WHERE
 		subString(tjrq,0,5) =#{year} AND sspcsdm=#{code} GROUP BY sszrqdm,sszrqmc
 	</select>
@@ -2506,7 +2506,7 @@ FROM
 	(b.qxzg+b.qxzg2+b.qxzg3+b.qxzg4+b.qxzg5+b.qxzg6+b.qxzg7+b.qxzg8+b.qxzg9+b.qxzg10+b.qxzg11+b.qxzg12) qxzgt,
 	(b.qxwzg+b.qxwzg2+b.qxwzg3+b.qxwzg4+b.qxwzg5+b.qxwzg6+b.qxwzg7+b.qxwzg8+b.qxwzg9+b.qxwzg10+b.qxwzg11+b.qxwzg12) qxwzgt
 FROM
-	dept_table a
+	rpt.dept_table a
 LEFT JOIN
 (SELECT
 	ssfxj,
@@ -2811,7 +2811,7 @@ LEFT JOIN
 	COALESCE(sum(case when (jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') and jc_month='11')  then  yhsl else 0 end)) sqwzg11,
 	COALESCE(sum(case when (jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') and jc_month='12')  then  yhsl else 0 end)) sqwzg12
 FROM
-	rpt_aqjg_zdmb_yhdwtj
+	rpt.rpt_aqjg_zdmb_yhdwtj
 WHERE
 	tjrq=to_char(CURRENT_DATE,'yyyy-MM-dd') AND jc_year=#{year}
 GROUP BY ssfxj
@@ -3152,7 +3152,7 @@ FROM
 	COALESCE(sum(case when (jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') and jc_month='11')  then  yhsl else 0 end)) sqwzg11,
 	COALESCE(sum(case when (jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') and jc_month='12')  then  yhsl else 0 end)) sqwzg12
 FROM
-	rpt_aqjg_zdmb_yhdwtj
+	rpt.rpt_aqjg_zdmb_yhdwtj
 WHERE
 	tjrq=to_char(CURRENT_DATE,'yyyy-MM-dd') AND jc_year=#{year} and ssfxj=#{code} AND sspcsmc is not null
 GROUP BY sspcsmc,sspcs
@@ -3490,7 +3490,7 @@ FROM
 	COALESCE(sum(case when (jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') and jc_month='11')  then  yhsl else 0 end)) sqwzg11,
 	COALESCE(sum(case when (jbdj='8' AND jclx='4' AND clzt='6' AND gljcjgmc not in(null,'0') and jc_month='12')  then  yhsl else 0 end)) sqwzg12
 FROM
-	rpt_aqjg_zdmb_yhdwtj
+	rpt.rpt_aqjg_zdmb_yhdwtj
 WHERE
 	tjrq=to_char(CURRENT_DATE,'yyyy-MM-dd') AND jc_year=#{year} and sspcs=#{code} AND sszrqmc is not null
 GROUP BY sszrqmc
@@ -3510,7 +3510,7 @@ GROUP BY sszrqmc
 				COALESCE(b.wzdly,0) wzdly,
 				COALESCE(b.qybzg,0) qybzg
 			FROM
-				dept_table a
+				rpt.dept_table a
 			LEFT JOIN
 			(SELECT
 				ssfxj,
@@ -3524,7 +3524,7 @@ GROUP BY sszrqmc
 				SUM(CASE WHEN (jclx='4' and gljcjgmc='无正当理由未达到要求') THEN yhsl ELSE 0 END) wzdly,
 				sum(CASE WHEN (jclx='4' and gljcjgmc='逾期不整改') THEN yhsl ELSE 0 END ) qybzg
 			FROM
-				rpt_aqjg_zdmb_yhdwtj
+				rpt.rpt_aqjg_zdmb_yhdwtj
 			WHERE
 				tjrq=to_char(CURRENT_DATE,'yyyy-MM-dd') AND jc_month =split_part( #{time}, '-', 2 ) and jc_year=split_part( #{time}, '-', 1 )
 				GROUP BY ssfxj )b
@@ -3558,7 +3558,7 @@ GROUP BY sszrqmc
 	            SUM(CASE WHEN (jclx='4' and gljcjgmc='无正当理由未达到要求') THEN yhsl ELSE 0 END) wzdly,
 	            sum(CASE WHEN (jclx='4' and gljcjgmc='逾期不整改') THEN yhsl ELSE 0 END ) qybzg
             FROM
-	            rpt_aqjg_zdmb_yhdwtj
+	            rpt.rpt_aqjg_zdmb_yhdwtj
             WHERE
                 tjrq=to_char(CURRENT_DATE,'yyyy-MM-dd') AND jc_month =split_part( #{time}, '-', 2 )
                 and jc_year=split_part( #{time}, '-', 1 ) and ssfxj=#{code}
@@ -3589,7 +3589,7 @@ GROUP BY sszrqmc
 			SUM ( CASE WHEN ( jclx = '4' AND gljcjgmc = '无正当理由未达到要求' ) THEN yhsl ELSE 0 END ) wzdly,
 			SUM ( CASE WHEN ( jclx = '4' AND gljcjgmc = '逾期不整改' ) THEN yhsl ELSE 0 END ) qybzg
 		FROM
-			rpt_aqjg_zdmb_yhdwtj
+			rpt.rpt_aqjg_zdmb_yhdwtj
 		WHERE
 			tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
 			AND jc_month = split_part( #{time}, '-', 2 )

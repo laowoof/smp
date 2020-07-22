@@ -1,6 +1,7 @@
 package com.oceansoft.szga.smp.szsh.core.entity.system;
 
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@TableName("rpt.cm_org")
 public class CmOrg implements Serializable {
 
     private static final long serialVersionUID = 1686580600981273904L;

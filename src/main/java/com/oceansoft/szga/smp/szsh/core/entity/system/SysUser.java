@@ -2,6 +2,7 @@ package com.oceansoft.szga.smp.szsh.core.entity.system;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@TableName("rpt.sys_user")
 public class SysUser implements Serializable  {
 
     

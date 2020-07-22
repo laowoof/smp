@@ -4,7 +4,7 @@
 
     <select id="getRoleListPage" resultType="com.oceansoft.szga.smp.szsh.core.entity.system.SysRole">
         select r.id, r.name, r.class_name, r.org_id, o.org_name
-        from sys_role r left join cm_org o on r.org_id=o.id
+        from rpt.sys_role r left join rpt.cm_org o on r.org_id=o.id
         where 1=1
         <if test="findRoleDTO.name!=null and findRoleDTO.name!=''">
             AND r.name like  '%'||#{findRoleDTO.name}||'%'

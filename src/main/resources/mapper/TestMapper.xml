@@ -3,7 +3,7 @@
 <mapper namespace="com.oceansoft.szga.smp.mapper.TestMapper">
 
 <select id="list" resultType="map">
-   select * from test
+   select * from rpt.test
 </select>
 
    <select id="test" resultType="map">

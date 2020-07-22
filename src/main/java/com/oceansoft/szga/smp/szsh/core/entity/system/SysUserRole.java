@@ -1,6 +1,7 @@
 package com.oceansoft.szga.smp.szsh.core.entity.system;
 
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@TableName("rpt.sys_user_role")
 public class SysUserRole implements Serializable {
 
     @TableId

@@ -5,13 +5,13 @@
         select
         *
         from
-        rpt_aqjg_ggjt_yhlxtj
+        rpt.rpt_aqjg_ggjt_yhlxtj
         where
         tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')
     </select>
 
     <select id="anTotleNum" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,yhwwcsl,yhwcsl,yhzl FROM rpt_aqjg_ggjt_yhlxtj
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,yhwwcsl,yhwcsl,yhzl FROM rpt.rpt_aqjg_ggjt_yhlxtj
         WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         COALESCE(sum(yhzl),0) yhzl,
@@ -31,16 +31,16 @@
         select xqdm AS deptid,xqmc AS deptname from (
             select 'all' AS xqdm, '全市信息' as xqmc
             union all
-            select xqdm , xqmc from rpt_aqjg_ggjt_qyxzfx GROUP BY xqdm,xqmc order by xqdm
+            select xqdm , xqmc from rpt.rpt_aqjg_ggjt_qyxzfx GROUP BY xqdm,xqmc order by xqdm
         ) dll order by xqdm desc
---         select distinct xqdm AS deptid, xqmc as deptname from rpt_aqjg_ggjt_qyxzfx order by xqdm
+--         select distinct xqdm AS deptid, xqmc as deptname from rpt.rpt_aqjg_ggjt_qyxzfx order by xqdm
     </select>
     <select id="getSourceSum" resultType="java.util.HashMap" parameterType="com.oceansoft.szga.smp.entity.SourceNum">
         WITH dljtytgltj AS
         (
         select * from (
         select t.lx, t.year || '-' || t.mon as ny, sl
-        FROM rpt_aqjg_ggjt_dljtytgltj t
+        FROM rpt.rpt_aqjg_ggjt_dljtytgltj t
         where t.tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd') and lx in ('1','2','3')
         ) dlj where 1=1
         <if test="type=='nf'">
@@ -59,7 +59,7 @@
 
     <select id="yhQusFx" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM
-        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        rpt.rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         ddmc,
         ddbm,
@@ -81,7 +81,7 @@
 
     <select id="yhQusXs" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM
-        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        rpt.rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         ddmc,
         ddbm,
@@ -103,7 +103,7 @@
 
     <select id="yhQusGs" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,yhwwcsl,yhwcsl,yhzl FROM
-        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        rpt.rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         ddmc,
         ddbm,
@@ -125,7 +125,7 @@
 
     <select id="zyJdFx" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,jdlx,jdmc,zblx,zblxmc,sl FROM
-        rpt_aqjg_ggjt_yhjdtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        rpt.rpt_aqjg_ggjt_yhjdtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         COALESCE(SUM(CASE WHEN jdlx='1' THEN sl ELSE 0 END),0) mjnum,
         COALESCE(SUM(CASE WHEN jdlx='2' AND zblx='21' THEN sl ELSE 0 END),0) zdlr,
@@ -156,7 +156,7 @@
     </select>
 
     <select id="yhLxFx" resultType="java.util.Map" parameterType="java.util.Map">
-        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,yhlxmc,yhwcsl,yhlx,yhzl FROM rpt_aqjg_ggjt_yhlxtj
+        with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,yhlxmc,yhwcsl,yhlx,yhzl FROM rpt.rpt_aqjg_ggjt_yhlxtj
         WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         yhlxmc,
@@ -180,7 +180,7 @@
         select * from (
         select t.year || '-' || t.mon as ny, t.xzdl, t.xzdlmc, t.xzxl, coalesce(t.xzxlmc, t.xzdlmc) as xzxlmc, dwsl,
         xqdm, xqmc
-        from rpt_aqjg_ggjt_qyxzfx t
+        from rpt.rpt_aqjg_ggjt_qyxzfx t
         where t.tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
         and t.xzdl in ('1','2','3','4')
         ) dlj where 1=1
@@ -216,7 +216,7 @@
         WITH zllxtj AS (
         select * from (
         select t.year || '-' || t.mon as ny, t.lxdm, t.lxmc, dddm, ddmc, zddm, zdmc, rws, wcs
-        from rpt_aqjg_ggjt_zllxtj t where 1=1 and t.tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
+        from rpt.rpt_aqjg_ggjt_zllxtj t where 1=1 and t.tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
         and dddm like ('3205%') and zddm like ('3205%')
         )dlj where 1=1
         <if test="type=='nf'">
@@ -241,7 +241,7 @@
         yhddmc,
         count(*) num
         FROM
-        rpt_aqjg_ggjt_yhxx
+        rpt.rpt_aqjg_ggjt_yhxx
         WHERE
         <if test="firstYear !='' and twoYeat !=''">
             cjsj between to_DATE(#{firstYear},'yyyy-MM-dd') AND to_date(#{twoYeat}, 'yyyy-MM-dd')
@@ -258,7 +258,7 @@
         yhlxmc,
         TO_CHAR(cjsj,'yyyy-MM-dd hh24:mi') cjsj
         FROM
-        rpt_aqjg_ggjt_yhxx
+        rpt.rpt_aqjg_ggjt_yhxx
         WHERE
         <if test="firstYear !='' and twoYeat !=''">
             cjsj between to_DATE(#{firstYear},'yyyy-MM-dd') AND to_date(#{twoYeat}, 'yyyy-MM-dd')
@@ -271,7 +271,7 @@
     </select>
     <select id="getSqTop5" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,dlmc,ddbm,yhwwcsl,yhwcsl,yhzl FROM
-        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        rpt.rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         dlmc,
         sum(yhzl) yhzl,
@@ -299,7 +299,7 @@
     </select>
     <select id="getDataClick" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,zdmc,yhwwcsl,yhwcsl,yhzl FROM
-        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        rpt.rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         zdmc,
         sum(yhwwcsl) yhwwcsl,
@@ -318,7 +318,7 @@
     </select>
     <select id="getDataClickTop5" resultType="java.util.Map" parameterType="java.util.Map">
         with yhlxtj as (SELECT year||'-'||mon as date,year as yearDate,ddbm,ddmc,dlmc,yhwwcsl,yhwcsl,yhzl FROM
-        rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        rpt.rpt_aqjg_ggjt_yhlxtj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         dlmc,
         sum(yhzl) yhzl,
@@ -336,7 +336,7 @@
         GROUP BY dlmc ORDER BY yhzl desc LIMIT 5
     </select>
     <select id="getWfDj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with wfdj_jcxx as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,sl FROM rpt_aqjg_ggjt_wfdj_jcxx)
+        with wfdj_jcxx as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,sl FROM rpt.rpt_aqjg_ggjt_wfdj_jcxx)
         SELECT
         COALESCE(SUM(CASE WHEN lxdm='1' THEN sl ELSE 0 END),0) zfs,
         COALESCE(SUM(CASE WHEN lxdm='2' THEN sl ELSE 0 END),0) jdcs,
@@ -352,7 +352,7 @@
         </if>
     </select>
     <select id="getZfSj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with wfdj_zftj as (SELECT year||'-'||mon as date,year as yearDate,ddmc,lxdm,zfs FROM rpt_aqjg_ggjt_wfdj_zftj)
+        with wfdj_zftj as (SELECT year||'-'||mon as date,year as yearDate,ddmc,lxdm,zfs FROM rpt.rpt_aqjg_ggjt_wfdj_zftj)
         SELECT
         ddmc,
         COALESCE(SUM(CASE WHEN lxdm='1' THEN zfs ELSE 0 END),0) jycf,
@@ -371,7 +371,7 @@
     </select>
     <select id="getZfSjZd" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with wfdj_zftj as (SELECT year||'-'||mon as date,year as yearDate,ddmc,zdmc,lxdm,zfs FROM
-        rpt_aqjg_ggjt_wfdj_zftj)
+        rpt.rpt_aqjg_ggjt_wfdj_zftj)
         SELECT
         zdmc,
         COALESCE(SUM(CASE WHEN lxdm='1' THEN zfs ELSE 0 END),0) jycf,
@@ -394,7 +394,7 @@
         wfsj,
         wfxwmc
         FROM
-        rpt_aqjg_ggjt_wfxx
+        rpt.rpt_aqjg_ggjt_wfxx
         where
         <if test="firstYear !='' and twoYear !=''">
             substring(wfsj, 0,5) between #{firstYear} AND #{twoYear}
@@ -405,7 +405,7 @@
         ORDER BY wfsj desc limit 10
     </select>
     <select id="getDataCjBk" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with jcbktj as (SELECT year||'-'||mon as date,year as yearDate,ljs,bjs,xycls FROM rpt_aqjg_ggjt_jcbktj)
+        with jcbktj as (SELECT year||'-'||mon as date,year as yearDate,ljs,bjs,xycls FROM rpt.rpt_aqjg_ggjt_jcbktj)
         SELECT
         COALESCE(sum(ljs),0) ljs,
         COALESCE(sum(bjs),0) bjs,
@@ -421,7 +421,7 @@
         </if>
     </select>
     <select id="getDataRxSb" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with jcbkxx as (SELECT year||'-'||mon as date,year as yearDate,yjsj,hphm,bklxmc,czxm FROM rpt_aqjg_ggjt_jcbkxx)
+        with jcbkxx as (SELECT year||'-'||mon as date,year as yearDate,yjsj,hphm,bklxmc,czxm FROM rpt.rpt_aqjg_ggjt_jcbkxx)
         SELECT
         substring(yjsj, 0,11) yjsj,
         bklxmc,
@@ -450,7 +450,7 @@
         SUM(CASE WHEN wfsd='16-19' THEN wfs ELSE 0 END) as five,
         SUM(CASE WHEN wfsd='19-24' THEN wfs ELSE 0 END) as six
         FROM
-        rpt_aqjg_ggjt_wfsjtj
+        rpt.rpt_aqjg_ggjt_wfsjtj
         where
         wfrq =#{yesterday} and
         <if test="name == '总体情况'">
@@ -492,7 +492,7 @@
         group by wfrq
     </select>
     <select id="getDataZdWlTj" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,dddm,ddmc,wfs FROM rpt_aqjg_ggjt_zdwf)
+        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,dddm,ddmc,wfs FROM rpt.rpt_aqjg_ggjt_zdwf)
         SELECT
         dddm,
         ddmc,
@@ -519,7 +519,7 @@
     </select>
 
     <select id="getDataWfLx" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,lxdm,lxmc FROM rpt_aqjg_ggjt_zdwf)
+        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,lxdm,lxmc FROM rpt.rpt_aqjg_ggjt_zdwf)
         SELECT
         COALESCE(SUM(CASE WHEN lxdm='1' THEN wfs ELSE 0 END),0) one,
         COALESCE(SUM(CASE WHEN lxdm='2' THEN wfs ELSE 0 END),0) two,
@@ -541,7 +541,7 @@
     </select>
 
     <select id="getDataWfLxType" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,dddm,lxdm,lxmc FROM rpt_aqjg_ggjt_zdwf)
+        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,dddm,lxdm,lxmc FROM rpt.rpt_aqjg_ggjt_zdwf)
         SELECT
         COALESCE(SUM(CASE WHEN lxdm='1' THEN wfs ELSE 0 END),0) one,
         COALESCE(SUM(CASE WHEN lxdm='2' THEN wfs ELSE 0 END),0) two,
@@ -570,7 +570,7 @@
     </select>
 
     <select id="getClickDataWfLxType" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,dddm,lxdm,lxmc FROM rpt_aqjg_ggjt_zdwf)
+        with zdwf as (SELECT year||'-'||mon as date,year as yearDate,wfs,ddmc,dddm,lxdm,lxmc FROM rpt.rpt_aqjg_ggjt_zdwf)
         SELECT
         COALESCE(SUM(CASE WHEN lxdm='1' THEN wfs ELSE 0 END),0) one,
         COALESCE(SUM(CASE WHEN lxdm='2' THEN wfs ELSE 0 END),0) two,
@@ -594,7 +594,7 @@
         year date,
         sum(cls)
         FROM
-        rpt_aqjg_ggjt_clwttj
+        rpt.rpt_aqjg_ggjt_clwttj
         WHERE
         year between #{firstYear} AND #{twoYear} and
         <if test="typeName == '市区'">
@@ -609,7 +609,7 @@
         GROUP BY year ORDER BY year
     </select>
     <select id="getDataCarMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,dddm,cls FROM rpt.rpt_aqjg_ggjt_clwttj)
         SELECT
         date,
         sum(cls)
@@ -629,7 +629,7 @@
         GROUP BY date ORDER BY date
     </select>
     <select id="getDataCarMR" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,dddm,cls FROM rpt.rpt_aqjg_ggjt_clwttj)
         SELECT
         date,
         sum(cls)
@@ -649,7 +649,7 @@
         GROUP BY date ORDER BY date
     </select>
     <select id="getDataCarQue" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,dddm,cls FROM rpt.rpt_aqjg_ggjt_clwttj)
         SELECT
         lxdm,
         lxmc,
@@ -676,7 +676,7 @@
     </select>
     <select id="getDataDdList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         SELECT dddm,ddmc
-        FROM rpt_aqjg_ggjt_clwttj
+        FROM rpt.rpt_aqjg_ggjt_clwttj
         WHERE
         <if test="typeName == '市区'">
             dddm in('11','12','13','14','15')
@@ -691,7 +691,7 @@
     </select>
     <select id="getDataDdListChange" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM
-        rpt_aqjg_ggjt_clwttj)
+        rpt.rpt_aqjg_ggjt_clwttj)
         SELECT
         lxdm,
         lxmc,
@@ -709,7 +709,7 @@
         GROUP BY lxdm,lxmc ORDER BY lxdm
     </select>
     <select id="getDataDdListChangeMr" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt.rpt_aqjg_ggjt_clwttj)
         SELECT date,sum(cls)
         FROM
         clwttj
@@ -717,14 +717,14 @@
         ddmc=#{titleName} and yearDate BETWEEN #{firstYear} and #{twoYear} GROUP BY date ORDER BY date
     </select>
     <select id="getDataDdListChangeYear" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt.rpt_aqjg_ggjt_clwttj)
        SELECT yearDate date,sum(cls)
         FROM
         clwttj
         WHERE ddmc=#{titleName} and yearDate BETWEEN #{firstYear} and #{twoYear} GROUP BY yearDate ORDER BY yearDate
     </select>
     <select id="getDataDdListChangeMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt_aqjg_ggjt_clwttj)
+        with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM rpt.rpt_aqjg_ggjt_clwttj)
        SELECT date,sum(cls)
         FROM
         clwttj
@@ -732,7 +732,7 @@
     </select>
     <select id="getDataClickCarAndChange" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with clwttj as (SELECT year||'-'||mon as date,year as yearDate,lxdm,lxmc,ddmc,dddm,cls FROM
-        rpt_aqjg_ggjt_clwttj)
+        rpt.rpt_aqjg_ggjt_clwttj)
         SELECT
         COALESCE(SUM(CASE WHEN lxdm='1' THEN cls ELSE 0 END),0) wf,
         COALESCE(SUM(CASE WHEN lxdm='2' THEN cls ELSE 0 END),0) sg
@@ -761,7 +761,7 @@
     </select>
 
     <select id="carYhData" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        with clfx as (SELECT year||'-'||mon as date,year as yearDate,clzt,sl FROM rpt_aqjg_ggjt_clfx )
+        with clfx as (SELECT year||'-'||mon as date,year as yearDate,clzt,sl FROM rpt.rpt_aqjg_ggjt_clfx )
         SELECT
         clzt,
         count(sl)
@@ -779,7 +779,7 @@
 
     <select id="getZdCarData" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         with clfx as (
-        with data as ( SELECT year||'-'||mon as date,year as yearDate,syxz,sl,syxzdm FROM rpt_aqjg_ggjt_clfx )
+        with data as ( SELECT year||'-'||mon as date,year as yearDate,syxz,sl,syxzdm FROM rpt.rpt_aqjg_ggjt_clfx )
         SELECT
         *
         FROM
@@ -873,7 +873,7 @@
         WITH qyclwffx AS (
         select * from (
         select year || '-' || mon as ny, dwmc,sum(sl) sl
-        from rpt_aqjg_ggjt_qyclwffx where 1=1 and tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd') GROUP BY ny,dwmc
+        from rpt.rpt_aqjg_ggjt_qyclwffx where 1=1 and tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd') GROUP BY ny,dwmc
         )dlj where 1=1
         )SELECT dwmc,sl,ny FROM qyclwffx
         <where>
@@ -894,7 +894,7 @@
         SUM (sl) sl,
         lxdm
         FROM
-        rpt_aqjg_ggjt_qyclwffx
+        rpt.rpt_aqjg_ggjt_qyclwffx
         WHERE
         tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
         AND dwmc IN

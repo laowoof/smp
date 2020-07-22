@@ -1,6 +1,7 @@
 package com.oceansoft.szga.smp.szsh.core.entity.system;
 
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @version 2018/9/27/17:20
  */
 @Data
+@TableName("rpt.sys_log")
 public class SysLog implements Serializable {
 
     @TableId

@@ -73,35 +73,35 @@
 
     <!-- sql -->
     <insert id="addQuestionPlan">
-        INSERT INTO question_plan ( guid, question_guid, plan, file_ids, create_date, create_user_id, update_date, update_user_id, state )
+        INSERT INTO rpt.question_plan ( guid, question_guid, plan, file_ids, create_date, create_user_id, update_date, update_user_id, state )
         VALUES
         ( #{ guid }, #{ questionGuid }, #{ plan }, #{ fileIds }, now()::timestamp(0)without time zone, #{ createUserId }, NULL, NULL, 0 )
     </insert>
     <insert id="addQuestionResponse">
-        INSERT INTO question_response ( guid, question_guid, response_no, response_date, file_ids, create_date, create_user_id, update_date, update_user_id, state )
+        INSERT INTO rpt.question_response ( guid, question_guid, response_no, response_date, file_ids, create_date, create_user_id, update_date, update_user_id, state )
         VALUES
 	( #{ guid }, #{ questionGuid }, #{ responseNo }, #{ responseDate }, #{ fileIds }, now()::timestamp(0)without time zone, #{ createUserId }, NULL, NULL, 0 )
     </insert>
     <insert id="addQuestionImplemention">
-        INSERT INTO question_implemention ( guid, question_guid, implemention, file_ids, create_date, create_user_id, update_date, update_user_id, state )
+        INSERT INTO rpt.question_implemention ( guid, question_guid, implemention, file_ids, create_date, create_user_id, update_date, update_user_id, state )
         VALUES
 	( #{ guid }, #{ questionGuid }, #{ implemention }, #{ fileIds }, now()::timestamp(0)without time zone, #{ createUserId }, NULL, NULL, 0 )
     </insert>
     <insert id="addQuestionLookBack">
-        INSERT INTO question_look_back ( guid, question_guid, look_back_user, look_back_date, look_back_result, file_ids, create_date, create_user_id, update_date, update_user_id, STATE )
+        INSERT INTO rpt.question_look_back ( guid, question_guid, look_back_user, look_back_date, look_back_result, file_ids, create_date, create_user_id, update_date, update_user_id, STATE )
         VALUES
 	( #{ guid }, #{ questionGuid }, #{ lookBackUser }, #{ lookBackDate }, #{ lookBackResult }, #{ fileIds }, now()::timestamp(0)without time zone, #{ createUserId }, NULL, NULL, 0 )
     </insert>
     <update id="updateQuestionPlan">
-        UPDATE question_plan SET plan = #{plan}, file_ids = #{fileIds}, update_date = now()::timestamp(0)without time zone, update_user_id = #{updateUserId} WHERE guid = #{guid}
+        UPDATE rpt.question_plan SET plan = #{plan}, file_ids = #{fileIds}, update_date = now()::timestamp(0)without time zone, update_user_id = #{updateUserId} WHERE guid = #{guid}
     </update>
     <update id="updateQuestionResponse">
-        UPDATE question_response SET response_no = #{ responseNo }, response_date = #{ responseDate }, file_ids = #{ fileIds }, update_date = now()::timestamp(0)without time zone, update_user_id = #{ updateUserId }
+        UPDATE rpt.question_response SET response_no = #{ responseNo }, response_date = #{ responseDate }, file_ids = #{ fileIds }, update_date = now()::timestamp(0)without time zone, update_user_id = #{ updateUserId }
         WHERE
 	    guid = #{ guid }
     </update>
     <update id="updateQuestionImplemention">
-        UPDATE question_implemention SET implemention = #{ implemention },
+        UPDATE rpt.question_implemention SET implemention = #{ implemention },
             file_ids = #{ fileIds },
             update_date = now()::timestamp(0)without time zone,
             update_user_id = #{ updateUserId }
@@ -109,7 +109,7 @@
             guid = #{ guid }
     </update>
     <update id="updateQuestionLookBack">
-        UPDATE question_look_back SET look_back_user = #{ lookBackUser },
+        UPDATE rpt.question_look_back SET look_back_user = #{ lookBackUser },
 						look_back_date = #{ lookBackDate },
 						look_back_result = #{ lookBackResult }
             file_ids = #{ fileIds },
@@ -119,43 +119,43 @@
             guid = #{ guid }
     </update>
     <update id="updateFeedBackState">
-        UPDATE #{tableName} SET state = 1 WHERE guid = #{guid}
+        UPDATE rpt.#{tableName} SET state = 1 WHERE guid = #{guid}
     </update>
     <delete id="deleteQuestionPlan">
-        UPDATE question_plan SET state = 1 WHERE guid = #{guid}
+        UPDATE rpt.question_plan SET state = 1 WHERE guid = #{guid}
     </delete>
     <delete id="deleteQuestionResponse">
-        UPDATE question_response SET state = 1 WHERE guid = #{guid}
+        UPDATE rpt.question_response SET state = 1 WHERE guid = #{guid}
     </delete>
     <delete id="deleteQuestionImplemention">
-        UPDATE question_implemention SET state = 1 WHERE guid = #{guid}
+        UPDATE rpt.question_implemention SET state = 1 WHERE guid = #{guid}
     </delete>
     <delete id="deleteQuestionLookBack">
-        UPDATE question_look_back SET state = 1 WHERE guid = #{guid}
+        UPDATE rpt.question_look_back SET state = 1 WHERE guid = #{guid}
     </delete>
     <select id="queryQuestionPlan" resultMap="planResultMap">
         select
         <include refid="Plan_Column_List" />
-        from question_plan where question_guid = #{questionGuid} and state = 0
+        from rpt.question_plan where question_guid = #{questionGuid} and state = 0
     </select>
     <select id="queryQuestionResponse" resultMap="ResponseResultMap">
         select
         <include refid="Response_Column_List" />
-        from question_response where question_guid = #{questionGuid} and state = 0
+        from rpt.question_response where question_guid = #{questionGuid} and state = 0
     </select>
     <select id="queryQuestionLookBack" resultMap="LookBackResultMap">
         select
         <include refid="LookBack_Column_List" />
-        from question_look_back where question_guid = #{questionGuid} and state = 0
+        from rpt.question_look_back where question_guid = #{questionGuid} and state = 0
     </select>
     <select id="queryQuestionImplemention" resultMap="ImplementionResultMap">
         select
         <include refid="Implemention_Column_List" />
-        from question_implemention where question_guid = #{questionGuid} and state = 0
+        from rpt.question_implemention where question_guid = #{questionGuid} and state = 0
     </select>
     <select id="queryCreateDeptCode" resultType="java.lang.String">
         select department_id
-        from sys_user where id = #{createUserId}
+        from rpt.sys_user where id = #{createUserId}
     </select>
     <select id="queryPageHandler" resultType="java.util.Map">
         SELECT
@@ -167,8 +167,8 @@
             r.STATE,
             e.execute_date
         FROM
-            question_record r
-            LEFT JOIN ( SELECT * FROM "question_execute_task" WHERE execute_dept_code = #{departmentId} AND execute_name = '派发' AND "state" = 1 ORDER BY create_date LIMIT 1 ) e ON r.execute_dept_code = e.execute_dept_code
+        rpt.question_record r
+            LEFT JOIN ( SELECT * FROM rpt."question_execute_task" WHERE execute_dept_code = #{departmentId} AND execute_name = '派发' AND "state" = 1 ORDER BY create_date LIMIT 1 ) e ON r.execute_dept_code = e.execute_dept_code
         WHERE
             r.execute_dept_code = #{departmentId} and r.state != -1
         <if test="integerList != null">
