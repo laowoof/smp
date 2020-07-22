@@ -3,9 +3,9 @@
 <mapper namespace="com.oceansoft.szga.smp.mapper.ProcessChargeMapper">
 
     <select id="queryRoadSafeTable" resultType="java.util.Map">
-        SELECT a.yhbh, a.cjsj, a.sjly, a.yhddmc, b.mc, a.lczt, a.clzt, c.name, a.wcsj FROM "ods_rt_jj_v_tb_yhpc" a
-        LEFT JOIN "ods_rt_dm_v_yhpc_lx" b ON a.yhlx = b.dm
-        LEFT JOIN "ods_rt_psms_sec_org" c ON a.mjbm = c.id
+        SELECT a.yhbh, a.cjsj, a.sjly, a.yhddmc, b.mc, a.lczt, a.clzt, c.name, a.wcsj FROM ods."ods_rt_jj_v_tb_yhpc" a
+        LEFT JOIN ods."ods_rt_dm_v_yhpc_lx" b ON a.yhlx = b.dm
+        LEFT JOIN ods."ods_rt_psms_sec_org" c ON a.mjbm = c.id
         <where>
             <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
                 (a.sjly like concat('%',#{questionQueryBean.keyWord},'%') or a.yhddmc like concat('%',#{questionQueryBean.keyWord},'%') or b.mc like concat('%',#{questionQueryBean.keyWord},'%'))
@@ -28,11 +28,11 @@
         </where>
     </select>
     <select id="queryRoadSafePointById" resultType="java.util.Map">
-        SELECT cjsj, lczt FROM "ods_rt_jj_v_tb_yhpc" WHERE yhbh = #{id}
+        SELECT cjsj, lczt FROM ods."ods_rt_jj_v_tb_yhpc" WHERE yhbh = #{id}
     </select>
     <select id="queryQzfTable" resultType="java.util.Map">
-        SELECT a.bh, a.gxsj, a.xxly, a.czwdz, a.yhxxms, a.zzzt, a.shzt, a.lzzt, a.ffzt, a.rlzt, a.zgzt, b.name, a.zzsj, a.yhdl FROM "ods_rt_czfw_yhxx" a
-        LEFT JOIN ods_rt_dict_sqxx b ON a.sqdm = b.url
+        SELECT a.bh, a.gxsj, a.xxly, a.czwdz, a.yhxxms, a.zzzt, a.shzt, a.lzzt, a.ffzt, a.rlzt, a.zgzt, b.name, a.zzsj, a.yhdl FROM ods."ods_rt_czfw_yhxx" a
+        LEFT JOIN ods.ods_rt_dict_sqxx b ON a.sqdm = b.url
         <where>
         <choose>
             <when test="type == 1">
@@ -63,11 +63,11 @@
         </where>
     </select>
     <select id="queryQzfPoint" resultType="java.util.Map">
-        SELECT gxsj, lzzt, shzt, ffzt, rlzt, zgzt, yhdl FROM "ods_rt_czfw_yhxx" WHERE bh = #{id}
+        SELECT gxsj, lzzt, shzt, ffzt, rlzt, zgzt, yhdl FROM ods."ods_rt_czfw_yhxx" WHERE bh = #{id}
     </select>
     <select id="queryImpTable" resultType="java.util.Map">
-        SELECT a.rwzj, a.jcsj, a.jcd, a.dwmc, a.jclx, a.clzt, a.dwdz, a.jzsj FROM "ods_rt_zypt_jcrw_new_yhxx" a
-        INNER JOIN ods_rt_zypt_sydw_jbxx b ON a.glzj = b.dwzj
+        SELECT a.rwzj, a.jcsj, a.jcd, a.dwmc, a.jclx, a.clzt, a.dwdz, a.jzsj FROM ods."ods_rt_zypt_jcrw_new_yhxx" a
+        INNER JOIN ods.ods_rt_zypt_sydw_jbxx b ON a.glzj = b.dwzj
         <if test="type == 1">
         WHERE b.glbm like '%2%' AND b.yyzt = '01' AND b.jbspzt = '3'
         </if>
@@ -79,6 +79,6 @@
         </if>
     </select>
     <select id="queryImpPoint" resultType="java.util.Map">
-        SELECT jcsj, jclx, clzt FROM ods_rt_zypt_jcrw_new_yhxx WHERE rwzj = #{id}
+        SELECT jcsj, jclx, clzt FROM ods.ods_rt_zypt_jcrw_new_yhxx WHERE rwzj = #{id}
     </select>
 </mapper>

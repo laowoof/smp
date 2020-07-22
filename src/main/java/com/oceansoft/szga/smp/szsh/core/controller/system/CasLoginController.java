@@ -47,6 +47,7 @@ public class CasLoginController {
         ResponseResult responseResult= new ResponseResult();
         SignUserV1 signUserV1=new SignUserV1();
         JwtToken jwtToken=((JwtToken) SecurityUtils.getSubject().getPrincipal());
+//        SysUser data =  userService.findUserById(jwtToken.getUid(),false);
         SysUser data =  (SysUser)reportService.userAll(jwtToken.getUid()).getData();
         if(jwtToken!=null){
             signUserV1.setDepartmentId(data.getDepartmentId());

@@ -180,7 +180,7 @@
     </select>
 
     <select id="userAll" resultType="com.oceansoft.szga.smp.szsh.core.entity.system.SysUser">
-        select * from sys_user where id=#{id}
+        select * from rpt.sys_user where id=#{id}
     </select>
 
     <select id="plFfInfo" resultType="map">
