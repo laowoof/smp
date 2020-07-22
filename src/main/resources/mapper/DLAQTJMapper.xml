@@ -8,7 +8,7 @@
         SELECT
 	      aa.ddmc,aa.lxmc , sum(aa.rws) as rws , sum(aa.wcs) as wcs
         FROM
-	      "rpt_aqjg_ggjt_zllxtj"  aa
+        rpt."rpt_aqjg_ggjt_zllxtj"  aa
         WHERE
             aa.ddmc is not null and aa.lxmc in ('告知事项','现场检查','驾驶人安全教育','督促整改')
 	    and
@@ -52,7 +52,7 @@
 	          SUM ( aa.rws ) AS rws,
 	          SUM ( aa.wcs ) AS wcs
             FROM
-	          "rpt_aqjg_ggjt_zllxtj" aa
+        rpt."rpt_aqjg_ggjt_zllxtj" aa
             WHERE
 	            aa.zdmc IS NOT NULL
                 AND aa.ddmc =#{name}
@@ -95,7 +95,7 @@
         with aaa as (
             with zzz as (
             SELECT
-                  ddmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  from rpt_aqjg_ggjt_yhlxtj
+                  ddmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  from rpt.rpt_aqjg_ggjt_yhlxtj
             where
                   <choose>
                   <when test="param== null">
@@ -160,7 +160,7 @@
         with aaa as (
         with zzz as (
         SELECT
-           zdmc as  ddmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  from rpt_aqjg_ggjt_yhlxtj
+           zdmc as  ddmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  from rpt.rpt_aqjg_ggjt_yhlxtj
         where
         <choose>
             <when test="param== null">
@@ -227,7 +227,7 @@
     with aaa as (
           with zzz as (
           SELECT
-                yhlxmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  FROM "rpt_aqjg_ggjt_yhlxtj"
+                yhlxmc , mon , sum(yhwwcsl) as yhwwcsl , sum(yhwcsl) as yhwcsl , sum(yhzl) as yhzl  FROM rpt."rpt_aqjg_ggjt_yhlxtj"
           where
           <choose>
             <when test="param== null">
@@ -282,7 +282,7 @@
         aaa
         join(
         SELECT
-            yhlxmc , round(sum(yhwcsl)/sum(yhzl),3)*(100)  as Completion FROM "rpt_aqjg_ggjt_yhlxtj"
+            yhlxmc , round(sum(yhwcsl)/sum(yhzl),3)*(100)  as Completion FROM rpt."rpt_aqjg_ggjt_yhlxtj"
 		where
         <choose>
             <when test="param== null">
@@ -330,7 +330,7 @@
           SUM(CASE WHEN lxmc = '家庭' THEN rws ELSE 0 END) as family ,
           SUM(CASE WHEN lxmc = '媒体' THEN rws ELSE 0 END) as media
 	    FROM
-	      "rpt_aqjg_ggjt_xcxxtj"
+        rpt."rpt_aqjg_ggjt_xcxxtj"
         WHERE
         <choose>
             <when test="param== null">
@@ -373,7 +373,7 @@
 	          SELECT
 	              ddmc,"count"(xcmj)
               FROM
-	              rpt_aqjg_ggjt_xcmjtj
+        rpt.rpt_aqjg_ggjt_xcmjtj
               WHERE
         <choose>
             <when test="param== null">
@@ -420,7 +420,7 @@
         SUM(CASE WHEN lxmc = '家庭' THEN rws ELSE 0 END) as family ,
         SUM(CASE WHEN lxmc = '媒体' THEN rws ELSE 0 END) as media
         FROM
-        "rpt_aqjg_ggjt_xcxxtj"
+        rpt."rpt_aqjg_ggjt_xcxxtj"
         WHERE
         <choose>
             <when test="param== null">
@@ -463,7 +463,7 @@
         SELECT
         zdmc as ddmc,"count"(xcmj)
         FROM
-        rpt_aqjg_ggjt_xcmjtj
+        rpt.rpt_aqjg_ggjt_xcmjtj
         WHERE
         <choose>
             <when test="param== null">
@@ -500,7 +500,7 @@
             SUM(CASE WHEN lxmc = '酒驾醉驾' THEN wfs ELSE 0 END) as dui  ,
             SUM(CASE WHEN lxmc = '假套牌' THEN wfs ELSE 0 END) as fake
         FROM
-            "rpt_aqjg_ggjt_zdwf"
+        rpt."rpt_aqjg_ggjt_zdwf"
         WHERE
             lxmc IN ('国省道重点违法','农村公路重点违法','两客一危重点违法','重型货车、挂车超载、非法改装','酒驾醉驾','假套牌')
             And
@@ -530,7 +530,7 @@
         SUM(CASE WHEN lxmc = '酒驾醉驾' THEN wfs ELSE 0 END) as dui  ,
         SUM(CASE WHEN lxmc = '假套牌' THEN wfs ELSE 0 END) as fake
         FROM
-        "rpt_aqjg_ggjt_zdwf"
+        rpt."rpt_aqjg_ggjt_zdwf"
         WHERE
             ddmc=#{name}
            AND  lxmc IN ('国省道重点违法','农村公路重点违法','两客一危重点违法','重型货车、挂车超载、非法改装','酒驾醉驾','假套牌')
@@ -562,7 +562,7 @@
           CASE WHEN true THEN 0 ELSE 0 END	 as driverNum,
           CASE WHEN true THEN 0 ELSE 0 END	 as peNum
         FROM
-          "rpt_aqjg_ggjt_qyxzfx"
+        rpt."rpt_aqjg_ggjt_qyxzfx"
 
         where
           xzdlmc is not null

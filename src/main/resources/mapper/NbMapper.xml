@@ -9,7 +9,7 @@
         xzqhmc,
         sl
         from
-        rpt_aqjg_nb_test
+        rpt.rpt_aqjg_nb_test
         where
         tjrq =#{tjrq} order by sl desc
 </select>
@@ -17,7 +17,7 @@
     select
         sum(dwsl)
         from
-        rpt_aqjg_zdmb_lzfxtj_sydwsl
+        rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl
         where
         tjrq =#{tjrq}
 </select>
@@ -27,7 +27,7 @@
         jbdjmc,
         sum(dwsl) sl
         from
-        rpt_aqjg_zdmb_lzfxtj_sydwsl
+        rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl
         where
         tjrq =#{tjrq} and jbdjdm in ('1','2','3','7','8','9') GROUP BY jbdjmc,jbdjdm ORDER BY sl desc
 </select>
@@ -38,9 +38,9 @@
         a.num,
         ceiling(a.num/b.totleNum*100) as percent
     from
-        (select tjrq,ssfjmc,sum(dwsl) num from rpt_aqjg_zdmb_lzfxtj_sydwsl where tjrq =#{tjrq} AND ssfjdm not in('320597000000','320598000000') GROUP BY ssfjmc,tjrq ORDER BY ssfjmc) as a
+        (select tjrq,ssfjmc,sum(dwsl) num from rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl where tjrq =#{tjrq} AND ssfjdm not in('320597000000','320598000000') GROUP BY ssfjmc,tjrq ORDER BY ssfjmc) as a
     LEFT JOIN
-        (SELECT tjrq,sum(dwsl) totleNum from rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq =#{tjrq} AND ssfjdm not in('320597000000','320598000000') GROUP BY tjrq) b
+        (SELECT tjrq,sum(dwsl) totleNum from rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq =#{tjrq} AND ssfjdm not in('320597000000','320598000000') GROUP BY tjrq) b
     on
         a.tjrq = b.tjrq ORDER BY a.ssfjmc
 </select>
@@ -54,9 +54,9 @@
         b.sl,
         ceiling(b.sl/a.totleNum*100) as percent
     from
-    (SELECT tjrq,sum(dwsl) as totleNum from rpt_aqjg_zdmb_lzfxtj_sydwsl  where tjrq =#{tjrq} and jbdjdm in ('1','2','3','8') GROUP BY tjrq) a
+    (SELECT tjrq,sum(dwsl) as totleNum from rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl  where tjrq =#{tjrq} and jbdjdm in ('1','2','3','8') GROUP BY tjrq) a
      LEFT JOIN
-    (select tjrq,ssfjmc,jbdjdm,jbdjmc,sum(dwsl) sl from rpt_aqjg_zdmb_lzfxtj_sydwsl  where tjrq =#{tjrq} and jbdjdm in ('1','2','3','8') GROUP BY jbdjmc,jbdjdm,tjrq,ssfjmc ORDER BY ssfjmc,jbdjdm) b
+    (select tjrq,ssfjmc,jbdjdm,jbdjmc,sum(dwsl) sl from rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl  where tjrq =#{tjrq} and jbdjdm in ('1','2','3','8') GROUP BY jbdjmc,jbdjdm,tjrq,ssfjmc ORDER BY ssfjmc,jbdjdm) b
     on a.tjrq = b.tjrq
 </select>
     <select id="findDataByOrder" resultType="java.util.HashMap">
@@ -67,9 +67,9 @@
        a.totleNum,
        ceiling(b.zd/a.totleNum*100) as percent
     FROM
-    (SELECT  tjrq,ssfjmc,ssfjdm,sum(dwsl) as totleNum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd') GROUP BY tjrq,ssfjmc,ssfjdm) a
+    (SELECT  tjrq,ssfjmc,ssfjdm,sum(dwsl) as totleNum FROM rpt."rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd') GROUP BY tjrq,ssfjmc,ssfjdm) a
     LEFT JOIN
-    (SELECT tjrq,ssfjmc,ssfjdm,sum(dwsl) AS zd FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd') and jbdjdm in ('1','2','3','8') GROUP BY tjrq,ssfjmc,ssfjdm ORDER BY zd DESC) b
+    (SELECT tjrq,ssfjmc,ssfjdm,sum(dwsl) AS zd FROM rpt."rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd') and jbdjdm in ('1','2','3','8') GROUP BY tjrq,ssfjmc,ssfjdm ORDER BY zd DESC) b
     on a.ssfjdm = b.ssfjdm WHERE a.ssfjdm NOT IN ('320597000000','320598000000') AND a.ssfjdm IS NOT NULL
     ORDER BY totleNum DESC
 </select>
@@ -81,7 +81,7 @@
       ceiling(b.zd/a.totleNum*100) as percent
     FROM
       (SELECT sspcsmc, sspcsdm, sum(dwsl) as totleNum
-        FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl"
+        FROM rpt."rpt_aqjg_zdmb_lzfxtj_sydwsl"
         WHERE tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
         AND sspcsmc IS NOT NULL
         AND sspcsdm IS NOT NULL
@@ -89,7 +89,7 @@
         GROUP BY sspcsmc, sspcsdm) a
     left JOIN
       (SELECT sspcsmc,sum(dwsl) as zd
-        FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl"
+        FROM rpt."rpt_aqjg_zdmb_lzfxtj_sydwsl"
         WHERE tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
         AND sspcsmc IS NOT NULL
         AND sspcsdm IS NOT NULL
@@ -103,7 +103,7 @@
         jclxmc,
         sum(jcsl)
     FROM
-        rpt_aqjg_zdmb_lzfxtj_jcsl
+        rpt.rpt_aqjg_zdmb_lzfxtj_jcsl
     WHERE
         tjrq =#{tjrq} GROUP BY jclxmc ORDER BY jclxmc
 </select>
@@ -111,7 +111,7 @@
     SELECT
         sum(yhsl)
     FROM
-        rpt_aqjg_zdmb_lzfxtj_yhsl
+        rpt.rpt_aqjg_zdmb_lzfxtj_yhsl
     WHERE
         tjrq =#{tjrq}
 </select>
@@ -124,7 +124,7 @@
         ceiling(a.dwsl/(a.dwsl + a.yhsl)*100) dwPer,
         ceiling(a.yhsl/(a.dwsl + a.yhsl)*100) yhPer
     FROM
-    (SELECT jbdjdm,jbdjmc,sum(yhdwsl) dwsl, sum(yhsl) yhsl FROM "rpt_aqjg_zdmb_lzfxtj_yhsl" WHERE   tjrq=#{tjrq} AND jbdjdm IN ('1','2','3','8') GROUP BY jbdjdm,jbdjmc) a
+    (SELECT jbdjdm,jbdjmc,sum(yhdwsl) dwsl, sum(yhsl) yhsl FROM rpt."rpt_aqjg_zdmb_lzfxtj_yhsl" WHERE   tjrq=#{tjrq} AND jbdjdm IN ('1','2','3','8') GROUP BY jbdjdm,jbdjmc) a
 </select>
     <select id="findDataByNum" resultType="java.util.HashMap" parameterType="java.util.List">
     SELECT
@@ -133,7 +133,7 @@
         sum(yhdwsl) dwsl,
         sum(yhsl) yhsl
     FROM
-        "rpt_aqjg_zdmb_lzfxtj_yhsl"
+        rpt."rpt_aqjg_zdmb_lzfxtj_yhsl"
     WHERE
     tjrq=#{tjrq} AND jbdjdm in('1','2','3','8','9') GROUP BY jbdjdm,jbdjmc order by dwsl DESC
 </select>
@@ -144,7 +144,7 @@
 		ssfjdm,
 		SUM ( jcsl )
 	FROM
-		"rpt_aqjg_zdmb_lzfxtj_jcsl"
+		rpt."rpt_aqjg_zdmb_lzfxtj_jcsl"
 	WHERE
 		tjrq = to_char( CURRENT_DATE, 'yyyy-MM-dd' )
 		AND dwlx = '重要设施'
@@ -157,7 +157,7 @@
     SELECT T .ssfjmc,
         CASE WHEN J.SUM IS NOT NULL THEN J.SUM ELSE 0  END SUM
     FROM
-        rpt_aqjg_zdmb_lzfxtj_jcsl T LEFT JOIN lzfxtj J ON T.ssfjdm = J.ssfjdm
+        rpt.rpt_aqjg_zdmb_lzfxtj_jcsl T LEFT JOIN lzfxtj J ON T.ssfjdm = J.ssfjdm
     WHERE
         T.ssfjdm NOT IN ( '320597000000', '320598000000') AND T.ssfjmc IS NOT NULL
     GROUP BY
@@ -168,7 +168,7 @@
         case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end sspcsmc,
         sum(jcsl)
     FROM
-        "rpt_aqjg_zdmb_lzfxtj_jcsl"
+        rpt."rpt_aqjg_zdmb_lzfxtj_jcsl"
     WHERE
         tjrq= to_char(CURRENT_DATE, 'yyyy-MM-dd')
         and sspcsdm is not null
@@ -179,7 +179,7 @@
 </select>
     <select id="findDataByZzOne" resultType="java.util.HashMap" parameterType="java.util.List">
       WITH temp as (
-        SELECT ssfjmc,ssfjdm,jbdjdm, COALESCE(SUM(dwsl),'0') sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND ssfjdm not in('320597000000','320598000000') and jbdjdm in ('1','2','3','8') GROUP BY jbdjdm,ssfjmc,ssfjdm
+        SELECT ssfjmc,ssfjdm,jbdjdm, COALESCE(SUM(dwsl),'0') sjsnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd') AND ssfjdm not in('320597000000','320598000000') and jbdjdm in ('1','2','3','8') GROUP BY jbdjdm,ssfjmc,ssfjdm
       )
       select ssfjmc,ssfjdm,
         '省级治安重点单位' as sjname,
@@ -197,7 +197,7 @@
        SELECT
         sum(dwsl)
        FROM
-         "rpt_aqjg_zdmb_zysssl"
+         rpt."rpt_aqjg_zdmb_zysssl"
        WHERE
         tjrq =#{tjrq}
 </select>
@@ -208,7 +208,7 @@
         jbdjmc,
         zddwcyrys
        FROM
-         rpt_aqjg_zdmb_zddwtj
+         rpt.rpt_aqjg_zdmb_zddwtj
        WHERE
         tjrq =#{tjrq} and jbdj='1'
 </select>
@@ -216,7 +216,7 @@
        SELECT
         sum(zdgcdws)
        FROM
-         rpt_aqjg_zdmb_hdgctj
+         rpt.rpt_aqjg_zdmb_hdgctj
        WHERE
         tjrq =#{tjrq}
 </select>
@@ -224,7 +224,7 @@
        SELECT
         sum(tjsl)
        FROM
-         rpt_aqjg_zdmb_scaqsglatj
+         rpt.rpt_aqjg_zdmb_scaqsglatj
        WHERE
         tjrq =#{tjrq}
 </select>
@@ -232,7 +232,7 @@
        SELECT
         sum(yhcldwsl)
        FROM
-         rpt_aqjg_zdmb_yhdwtj
+         rpt.rpt_aqjg_zdmb_yhdwtj
        WHERE
         tjrq =#{tjrq}
 </select>
@@ -241,7 +241,7 @@
         lbmc,
         sum(dwsl)
        FROM
-         rpt_aqjg_zdmb_zysssl
+         rpt.rpt_aqjg_zdmb_zysssl
        WHERE
         tjrq =#{tjrq} group by lbmc
 </select>
@@ -250,7 +250,7 @@
         ssfjmc,
         sum(dwsl) as num
        FROM
-         rpt_aqjg_zdmb_zysssl
+         rpt.rpt_aqjg_zdmb_zysssl
        WHERE
         tjrq =#{tjrq} AND ssfjmc IS NOT NULL group by ssfjmc order by num desc
 </select>
@@ -259,7 +259,7 @@
         case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end sspcsmc,
         sum(dwsl) as num
        FROM
-         rpt_aqjg_zdmb_zysssl
+         rpt.rpt_aqjg_zdmb_zysssl
        WHERE
         tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
         and sspcsdm is not null
@@ -272,7 +272,7 @@
         ssfjmc,
         sum(yhdwsl) as num
        FROM
-         rpt_aqjg_zdmb_lzfxtj_yhsl
+         rpt.rpt_aqjg_zdmb_lzfxtj_yhsl
        WHERE
         tjrq =#{tjrq} AND ssfjmc IS NOT NULL group by ssfjmc order by num desc
 </select>
@@ -281,7 +281,7 @@
     case when position('分局' in sspcsmc) > 0 then split_part(sspcsmc, '分局', 2) else split_part(sspcsmc, '公安局', 2) end sspcsmc,
     sum(yhdwsl) as num
     FROM
-    rpt_aqjg_zdmb_lzfxtj_yhsl
+    rpt.rpt_aqjg_zdmb_lzfxtj_yhsl
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
     sspcsmc is not null
@@ -294,7 +294,7 @@
         ssfxjname,
         sum(cgjc_qypcssl) as cgnum
     FROM
-        rpt_aqjg_zdmb_aqjctj_pcs
+        rpt.rpt_aqjg_zdmb_aqjctj_pcs
     WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by cgnum desc
 </select>
     <select id="findDataJctjCgPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
@@ -302,7 +302,7 @@
     case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
         cgjc_qypcssl
     FROM
-        rpt_aqjg_zdmb_aqjctj_pcs
+        rpt.rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
         tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
         and sspcs is not null
@@ -315,7 +315,7 @@
             ssfxjname,
             sum(zxjc_qypcssl) as zxnum
         FROM
-            rpt_aqjg_zdmb_aqjctj_pcs
+            rpt.rpt_aqjg_zdmb_aqjctj_pcs
         WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by zxnum desc
 </select>
     <select id="findDataJctjZxPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
@@ -323,7 +323,7 @@
     case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
         zxjc_qypcssl
     FROM
-    rpt_aqjg_zdmb_aqjctj_pcs
+    rpt.rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
     and sspcsname is not null
@@ -336,7 +336,7 @@
             ssfxjname,
             sum(qsjc_qypcssl) as qsnum
         FROM
-            rpt_aqjg_zdmb_aqjctj_pcs
+            rpt.rpt_aqjg_zdmb_aqjctj_pcs
         WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by qsnum desc
 </select>
     <select id="findDataJctjQsPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
@@ -344,7 +344,7 @@
     case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
         qsjc_qypcssl
     FROM
-    rpt_aqjg_zdmb_aqjctj_pcs
+    rpt.rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
     and sspcsname is not null
@@ -357,7 +357,7 @@
             ssfxjname,
             sum(zdjc_qypcssl) as zdnum
         FROM
-            rpt_aqjg_zdmb_aqjctj_pcs
+            rpt.rpt_aqjg_zdmb_aqjctj_pcs
         WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by zdnum desc
 </select>
     <select id="findDataJctjZdPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
@@ -365,7 +365,7 @@
     case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
         zdjc_qypcssl
     FROM
-    rpt_aqjg_zdmb_aqjctj_pcs
+    rpt.rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
     and sspcsname is not null
@@ -378,7 +378,7 @@
             ssfxjname,
             sum(dwsl1)
         FROM
-            rpt_aqjg_zdmb_aqjctj_pcs
+            rpt.rpt_aqjg_zdmb_aqjctj_pcs
         WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by sum desc
 </select>
     <select id="findDataJctjWzgPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
@@ -386,7 +386,7 @@
     case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
         dwsl1
     FROM
-    rpt_aqjg_zdmb_aqjctj_pcs
+    rpt.rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
     and sspcsname is not null
@@ -399,7 +399,7 @@
             ssfxjname,
             (sum(dwsl1)+sum(dwsl)) as num
         FROM
-            rpt_aqjg_zdmb_aqjctj_pcs
+            rpt.rpt_aqjg_zdmb_aqjctj_pcs
         WHERE tjrq =#{tjrq} AND ssfxjname IS NOT NULL GROUP BY ssfxjname order by num desc
 </select>
     <select id="findDataJctjZgPcs" resultType="java.util.HashMap" parameterType="java.lang.String">
@@ -407,7 +407,7 @@
     case when position('分局' in sspcsname) > 0 then split_part(sspcsname, '分局', 2) else split_part(sspcsname, '公安局', 2) end sspcsname,
         (dwsl+dwsl1) as num
     FROM
-    rpt_aqjg_zdmb_aqjctj_pcs
+    rpt.rpt_aqjg_zdmb_aqjctj_pcs
     WHERE
     tjrq = to_char(CURRENT_DATE, 'yyyy-MM-dd')
     and sspcsname is not null
@@ -419,7 +419,7 @@
         SELECT
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
             tjrq=#{tjrq} AND gllx='1' and glbm like '%2%'
 </select>
@@ -429,7 +429,7 @@
             gljcjgmc,
             sum(sl)
        FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
        WHERE
             tjrq=#{tjrq} AND gllx='1' AND gljcjg in('1','2','3') and glbm like '%2%' GROUP BY gljcjg,gljcjgmc ORDER BY gljcjg
 </select>
@@ -437,7 +437,7 @@
         SELECT
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
             tjrq=#{tjrq} AND gllx='1' and jclx='4'
 </select>
@@ -445,7 +445,7 @@
         SELECT
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
             tjrq=#{tjrq} AND gllx='1' and jclx='4' and clzt != '6'
 </select>
@@ -455,7 +455,7 @@
             gljcjgmc,
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
          tjrq=#{tjrq} AND gllx='1' AND jclx='4' AND  glbm like '%2%' AND gljcjg in ('100','200','300')
          group by gljcjg,gljcjgmc
@@ -465,7 +465,7 @@
             jclx,
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE tjrq=#{tjrq} AND gllx='1' AND jclx='4' AND clzt='3' GROUP BY jclx
 </select>
     <select id="findNumByFcspFk" resultType="java.util.HashMap" parameterType="java.util.List">
@@ -474,7 +474,7 @@
             gljcjgmc,
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
         tjrq=#{tjrq} AND gllx='1' AND jclx='4' and glbm like '%2%' and gljcjg='101' GROUP BY gljcjg,gljcjgmc
 </select>
@@ -484,7 +484,7 @@
             gljcjgmc,
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
         tjrq=#{tjrq} AND gllx='1' AND jclx='4' and glbm like '%2%' and gljcjg='201' GROUP BY gljcjg,gljcjgmc
 </select>
@@ -493,7 +493,7 @@
             tjrq,
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
              tjrq=#{tjrq} AND gllx='1' and jclx !='4' and clzt = '6' AND gljcjg='1' group by tjrq
     </select>
@@ -502,7 +502,7 @@
             tjrq,
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
              tjrq=#{tjrq} AND gllx='1' and jclx ='4' and clzt = '6' AND gljcjg in('0',NULL) group by tjrq
     </select>
@@ -511,7 +511,7 @@
             tjrq,
             sum(sl)
         FROM
-            rpt_aqjg_zdmb_yhcllctj
+            rpt.rpt_aqjg_zdmb_yhcllctj
         WHERE
              tjrq=#{tjrq} AND gllx='1' and jclx ='4' and clzt = '6' AND gljcjg  not in ('0',NULL) group by tjrq
     </select>
@@ -521,7 +521,7 @@
             qy,
             sum(zddwsl)
         FROM
-            rpt_aqjg_zdmb_zddwtj
+            rpt.rpt_aqjg_zdmb_zddwtj
         WHERE
          tjrq=#{tjrq} AND jbdj in('1','2','3','8') AND ssfxj NOT IN ( '320597000000', '320598000000') AND qy IS NOT NULL GROUP BY qy ORDER BY sum desc
     </select>
@@ -532,9 +532,9 @@
             a.num,
             b.sum
         FROM
-            (SELECT qy, sum(zddwsl) num FROM "rpt_aqjg_zdmb_zddwtj" WHERE tjrq=#{tjrq} AND jbdj in('1','2','3','8') GROUP BY qy) a
+            (SELECT qy, sum(zddwsl) num FROM rpt."rpt_aqjg_zdmb_zddwtj" WHERE tjrq=#{tjrq} AND jbdj in('1','2','3','8') GROUP BY qy) a
                 LEFT JOIN
-            (SELECT qy, sum(zddwsl) sum  FROM "rpt_aqjg_zdmb_zddwtj" WHERE tjrq=#{tjrq}  GROUP BY qy) b
+            (SELECT qy, sum(zddwsl) sum  FROM rpt."rpt_aqjg_zdmb_zddwtj" WHERE tjrq=#{tjrq}  GROUP BY qy) b
                 ON a.qy = b.qy
             ORDER BY num desc LIMIT 5
     </select>
@@ -544,7 +544,7 @@
         jc_year,
         sum(yhcldwsl)
         FROM
-        rpt_aqjg_zdmb_yhdwtj
+        rpt.rpt_aqjg_zdmb_yhdwtj
          WHERE tjrq=#{tjrq} GROUP BY jc_year ORDER BY jc_year
     </select>
 
@@ -554,9 +554,9 @@
             a.addnum,
             b.totlenum
         FROM
-            (SELECT  ssfjmc,sum(dwsl) addnum FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY ssfjmc ORDER BY ssfjmc) a
+            (SELECT  ssfjmc,sum(dwsl) addnum FROM rpt."rpt_aqjg_zdmb_zysssl" WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY ssfjmc ORDER BY ssfjmc) a
         LEFT JOIN
-            (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl_zl" GROUP BY ssfjmc ORDER BY ssfjmc) b
+            (SELECT ssfjmc,sum(dwsl) totlenum FROM rpt."rpt_aqjg_zdmb_zysssl_zl" GROUP BY ssfjmc ORDER BY ssfjmc) b
         ON a.ssfjmc = b.ssfjmc
     </select>
 
@@ -566,14 +566,14 @@
             a.addnum,
             b.totlenum
         FROM
-            (SELECT  ssfjmc,sum(dwsl) addnum FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} and
+            (SELECT  ssfjmc,sum(dwsl) addnum FROM rpt."rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} and
             lbmc in
             <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
                  #{item}
             </foreach>
             GROUP BY ssfjmc) a
         LEFT JOIN
-            (SELECT ssfjmc,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl_zl" WHERE
+            (SELECT ssfjmc,sum(dwsl) totlenum FROM rpt."rpt_aqjg_zdmb_zysssl_zl" WHERE
              lbmc in
             <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
                  #{item}
@@ -586,7 +586,7 @@
         SELECT
             sum(dwsl)
         FROM
-         rpt_aqjg_zdmb_zysssl
+         rpt.rpt_aqjg_zdmb_zysssl
         WHERE
           tjrq=#{tjrq}
     </select>
@@ -595,7 +595,7 @@
         SELECT
             qy,sum(zddwsl) num
         FROM
-            rpt_aqjg_zdmb_zddwtj
+        rpt.rpt_aqjg_zdmb_zddwtj
         WHERE
             tjrq = to_char(CURRENT_DATE ,'yyyy-MM-dd') and
             jbdjmc in
@@ -612,7 +612,7 @@
 
     <select id="findNumByZddwZl" resultType="java.util.HashMap" parameterType="java.util.ArrayList">
         SELECT qy,sum(zddwsl) as num
-        FROM rpt_aqjg_zdmb_zddwtj
+        FROM rpt.rpt_aqjg_zdmb_zddwtj
         WHERE tjrq=to_char(CURRENT_DATE, 'yyyy-mm-dd')
         AND jbdj in('1','2','3','8') AND ssfxj IS NOT NULL AND qy IS NOT NULL
         <if test="dj != null">
@@ -635,7 +635,7 @@
             nf,
             '省级治安重点单位' AS sjname,
             COALESCE((
-            SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '1' AND nf=t.nf
+            SELECT SUM ( dwsl ) sjsnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '1' AND nf=t.nf
             <if test="ssfjmc != null">
                 AND ssfjmc IN
                 <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
@@ -645,7 +645,7 @@
             ),0) AS sjsnum,
             '市级治安重点单位' AS sname,
             COALESCE((
-            SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '2' AND nf=t.nf
+            SELECT SUM ( dwsl ) ssnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '2' AND nf=t.nf
             <if test="ssfjmc != null">
                 AND ssfjmc IN
                 <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
@@ -655,7 +655,7 @@
             ),0) AS ssnum,
             '县市、区级治安重点单位' AS xname,
             COALESCE((
-            SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '3' AND nf=t.nf
+            SELECT SUM ( dwsl ) xsnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '3' AND nf=t.nf
             <if test="ssfjmc != null">
                 AND ssfjmc IN
                 <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
@@ -665,7 +665,7 @@
             ),0) AS xsum,
             '社区关注单位' AS sqname,
             COALESCE((
-            SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '8' AND nf=t.nf
+            SELECT SUM ( dwsl ) sqsnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND jbdjdm = '8' AND nf=t.nf
             <if test="ssfjmc != null">
                 AND ssfjmc IN
                 <foreach collection="ssfjmc" index="index" item="item" open="(" separator="," close=")" >
@@ -674,14 +674,14 @@
             </if>
             ),0) AS sqsnum
         FROM
-            rpt_aqjg_zdmb_lzfxtj_sydwsl t
+        rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl t
         WHERE
             1=1 AND tjrq = #{tjrq} AND nf IS NOT NULL GROUP BY nf ORDER BY nf
     </select>
 
     <select id="findDataByZddwMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         WITH sydwsl AS (
-        SELECT nf || yf AS nfyf, ssfjmc, dwsl, jbdjdm, nf, yf FROM rpt_aqjg_zdmb_lzfxtj_sydwsl
+        SELECT nf || yf AS nfyf, ssfjmc, dwsl, jbdjdm, nf, yf FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl
         )
         SELECT nfyf AS tjrq,yf,
         '省级治安重点单位' AS sjname,
@@ -728,15 +728,15 @@
         SELECT DISTINCT
 			yf,
             '省级治安重点单位' AS sjname,
-            ( SELECT SUM ( dwsl ) sjsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '1' AND yf=t.yf),
+            ( SELECT SUM ( dwsl ) sjsnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '1' AND yf=t.yf),
             '市级治安重点单位' AS sname,
-            ( SELECT SUM ( dwsl ) ssnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '2' AND yf=t.yf),
+            ( SELECT SUM ( dwsl ) ssnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '2' AND yf=t.yf),
             '县市、区级治安重点单位' AS xname,
-            ( SELECT SUM ( dwsl ) xsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq}  AND nf=#{nf} AND jbdjdm = '3' AND yf=t.yf),
+            ( SELECT SUM ( dwsl ) xsnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq}  AND nf=#{nf} AND jbdjdm = '3' AND yf=t.yf),
             '社区关注单位' AS sqname,
-            ( SELECT SUM ( dwsl ) sqsnum FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '8' AND yf=t.yf)
+            ( SELECT SUM ( dwsl ) sqsnum FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq = #{tjrq} AND nf=#{nf} AND jbdjdm = '8' AND yf=t.yf)
         FROM
-            rpt_aqjg_zdmb_lzfxtj_sydwsl t
+        rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl t
         WHERE
             1 = 1 AND tjrq = #{tjrq} AND nf=#{nf}
         ssfjmc in
@@ -753,7 +753,7 @@
             b.totlenum,
             ceiling(a.num/b.totleNum*100) as percent
         FROM
-            (SELECT tjrq,ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq}
+            (SELECT tjrq,ssfjmc,sum(dwsl) num FROM rpt."rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq}
             AND ssfjdm not in('320597000000','320598000000')
             AND jbdjmc in
             <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
@@ -761,7 +761,7 @@
             </foreach>
             GROUP BY  ssfjmc,tjrq) a
         LEFT JOIN
-            (SELECT tjrq,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq}
+            (SELECT tjrq,sum(dwsl) totlenum FROM rpt."rpt_aqjg_zdmb_lzfxtj_sydwsl" WHERE tjrq=#{tjrq}
             AND ssfjdm not in('320597000000','320598000000')
             AND jbdjmc in
             <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
@@ -778,9 +778,9 @@
             b.num,
             ceiling(b.num/a.totlenum*100) as percent
         FROM
-        (SELECT tjrq,sum(dwsl) totlenum FROM  rpt_aqjg_zdmb_zysssl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY tjrq) a
+        (SELECT tjrq,sum(dwsl) totlenum FROM  rpt.rpt_aqjg_zdmb_zysssl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY tjrq) a
         LEFT JOIN
-        (SELECT tjrq,ssfjmc,sum(dwsl) num FROM  rpt_aqjg_zdmb_zysssl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY ssfjmc,tjrq ORDER BY ssfjmc) b
+        (SELECT tjrq,ssfjmc,sum(dwsl) num FROM  rpt.rpt_aqjg_zdmb_zysssl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY ssfjmc,tjrq ORDER BY ssfjmc) b
         on a.tjrq = b.tjrq
     </select>
 
@@ -790,13 +790,13 @@
         a.num,
         ceiling(a.num/b.totleNum*100) as percent
         FROM
-        (SELECT tjrq,ssfjmc,sum(dwsl) num FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} AND lbmc in
+        (SELECT tjrq,ssfjmc,sum(dwsl) num FROM rpt."rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} AND lbmc in
         <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
         GROUP BY  ssfjmc,tjrq) a
         LEFT JOIN
-        (SELECT tjrq,sum(dwsl) totlenum FROM "rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} AND lbmc in
+        (SELECT tjrq,sum(dwsl) totlenum FROM rpt."rpt_aqjg_zdmb_zysssl" WHERE tjrq=#{tjrq} AND lbmc in
         <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
@@ -812,13 +812,13 @@
             sum(qywjzs) wjznum,
             sum(qyyjzs) jznum
         FROM
-            "rpt_aqjg_zdmb_hdgctj"
+            rpt."rpt_aqjg_zdmb_hdgctj"
         WHERE
             tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY fxjmc ORDER BY fxjmc
     </select>
 
     <select id="findDataQsyMonth" resultType="java.util.HashMap" parameterType="java.util.List">
-        WITH sydwsl AS ( SELECT nf || yf AS nfyf, ssfjmc, dwsl, jbdjdm, yf FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        WITH sydwsl AS ( SELECT nf || yf AS nfyf, ssfjmc, dwsl, jbdjdm, yf FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         nfyf as tjrq,
         yf,
@@ -833,13 +833,13 @@
              COALESCE(nf,'0') nf,
             sum(dwsl)
         FROM
-            "rpt_aqjg_zdmb_lzfxtj_sydwsl"
+            rpt."rpt_aqjg_zdmb_lzfxtj_sydwsl"
         WHERE
             tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY nf ORDER BY nf
     </select>
 
     <select id="findDataQsyLtMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        WITH sydwsl AS ( SELECT nf || yf AS nfyf, ssfjmc,yf,dwsl FROM rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        WITH sydwsl AS ( SELECT nf || yf AS nfyf, ssfjmc,yf,dwsl FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         nfyf as tjrq,
         yf,
@@ -856,7 +856,7 @@
        nf,
        sum(dwsl)
        FROM
-       rpt_aqjg_zdmb_lzfxtj_sydwsl
+       rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl
        WHERE
        tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd')  AND ssfjmc=#{name}
         GROUP BY nf ORDER BY nf
@@ -873,7 +873,7 @@
             ssfjdm,
             sum( jcsl ) jcsl
         FROM
-            rpt_aqjg_zdmb_zdsszt
+            rpt.rpt_aqjg_zdmb_zdsszt
         WHERE
             SUBSTR( tjrq, 1, 4 ) = #{year} and jclxmc = '主动检查'
         GROUP BY
@@ -890,7 +890,7 @@
                 ssfxjmc AS ssfjmc,
                 SUM ( jcsl ) jcsl
             FROM
-                rpt_aqjg_zdmb_zddwjcfx
+                rpt.rpt_aqjg_zdmb_zddwjcfx
             WHERE
                 jclx = '1'
                 AND tjrq LIKE '%' || TO_CHAR(CURRENT_DATE,'MM-dd') || '%'
@@ -921,7 +921,7 @@
                 jczt,
                 jcsl
             FROM
-                rpt_aqjg_zdmb_zddwjcfx
+                rpt.rpt_aqjg_zdmb_zddwjcfx
             WHERE
                 1 = 1
                 AND tjrq LIKE '%' || TO_CHAR(CURRENT_DATE,'MM-dd') || '%'
@@ -951,7 +951,7 @@
                 tjrq,
                 SUM (dwsl) dwsl
             FROM
-                rpt_aqjg_zdmb_zysssl_zl
+        rpt.rpt_aqjg_zdmb_zysssl_zl
             WHERE 1=1 AND
                 tjrq IN (
                 SELECT
@@ -962,7 +962,7 @@
                         tjrq,
                         ROW_NUMBER () OVER ( PARTITION BY date_trunc( 'month', to_date( tjrq, 'yyyyMM' ) ) ORDER BY tjrq ) AS ROW
                     FROM
-                        rpt_aqjg_zdmb_zysssl_zl
+        rpt.rpt_aqjg_zdmb_zysssl_zl
                     ORDER BY
                         tjrq DESC
                     ) AS zysssl
@@ -990,7 +990,7 @@
             ( tjrq, 1, 4 ) || '年' AS yen ,
             SUM ( dwsl ) dwsl
         FROM
-            rpt_aqjg_zdmb_zysssl_zl
+        rpt.rpt_aqjg_zdmb_zysssl_zl
         WHERE
             1=1
         AND
@@ -1010,7 +1010,7 @@
         COALESCE(nf,'0') as nf,
         sum(zdgcdws)+sum(qyyjzs)+sum(qywjzs) as num
         FROM
-        "rpt_aqjg_zdmb_hdgctj"
+        rpt."rpt_aqjg_zdmb_hdgctj"
         WHERE
         tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') AND fxjmc=#{name} GROUP BY nf  ORDER BY nf
     </select>
@@ -1019,7 +1019,7 @@
         COALESCE(nf,'0') as nf,
         sum(zdgcdws)+sum(qyyjzs)+sum(qywjzs) as num
         FROM
-        "rpt_aqjg_zdmb_hdgctj"
+        rpt."rpt_aqjg_zdmb_hdgctj"
         WHERE
         tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd') GROUP BY nf  ORDER BY nf
     </select>
@@ -1028,7 +1028,7 @@
             ( tjrq, 1, 4 ) || '年' AS yen ,
             SUM ( dwsl ) dwsl
         FROM
-            rpt_aqjg_zdmb_zysssl_zl
+            rpt.rpt_aqjg_zdmb_zysssl_zl
         WHERE
 				ssfjmc=#{name}
 		GROUP BY
@@ -1039,7 +1039,7 @@
             ( tjrq, 1, 4 ) AS nf ,
             SUM ( dwsl ) dwsl
         FROM
-            rpt_aqjg_zdmb_zysssl_zl
+            rpt.rpt_aqjg_zdmb_zysssl_zl
 		GROUP BY
             SUBSTRING ( tjrq, 1, 4 ) ORDER BY nf
     </select>
@@ -1063,7 +1063,7 @@
             ) zgl,
             sum( CASE WHEN jclx = '4' AND (clzt != '6' or clzt is null) AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
         FROM
-            rpt_aqjg_zdmb_yhdwtj
+        rpt.rpt_aqjg_zdmb_yhdwtj
         where jc_year is not null and jc_month is not null
         <if test=" result != null and result.size() > 0 ">
             and gljcjgmc IN
@@ -1091,7 +1091,7 @@
         ) zgl,
         sum( CASE WHEN jclx = '4' AND (clzt != '6' or clzt is null) AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
         FROM
-        rpt_aqjg_zdmb_yhdwtj
+        rpt.rpt_aqjg_zdmb_yhdwtj
         WHERE 1=1 and jc_year is not null and jc_month is not null
 
             <if test=" area!='全市' ">and ssfxj = (select dept_code from dept_table where dept_name=#{area})
@@ -1121,7 +1121,7 @@
         ) zgl,
         sum( CASE WHEN jclx = '4' AND (clzt != '6' or clzt is null) AND ( gljcjg != '0' OR gljcjg IS NOT NULL ) THEN yhsl ELSE 0 END ) wzgl
         FROM
-        rpt_aqjg_zdmb_yhdwtj
+        rpt.rpt_aqjg_zdmb_yhdwtj
         WHERE 1=1 and jc_year is not null
         <if test=" area!='全市' ">
             and ssfxj = (select dept_code from dept_table where dept_name=#{area})
@@ -1131,7 +1131,7 @@
         order by jc_year
     </select>
     <select id="findNumByZdgcMRMonth" resultType="java.util.Map" parameterType="java.util.Map">
-        WITH hdgctj AS ( SELECT nf || yf AS nfyf, fxjmc, zdgcdws, qyyjzs, qywjzs,yf FROM rpt_aqjg_zdmb_hdgctj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        WITH hdgctj AS ( SELECT nf || yf AS nfyf, fxjmc, zdgcdws, qyyjzs, qywjzs,yf FROM rpt.rpt_aqjg_zdmb_hdgctj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         nfyf as tjrq,
         yf,
@@ -1148,13 +1148,13 @@
         COALESCE(sum(dwsl),0) dwsl,
         SUBSTRING(tjrq,5,6)
         FROM
-        rpt_aqjg_zdmb_zysssl_zl
+        rpt.rpt_aqjg_zdmb_zysssl_zl
         WHERE
         1=1
         AND tjrq &gt;= #{ltnf} AND tjrq &lt;= #{gtnf}  GROUP BY tjrq
     </select>
     <select id="findNumByZddwLtMonth" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-        WITH hdgctj AS ( SELECT nf || yf AS nfyf, fxjmc, zdgcdws, qyyjzs, qywjzs,yf FROM rpt_aqjg_zdmb_hdgctj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
+        WITH hdgctj AS ( SELECT nf || yf AS nfyf, fxjmc, zdgcdws, qyyjzs, qywjzs,yf FROM rpt.rpt_aqjg_zdmb_hdgctj WHERE tjrq=to_char(CURRENT_DATE,'yyyy-mm-dd'))
         SELECT
         nfyf as tjrq,
         yf,
@@ -1171,7 +1171,7 @@
         COALESCE(sum(dwsl),0) dwsl,
         SUBSTRING(tjrq,5,6)
         FROM
-        rpt_aqjg_zdmb_zysssl_zl
+        rpt.rpt_aqjg_zdmb_zysssl_zl
         WHERE
         1=1
         AND tjrq &gt;= #{ltnf} AND tjrq &lt;= #{gtnf} AND ssfjmc=#{name} GROUP BY tjrq
@@ -1196,7 +1196,7 @@
             sum(case when jcztmc = '已超期' then jcsl else 0 end) as ycq,
             sum(case when jcztmc != '已取消' then jcsl else 0 end) as xfjc
         FROM
-            rpt_aqjg_zdmb_zdsszt
+            rpt.rpt_aqjg_zdmb_zdsszt
         WHERE
             jclxdm ='3' AND SUBSTRING(tjrq,0,5)=#{titleDateType} GROUP BY ssfjdm,SUBSTRING(tjrq,0,5)) b
         on a.dept_code = b.ssfjdm

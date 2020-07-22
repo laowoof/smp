@@ -3,29 +3,29 @@
 <mapper namespace="com.oceansoft.szga.smp.mapper.DangerousMapper">
 
     <select id="queryBaseInfo" resultType="java.util.Map">
-        select * from rpt_aqjg_za_zbxx order by  zbbm
+        select * from rpt.rpt_aqjg_za_zbxx order by  zbbm
     </select>
     <select id="querySuperviseUnit" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' and hwlb like concat('%',#{str},'%')
+        SELECT sum(sl) FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01' and hwlb like concat('%',#{str},'%')
     </select>
     <select id="queryAllSuperviseUnit" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01'
+        SELECT sum(sl) FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01'
     </select>
     <select id="querySfgyl" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfgly = '1'
+        SELECT sum(sl) FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfgly = '1'
     </select>
     <select id="querySfczy" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfczy = '1'
+        SELECT sum(sl) FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfczy = '1'
     </select>
     <select id="querySfzabwy" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfczy = '1'
+        SELECT sum(sl) FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfczy = '1'
     </select>
     <select id="queryDangerousDw" resultType="java.util.Map">
         SELECT
             fjmc,
         sum ( sl )
         FROM
-            "rpt_aqjg_za_dwxx"
+        rpt."rpt_aqjg_za_dwxx"
         WHERE
             yyzt = '01'
         <if test="zawxpdjdmList != null">
@@ -48,7 +48,7 @@
             fjmc,
             SUM ( sl )
         FROM
-            "rpt_aqjg_za_ryxx"
+        rpt."rpt_aqjg_za_ryxx"
         WHERE
             sfzx = '0'
         <if test="ywlxdmList != null">
@@ -66,105 +66,105 @@
             fjmc
     </select>
     <select id="queryHighPoison" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY fjmc
+        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY fjmc
     </select>
     <select id="queryEasyBoom" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY fjmc
+        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY fjmc
     </select>
     <select id="queryHighPoisonLine" resultType="java.util.Map">
         <choose>
         <when test="type == 1">
-            SELECT date,sum(sl) FROM (SELECT year||'-'||mon as date, sl FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1')t GROUP BY date ORDER BY date ASC
+            SELECT date,sum(sl) FROM (SELECT year||'-'||mon as date, sl FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1')t GROUP BY date ORDER BY date ASC
         </when>
         <otherwise>
-            SELECT year,sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY year order by year
+            SELECT year,sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY year order by year
         </otherwise>
         </choose>
     </select>
     <select id="queryEasyBoomLine" resultType="java.util.Map">
         <choose>
             <when test="type == 1">
-                SELECT date,sum(sl) FROM (SELECT year||'-'||mon as date, sl FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2')t GROUP BY date ORDER BY date ASC
+                SELECT date,sum(sl) FROM (SELECT year||'-'||mon as date, sl FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2')t GROUP BY date ORDER BY date ASC
             </when>
             <otherwise>
-                SELECT year,sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY year order by year
+                SELECT year,sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY year order by year
             </otherwise>
         </choose>
     </select>
     <select id="queryCurrentStockNum" resultType="java.util.Map">
-        select * from rpt_aqjg_za_zbxx where zbbm = 'ZB_0003'
+        select * from rpt.rpt_aqjg_za_zbxx where zbbm = 'ZB_0003'
     </select>
     <select id="queryHalfYearNum" resultType="java.util.Map">
-        select * from rpt_aqjg_za_zbxx where zbbm = 'ZB_0012'
+        select * from rpt.rpt_aqjg_za_zbxx where zbbm = 'ZB_0012'
     </select>
     <select id="queryHousingAllNum" resultType="java.lang.Long">
-        select sum(sl) sl from rpt_aqjg_za_wpcrk where lbdm like '1%'
+        select sum(sl) sl from rpt.rpt_aqjg_za_wpcrk where lbdm like '1%'
     </select>
     <select id="queryBuyNum" resultType="java.lang.Long">
-        select sl from rpt_aqjg_za_wpcrk where lbdm = '11'
+        select sl from rpt.rpt_aqjg_za_wpcrk where lbdm = '11'
     </select>
     <select id="queryProductNum" resultType="java.lang.Long">
-        select sl from rpt_aqjg_za_wpcrk where lbdm = '12'
+        select sl from rpt.rpt_aqjg_za_wpcrk where lbdm = '12'
     </select>
     <select id="queryWpcrk" resultType="java.util.Map">
-        select * from rpt_aqjg_za_wpcrk
+        select * from rpt.rpt_aqjg_za_wpcrk
     </select>
     <select id="queryUseHousingNum" resultType="java.lang.Long">
-        select sum(sl) sl from rpt_aqjg_za_wpcrk where lbdm like '5%'
+        select sum(sl) sl from rpt.rpt_aqjg_za_wpcrk where lbdm like '5%'
     </select>
     <select id="queryDangerHighPoisonDw" resultType="java.util.Map">
         SELECT a.fjmc,a.jd,b.jy FROM
-        ((SELECT fjmc,sum(sl) jd FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like concat('%',#{hwlb},'%')
+        ((SELECT fjmc,sum(sl) jd FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like concat('%',#{hwlb},'%')
         <if test="year != null">
         and year = #{year}
         </if>
         GROUP BY fjmc) a LEFT JOIN
-        (SELECT fjmc,sum(sl) jy FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like '%1%8%'
+        (SELECT fjmc,sum(sl) jy FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND hwlb like '%1%8%'
         <if test="year != null">
             and year = #{year}
         </if>
         GROUP BY fjmc) b ON a.fjmc = b.fjmc)
     </select>
     <select id="queryDangerHighPoisonLxAllCount" resultType="java.lang.Long">
-        SELECT sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl}
+        SELECT sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl}
     </select>
     <select id="queryEveryKindNum" resultType="java.util.Map">
-        SELECT wpmc,sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type}
+        SELECT wpmc,sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type}
         <if test="year != null">
             and year = #{year}
         </if>
          GROUP BY wpmc
     </select>
     <select id="queryDangerHighPoisonRank" resultType="java.util.Map">
-        SELECT wpmc, sum(sl) FROM "rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type}
+        SELECT wpmc, sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE wpdl = #{wpdl} AND sjlx = #{type}
         <if test="year != null">
             and year = #{year}
         </if>
          GROUP BY wpmc ORDER BY sum(sl) desc LIMIT 10
     </select>
     <select id="queryCompanyRank" resultType="java.util.Map">
-        SELECT fjmc,sum(sl) FROM "rpt_aqjg_za_dwxx" GROUP BY fjmc
+        SELECT fjmc,sum(sl) FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc
     </select>
     <select id="queryImpPostRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' GROUP BY fjmc
+        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' GROUP BY fjmc
     </select>
     <select id="queryCompanyCheckRank" resultType="java.util.Map">
-        SELECT ssfxjmc, sum(sl) FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc
+        SELECT ssfxjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc
     </select>
     <select id="queryHiddenDiscoverRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_dwyhxx" GROUP BY fjmc
+        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" GROUP BY fjmc
     </select>
     <select id="queryHiddenHandleRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE sfzg = '1' GROUP BY fjmc
+        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE sfzg = '1' GROUP BY fjmc
     </select>
     <select id="queryHiddenNoHandleRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE sfzg = '0' GROUP BY fjmc
+        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE sfzg = '0' GROUP BY fjmc
     </select>
     <select id="queryEarlyHandleRank" resultType="java.util.Map">
-        SELECT fjmc,sum(sl) FROM "rpt_aqjg_za_yjxx" GROUP BY fjmc
+        SELECT fjmc,sum(sl) FROM rpt."rpt_aqjg_za_yjxx" GROUP BY fjmc
     </select>
     <select id="queryNumAnalysisZg" resultType="java.util.Map">
-        SELECT fjmc, SUM ( sl ) zgl FROM "rpt_aqjg_za_dwyhxx" WHERE hwlb LIKE concat('%',#{hwlb},'%') AND sfzg = '1'
+        SELECT fjmc, SUM ( sl ) zgl FROM rpt."rpt_aqjg_za_dwyhxx" WHERE hwlb LIKE concat('%',#{hwlb},'%') AND sfzg = '1'
         <if test="jcjgList != null">
         AND jcjg IN
         <foreach item="item" index="index" collection="jcjgList" open="(" separator="," close=")">
@@ -174,7 +174,7 @@
         GROUP BY fjmc
     </select>
     <select id="queryNumAnalysisWzg" resultType="java.util.Map">
-        SELECT fjmc, SUM ( sl ) wzgl FROM "rpt_aqjg_za_dwyhxx" WHERE hwlb LIKE concat('%',#{hwlb},'%') AND sfzg = '0'
+        SELECT fjmc, SUM ( sl ) wzgl FROM rpt."rpt_aqjg_za_dwyhxx" WHERE hwlb LIKE concat('%',#{hwlb},'%') AND sfzg = '0'
         <if test="jcjgList != null">
             AND jcjg IN
             <foreach item="item" index="index" collection="jcjgList" open="(" separator="," close=")">
@@ -184,25 +184,25 @@
         GROUP BY fjmc
     </select>
     <select id="queryDrillRank1" resultType="java.util.Map">
-        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
+        SELECT pcsmc,sum(sl) FROM rpt."rpt_aqjg_za_dwxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
     </select>
     <select id="queryDrillRank2" resultType="java.util.Map">
-        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
+        SELECT pcsmc,sum(sl) FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
     </select>
     <select id="queryDrillRank3" resultType="java.util.Map">
-        SELECT sspcsmc,sum(sl) FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' AND ssfxjmc = #{fjmc} GROUP BY sspcsmc ORDER BY sum desc
+        SELECT sspcsmc,sum(sl) FROM rpt."rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' AND ssfxjmc = #{fjmc} GROUP BY sspcsmc ORDER BY sum desc
     </select>
     <select id="queryDrillRank5" resultType="java.util.Map">
-        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
+        SELECT pcsmc,sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
     </select>
     <select id="queryDrillRank6" resultType="java.util.Map">
-        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} AND sfzg = '1' GROUP BY pcsmc ORDER BY sum desc
+        SELECT pcsmc,sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} AND sfzg = '1' GROUP BY pcsmc ORDER BY sum desc
     </select>
     <select id="queryDrillRank7" resultType="java.util.Map">
-        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} AND sfzg = '0' GROUP BY pcsmc ORDER BY sum desc
+        SELECT pcsmc,sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE fjmc = #{fjmc} AND sfzg = '0' GROUP BY pcsmc ORDER BY sum desc
     </select>
     <select id="queryDrillRank8" resultType="java.util.Map">
-        SELECT pcsmc,sum(sl) FROM "rpt_aqjg_za_yjxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
+        SELECT pcsmc,sum(sl) FROM rpt."rpt_aqjg_za_yjxx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum desc
     </select>
     <select id="queryNumSituation" resultType="java.util.Map">
         <if test="type == 'yf'">
@@ -211,7 +211,7 @@
             (SELECT date, COALESCE(sum(sl),0) zgs FROM
             (
             SELECT date,yearDate,hwlb,sfzg,sl FROM (
-            SELECT year||'-'||mon as date,year as yearDate,hwlb,sfzg,sl FROM "rpt_aqjg_za_dwyhxx"
+            SELECT year||'-'||mon as date,year as yearDate,hwlb,sfzg,sl FROM rpt."rpt_aqjg_za_dwyhxx"
             ) a
             WHERE date BETWEEN #{beginTime} AND #{endTime}
             ) a WHERE sfzg = '1' and hwlb like concat('%',#{hwlb},'%') GROUP BY date) b
@@ -219,7 +219,7 @@
             (SELECT date, COALESCE(sum(sl),0) wzgs FROM
             (
             SELECT date,yearDate,hwlb,sfzg,sl FROM (
-            SELECT year||'-'||mon as date,year as yearDate,hwlb,sfzg,sl FROM "rpt_aqjg_za_dwyhxx"
+            SELECT year||'-'||mon as date,year as yearDate,hwlb,sfzg,sl FROM rpt."rpt_aqjg_za_dwyhxx"
             ) a
             WHERE date BETWEEN #{beginTime} AND #{endTime}
             ) a WHERE sfzg = '0' and hwlb like concat('%',#{hwlb},'%') GROUP BY date) c
@@ -229,29 +229,29 @@
             SELECT b.yearDate,COALESCE(b.zgs,0)zgs,COALESCE(c.wzgs,0)wzgs FROM
             (SELECT yearDate, COALESCE(sum(sl),0) zgs
             FROM
-            (SELECT year||'-'||mon as date,year as yearDate,hwlb,sfzg,sl FROM "rpt_aqjg_za_dwyhxx") a WHERE sfzg = '1' and hwlb like concat('%',#{hwlb},'%') GROUP BY yeardate) b
+            (SELECT year||'-'||mon as date,year as yearDate,hwlb,sfzg,sl FROM rpt."rpt_aqjg_za_dwyhxx") a WHERE sfzg = '1' and hwlb like concat('%',#{hwlb},'%') GROUP BY yeardate) b
             LEFT JOIN
             (SELECT yearDate, COALESCE(sum(sl),0) wzgs
             FROM
-            (SELECT year||'-'||mon as date,year as yearDate,hwlb,sfzg,sl FROM "rpt_aqjg_za_dwyhxx") a WHERE sfzg = '0' and hwlb like concat('%',#{hwlb},'%') GROUP BY yeardate) c
+            (SELECT year||'-'||mon as date,year as yearDate,hwlb,sfzg,sl FROM rpt."rpt_aqjg_za_dwyhxx") a WHERE sfzg = '0' and hwlb like concat('%',#{hwlb},'%') GROUP BY yeardate) c
             ON b.yearDate = c.yearDate order by b.yearDate
         </if>
     </select>
     <select id="queryAjAllCount" resultType="java.lang.Integer">
-        SELECT sum(sl) allCount FROM "rpt_aqjg_za_ajxx"
+        SELECT sum(sl) allCount FROM rpt."rpt_aqjg_za_ajxx"
     </select>
     <select id="queryCheckHit" resultType="java.util.Map">
         SELECT a.fjmc, COALESCE(b.xz,0) xz, COALESCE(c.xs,0)xs
         FROM
-        (SELECT fjmc FROM "rpt_aqjg_za_ajxx" GROUP BY fjmc) a
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_ajxx" GROUP BY fjmc) a
         LEFT JOIN
-        (SELECT fjmc,COALESCE(sum(sl),0) xz FROM "rpt_aqjg_za_ajxx" WHERE ajdlmc = '行政案件'
+        (SELECT fjmc,COALESCE(sum(sl),0) xz FROM rpt."rpt_aqjg_za_ajxx" WHERE ajdlmc = '行政案件'
          <if test="ajlbdm != null and ajlbdm != ''">
              and ajlbdm = #{ajlbdm}
          </if>
          GROUP BY fjmc) b ON a.fjmc = b.fjmc
         LEFT JOIN
-        (SELECT fjmc,COALESCE(sum(sl),0) xs FROM "rpt_aqjg_za_ajxx" WHERE ajdlmc = '刑事案件'
+        (SELECT fjmc,COALESCE(sum(sl),0) xs FROM rpt."rpt_aqjg_za_ajxx" WHERE ajdlmc = '刑事案件'
         <if test="ajlbdm != null and ajlbdm != ''">
             and ajlbdm = #{ajlbdm}
         </if>
@@ -259,20 +259,20 @@
     </select>
     <select id="queryPeopleBackgroud" resultType="java.util.Map">
         SELECT a.fjmc, COALESCE(b.yqk,0) yqk, COALESCE(c.wqk,0) wqk FROM
-        (SELECT fjmc FROM "rpt_aqjg_za_ryxx" GROUP BY fjmc) a
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_ryxx" GROUP BY fjmc) a
         LEFT JOIN
-        (SELECT fjmc,COALESCE(sum(sl),0) yqk FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND ywqk = '1' GROUP BY fjmc) b ON a.fjmc = b.fjmc
+        (SELECT fjmc,COALESCE(sum(sl),0) yqk FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND ywqk = '1' GROUP BY fjmc) b ON a.fjmc = b.fjmc
         LEFT JOIN
-        (SELECT fjmc,COALESCE(sum(sl),0) wqk FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND ywqk = '0' GROUP BY fjmc) c ON a.fjmc = c.fjmc
+        (SELECT fjmc,COALESCE(sum(sl),0) wqk FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' AND ywqk = '0' GROUP BY fjmc) c ON a.fjmc = c.fjmc
     </select>
     <select id="queryFjmc" resultType="java.lang.String">
-        SELECT fjmc FROM rpt_aqjg_za_ryxx GROUP BY fjmc
+        SELECT fjmc FROM rpt.rpt_aqjg_za_ryxx GROUP BY fjmc
     </select>
     <select id="queryAllPeopleCount" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0'
+        SELECT sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0'
     </select>
     <select id="queryPeopleBusiness" resultType="java.util.Map">
-        SELECT ywlxmc as name,sum(sl) as value FROM rpt_aqjg_za_ryxx WHERE sfzx = '0'
+        SELECT ywlxmc as name,sum(sl) as value FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0'
         <if test="fjmcList != null">
         AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -282,7 +282,7 @@
         GROUP BY ywlxmc
     </select>
     <select id="queryPeopleZcState1" resultType="java.util.Map">
-        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt.rpt_aqjg_za_ryxx)
         <choose>
             <when test="type=='yf'">
                 SELECT date,sum(sl) FROM new_ryxx WHERE date BETWEEN #{beginTime} AND #{endTime}
@@ -307,7 +307,7 @@
         </choose>
     </select>
     <select id="queryPeopleZcState2" resultType="java.util.Map">
-        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt.rpt_aqjg_za_ryxx)
         <choose>
             <when test="type=='yf'">
                 SELECT date,sum(sl) FROM new_ryxx WHERE sfzx = '1' and date BETWEEN #{beginTime} AND #{endTime}
@@ -332,7 +332,7 @@
         </choose>
     </select>
     <select id="queryPeopleZcState3" resultType="java.util.Map">
-        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt.rpt_aqjg_za_ryxx)
         <choose>
             <when test="type=='yf'">
                 SELECT date,sum(sl) FROM new_ryxx WHERE sfzx = '0' and date BETWEEN #{beginTime} AND #{endTime}
@@ -357,7 +357,7 @@
         </choose>
     </select>
     <select id="queryPeopleBaState1" resultType="java.util.Map">
-        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt.rpt_aqjg_za_ryxx)
         <choose>
             <when test="type=='yf'">
                 SELECT date,sum(sl) FROM new_ryxx WHERE date BETWEEN #{beginTime} AND #{endTime}
@@ -382,7 +382,7 @@
         </choose>
     </select>
     <select id="queryPeopleBaState2" resultType="java.util.Map">
-        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt.rpt_aqjg_za_ryxx)
         <choose>
             <when test="type=='yf'">
                 SELECT date,sum(sl) FROM new_ryxx WHERE baztdm = '0' and date BETWEEN #{beginTime} AND #{endTime}
@@ -407,7 +407,7 @@
         </choose>
     </select>
     <select id="queryPeopleBaState3" resultType="java.util.Map">
-        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt_aqjg_za_ryxx)
+        with new_ryxx as (SELECT year||'-'||mon as date, year as yearDate, fjmc,baztdm, sfzx, sl FROM rpt.rpt_aqjg_za_ryxx)
         <choose>
             <when test="type=='yf'">
                 SELECT date,sum(sl) FROM new_ryxx WHERE sfzx = '1' and date BETWEEN #{beginTime} AND #{endTime}
@@ -432,23 +432,23 @@
         </choose>
     </select>
     <select id="queryPeopleRecord" resultType="java.util.Map">
-        SELECT fjmc as name,sum(sl) as value FROM "rpt_aqjg_za_ryxx" WHERE sfzx = '0' and ywlxdm = #{ywlxdm} GROUP BY fjmc
+        SELECT fjmc as name,sum(sl) as value FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' and ywlxdm = #{ywlxdm} GROUP BY fjmc
     </select>
     <select id="queryPeopleNumByDm" resultType="java.util.Map">
         SELECT * FROM (
-        SELECT '管理员' as name, sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfgly = '1' AND ywlxdm = #{ywlxdm}
+        SELECT '管理员' as name, sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfgly = '1' AND ywlxdm = #{ywlxdm}
         UNION
-        SELECT '操作员', sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfczy = '1' AND ywlxdm = #{ywlxdm}
+        SELECT '操作员', sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfczy = '1' AND ywlxdm = #{ywlxdm}
         UNION
-        SELECT '治安保卫员', sum(sl) FROM rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfzabwy = '1' AND ywlxdm = #{ywlxdm}
+        SELECT '治安保卫员', sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfzabwy = '1' AND ywlxdm = #{ywlxdm}
         ) t ORDER BY t.sum desc
     </select>
     <select id="queryAnalysisFjmc" resultType="java.lang.String">
-        SELECT fjmc FROM "rpt_aqjg_za_dwxx" GROUP BY fjmc
+        SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc
     </select>
     <select id="queryPostKind1" resultType="java.util.Map">
         SELECT * FROM (
-        SELECT '生产单位' as dwlx, sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%01%'
+        SELECT '生产单位' as dwlx, sum(sl) FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%01%'
         <if test="fjmcList != null">
         AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -456,7 +456,7 @@
             </foreach>
         </if>
         UNION
-        SELECT '经营单位', sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%02%'
+        SELECT '经营单位', sum(sl) FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%02%'
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -464,7 +464,7 @@
             </foreach>
         </if>
         UNION
-        SELECT '使用单位', sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%03%'
+        SELECT '使用单位', sum(sl) FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%03%'
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -472,7 +472,7 @@
             </foreach>
         </if>
         UNION
-        SELECT '运输单位', sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%05%'
+        SELECT '运输单位', sum(sl) FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01' AND dwlx like '%05%'
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -482,7 +482,7 @@
         ) t
     </select>
     <select id="queryPostKind3" resultType="java.util.Map">
-        SELECT zawxpdjdm, zawxpdjmc, sum(sl) FROM "rpt_aqjg_za_dwxx" WHERE yyzt = '01'
+        SELECT zawxpdjdm, zawxpdjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01'
         <if test="fjmcList != null">
             AND fjmc IN
             <foreach item="item" index="index" collection="fjmcList" open="(" separator="," close=")">
@@ -492,16 +492,16 @@
         GROUP BY zawxpdjdm, zawxpdjmc
     </select>
     <select id="queryNormalCount" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM rpt_aqjg_za_dwxx WHERE yyzt = '01'
+        SELECT sum(sl) FROM rpt.rpt_aqjg_za_dwxx WHERE yyzt = '01'
     </select>
     <select id="queryPostState1" resultType="java.util.Map">
         SELECT a.date, COALESCE(b.sum, 0) sum FROM
         (
-        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt.rpt_aqjg_za_dwxx)
         SELECT date FROM new_dwxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
         LEFT JOIN
         (
-        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt.rpt_aqjg_za_dwxx)
         SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwxx WHERE yyzt = '01' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
@@ -515,11 +515,11 @@
     <select id="queryPostState2" resultType="java.util.Map">
         SELECT a.date, COALESCE(b.sum, 0) sum FROM
         (
-        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt.rpt_aqjg_za_dwxx)
         SELECT date FROM new_dwxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
         LEFT JOIN
         (
-        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt.rpt_aqjg_za_dwxx)
         SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwxx WHERE yyzt != '01' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
@@ -533,11 +533,11 @@
     <select id="queryPostState3" resultType="java.util.Map">
         SELECT a.date, COALESCE(b.sum, 0) sum FROM
         (
-        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
+        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt.rpt_aqjg_za_dwsdxx)
         SELECT date FROM new_dwsdxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
         LEFT JOIN
         (
-        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
+        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt.rpt_aqjg_za_dwsdxx)
         SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwsdxx WHERE ztmc = '锁定' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
@@ -557,11 +557,11 @@
     <select id="queryPostState4" resultType="java.util.Map">
         SELECT a.date, COALESCE(b.sum, 0) sum FROM
         (
-        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
+        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt.rpt_aqjg_za_dwsdxx)
         SELECT date FROM new_dwsdxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
         LEFT JOIN
         (
-        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt_aqjg_za_dwsdxx)
+        WITH new_dwsdxx as (SELECT year||'-'||mon as date, fjmc, ztmc, lxmc,sl FROM rpt.rpt_aqjg_za_dwsdxx)
         SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwsdxx WHERE ztmc = '已解锁' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
@@ -579,16 +579,16 @@
         ) b ON a.date = b.date
     </select>
     <select id="queryHasRecordCount" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM rpt_aqjg_za_dwbaxx WHERE baztmc = '已备案'
+        SELECT sum(sl) FROM rpt.rpt_aqjg_za_dwbaxx WHERE baztmc = '已备案'
     </select>
     <select id="queryHasRecordList" resultType="java.util.Map">
         SELECT a.date, COALESCE(b.sum, 0) sum FROM
         (
-        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
+        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt.rpt_aqjg_za_dwbaxx)
         SELECT date FROM new_dwbaxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
         LEFT JOIN
         (
-        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
+        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt.rpt_aqjg_za_dwbaxx)
         SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwbaxx WHERE baztmc = '已备案' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
@@ -602,11 +602,11 @@
     <select id="queryNoRecordingList" resultType="java.util.Map">
         SELECT a.date, COALESCE(b.sum, 0) sum FROM
         (
-        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
+        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt.rpt_aqjg_za_dwbaxx)
         SELECT date FROM new_dwbaxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
         LEFT JOIN
         (
-        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt_aqjg_za_dwbaxx)
+        WITH new_dwbaxx as (SELECT year||'-'||mon as date, fjmc, baztmc, sl FROM rpt.rpt_aqjg_za_dwbaxx)
         SELECT date, COALESCE(sum(sl), 0) sum FROM new_dwbaxx WHERE baztmc = '未备案' AND date BETWEEN #{beginTime} AND #{endTime}
         <if test="fjmcList != null">
             AND fjmc IN
@@ -618,25 +618,25 @@
         ) b ON a.date = b.date
     </select>
     <select id="queryCheckAllCount" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM "rpt_aqjg_za_dwjcxx"
+        SELECT sum(sl) FROM rpt."rpt_aqjg_za_dwjcxx"
     </select>
     <select id="queryEveryCount" resultType="java.util.Map">
         SELECT a.ssfxjmc, COALESCE(b.yjcs, 0) yjcs, COALESCE(c.djcs, 0) djcs, COALESCE(d.qjcs, 0) qjcs FROM (
-        (SELECT ssfxjmc FROM rpt_aqjg_za_dwjcxx GROUP BY ssfxjmc) a
+        (SELECT ssfxjmc FROM rpt.rpt_aqjg_za_dwjcxx GROUP BY ssfxjmc) a
         LEFT JOIN
-        (SELECT ssfxjmc, sum(sl) yjcs FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '1' GROUP BY ssfxjmc) b ON a.ssfxjmc = b.ssfxjmc
+        (SELECT ssfxjmc, sum(sl) yjcs FROM rpt."rpt_aqjg_za_dwjcxx" WHERE jcztdm = '1' GROUP BY ssfxjmc) b ON a.ssfxjmc = b.ssfxjmc
         LEFT JOIN
-        (SELECT ssfxjmc, sum(sl) djcs FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '0' GROUP BY ssfxjmc) c ON a.ssfxjmc = c.ssfxjmc
+        (SELECT ssfxjmc, sum(sl) djcs FROM rpt."rpt_aqjg_za_dwjcxx" WHERE jcztdm = '0' GROUP BY ssfxjmc) c ON a.ssfxjmc = c.ssfxjmc
         LEFT JOIN
-        (SELECT ssfxjmc, sum(sl) qjcs FROM "rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc) d ON a.ssfxjmc = d.ssfxjmc
+        (SELECT ssfxjmc, sum(sl) qjcs FROM rpt."rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc) d ON a.ssfxjmc = d.ssfxjmc
         )
     </select>
     <select id="queryCompanySuperviseByMon" resultType="java.util.Map">
         SELECT a.date, COALESCE(a.dwzs, 0) dwzs, COALESCE(b.dwxzs, 0) dwxzs FROM (
-        (WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        (WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt.rpt_aqjg_za_dwxx)
         SELECT date, sum(sl) dwzs FROM new_dwxx WHERE date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) a
         LEFT JOIN
-        (WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt_aqjg_za_dwxx)
+        (WITH new_dwxx as (SELECT year||'-'||mon as date, fjmc, yyzt, sl FROM rpt.rpt_aqjg_za_dwxx)
         SELECT date, sum(sl) dwxzs FROM new_dwxx WHERE yyzt = '01' AND date BETWEEN #{beginTime} AND #{endTime} GROUP BY date ORDER BY date) b
         ON a.date = b.date
         )
@@ -644,40 +644,40 @@
     <select id="queryCompanySuperviseByDay" resultType="java.util.Map">
         SELECT COALESCE(a.tjrq, TO_CHAR(now(), 'yyyy-mm-dd')) tjrq, COALESCE(a.dwzs, 0) dwzs, COALESCE(b.dwxzs, 0) dwxzs FROM
         (
-        (SELECT tjrq, sum(sl) dwzs FROM rpt_aqjg_za_dwxx WHERE tjrq BETWEEN #{beginDay} AND #{endDay} GROUP BY tjrq ORDER BY tjrq) a
+        (SELECT tjrq, sum(sl) dwzs FROM rpt.rpt_aqjg_za_dwxx WHERE tjrq BETWEEN #{beginDay} AND #{endDay} GROUP BY tjrq ORDER BY tjrq) a
         LEFT JOIN
-        (SELECT tjrq, sum(sl) dwxzs FROM rpt_aqjg_za_dwxx WHERE yyzt = '01' AND tjrq BETWEEN #{beginDay} AND #{endDay} GROUP BY tjrq ORDER BY tjrq) b
+        (SELECT tjrq, sum(sl) dwxzs FROM rpt.rpt_aqjg_za_dwxx WHERE yyzt = '01' AND tjrq BETWEEN #{beginDay} AND #{endDay} GROUP BY tjrq ORDER BY tjrq) b
         ON a.tjrq = b.tjrq
         )
     </select>
     <select id="queryEarlyWarningAllCount" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM rpt_aqjg_za_yjxx
+        SELECT sum(sl) FROM rpt.rpt_aqjg_za_yjxx
     </select>
     <select id="queryEarlyWarning" resultType="java.util.Map">
         SELECT a.fjmc, COALESCE(b.wcy, 0) wcy, COALESCE(c.wcz, 0) wcz, COALESCE(d.czz, 0) czz, COALESCE(e.ycz, 0) ycz
         FROM (
-        (SELECT fjmc FROM rpt_aqjg_za_yjxx GROUP BY fjmc) a
+        (SELECT fjmc FROM rpt.rpt_aqjg_za_yjxx GROUP BY fjmc) a
         LEFT JOIN
-        (SELECT fjmc, sum(sl) wcy FROM rpt_aqjg_za_yjxx WHERE ztdm = '-1' GROUP BY fjmc) b ON a.fjmc = b.fjmc
+        (SELECT fjmc, sum(sl) wcy FROM rpt.rpt_aqjg_za_yjxx WHERE ztdm = '-1' GROUP BY fjmc) b ON a.fjmc = b.fjmc
         LEFT JOIN
-        (SELECT fjmc, sum(sl) wcz FROM rpt_aqjg_za_yjxx WHERE ztdm = '0' GROUP BY fjmc) c ON a.fjmc = c.fjmc
+        (SELECT fjmc, sum(sl) wcz FROM rpt.rpt_aqjg_za_yjxx WHERE ztdm = '0' GROUP BY fjmc) c ON a.fjmc = c.fjmc
         LEFT JOIN
-        (SELECT fjmc, sum(sl) czz FROM rpt_aqjg_za_yjxx WHERE ztdm = '1' GROUP BY fjmc) d ON a.fjmc = d.fjmc
+        (SELECT fjmc, sum(sl) czz FROM rpt.rpt_aqjg_za_yjxx WHERE ztdm = '1' GROUP BY fjmc) d ON a.fjmc = d.fjmc
         LEFT JOIN
-        (SELECT fjmc, sum(sl) ycz FROM rpt_aqjg_za_yjxx WHERE ztdm = '2' GROUP BY fjmc) e ON a.fjmc = e.fjmc
+        (SELECT fjmc, sum(sl) ycz FROM rpt.rpt_aqjg_za_yjxx WHERE ztdm = '2' GROUP BY fjmc) e ON a.fjmc = e.fjmc
         )
     </select>
     <select id="queryEarlyProjectJd" resultType="java.util.Map">
-        SELECT yjmc, sum(sl) FROM rpt_aqjg_za_yjxx WHERE dwlxdm = '1' GROUP BY yjmc
+        SELECT yjmc, sum(sl) FROM rpt.rpt_aqjg_za_yjxx WHERE dwlxdm = '1' GROUP BY yjmc
     </select>
     <select id="queryJdCount" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM rpt_aqjg_za_yjxx WHERE dwlxdm = '1'
+        SELECT sum(sl) FROM rpt.rpt_aqjg_za_yjxx WHERE dwlxdm = '1'
     </select>
     <select id="queryYzbCount" resultType="java.lang.Integer">
-        SELECT sum(sl) FROM rpt_aqjg_za_yjxx WHERE dwlxdm = '2'
+        SELECT sum(sl) FROM rpt.rpt_aqjg_za_yjxx WHERE dwlxdm = '2'
     </select>
     <select id="queryEarlyProjectYzb" resultType="java.util.Map">
-        SELECT yjmc, sum(sl) FROM rpt_aqjg_za_yjxx WHERE dwlxdm = '2' GROUP BY yjmc
+        SELECT yjmc, sum(sl) FROM rpt.rpt_aqjg_za_yjxx WHERE dwlxdm = '2' GROUP BY yjmc
     </select>
 
 
