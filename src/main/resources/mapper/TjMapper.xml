@@ -247,7 +247,7 @@
 			COALESCE(b.yhzgs,0) as yhzgs,
 			COALESCE(b.yhwzgs,0) as yhwzgs
         FROM
-	        dept_table a
+	        rpt.dept_table a
 	    LEFT JOIN (
 	        SELECT
 		        ssfjdm,
@@ -309,7 +309,7 @@
 			COALESCE((b.snum +b.sjnum+b.qxnum),0) as sjTotle,
 			COALESCE(c.dwsl,0) dwsl
 		FROM
-			dept_table a
+			rpt.dept_table a
 		LEFT JOIN
 		(select
 			ssfxj,
