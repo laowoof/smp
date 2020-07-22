@@ -336,7 +336,7 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         List<String> jclxList = Arrays.asList("01","1","2","3");
         List<String> clztList1 = Arrays.asList("01","1","2","4");
         List<String> clztList2 = Arrays.asList("5","6");
-        if (CollectionUtils.isEmpty(mapList)) {
+        if (!CollectionUtils.isEmpty(mapList)) {
             for (Map<String, Object> stringObjectMap : mapList) {
                 // 当前流程节点
                 if (stringObjectMap.get("jclx") != null && stringObjectMap.get("clzt") != null) {

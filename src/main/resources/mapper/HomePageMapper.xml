@@ -3,9 +3,9 @@
 <mapper namespace="com.oceansoft.szga.smp.mapper.HomePageMapper">
     <select id="getRoadBaseInfo" resultType="java.util.Map">
         SELECT
-        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '1' AND year = to_char(CURRENT_DATE, 'yyyy')) as 企业总量,
-        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '2' AND year = to_char(CURRENT_DATE, 'yyyy')) as 重点车辆数,
-        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '3' AND year = to_char(CURRENT_DATE, 'yyyy')) as 重点人员数,
+        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '1') as 企业总量,
+        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '2') as 重点车辆数,
+        (select COALESCE(sum(sl),0) from rpt_aqjg_ggjt_dljtytgltj where lx = '3') as 重点人员数,
         (SELECT COALESCE(sum(yhzl),0) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患发现量,
         (SELECT COALESCE(sum(yhwcsl),0) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患处理量,
         (SELECT COALESCE(sum(yhwwcsl),0) FROM rpt_aqjg_ggjt_yhlxtj WHERE year = to_char(CURRENT_DATE, 'yyyy')) as 隐患待处理量,

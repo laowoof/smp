@@ -72,7 +72,7 @@
         WHERE b.glbm like '%2%' AND b.yyzt = '01' AND b.jbspzt = '3'
         </if>
         <if test="type == 2">
-            WHERE b.glbm like '%6%' AND b.yyzt = '01' AND b.zawxpspzt = '3' AND b.dwfl = '%14%'
+            WHERE b.glbm like '%6%' AND b.yyzt = '01' AND b.zawxpspzt = '3' AND b.dwfl like '%14%' and (b.scbs is null or b.scbs = '0')
         </if>
         <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
             and (a.jcd like concat('%',#{questionQueryBean.keyWord},'%') or a.dwmc like concat('%',#{questionQueryBean.keyWord},'%'))
