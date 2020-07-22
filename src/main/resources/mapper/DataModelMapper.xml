@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.DataModelMapper">
+    <select id="selectPageJjaj" resultType="java.util.HashMap">
+
+        select jszh,
+            dabh,
+            zjcx,
+            dsr,
+            hphm,
+            wfsj  from(
+        select distinct *
+        from ods.ods_rt_trff_app_vio_force a
+        where substr(a.fxjg,1,4)='3205'
+        and (a.wfxw1 in('6034','6035')
+        or a.wfxw2 in('6034','6035')
+        or a.wfxw3 in('6034','6035')
+        or a.wfxw4 in('6034','6035')
+        or a.wfxw5 in('6034','6035'))
+        and left(wfsj,10) &gt;= '2020-01-01'
+        and left(wfsj,10) &lt;= left(to_char((current_date-interval '30 day' ),'yyyy-MM-dd'),10)
+        and a.cjbj='0'
+        and a.xxly='1'
+       union all
+        select distinct *
+        from ods.ods_rt_trff_app_vio_force a
+        where substr(a.fxjg,1,4)='3205'
+        and (a.wfxw1 in('6034','6035')
+        or a.wfxw2 in('6034','6035')
+        or a.wfxw3 in('6034','6035')
+        or a.wfxw4 in('6034','6035')
+        or a.wfxw5 in('6034','6035'))
+        and left(wfsj,10) &gt;= '2020-01-01'
+        and left(a.cjsj,10) &gt;= to_date(left(a.wfsj,10),'yyyy-MM-dd') + interval '30 day'
+        and a.cjbj='1'
+        and a.xxly='1'
+        ) t
+        <if test=" kw!='' and kw !=null ">
+            and (t.dsr like '%'||#{kw}||'%' or t.jszh like '%'||#{kw}||'%')
+        </if>
+    </select>
+
+    <select id="selectPageWxjs" resultType="java.util.HashMap">
+        select jszh,
+        dabh,
+        zjcx,
+        dsr,
+        hphm,
+        wfsj  from(
+        select distinct *
+        from ods.ods_rt_trff_app_vio_force a
+        where substr(a.fxjg,1,4)='3205'
+        and (a.wfxw1 in('6022','6032','6033')
+        or a.wfxw2 in('6022','6032','6033')
+        or a.wfxw3 in('6022','6032','6033')
+        or a.wfxw4 in('6022','6032','6033')
+        or a.wfxw5 in('6022','6032','6033'))
+        and left(wfsj,10) &gt;= '2020-01-01'
+        and left(wfsj,10) &lt;= to_char((current_date-interval '180 day' ),'yyyy-MM-dd')
+        and a.cjbj='0'
+        and a.xxly='1'
+        union all
+        select distinct *
+        from ods.ods_rt_trff_app_vio_force a
+        where substr(a.fxjg,1,4)='3205'
+        and (a.wfxw1 in('6022','6032','6033')
+        or a.wfxw2 in('6022','6032','6033')
+        or a.wfxw3 in('6022','6032','6033')
+        or a.wfxw4 in('6022','6032','6033')
+        or a.wfxw5 in('6022','6032','6033'))
+        and left(wfsj,10) &gt;= '2020-01-01'
+        and to_date(left(a.cjsj,10),'yyyy-MM-dd') &gt;= to_date(left(a.wfsj,10),'yyyy-MM-dd') + interval '180 day'
+        and a.cjbj='1'
+        and a.xxly='1'
+        ) t
+        <if test=" kw!='' and kw !=null ">
+            and (t.dsr like '%'||#{kw}||'%' or t.jszh like '%'||#{kw}||'%')
+        </if>
+    </select>
+</mapper>

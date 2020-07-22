@@ -7,7 +7,9 @@ import com.google.common.collect.Maps;
 import com.oceansoft.szga.smp.config.domain.ApiPager;
 import com.oceansoft.szga.smp.config.domain.ApiQueryBase;
 import com.oceansoft.szga.smp.config.domain.ApiResult;
+import com.oceansoft.szga.smp.service.DataModelService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -23,6 +25,10 @@ import java.util.Map;
 @RequestMapping("wxpfx")
 @RestController
 public class WXPFXController {
+    @Autowired
+    private DataModelService dataModelService;
+
+
 
     @ApiOperation("总数")
     @RequestMapping("total-count")
@@ -201,26 +207,26 @@ public class WXPFXController {
     @RequestMapping("jjaj")
     public ApiResult jjaj(@RequestBody ApiQueryBase query){
         //TODO data 模拟数据，待实现
-        List<Map<String,Object>> list = Lists.newArrayList();
-        String temp ="{statisticalTime: '2020-04-20 17:16', source: 'XX系统', caseCategory: '严重违法', acceptTime: '2019-11-28', name: '李四', id: '220112199106050112', drivingLicense: '220112199106050112', state: '非吊销', organ: '江苏省苏州市交通警察支队'}";
-        for (int i = 0; i < 10; i++) {
-            list.add(JSONObject.parseObject(temp));
-        }
-        int total = 12;
-        ApiPager pager = new ApiPager(query.getPs(), query.getPi(),total, list);
-        return new ApiResult().success(pager);
+//        List<Map<String,Object>> list = Lists.newArrayList();
+//        String temp ="{statisticalTime: '2020-04-20 17:16', source: 'XX系统', caseCategory: '严重违法', acceptTime: '2019-11-28', name: '李四', id: '220112199106050112', drivingLicense: '220112199106050112', state: '非吊销', organ: '江苏省苏州市交通警察支队'}";
+//        for (int i = 0; i < 10; i++) {
+//            list.add(JSONObject.parseObject(temp));
+//        }
+//        int total = 12;
+//        ApiPager pager = new ApiPager(query.getPs(), query.getPi(),total, list);
+        return new ApiResult().success(dataModelService.pageJjaj(query));
     }
     @ApiOperation("危险驾驶")
     @RequestMapping("wxjs")
     public ApiResult wxjs(@RequestBody ApiQueryBase query){
         //TODO data 模拟数据，待实现
-        List<Map<String,Object>> list = Lists.newArrayList();
-        String temp ="{statisticalTime: '2020-04-20 17:16', source: 'XX系统', caseCategory: '危险驾驶', acceptTime: '2019-12-29', name: '张三', id: '220112199106050112', drivingLicense: '220112199106050112', state: '非吊销', organ: '江苏省苏州市交通警察支队'}";
-        for (int i = 0; i < 10; i++) {
-            list.add(JSONObject.parseObject(temp));
-        }
-        int total = 12;
-        ApiPager pager = new ApiPager(query.getPs(), query.getPi(),total, list);
-        return new ApiResult().success(pager);
+//        List<Map<String,Object>> list = Lists.newArrayList();
+//        String temp ="{statisticalTime: '2020-04-20 17:16', source: 'XX系统', caseCategory: '危险驾驶', acceptTime: '2019-12-29', name: '张三', id: '220112199106050112', drivingLicense: '220112199106050112', state: '非吊销', organ: '江苏省苏州市交通警察支队'}";
+//        for (int i = 0; i < 10; i++) {
+//            list.add(JSONObject.parseObject(temp));
+//        }
+//        int total = 12;
+//        ApiPager pager = new ApiPager(query.getPs(), query.getPi(),total, list);
+        return new ApiResult().success(dataModelService.pageWxjs(query));
     }
 }
