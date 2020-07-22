@@ -142,6 +142,26 @@ public class ProcessChargeController {
         return apiResult;
     }
 
+    @ApiOperation(value = "重点目标流程图数据", notes = "", httpMethod = "POST")
+    @GetMapping("imp-process-pic")
+    public ApiResult queryImpProcessPic(Integer type) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = processChargeService.queryImpProcessPic(type);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
 
 
 

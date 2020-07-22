@@ -77,8 +77,76 @@
         <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
             and (a.jcd like concat('%',#{questionQueryBean.keyWord},'%') or a.dwmc like concat('%',#{questionQueryBean.keyWord},'%'))
         </if>
+        <if test="questionQueryBean.reactionDept != null and questionQueryBean.reactionDept != '' and questionQueryBean.reactionDept == '隐患上报'">
+            and jclx IN ('01','1','2','3')
+        </if>
+        <if test="questionQueryBean.reactionDept != null and questionQueryBean.reactionDept != '' and questionQueryBean.reactionDept == '复查'">
+            and jclx = '4' and clzt IN ('01','1','2','4')
+        </if>
+        <if test="questionQueryBean.reactionDept != null and questionQueryBean.reactionDept != '' and questionQueryBean.reactionDept == '复查审批'">
+            and jclx = '4' and clzt IN ('5','6')
+        </if>
+        <if test="questionQueryBean.reactionDept != null and questionQueryBean.reactionDept != '' and questionQueryBean.reactionDept == '隐患处置完成'">
+            and jclx = '4' and clzt = '3'
+        </if>
     </select>
     <select id="queryImpPoint" resultType="java.util.Map">
         SELECT jcsj, jclx, clzt FROM ods.ods_rt_zypt_jcrw_new_yhxx WHERE rwzj = #{id}
+    </select>
+    <select id="queryImpProcessPic" resultType="java.util.Map">
+        <if test="type == 1">
+            with yhxx as (SELECT
+            a.*
+            FROM
+            ods."ods_rt_zypt_jcrw_new_yhxx"
+            A INNER JOIN ods.ods_rt_zypt_sydw_jbxx b ON A.glzj = b.dwzj
+            WHERE
+            b.glbm LIKE'%2%'
+            AND b.yyzt = '01'
+            AND b.jbspzt = '3')
+
+            SELECT
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3')) AS yhsb,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '01' OR clzt = '1') AS dczg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '2') AS zlxqzg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '3') AS zlxqzgbcjg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4') AS fc,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('01','1','2','4')) AS fcwwcl,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '01' OR clzt = '1') AS ykgyy,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '2') AS wzdly,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '4') AS yqbzg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('5','6')) AS fcsp,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '4') AS fcspwwcl,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '5') AS xtjj,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '6') AS fk,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('3','5','6')) AS yhczwc,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('01','1','2','4')) AS yhczwwc
+        </if>
+        <if test="type == 2">
+            with yhxx as (SELECT
+            a.*
+            FROM
+            ods."ods_rt_zypt_jcrw_new_yhxx"
+            A INNER JOIN ods.ods_rt_zypt_sydw_jbxx b ON A.glzj = b.dwzj
+            WHERE
+            b.glbm like '%6%' AND b.yyzt = '01' AND b.zawxpspzt = '3' AND b.dwfl like '%14%' and (b.scbs is null or b.scbs = '0'))
+
+            SELECT
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3')) AS yhsb,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '01' OR clzt = '1') AS dczg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '2') AS zlxqzg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '3') AS zlxqzgbcjg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4') AS fc,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('01','1','2','4')) AS fcwwcl,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '01' OR clzt = '1') AS ykgyy,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '2') AS wzdly,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '4') AS yqbzg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('5','6')) AS fcsp,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '4') AS fcspwwcl,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '5') AS xtjj,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '6') AS fk,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('3','5','6')) AS yhczwc,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('01','1','2','4')) AS yhczwwc
+        </if>
     </select>
 </mapper>
