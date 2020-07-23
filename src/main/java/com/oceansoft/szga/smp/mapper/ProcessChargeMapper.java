@@ -22,5 +22,5 @@ public interface ProcessChargeMapper {
 
     Map<String, Object> queryImpPoint(String id);
 
-    Map<String, Object> queryImpProcessPic(Integer type);
+    Map<String, Object> queryImpProcessPic(@Param("type") Integer type);
 }
