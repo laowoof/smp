@@ -1,5 +1,6 @@
 package com.oceansoft.szga.smp.mapper;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.oceansoft.szga.smp.entity.QuestionImplementionEntity;
 import com.oceansoft.szga.smp.entity.QuestionLookBackEntity;
 import com.oceansoft.szga.smp.entity.QuestionPlanEntity;
@@ -48,7 +49,7 @@ public interface QuestionHandlerMapper {
 
     String queryCreateDeptCode(String createUserId);
 
-    List<Map<String, Object>> queryPageHandler(@Param("questionQueryBean") QuestionQueryBean questionQueryBean, @Param("departmentId") String departmentId, @Param("integerList") List<Integer> integerList);
+    List<Map<String, Object>> queryPageHandler(Page<Map<String, Object>> page, @Param("questionQueryBean") QuestionQueryBean questionQueryBean, @Param("departmentId") String departmentId, @Param("integerList") List<Integer> integerList);
 
     void updateFeedBackState(@Param("tableName") String tableName, @Param("guid") String guid);
 }

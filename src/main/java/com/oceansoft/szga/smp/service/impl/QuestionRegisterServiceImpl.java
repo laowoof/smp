@@ -1,7 +1,5 @@
 package com.oceansoft.szga.smp.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.oceansoft.szga.smp.entity.QuestionExecuteTaskEntity;
 import com.oceansoft.szga.smp.entity.QuestionRecordEntity;
 import com.oceansoft.szga.smp.entity.bean.QuestionExecuteTaskBean;
@@ -219,13 +217,14 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
         if (questionQueryBean.getState() != null && questionQueryBean.getState().length != 0) {
              integerList = Arrays.asList(questionQueryBean.getState());
         }
-        Page<Object> objects = PageHelper.startPage(pageNum, pageSize);
-        List<Map<String, Object>> mapList = questionRegisterMapper.queryPageRecord(questionQueryBean, departmentId.trim(), integerList);
+//        Page<Object> objects = PageHelper.startPage(pageNum, pageSize);
+        com.baomidou.mybatisplus.plugins.Page<Map<String, Object>> page = new com.baomidou.mybatisplus.plugins.Page<>(pageNum, pageSize);
+        List<Map<String, Object>> mapList = questionRegisterMapper.queryPageRecord(page, questionQueryBean, departmentId.trim(), integerList);
         map.put("mapList", mapList);
-        map.put("pages", objects.getPages());
-        map.put("total", objects.getTotal());
-        map.put("pageNum", objects.getPageNum());
-        map.put("pageSize", objects.getPageSize());
+        map.put("pages", page.getPages());
+        map.put("total", page.getTotal());
+        map.put("pageNum", pageNum);
+        map.put("pageSize", pageSize);
         return map;
     }
 

@@ -1,7 +1,5 @@
 package com.oceansoft.szga.smp.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.oceansoft.szga.smp.entity.bean.QuestionQueryBean;
 import com.oceansoft.szga.smp.mapper.ProcessChargeMapper;
 import com.oceansoft.szga.smp.service.ProcessChargeService;
@@ -10,7 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 流程监管实现层
@@ -38,8 +39,9 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         Map<String, Object> map = new HashMap<>();
         int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
         int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
-        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
-        List<Map<String, Object>> mapList = processChargeMapper.queryRoadSafeTable(questionQueryBean);
+//        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
+        com.baomidou.mybatisplus.plugins.Page<Map<String, Object>> page = new com.baomidou.mybatisplus.plugins.Page<>(pageNum, pageSize);
+        List<Map<String, Object>> mapList = processChargeMapper.queryRoadSafeTable(page, questionQueryBean);
         if (!CollectionUtils.isEmpty(mapList)) {
             for (Map<String, Object> objectMap : mapList) {
                 objectMap.put("dept", "交警");
@@ -72,8 +74,8 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         map.put("mapList", mapList);
         map.put("pages", page.getPages());
         map.put("total", page.getTotal());
-        map.put("pageNum", page.getPageNum());
-        map.put("pageSize", page.getPageSize());
+        map.put("pageNum", pageNum);
+        map.put("pageSize", pageSize);
         return map;
     }
 
@@ -109,8 +111,9 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         Map<String, Object> map = new HashMap<>();
         int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
         int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
-        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
-        List<Map<String, Object>> mapList = processChargeMapper.queryQzfTable(questionQueryBean, type);
+//        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
+        com.baomidou.mybatisplus.plugins.Page<Map<String, Object>> page = new com.baomidou.mybatisplus.plugins.Page<>(pageNum, pageSize);
+        List<Map<String, Object>> mapList = processChargeMapper.queryQzfTable(page, questionQueryBean, type);
         String dqlcjd = "";
         if (!CollectionUtils.isEmpty(mapList) && type != 1) {
             for (Map<String, Object> stringObjectMap : mapList) {
@@ -216,8 +219,8 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         map.put("mapList", mapList);
         map.put("pages", page.getPages());
         map.put("total", page.getTotal());
-        map.put("pageNum", page.getPageNum());
-        map.put("pageSize", page.getPageSize());
+        map.put("pageNum", pageNum);
+        map.put("pageSize", pageSize);
         return map;
     }
 
@@ -331,8 +334,9 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         Map<String, Object> map = new HashMap<>();
         int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
         int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
-        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
-        List<Map<String, Object>> mapList = processChargeMapper.queryImpTable(questionQueryBean, type);
+//        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
+        com.baomidou.mybatisplus.plugins.Page<Map<String, Object>> page = new com.baomidou.mybatisplus.plugins.Page<>(pageNum, pageSize);
+        List<Map<String, Object>> mapList = processChargeMapper.queryImpTable(page, questionQueryBean, type);
         List<String> jclxList = Arrays.asList("01","1","2","3");
         List<String> clztList1 = Arrays.asList("01","1","2","4");
         List<String> clztList2 = Arrays.asList("5","6");
@@ -394,8 +398,8 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         map.put("mapList", mapList);
         map.put("pages", page.getPages());
         map.put("total", page.getTotal());
-        map.put("pageNum", page.getPageNum());
-        map.put("pageSize", page.getPageSize());
+        map.put("pageNum", pageNum);
+        map.put("pageSize", pageSize);
         return map;
     }
 

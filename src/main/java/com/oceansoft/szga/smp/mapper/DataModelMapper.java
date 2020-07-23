@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Mapper
 public interface DataModelMapper {
-    List<Map<String, Object>> selectPageJjaj(/*Page<Map<String, Object>> page,*/ ApiQueryBase query);
+    List<Map<String, Object>> selectPageJjaj(Page<Map<String, Object>> page, ApiQueryBase query);
 
-    List<Map<String, Object>> selectPageWxjs(/*Page<Map<String, Object>> page,*/ ApiQueryBase query);
+    List<Map<String, Object>> selectPageWxjs(Page<Map<String, Object>> page, ApiQueryBase query);
 }

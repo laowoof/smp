@@ -26,13 +26,13 @@ prop:
 #  row-bounds-with-count: true
 #  offset-as-page-num: true
 #  page-size-zero: true
-pagehelper:
-  helperDialect: postgresql
-  reasonable: true
-  supportMethodsArguments: true
-  row-bounds-with-count: true
-  offset-as-page-num: true
-  page-size-zero: true
+#pagehelper:
+#  helperDialect: postgresql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  row-bounds-with-count: true
+#  offset-as-page-num: true
+#  page-size-zero: true
 mybatis:
   configuration:
     cache-enabled: true
