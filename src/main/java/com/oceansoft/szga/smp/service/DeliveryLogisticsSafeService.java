@@ -12,4 +12,10 @@ public interface DeliveryLogisticsSafeService {
     Map<String, Object> queryDeliveryRank();
 
     List<Map<String, Object>> queryDutyDrill(JSONObject jsonObject);
+
+    Map<String, Object> queryHiddenNumAnalysis();
+
+    Map<String, Object> queryHiddenCompanyLevel();
+
+    Map<String, Object> queryImpTop();
 }

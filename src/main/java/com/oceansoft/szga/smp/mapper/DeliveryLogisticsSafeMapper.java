@@ -39,4 +39,14 @@ public interface DeliveryLogisticsSafeMapper {
     List<Map<String, Object>> queryDrillRank7(String fjmc);
 
     List<Map<String, Object>> queryDrillRank8(String fjmc);
+
+    List<Map<String, Object>> queryHiddenNumAnalysisFind();
+
+    List<Map<String, Object>> queryHiddenNumAnalysisHandler();
+
+    List<Map<String, Object>> queryHiddenCompanyLevelDw();
+
+    List<Map<String, Object>> queryHiddenCompanyLevelYh();
+
+    List<Map<String, Object>> queryImpTop();
 }

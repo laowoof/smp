@@ -191,14 +191,18 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
                 questionRecordEntity.setExecuteDeptCode(questionExecuteTaskBean.getExecuteDeptCode());
                 questionRegisterMapper.updateRecordStateAndCode(questionRecordEntity);
                 // 修改这条所有反馈信息状态为1
-                List<String> tableNameList = new ArrayList<>();
-                tableNameList.add("question_plan");
-                tableNameList.add("question_look_back");
-                tableNameList.add("question_implemention");
-                tableNameList.add("question_response");
-                for (String tableName : tableNameList) {
-                    questionHandlerMapper.updateFeedBackState(tableName, guid);
-                }
+//                List<String> tableNameList = new ArrayList<>();
+//                tableNameList.add("rpt.question_plan");
+//                tableNameList.add("rpt.question_look_back");
+//                tableNameList.add("rpt.question_implemention");
+//                tableNameList.add("rpt.question_response");
+//                for (String tableName : tableNameList) {
+//                    questionHandlerMapper.updateFeedBackState(tableName, guid);
+//                }
+                questionHandlerMapper.deleteQuestionImplemention(guid);
+                questionHandlerMapper.deleteQuestionLookBack(guid);
+                questionHandlerMapper.deleteQuestionPlan(guid);
+                questionHandlerMapper.deleteQuestionResponse(guid);
             } catch (Exception e) {
                 throw new RuntimeException("问题确认失败");
             }

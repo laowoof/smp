@@ -66,6 +66,66 @@ public class DeliveryLogisticsSafeController {
         return apiResult;
     }
 
+    @ApiOperation(value = "隐患分析/隐患类型数量分析", notes = "", httpMethod = "POST")
+    @PostMapping("hidden/num-analysis")
+    public ApiResult queryHiddenNumAnalysis() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> map = deliveryLogisticsSafeService.queryHiddenNumAnalysis();
+            apiResult.setData(map);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "隐患分析/单位等级隐患数量分析", notes = "", httpMethod = "POST")
+    @PostMapping("hidden/company-level")
+    public ApiResult queryHiddenCompanyLevel() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> map = deliveryLogisticsSafeService.queryHiddenCompanyLevel();
+            apiResult.setData(map);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "隐患分析/治安保卫重点单位隐患TOP5", notes = "", httpMethod = "POST")
+    @PostMapping("hidden/imp-top")
+    public ApiResult queryImpTop() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> map = deliveryLogisticsSafeService.queryImpTop();
+            apiResult.setData(map);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
 
 
 

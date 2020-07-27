@@ -119,7 +119,7 @@
             guid = #{ guid }
     </update>
     <update id="updateFeedBackState">
-        UPDATE rpt.#{tableName} SET state = 1 WHERE guid = #{guid}
+        UPDATE #{tableName} SET state = 1 WHERE guid = #{guid}
     </update>
     <delete id="deleteQuestionPlan">
         UPDATE rpt.question_plan SET state = 1 WHERE guid = #{guid}
