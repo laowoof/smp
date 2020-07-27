@@ -180,7 +180,7 @@
         <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord !=''">
             and r.guid like #{questionQueryBean.keyWord} or r.area like #{questionQueryBean.keyWord} or r.source like #{questionQueryBean.keyWord} or r.duty_unit like #{questionQueryBean.keyWord}
         </if>
-        <if test="questionQueryBean.reactionDept != null">
+        <if test="questionQueryBean.reactionDept != null and questionQueryBean.reactionDept != ''">
             and r.duty_unit = #{questionQueryBean.reactionDept}
         </if>
     </select>

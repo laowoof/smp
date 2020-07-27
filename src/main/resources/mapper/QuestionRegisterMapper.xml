@@ -60,7 +60,7 @@
         <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord !=''">
             and guid like #{questionQueryBean.keyWord} or area like #{questionQueryBean.keyWord} or source like #{questionQueryBean.keyWord} or duty_unit like #{questionQueryBean.keyWord}
         </if>
-        <if test="questionQueryBean.startTime != null and questionQueryBean.endTime != null">
+        <if test="questionQueryBean.startTime != null and questionQueryBean.startTime != '' and questionQueryBean.endTime != null and questionQueryBean.endTime != ''">
             and create_date between #{questionQueryBean.startTime} and #{questionQueryBean.startTime}
         </if>
     </select>
