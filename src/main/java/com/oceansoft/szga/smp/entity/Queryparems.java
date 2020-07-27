@@ -32,7 +32,48 @@ public class  Queryparems  implements Serializable {
     // 隐患处理数
     private String sumyhcl;
 
+    private String[] xzqhs;
+
+    private String[] mc;
+
     private String type;
+
+    private String jclxdm;
+
+    private String jcztdm;
+
+    public String getJclxdm() {
+        return jclxdm;
+    }
+
+    public void setJclxdm(String jclxdm) {
+        this.jclxdm = jclxdm;
+    }
+
+    public String getJcztdm() {
+        return jcztdm;
+    }
+
+    public void setJcztdm(String jcztdm) {
+        this.jcztdm = jcztdm;
+    }
+
+    public String[] getXzqhs() {
+        return xzqhs;
+    }
+
+    public void setXzqhs(String[] xzqhs) {
+        this.xzqhs = xzqhs;
+    }
+
+
+    public String[] getMc() {
+        return mc;
+    }
+
+    public void setMc(String[] mc) {
+        this.mc = mc;
+    }
 
     public String getType() {
         return type;

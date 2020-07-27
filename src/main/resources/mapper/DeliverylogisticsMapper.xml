@@ -24,17 +24,72 @@
       select rylb as name,sum(zbsl) AS num from rpt.RPT_AQJG_JDWL_LCJG_CYRY group by rylb
     </select>
 
+    <select id="yhlx" resultType="map">
+        select jcxmc as name,count(jcxmc) as num from rpt.rpt_aqjg_jdwl_yhmx where xxz ='否' and jcxlx !='0' GROUP BY jcxmc ORDER BY count(jcxmc) DESC
+    </select>
+
     <select id="jdfl" resultType="map">
         select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW
         where 1=1
-        <if test="month !=null and month !=''">
-
+        <if test="mc !=null and mc !=''">
+                and dwflmc in <foreach item="item"  collection="mc" open="(" separator="," close=")"> #{item}
+            </foreach>
         </if>
         group by 1
     </select>
 
     <select id="ryfl" resultType="map">
-        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_CYRY group by xzqh
+        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_CYRY
+        <if test="mc !=null and mc !=''">
+            and rylb in <foreach item="item"  collection="mc" open="(" separator="," close=")"> #{item}
+        </foreach>
+        </if>
+        group by xzqh
+    </select>
+
+    <select id="dwfx" resultType="map">
+        select COALESCE(dwfl,'无'),COALESCE(dwflmc,'无') as name,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where 1=1
+        <if test="xzqhs !=null ">
+          and xzqh in <foreach item="item"  collection="xzqhs" open="(" separator="," close=")"> #{item}
+            </foreach>
+        </if>
+        group by 1,2
+    </select>
+    
+    <select id="dwdj" resultType="map">
+        select COALESCE(dwdj,'无') as dwdj,COALESCE(dwdjmc,'无') as name,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where dwflmc='末端网点'
+        <if test="xzqhs !=null ">
+            and xzqh in <foreach item="item"  collection="xzqhs" open="(" separator="," close=")"> #{item}
+        </foreach>
+        </if>
+        group by 1,2
+    </select>
+
+    <select id="zabw" resultType="map">
+        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where jbdj in('1','2','3') group by 1
+    </select>
+
+    <select id="zabwzsl" resultType="int">
+        select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW where jbdj in('1','2','3')
+    </select>
+
+    <select id="aqzr" resultType="map">
+        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1' group by 1
+    </select>
+
+    <select id="aqzrzsl" resultType="int">
+        select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1'
+    </select>
+    
+    <select id="dwjc" resultType="map">
+        select ssfxjmc as name,count(ssfxjmc) as num from rpt.rpt_aqjg_jdwl_dwjcxx where ssfxjmc!=''
+        <if test="jcztdm !=null and jcztdm != ''">
+            and  jcztdm =#{jcztdm}
+        </if>
+        <if test="jclxdm !=null and jclxdm != ''">
+            and  jclxdm =#{jclxdm}
+        </if>
+         group by 1
     </select>
 
 </mapper>

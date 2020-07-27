@@ -61,6 +61,26 @@ public class DeliverylogisticsController {
     }
 
     @ApiOperation(value = "从业人员类型分析", notes = "", httpMethod = "POST")
+    @PostMapping("yhlx")
+    public ApiResult yhlx() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> yhlx = deliverylogisticsService.yhlx();
+            apiResult.setData(yhlx);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "从业人员类型分析", notes = "", httpMethod = "POST")
     @PostMapping("cyry")
     public ApiResult czcyry() {
         ApiResult apiResult = new ApiResult();
@@ -80,14 +100,13 @@ public class DeliverylogisticsController {
         return apiResult;
     }
 
-    @ApiOperation(value = "从业人员类型分析", notes = "", httpMethod = "POST")
     @PostMapping("jdryfl")
     public ApiResult jdryfl(@RequestBody Queryparems queryparems) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
         try {
-            List<Map<String, Object>> cyry = deliverylogisticsService.jdadnryfl(queryparems.getType());
+            List<Map<String, Object>> cyry = deliverylogisticsService.jdadnryfl(queryparems);
             apiResult.setData(cyry);
             isSuccess = true;
             message = "查询成功";
@@ -99,4 +118,105 @@ public class DeliverylogisticsController {
         apiResult.setSucc(isSuccess);
         return apiResult;
     }
+
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
+    @PostMapping("dwfx")
+    public ApiResult dwfx(@RequestBody Queryparems queryparems) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.dwfx(queryparems);
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
+    @PostMapping("dwdj")
+    public ApiResult dwdj(@RequestBody Queryparems queryparems) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.dwdj(queryparems);
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
+    @PostMapping("zabw")
+    public ApiResult zabw() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.zabw();
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
+    @PostMapping("aqzr")
+    public ApiResult aqzr() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.aqzr();
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
+    @PostMapping("dwjc")
+    public ApiResult dwjc(@RequestBody Queryparems queryparems) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.dwjc(queryparems);
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
 }

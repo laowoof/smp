@@ -1,5 +1,6 @@
 package com.oceansoft.szga.smp.service;
 
+import com.oceansoft.szga.smp.entity.Queryparems;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,7 +15,17 @@ public interface DeliverylogisticsService {
 
     List<Map<String, Object>> cyry();
 
-    List<Map<String, Object>> jdadnryfl(String type);
+    List<Map<String, Object>> yhlx();
 
+    List<Map<String, Object>> jdadnryfl(Queryparems queryparems);
 
+    List<Map<String, Object>> dwfx(Queryparems queryparems);
+
+    List<Map<String, Object>> dwdj(Queryparems queryparems);
+
+    List<Map<String, Object>> zabw();
+
+    List<Map<String, Object>> aqzr();
+
+    List<Map<String, Object>> dwjc(Queryparems queryparems);
 }
