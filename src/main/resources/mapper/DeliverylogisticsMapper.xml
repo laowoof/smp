@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.DeliverylogisticsMapper">
+
+    <select id="sumDeliverylogistics" resultType="java.util.Map">
+        SELECT
+        (select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW) AS jdwl,
+        (select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_CYRY) AS cyry,
+        (select count(1) from ods.ods_manu_smsj) AS smsj,
+        (select count(1) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','12','21','22')) AS jcgs,
+        (select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1') AS aqzrs,
+        (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '1') AS cgjc,
+        (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '2') AS zdjc,
+        (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '3') AS zxjc,
+        (select count(1) from rpt.RPT_AQJG_JDWL_YHMX) AS yhfx,
+        (select count(1) from rpt.RPT_AQJG_JDWL_YHMX WHERE (jclx in ('1','2','3') and clzt ='1' or jclx ='4' and clzt ='3')) AS yhcl
+    </select>
+
+    <select id="dwfl" resultType="java.util.Map">
+        select dwfl,dwflmc as name,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where dwfl in ('0','1','2','3','4','5') group by 1,2
+    </select>
+
+    <select id="cyry" resultType="java.util.Map">
+      select rylb as name,sum(zbsl) AS num from rpt.RPT_AQJG_JDWL_LCJG_CYRY group by rylb
+    </select>
+
+    <select id="jdfl" resultType="map">
+        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW
+        where 1=1
+        <if test="month !=null and month !=''">
+
+        </if>
+        group by 1
+    </select>
+
+    <select id="ryfl" resultType="map">
+        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_CYRY group by xzqh
+    </select>
+
+</mapper>
