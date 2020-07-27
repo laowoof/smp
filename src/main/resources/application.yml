@@ -89,7 +89,7 @@ cas:
 prop:
   redirect-url: http://50.73.70.34/#/casLogin
 file:
-  confirm-url: http://50.73.94.107:9003/storage/v1/confirm
+  confirm-url: http://50.73.70.34:9003/storage/confirm
 
 ---
 spring:
