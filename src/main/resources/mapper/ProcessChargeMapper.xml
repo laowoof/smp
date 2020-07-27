@@ -106,7 +106,7 @@
             AND b.jbspzt = '3')
 
             SELECT
-            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3')) AS yhsb,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt IN ('1','2','3')) AS yhsb,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '01' OR clzt = '1') AS dczg,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '2') AS zlxqzg,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '3') AS zlxqzgbcjg,
@@ -132,7 +132,7 @@
             b.glbm like '%6%' AND b.yyzt = '01' AND b.zawxpspzt = '3' AND b.dwfl like '%14%' and (b.scbs is null or b.scbs = '0'))
 
             SELECT
-            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3')) AS yhsb,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt IN ('1','2','3')) AS yhsb,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '01' OR clzt = '1') AS dczg,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '2') AS zlxqzg,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx IN ('1','2','3') AND clzt = '3') AS zlxqzgbcjg,
@@ -148,5 +148,8 @@
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('3','5','6')) AS yhczwc,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('01','1','2','4')) AS yhczwwc
         </if>
+    </select>
+    <select id="queryDeliveryTable" resultType="java.util.Map">
+        SELECT rwzj, jcsj, jcd, dwmc, jcxmc, jclx, clzt, jczt, fjmc, jzsj FROM rpt.rpt_aqjg_jdwl_yhmx
     </select>
 </mapper>

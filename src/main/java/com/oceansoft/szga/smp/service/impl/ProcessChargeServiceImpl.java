@@ -470,6 +470,60 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> queryDeliveryTable(QuestionQueryBean questionQueryBean) {
+        Map<String, Object> map = new HashMap<>();
+        int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
+        int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
+        com.baomidou.mybatisplus.plugins.Page<Map<String, Object>> page = new com.baomidou.mybatisplus.plugins.Page<>(pageNum, pageSize);
+        List<Map<String, Object>> mapList = processChargeMapper.queryDeliveryTable(page, questionQueryBean);
+        List<String> jclxList = Arrays.asList("1","2","3");
+        if (!CollectionUtils.isEmpty(mapList)) {
+            for (Map<String, Object> stringObjectMap : mapList) {
+                if (stringObjectMap.get("jclx") != null && stringObjectMap.get("clzt") != null) {
+                    if (jclxList.contains(stringObjectMap.get("jclx"))) {
+                        stringObjectMap.put("dqlcjd", "隐患上报");
+                    }
+                    if (stringObjectMap.get("jclx").equals("4") && !stringObjectMap.get("clzt").equals("3")) {
+                        stringObjectMap.put("dqlcjd", "复查");
+                    }
+                    if (stringObjectMap.get("jclx").equals("4") && stringObjectMap.get("clzt").equals("3")) {
+                        stringObjectMap.put("dqlcjd", "隐患处置完成");
+                    }
+                    if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").equals("1")) {
+                        stringObjectMap.put("jcjg", "当场改正");
+                    }
+                    if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").equals("3")) {
+                        stringObjectMap.put("jcjg", "责令15天内限期整改并处警告");
+                    }
+                    if (stringObjectMap.get("jclx").equals("4") && !stringObjectMap.get("clzt").equals("3")) {
+                        stringObjectMap.put("jcjg", "行政处罚");
+                    }
+                    if (stringObjectMap.get("jclx").equals("4") && stringObjectMap.get("clzt").equals("3")) {
+                        stringObjectMap.put("dqlcjd", "已整改");
+                    }
+                }
+                if (stringObjectMap.get("jczt") != null) {
+                    if (stringObjectMap.get("jczt").equals("0")) {
+                        stringObjectMap.put("jcztname", "待检查");
+                    }
+                    if (stringObjectMap.get("jczt").equals("1")) {
+                        stringObjectMap.put("jcztname", "已检查");
+                    }
+                    if (stringObjectMap.get("jczt").equals("2")) {
+                        stringObjectMap.put("jcztname", "缺检查");
+                    }
+                }
+            }
+        }
+        map.put("mapList", mapList);
+        map.put("pages", page.getPages());
+        map.put("total", page.getTotal());
+        map.put("pageNum", pageNum);
+        map.put("pageSize", pageSize);
+        return map;
+    }
+
     /**
      * 获取节点名称
      * 1-中队录入 2-中队查否 3-中队自行处理 4-中队提交大队 5-中队提交职能部门 6-大队查否 7-大队自行处理 8-大队提交业务部门 9-大队提交职能部门 10-业务部门查否 11-业务部门自行处理

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oceansoft.szga.smp.mapper.DeliveryLogisticsSafeMapper">
+
+    <select id="queryDeliveryRank1" resultType="java.util.Map">
+        select xzqh, sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW group by xzqh
+    </select>
+    <select id="queryDeliveryRank2" resultType="java.util.Map">
+        SELECT xzqh, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_cyry" GROUP BY xzqh
+    </select>
+    <select id="queryDeliveryRank3" resultType="java.util.Map">
+        SELECT ssfxjmc, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '1' GROUP BY ssfxjmc
+    </select>
+    <select id="queryDeliveryRank4" resultType="java.util.Map">
+        SELECT a.ssfxjmc, COALESCE(b.sum, 0) sum
+        FROM
+        (SELECT ssfxjmc FROM rpt."rpt_aqjg_jdwl_dwjcxx" GROUP BY ssfxjmc) a
+        LEFT JOIN
+        (SELECT ssfxjmc, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc) b
+        ON a.ssfxjmc = b.ssfxjmc
+    </select>
+    <select id="queryDeliveryRank5" resultType="java.util.Map">
+        SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc
+    </select>
+    <select id="queryDeliveryRank6" resultType="java.util.Map">
+        SELECT a.fjmc, COALESCE(b.sum, 0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx = '4' AND clzt = '3' GROUP BY fjmc) b
+        ON a.fjmc = b.fjmc
+    </select>
+    <select id="queryDeliveryRank7" resultType="java.util.Map">
+        SELECT a.fjmc, COALESCE(b.sum, 0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx != '4' AND clzt != '3' GROUP BY fjmc) b
+        ON a.fjmc = b.fjmc
+    </select>
+    <select id="queryDeliveryRank8" resultType="java.util.Map">
+        SELECT xzqh, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" WHERE zrsqd = '1' GROUP BY xzqh
+    </select>
+    <select id="queryDrillRank1" resultType="java.util.Map">
+        select sspcsmc, sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW WHERE xzqh = #{fjmc} group by sspcsmc ORDER BY sum DESC LIMIT 10
+    </select>
+    <select id="queryDrillRank2" resultType="java.util.Map">
+        SELECT sspcsmc, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_cyry" WHERE xzqh = #{fjmc} GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
+    </select>
+    <select id="queryDrillRank3" resultType="java.util.Map">
+        SELECT sspcsmc, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '1' AND ssfxjmc = #{fjmc}  GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
+    </select>
+    <select id="queryDrillRank4" resultType="java.util.Map">
+        SELECT sspcsmc, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '2' AND ssfxjmc = #{fjmc} GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
+    </select>
+    <select id="queryDrillRank5" resultType="java.util.Map">
+        SELECT pcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
+    </select>
+    <select id="queryDrillRank6" resultType="java.util.Map">
+        SELECT pcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx = '4' AND clzt = '3' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
+    </select>
+    <select id="queryDrillRank7" resultType="java.util.Map">
+        SELECT pcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx != '4' AND clzt != '3' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
+    </select>
+    <select id="queryDrillRank8" resultType="java.util.Map">
+        SELECT sspcsmc, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" WHERE zrsqd = '1' AND xzqh = #{fjmc} GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
+    </select>
+</mapper>

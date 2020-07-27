@@ -42,7 +42,7 @@ public class ProcessChargeController {
         return apiResult;
     }
 
-    @ApiOperation(value = "交通安全设施流程节点", notes = "", httpMethod = "POST")
+    @ApiOperation(value = "交通安全设施流程节点", notes = "", httpMethod = "GET")
     @GetMapping("road-safe-point")
     public ApiResult queryRoadSafePoint(String id) {
         ApiResult apiResult = new ApiResult();
@@ -82,7 +82,7 @@ public class ProcessChargeController {
         return apiResult;
     }
 
-    @ApiOperation(value = "群租房流程节点", notes = "", httpMethod = "POST")
+    @ApiOperation(value = "群租房流程节点", notes = "", httpMethod = "GET")
     @GetMapping("qzf-point")
     public ApiResult queryQzfPoint(Integer id) {
         ApiResult apiResult = new ApiResult();
@@ -122,7 +122,7 @@ public class ProcessChargeController {
         return apiResult;
     }
 
-    @ApiOperation(value = "重点目标节点", notes = "", httpMethod = "POST")
+    @ApiOperation(value = "重点目标节点", notes = "", httpMethod = "GET")
     @GetMapping("imp-point")
     public ApiResult queryImpPoint(String id) {
         ApiResult apiResult = new ApiResult();
@@ -142,7 +142,7 @@ public class ProcessChargeController {
         return apiResult;
     }
 
-    @ApiOperation(value = "重点目标流程图数据", notes = "", httpMethod = "POST")
+    @ApiOperation(value = "重点目标流程图数据", notes = "", httpMethod = "GET")
     @GetMapping("imp-process-pic")
     public ApiResult queryImpProcessPic(Integer type) {
         ApiResult apiResult = new ApiResult();
@@ -150,6 +150,26 @@ public class ProcessChargeController {
         String message = "";
         try {
             Map<String, Object> mapList = processChargeService.queryImpProcessPic(type);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "寄递物流表格", notes = "", httpMethod = "POST")
+    @PostMapping("delivery-table")
+    public ApiResult queryDeliveryTable(@RequestBody QuestionQueryBean questionQueryBean) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = processChargeService.queryDeliveryTable(questionQueryBean);
             apiResult.setData(mapList);
             isSuccess = true;
             message = "查询成功";
