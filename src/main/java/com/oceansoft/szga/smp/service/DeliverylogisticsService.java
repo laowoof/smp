@@ -21,6 +21,10 @@ public interface DeliverylogisticsService {
 
     List<Map<String, Object>> dwfx(Queryparems queryparems);
 
+    List<Map<String, Object>> dwflts(Queryparems queryparems);
+
+    List<Map<String, Object>> jcg(Queryparems queryparems);
+
     List<Map<String, Object>> dwdj(Queryparems queryparems);
 
     List<Map<String, Object>> zabw();

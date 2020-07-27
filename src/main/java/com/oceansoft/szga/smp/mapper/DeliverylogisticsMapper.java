@@ -24,6 +24,14 @@ public interface DeliverylogisticsMapper {
 
     List<Map<String, Object>> dwfx(Queryparems queryparems);
 
+    Integer dwfltsyf(Queryparems queryparems);
+
+    Integer dwfltsrq(Queryparems queryparems);
+
+    Integer ryfltsyf(Queryparems queryparems);
+
+    Integer ryfltsrq(Queryparems queryparems);
+
     List<Map<String, Object>> dwdj(Queryparems queryparems);
 
     List<Map<String, Object>> zabw();
@@ -36,5 +44,12 @@ public interface DeliverylogisticsMapper {
 
     List<Map<String, Object>> dwjc(@Param("jcztdm") String jcztdm,@Param("jclxdm") String jclxdm);
 
+    Integer jgyf(Queryparems queryparems);
+
+    Integer jgrq(Queryparems queryparems);
+
+    Integer cgyf(Queryparems queryparems);
+
+    Integer cgrq(Queryparems queryparems);
 
 }

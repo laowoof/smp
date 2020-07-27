@@ -38,9 +38,29 @@ public class  Queryparems  implements Serializable {
 
     private String type;
 
+    private String sjgs;
+
     private String jclxdm;
 
     private String jcztdm;
+
+    private String data;
+
+    public String getSjgs() {
+        return sjgs;
+    }
+
+    public void setSjgs(String sjgs) {
+        this.sjgs = sjgs;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 
     public String getJclxdm() {
         return jclxdm;

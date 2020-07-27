@@ -273,7 +273,90 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
         return list;
     }
 
+    @Override
+    public List<Map<String, Object>> dwflts(Queryparems queryparems) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (queryparems.getSjgs().equals("yf")){
+            for (int i =0 ;i<12;i++){
+                Map<String, Object> map =new HashMap<>();
+                queryparems.setData(getLast12Months(i));
+                Integer dwflts =0;
+                if (queryparems.getType().equals("jdfl")){
+                    dwflts= mapper.dwfltsyf(queryparems);
+                }else {
+                    dwflts= mapper.ryfltsyf(queryparems);
+                }
+                map.put("月份",getLast12Months(i));
+                map.put("数量",dwflts);
+                list.add(map);
+            }
+            return list;
+        }else{
+            for (int i=0;i<7;i++){
+                Map<String, Object> map =new HashMap<>();
+                queryparems.setData(getLast7Days(i));
+                Integer dwflts =0;
+                if (queryparems.getType().equals("jdfl")){
+                    dwflts= mapper.dwfltsrq(queryparems);
+                }else {
+                    dwflts= mapper.ryfltsrq(queryparems);
+                }
+                map.put("日期",getLast7Days(i));
+                map.put("数量",dwflts);
+                list.add(map);
+            }
+            return list;
+        }
 
+    }
+
+    @Override
+    public List<Map<String, Object>> jcg(Queryparems queryparems) {
+    List<Map<String, Object>> list = new ArrayList<>();
+        if (queryparems.getSjgs().equals("yf")){
+            for (int i =0 ;i<12;i++){
+                Map<String, Object> map =new HashMap<>();
+                queryparems.setData(getLast12Months(i));
+                Integer dwflts =0;
+                if (queryparems.getType().equals("jg")){
+                    dwflts= mapper.jgyf(queryparems);
+                }else {
+                    dwflts= mapper.cgyf(queryparems);
+                }
+                map.put("月份",getLast12Months(i));
+                map.put("数量",dwflts);
+                list.add(map);
+            }
+            return list;
+        }else{
+            for (int i=0;i<7;i++){
+                Map<String, Object> map =new HashMap<>();
+                queryparems.setData(getLast7Days(i));
+                Integer dwflts =0;
+                if (queryparems.getType().equals("jg")){
+                    dwflts= mapper.jgrq(queryparems);
+                }else {
+                    dwflts= mapper.cgrq(queryparems);
+                }
+                map.put("日期",getLast7Days(i));
+                map.put("数量",dwflts);
+                list.add(map);
+            }
+        return list;
+    }
+    }
+
+
+
+
+    public String getLast12Months(int i) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, -i);
+        Date m = c.getTime();
+        return sdf.format(m);
+    }
 
 
     public String getLast7Days(int i) {
@@ -283,22 +366,6 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
         c.add(Calendar.DAY_OF_WEEK, -i);
         Date m = c.getTime();
         return sdf.format(m);
-    }
-
-    /**
-     * 获取前多少月的月份 所有  不带0
-     * @return
-     */
-    private String[] getYfTime() {
-        String[] months = new String[12];
-        Calendar cal = Calendar.getInstance();
-        //如果当前日期大于二月份的天数28天或者29天会导致计算月份错误，会多出一个三月份，故设置一个靠前日期解决此问题
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        for (int i = 0; i < 12; i++) {
-            months[11 - i] = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1);
-            cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 1); //逐次往前推1个月
-        }
-        return months;
     }
 
     //四舍五入

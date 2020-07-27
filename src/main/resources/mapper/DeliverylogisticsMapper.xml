@@ -7,7 +7,7 @@
         (select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW) AS jdwl,
         (select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_CYRY) AS cyry,
         (select count(1) from ods.ods_manu_smsj) AS smsj,
-        (select count(1) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','12','21','22')) AS jcgs,
+        (select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','12','21','22')) AS jcgs,
         (select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1') AS aqzrs,
         (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '1') AS cgjc,
         (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '2') AS zdjc,
@@ -56,6 +56,20 @@
         group by 1,2
     </select>
     
+    <select id="dwfltsyf" resultType="int">
+        select COALESCE(sum(zbsl),0) as num from rpt."rpt_aqjg_jdwl_lcjg_sydw" where djrq like #{data} ||'%'
+    </select>
+
+    <select id="dwfltsrq" resultType="int">
+        select COALESCE(sum(zbsl),0) as num from rpt."rpt_aqjg_jdwl_lcjg_sydw" where djrq = #{data}
+    </select>
+    <select id="ryfltsyf" resultType="int">
+        select COALESCE(sum(zbsl),0) as num from rpt."rpt_aqjg_jdwl_lcjg_cyry" where djrq like #{data} ||'%'
+    </select>
+    <select id="ryfltsrq" resultType="int">
+        select COALESCE(sum(zbsl),0) as num from rpt."rpt_aqjg_jdwl_lcjg_cyry" where djrq = #{data}
+    </select>
+
     <select id="dwdj" resultType="map">
         select COALESCE(dwdj,'无') as dwdj,COALESCE(dwdjmc,'无') as name,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where dwflmc='末端网点'
         <if test="xzqhs !=null ">
@@ -91,5 +105,22 @@
         </if>
          group by 1
     </select>
+
+    <select id="jgyf" resultType="int">
+        select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22') and tjrq like #{data} ||'%'
+    </select>
+
+    <select id="jgrq" resultType="int">
+        select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22') and tjrq = #{data}
+    </select>
+
+    <select id="cgyf" resultType="int">
+        select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq = #{data}
+    </select>
+
+    <select id="cgrq" resultType="int">
+        select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq like #{data} ||'%'
+    </select>
+
 
 </mapper>
