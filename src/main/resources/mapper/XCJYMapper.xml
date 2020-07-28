@@ -79,16 +79,16 @@
           rpt.rpt_aqjg_ggjt_xcxxtj
        WHERE
            ddmc is not null
-           <choose>
-              <when test="param== null">
-                and to_date(concat('',year),'yyyy') &gt;= to_date(#{start},'yyyy')
-                and to_date(concat('',year),'yyyy') &lt;= to_date(#{end},'yyyy')
-              </when>
-           <otherwise>
-                and to_date(concat('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')
-                and to_date(concat('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')
-           </otherwise>
-       </choose>
+<!--           <choose>-->
+<!--              <when test="param== null">-->
+<!--                and to_date(concat('',year),'yyyy') &gt;= to_date(#{start},'yyyy')-->
+<!--                and to_date(concat('',year),'yyyy') &lt;= to_date(#{end},'yyyy')-->
+<!--              </when>-->
+<!--           <otherwise>-->
+<!--                and to_date(concat('',year,mon),'yyyymm') &gt;= to_date(#{start},'yyyymm')-->
+<!--                and to_date(concat('',year,mon),'yyyymm') &lt;= to_date(#{end},'yyyymm')-->
+<!--           </otherwise>-->
+<!--       </choose>-->
 
 
        GROUP BY ddmc

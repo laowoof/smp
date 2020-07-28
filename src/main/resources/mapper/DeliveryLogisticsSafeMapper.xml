@@ -80,4 +80,10 @@
     <select id="queryImpTop" resultType="java.util.Map">
         SELECT jcxmc, sum(yhsl) FROM "rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' AND jbdj IN ('1','2','3') GROUP BY jcxmc ORDER BY sum desc LIMIT 5
     </select>
+    <select id="queryAnalysisNum" resultType="java.util.Map">
+
+    </select>
+    <select id="queryNumTrend" resultType="java.util.Map">
+
+    </select>
 </mapper>

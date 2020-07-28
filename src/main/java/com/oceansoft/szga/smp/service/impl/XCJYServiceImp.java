@@ -81,7 +81,7 @@ public class XCJYServiceImp implements XCJYService {
             for (HashMap datum : data) {
                 if (datum.get("ddmc").toString().contains(depeName)) {
                     HashMap resultMap = new HashMap<>();
-                    resultMap.put("ddmc", datum.get("ddmc"));
+                    resultMap.put("ddmc", depeName);
                     resultMap.put("rate", datum.get("rate"));
                     resultList.add(resultMap);
                 } else {

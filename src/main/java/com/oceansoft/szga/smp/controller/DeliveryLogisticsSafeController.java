@@ -126,7 +126,45 @@ public class DeliveryLogisticsSafeController {
         return apiResult;
     }
 
+    @ApiOperation(value = "隐患分析/隐患数量分析", notes = "", httpMethod = "POST")
+    @PostMapping("hidden/analysis-num")
+    public ApiResult queryAnalysisNum(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> map = deliveryLogisticsSafeService.queryAnalysisNum(jsonObject);
+            apiResult.setData(map);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
 
+    @ApiOperation(value = "隐患分析/隐患数量态势-全市", notes = "", httpMethod = "POST")
+    @PostMapping("hidden/num-trend")
+    public ApiResult queryNumTrend(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> map = deliveryLogisticsSafeService.queryNumTrend(jsonObject);
+            apiResult.setData(map);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
 
 
 

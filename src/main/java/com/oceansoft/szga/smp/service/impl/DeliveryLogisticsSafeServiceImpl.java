@@ -6,8 +6,10 @@ import com.oceansoft.szga.smp.service.DeliveryLogisticsSafeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -205,6 +207,38 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         return map;
     }
 
+    @Override
+    public Map<String, Object> queryAnalysisNum(JSONObject jsonObject) {
+        String type = jsonObject.getString("type");
+        List<String> typeList = null;
+        if (!StringUtils.isEmpty(type)) {
+            String[] split = type.split(",");
+            typeList = Arrays.asList(split);
+        }
+        List<Map<String, Object>> mapList = deliveryLogisticsSafeMapper.queryAnalysisNum(typeList);
+
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> queryNumTrend(JSONObject jsonObject) {
+        String fjmc = jsonObject.getString("fjmc");
+        String type = jsonObject.getString("type");
+        List<String> typeList = null;
+        if (!StringUtils.isEmpty(type)) {
+            String[] split = type.split(",");
+            typeList = Arrays.asList(split);
+        }
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        for (int i=11; i>=0; i--) {
+            String month = getLast12Months(i);
+            Map<String, Object> mapList = deliveryLogisticsSafeMapper.queryNumTrend(fjmc, typeList, month);
+            resultList.add(mapList);
+        }
+
+        return null;
+    }
+
     private List<Map<String, Object>> orderMethod(List<Map<String, Object>> mapList) {
         List<Map<String, Object>> resultList = new ArrayList<>();
         List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
@@ -220,5 +254,19 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
             }
         }
         return resultList;
+    }
+
+    /**
+     * 获取前多少月的月份 带0
+     * @param i
+     * @return
+     */
+    public String getLast12Months(int i) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, -i);
+        Date m = c.getTime();
+        return sdf.format(m);
     }
 }

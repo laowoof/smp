@@ -18,4 +18,8 @@ public interface DeliveryLogisticsSafeService {
     Map<String, Object> queryHiddenCompanyLevel();
 
     Map<String, Object> queryImpTop();
+
+    Map<String, Object> queryAnalysisNum(JSONObject jsonObject);
+
+    Map<String, Object> queryNumTrend(JSONObject jsonObject);
 }

@@ -1,5 +1,6 @@
 package com.oceansoft.szga.smp.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,4 +50,8 @@ public interface DeliveryLogisticsSafeMapper {
     List<Map<String, Object>> queryHiddenCompanyLevelYh();
 
     List<Map<String, Object>> queryImpTop();
+
+    List<Map<String, Object>> queryAnalysisNum(List<String> typeList);
+
+    Map<String, Object> queryNumTrend(@Param("fjmc") String fjmc, @Param("typeList") List<String> typeList,@Param("month") String month);
 }
