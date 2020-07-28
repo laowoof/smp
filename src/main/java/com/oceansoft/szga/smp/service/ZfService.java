@@ -369,5 +369,6 @@ public interface ZfService {
      */
     ApiResult lzFxDataByLdrk();
 
+    ApiResult qzfAdd();
 }
 

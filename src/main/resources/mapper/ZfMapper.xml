@@ -541,4 +541,11 @@
     )GROUP BY qxmc.xzqhmc,addNum
         ) foo ORDER BY xzqhmc ASC
     </select>
+    <select id="qzfAdd" resultType="java.util.HashMap">
+        SELECT COALESCE(t.newsum-t.oldsum, 0) as num
+        FROM
+        (SELECT
+        (SELECT sum(sl) as newsum FROM "rpt_aqjg_qzf_qzfsl" WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd') AND xzqhmc is not null),
+        (SELECT sum(sl) as oldsum FROM "rpt_aqjg_qzf_qzfsl" WHERE tjrq = #{lastDay} AND xzqhmc is not null)) t
+    </select>
 </mapper>

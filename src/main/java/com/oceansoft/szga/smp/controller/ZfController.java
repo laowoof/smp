@@ -84,11 +84,11 @@ public class ZfController {
      * @return 数据
      */
     @GetMapping("qzfMonthNum")
-    public ApiResult qzfMonthNum(String time){
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormatMonth = new SimpleDateFormat("yyyy-MM");
-        time = simpleDateFormatMonth.format(c.getTime());
-        ApiResult qzfNum = zfService.qzfMonthData(time);
+    public ApiResult qzfMonthNum(){
+//        Calendar c = Calendar.getInstance();
+//        SimpleDateFormat simpleDateFormatMonth = new SimpleDateFormat("yyyy-MM");
+//        time = simpleDateFormatMonth.format(c.getTime());
+        ApiResult qzfNum = zfService.qzfAdd();
         return qzfNum;
     }
 

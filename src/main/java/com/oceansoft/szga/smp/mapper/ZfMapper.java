@@ -373,4 +373,6 @@ public interface ZfMapper {
      * @return
      */
     List<HashMap> lzFxDataByLdrk();
+
+    List<HashMap> qzfAdd(String lastDay);
 }

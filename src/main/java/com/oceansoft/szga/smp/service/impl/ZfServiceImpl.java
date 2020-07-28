@@ -477,6 +477,18 @@ public class ZfServiceImpl implements ZfService {
         return new ApiResult().success(200,"返回数据",data);
     }
 
+    @Override
+    public ApiResult qzfAdd() {
+        SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar=Calendar.getInstance();
+        int month=calendar.get(Calendar.MONTH);
+        calendar.set(Calendar.MONTH, month-1);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String lastDay = sf.format(calendar.getTime());
+        List<HashMap> qzfNum = zfMapper.qzfAdd(lastDay);
+        return new ApiResult().success(200,"返回数据",qzfNum);
+    }
+
 
     public List<HashMap> dateData(List<HashMap> list,String num,String xzqhmc){
         Calendar calendar = Calendar.getInstance();
