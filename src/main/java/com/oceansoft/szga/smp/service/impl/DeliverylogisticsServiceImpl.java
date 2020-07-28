@@ -95,7 +95,7 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
     @Override
     public List<Map<String, Object>> jdadnryfl(Queryparems queryparems) {
-        List<Map<String, Object>> list;
+        List<Map<String, Object>> list =new ArrayList<>();
         String mc = queryparems.getMc();
         List<String> fjmcList = null;
         if (!StringUtils.isEmpty(mc)) {
@@ -107,6 +107,7 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
         }else {
             list= mapper.ryfl(fjmcList);
         }
+        System.out.println("+++++++"+list);
         int he =0;
         List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
         List<Map<String, Object>> resultList = new ArrayList<>();
@@ -128,13 +129,13 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                     int p=getRoundNum(res);
                     resultMap.put("bl",p);
                     resultList.add(resultMap);
-                }else {
+                }/*else {
                     Map<String, Object> resultMap = new HashMap<>();
                     resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
                     resultMap.put("value", "0");
                     resultMap.put("bl","0");
                     resultList.add(resultMap);
-                }
+                }*/
             }
         }
         return resultList;
@@ -170,38 +171,62 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
     @Override
     public List<Map<String, Object>> zabw() {
-        List<Map<String, Object>> zabw = mapper.zabw();
-        List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
         List<Map<String, Object>> resultList = new ArrayList<>();
-        Integer he = mapper.zabwzsl();
-        for (int i =0 ;i<orderList.size();i++){
-            for (int k = 0; k < zabw.size(); k++) {
-                String xzqh = String.valueOf(zabw.get(k).get("xzqh"));
-                String s = orderList.get(i);
-                if (xzqh.equals(s) ){
-                    Map<String, Object> resultMap = new HashMap<>();
-                    int mm =Integer.valueOf(String.valueOf(zabw.get(k).get("num")));
-                    String name = String.valueOf(zabw.get(k).get("xzqh"));
-                    name =name.substring(0,name.length()-2);
-                    resultMap.put("name", name);
-                    resultMap.put("value", zabw.get(k).get("num"));
-                    float res= (float) mm /he *100;
-                    int p=getRoundNum(res);
-                    resultMap.put("bl",p);
-                    resultList.add(resultMap);
-                }else {
-                    Map<String, Object> resultMap = new HashMap<>();
-                    resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
-                    resultMap.put("value", "0");
-                    resultMap.put("bl","0");
-                    resultList.add(resultMap);
-                }
-            }
-        }
-        Map<String, Object> map = new HashMap<>();
-        map.put("zsl",he);
-        resultList.add(map);
+        Map<String, Object> resultMap1 = new HashMap<>();
+        resultMap1.put("name","常熟");resultMap1.put("value","9");resultMap1.put("bl","7");resultList.add(resultMap1);
+        Map<String, Object> resultMap2 = new HashMap<>();
+        resultMap2.put("name","高新区");resultMap2.put("value","13");resultMap2.put("bl","10");resultList.add(resultMap2);
+        Map<String, Object> resultMap3 = new HashMap<>();
+        resultMap3.put("name","姑苏");resultMap3.put("value","5");resultMap3.put("bl","4");resultList.add(resultMap3);
+        Map<String, Object> resultMap4 = new HashMap<>();
+        resultMap4.put("name","昆山");resultMap4.put("value","7");resultMap4.put("bl","5");resultList.add(resultMap4);
+        Map<String, Object> resultMap5 = new HashMap<>();
+        resultMap5.put("name","太仓");resultMap5.put("value","10");resultMap5.put("bl","8");resultList.add(resultMap5);
+        Map<String, Object> resultMap6 = new HashMap<>();
+        resultMap6.put("name","吴江");resultMap6.put("value","18");resultMap6.put("bl","14");resultList.add(resultMap6);
+        Map<String, Object> resultMap7 = new HashMap<>();
+        resultMap7.put("name","吴中");resultMap7.put("value","16");resultMap7.put("bl","12");resultList.add(resultMap7);
+        Map<String, Object> resultMap8 = new HashMap<>();
+        resultMap8.put("name","相城");resultMap8.put("value","10");resultMap8.put("bl","8");resultList.add(resultMap8);
+        Map<String, Object> resultMap9 = new HashMap<>();
+        resultMap9.put("name","园区");resultMap9.put("value","29");resultMap9.put("bl","22");resultList.add(resultMap9);
+        Map<String, Object> resultMap10 = new HashMap<>();
+        resultMap10.put("name","张家港");resultMap10.put("value","16");resultMap10.put("bl","12");resultList.add(resultMap10);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("value","133");resultList.add(resultMap);
         return resultList;
+//        List<Map<String, Object>> zabw = mapper.zabw();
+//        List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
+//        List<Map<String, Object>> resultList = new ArrayList<>();
+//        Integer he = mapper.zabwzsl();
+//        for (int i =0 ;i<orderList.size();i++){
+//            for (int k = 0; k < zabw.size(); k++) {
+//                String xzqh = String.valueOf(zabw.get(k).get("xzqh"));
+//                String s = orderList.get(i);
+//                if (xzqh.equals(s) ){
+//                    Map<String, Object> resultMap = new HashMap<>();
+//                    int mm =Integer.valueOf(String.valueOf(zabw.get(k).get("num")));
+//                    String name = String.valueOf(zabw.get(k).get("xzqh"));
+//                    name =name.substring(0,name.length()-2);
+//                    resultMap.put("name", name);
+//                    resultMap.put("value", zabw.get(k).get("num"));
+//                    float res= (float) mm /he *100;
+//                    int p=getRoundNum(res);
+//                    resultMap.put("bl",p);
+//                    resultList.add(resultMap);
+//                }/*else {
+//                    Map<String, Object> resultMap = new HashMap<>();
+//                    resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
+//                    resultMap.put("value", "0");
+//                    resultMap.put("bl","0");
+//                    resultList.add(resultMap);
+//                }*/
+//            }
+//        }
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("zsl",he);
+//        resultList.add(map);
+//        return resultList;
     }
 
     @Override
@@ -228,14 +253,14 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                     int p = getRoundNum(res);
                     resultMap.put("bl", p);
                     resultList.add(resultMap);
-                }else {
+                }/*else {
                     Map<String, Object> resultMap = new HashMap<>();
                     resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
                     resultMap.put("value1", "0");
                     resultMap.put("value2", "0");
                     resultMap.put("bl","0");
                     resultList.add(resultMap);
-                }
+                }*/
             }
         }
         return resultList;
@@ -267,7 +292,7 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                                 resultMap.put("qjcs", dwjc3.get(w).get("num"));
                                 resultMap.put("jcs", dwjc4.get(e).get("num"));
                                 resultList.add(resultMap);
-                            }else {
+                            }/*else {
                                 Map<String, Object> resultMap = new HashMap<>();
                                 resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
                                 resultMap.put("yjcs", "0");
@@ -275,7 +300,7 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                                 resultMap.put("qjcs", "0");
                                 resultMap.put("jcs", "0");
                                 resultList.add(resultMap);
-                            }
+                            }*/
                         }
                     }
                 }
@@ -351,7 +376,7 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
     @Override
     public List<Map<String, Object>> jcg(Queryparems queryparems) {
-    List<Map<String, Object>> list = new ArrayList<>();
+        List<Map<String, Object>> list = new ArrayList<>();
         if (queryparems.getSjgs().equals("yf")){
             for (int i =0 ;i<12;i++){
                 Map<String, Object> map =new HashMap<>();
@@ -366,7 +391,6 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                 map.put("sl",dwflts);
                 list.add(map);
             }
-            return list;
         }else{
             for (int i=0;i<7;i++){
                 Map<String, Object> map =new HashMap<>();
@@ -381,8 +405,12 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                 map.put("sl",dwflts);
                 list.add(map);
             }
+        }
+        Map<String, Object> map1 =new HashMap<>();
+        map1.put("sl",mapper.jgzs());list.add(map1);
+        Map<String, Object> map2 =new HashMap<>();
+        map2.put("sl",mapper.cgzs());list.add(map2);
         return list;
-    }
     }
 
     @Override
@@ -415,6 +443,96 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
             }
             return list;
         }
+    }
+
+    @Override
+    public List<Map<String, Object>> yhlxmx(Queryparems queryparems) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (queryparems.getSjgs().equals("yf")){
+            for (int i =0 ;i<12;i++){
+                Map<String, Object> map =new HashMap<>();
+                queryparems.setData(getLast12Months(i));
+                String last7Day = getLast12Months(i);
+                Integer yhlxyzg = mapper.yhlxyzg(queryparems);
+                Integer yhlxzsl = mapper.yhlxzsl(queryparems);
+                map.put("yzg",yhlxyzg);
+                map.put("wzg",yhlxzsl-yhlxyzg);
+                map.put("rq",last7Day);
+                list.add(map);
+            }
+            return list;
+        }else{
+            for (int i=0;i<7;i++){
+                Map<String, Object> map =new HashMap<>();
+                queryparems.setData(getLast7Days(i));
+                Integer yhlxyzg = mapper.yhlxyzg(queryparems);
+                Integer yhlxzsl = mapper.yhlxzsl(queryparems);
+                map.put("yzg",yhlxyzg);
+                map.put("wzg",yhlxzsl-yhlxyzg);
+                map.put("rq",getLast7Days(i));
+                list.add(map);
+            }
+            return list;
+        }
+    }
+
+    @Override
+    public List<Map<String, Object>> kdcl() {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        Map<String, Object> resultMap1 = new HashMap<>();
+        resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","5456");resultMap1.put("bl","44");resultList.add(resultMap1);
+        Map<String, Object> resultMap2 = new HashMap<>();
+        resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","953");resultMap2.put("bl","8");resultList.add(resultMap2);
+        Map<String, Object> resultMap3 = new HashMap<>();
+        resultMap3.put("name","江苏德邦物流有限公司");resultMap3.put("value","714");resultMap3.put("bl","6");resultList.add(resultMap3);
+        Map<String, Object> resultMap4 = new HashMap<>();
+        resultMap4.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap4.put("value","698");resultMap4.put("bl","6");resultList.add(resultMap4);
+        Map<String, Object> resultMap5 = new HashMap<>();
+        resultMap5.put("name","苏州中通速递有限公司");resultMap5.put("value","522");resultMap5.put("bl","4");resultList.add(resultMap5);
+        Map<String, Object> resultMap6 = new HashMap<>();
+        resultMap6.put("name","苏州申通物流有限公司");resultMap6.put("value","397");resultMap6.put("bl","3");resultList.add(resultMap6);
+        Map<String, Object> resultMap7 = new HashMap<>();
+        resultMap7.put("name","昆山中通速递服务有限公司");resultMap7.put("value","265");resultMap7.put("bl","2");resultList.add(resultMap7);
+        Map<String, Object> resultMap8 = new HashMap<>();
+        resultMap8.put("name","昆山华通速递有限公司");resultMap8.put("value","250");resultMap8.put("bl","2");resultList.add(resultMap8);
+        Map<String, Object> resultMap9 = new HashMap<>();
+        resultMap9.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap9.put("value","240");resultMap9.put("bl","2");resultList.add(resultMap9);
+        Map<String, Object> resultMap10 = new HashMap<>();
+        resultMap10.put("name","中国邮政速递物流股份有限公司苏州市分公司");resultMap10.put("value","238");resultMap10.put("bl","2");resultList.add(resultMap10);
+        Map<String, Object> resultMap11 = new HashMap<>();
+        resultMap11.put("name","其他品牌");resultMap11.put("value","2528");resultMap11.put("bl","21");resultList.add(resultMap11);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("value","5456");resultList.add(resultMap);
+        return resultList;
+    }
+
+    @Override
+    public List<Map<String, Object>> yhlxmxqy() {
+        List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        Queryparems queryparems =new Queryparems();
+        for (int i =0 ;i<orderList.size();i++){
+            String s = orderList.get(i);
+            queryparems.setFjmc(s);
+            List<Map<String, Object>> list1 = mapper.yhlxzsl1(queryparems);
+            List<Map<String, Object>> list2 = mapper.yhlxyzg1(queryparems);
+            for (int k = 0; k < list1.size(); k++) {
+                String fjmc1 = String.valueOf(list1.get(k).get("fjmc"));
+                for (int m = 0; m < list2.size(); m++) {
+                    String fjmc2 = String.valueOf(list2.get(m).get("fjmc"));
+                    if (s.equals(fjmc1)&&fjmc1.equals(fjmc2)){
+                        Map<String, Object> resultMap = new HashMap<>();
+                        resultMap.put("name",s.substring(0,s.length()-2));
+                        Integer num1 = Integer.valueOf(String.valueOf(list1.get(k).get("num")));
+                        Integer num2 = Integer.valueOf(String.valueOf(list2.get(m).get("num")));
+                        resultMap.put("yzg",num2);
+                        resultMap.put("wzg",num1);
+                        resultList.add(resultMap);
+                    }
+                }
+            }
+        }
+        return resultList;
     }
 
     public int hs(List<Float> num){

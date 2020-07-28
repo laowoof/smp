@@ -66,13 +66,14 @@
         SELECT sspcsmc, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" WHERE zrsqd = '1' AND xzqh = #{fjmc} GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
     </select>
     <select id="queryHiddenNumAnalysisFind" resultType="java.util.Map">
+
         SELECT jcxmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx"
 --         WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
         GROUP BY jcxmc
     </select>
     <select id="queryHiddenNumAnalysisHandler" resultType="java.util.Map">
         SELECT jcxmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx"
---         WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' AND ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3'))
+--         WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' AND ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6'))
         GROUP BY jcxmc
     </select>
     <select id="queryHiddenCompanyLevelDw" resultType="java.util.Map">

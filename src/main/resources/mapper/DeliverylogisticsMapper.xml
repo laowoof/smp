@@ -12,8 +12,8 @@
         (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '1') AS cgjc,
         (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '2') AS zdjc,
         (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '3') AS zxjc,
-        (select count(1) from rpt.RPT_AQJG_JDWL_YHMX) AS yhfx,
-        (select count(1) from rpt.RPT_AQJG_JDWL_YHMX WHERE (jclx in ('1','2','3') and clzt ='1' or jclx ='4' and clzt ='3')) AS yhcl
+        (select count(1) from rpt.RPT_AQJG_JDWL_YHMX WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0') AS yhfx,
+        (select count(1) from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6')) and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0') AS yhcl
     </select>
 
     <select id="dwfl" resultType="java.util.Map">
@@ -25,7 +25,9 @@
     </select>
 
     <select id="yhlx" resultType="map">
-        select jcxmc as name,count(jcxmc) as num from rpt.rpt_aqjg_jdwl_yhmx where xxz ='否' and jcxlx !='0' GROUP BY jcxmc ORDER BY count(jcxmc) DESC
+        select jcxmc as name,count(jcxmc) as num from rpt.rpt_aqjg_jdwl_yhmx
+--        WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+        GROUP BY jcxmc ORDER BY count(jcxmc) DESC
     </select>
 
     <select id="jdfl" resultType="map">
@@ -111,23 +113,61 @@
     </select>
 
     <select id="jgyf" resultType="int">
-        select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22') and tjrq like #{data} ||'%'
+        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22') and tjrq like #{data} ||'%'
     </select>
 
     <select id="jgrq" resultType="int">
-        select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22') and tjrq = #{data}
+        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22') and tjrq = #{data}
     </select>
 
     <select id="cgyf" resultType="int">
-        select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq = #{data}
+        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq = #{data}
     </select>
 
     <select id="cgrq" resultType="int">
-        select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq like #{data} ||'%'
+        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq like #{data} ||'%'
+    </select>
+
+    <select id="jgzs" resultType="int">
+        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22')
+    </select>
+
+    <select id="cgzs" resultType="int">
+        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21')
     </select>
     
     <select id="smsj" resultType="java.lang.Float">
         select sml from ods.ods_manu_smsj where riqi like  #{data} ||'%'
+    </select>
+
+    <select id="yhlxzsl" resultType="int">
+        select COALESCE(sum(yhsl),0) as num from rpt.rpt_aqjg_jdwl_yhmx WHERE 1=1
+--        and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+        and tjrq like #{data} ||'%'
+        <if test="fjmc !=null and fjmc != '' ">
+            and  fjmc =#{fjmc}
+        </if>
+    </select>
+
+    <select id="yhlxyzg" resultType="int">
+        select COALESCE(sum(yhsl),0) from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6'))
+--        and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+        and tjrq like #{data} ||'%'
+        <if test="fjmc !=null and fjmc != '' ">
+            and  fjmc =#{fjmc}
+        </if>
+    </select>
+
+    <select id="yhlxzsl1" resultType="map">
+        select fjmc,COALESCE(sum(yhsl),0) as num from rpt.rpt_aqjg_jdwl_yhmx WHERE 1=1
+--        and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+        and fjmc = #{fjmc} group by 1
+    </select>
+
+    <select id="yhlxyzg1" resultType="map">
+        select fjmc,COALESCE(sum(yhsl),0) as num from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6'))
+        --        and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+        and fjmc = #{fjmc} group by 1
     </select>
 
 

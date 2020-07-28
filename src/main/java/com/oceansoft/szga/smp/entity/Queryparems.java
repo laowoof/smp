@@ -49,4 +49,6 @@ public class  Queryparems  implements Serializable {
 
     private String data;
 
+    private String fjmc;
+
 }

@@ -280,4 +280,65 @@ public class DeliverylogisticsController {
         return apiResult;
     }
 
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
+    @PostMapping("yhlxmxqy")
+    public ApiResult yhlxmxqy(){
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.yhlxmxqy();
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "快递车辆登记量情况分析", notes = "", httpMethod = "POST")
+    @PostMapping("kdcl")
+    public ApiResult kdcl(){
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.kdcl();
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
+    @PostMapping("yhlxmx")
+    public ApiResult yhlxmx(@RequestBody Queryparems queryparems){
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.yhlxmx(queryparems);
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+
 }

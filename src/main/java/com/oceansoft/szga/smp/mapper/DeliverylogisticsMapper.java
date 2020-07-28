@@ -52,6 +52,20 @@ public interface DeliverylogisticsMapper {
 
     Integer cgrq(Queryparems queryparems);
 
+    Integer cgzs();
+
+    Integer jgzs();
+
     List<Float> smsj (Queryparems queryparems);
+
+    Integer yhlxzsl(Queryparems queryparems);
+
+    Integer yhlxyzg(Queryparems queryparems);
+
+    List<Map<String,Object>> yhlxzsl1(Queryparems queryparems);
+
+    List<Map<String,Object>> yhlxyzg1(Queryparems queryparems);
+
+
 
 }
