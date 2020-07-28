@@ -182,8 +182,7 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
             }
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("name","总数量");
-        map.put("value",he);
+        map.put("zsl",he);
         resultList.add(map);
         return resultList;
     }
@@ -237,10 +236,10 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                             if (orderList.get(i).equals(xzqh1) && xzqh1.equals(xzqh2) && xzqh2.equals(xzqh3) && xzqh3.equals(xzqh4)) {
                                 Map<String, Object> resultMap = new HashMap<>();
                                 resultMap.put("name", xzqh1);
-                                resultMap.put("已检查数", dwjc2.get(k).get("num"));
-                                resultMap.put("待检查数", dwjc1.get(q).get("num"));
-                                resultMap.put("缺检查数", dwjc3.get(w).get("num"));
-                                resultMap.put("检查数", dwjc4.get(e).get("num"));
+                                resultMap.put("yjcs", dwjc2.get(k).get("num"));
+                                resultMap.put("djcs", dwjc1.get(q).get("num"));
+                                resultMap.put("qjcs", dwjc3.get(w).get("num"));
+                                resultMap.put("jcs", dwjc4.get(e).get("num"));
                                 resultList.add(resultMap);
                             }
                         }
@@ -286,8 +285,8 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                 }else {
                     dwflts= mapper.ryfltsyf(queryparems);
                 }
-                map.put("月份",getLast12Months(i));
-                map.put("数量",dwflts);
+                map.put("yf",getLast12Months(i));
+                map.put("sl",dwflts);
                 list.add(map);
             }
             return list;
@@ -301,8 +300,8 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                 }else {
                     dwflts= mapper.ryfltsrq(queryparems);
                 }
-                map.put("日期",getLast7Days(i));
-                map.put("数量",dwflts);
+                map.put("rq",getLast7Days(i));
+                map.put("sl",dwflts);
                 list.add(map);
             }
             return list;
@@ -323,8 +322,8 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                 }else {
                     dwflts= mapper.cgyf(queryparems);
                 }
-                map.put("月份",getLast12Months(i));
-                map.put("数量",dwflts);
+                map.put("yf",getLast12Months(i));
+                map.put("sl",dwflts);
                 list.add(map);
             }
             return list;
@@ -338,8 +337,8 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                 }else {
                     dwflts= mapper.cgrq(queryparems);
                 }
-                map.put("日期",getLast7Days(i));
-                map.put("数量",dwflts);
+                map.put("rq",getLast7Days(i));
+                map.put("sl",dwflts);
                 list.add(map);
             }
         return list;

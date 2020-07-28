@@ -80,7 +80,7 @@
     </select>
 
     <select id="zabw" resultType="map">
-        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where jbdj in('1','2','3') group by 1
+        select xzqh,sum(zbsl) as num from rpt.rpt_aqjg_jdwl_lcjg_sydw where jbdj in('1','2','3') group by 1
     </select>
 
     <select id="zabwzsl" resultType="int">
