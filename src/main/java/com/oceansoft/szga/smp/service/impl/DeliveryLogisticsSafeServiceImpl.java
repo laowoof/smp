@@ -245,8 +245,12 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         if (!CollectionUtils.isEmpty(mapList)) {
             for (String name : orderList) {
                 for (Map<String, Object> map : mapList) {
-                    if (map.get("fjmc").toString().contains(name)) {
-                        resultList.add(map);
+                    if (map.get("xzqh") != null) {
+                        if (map.get("xzqh").toString().contains(name)) {
+                            resultList.add(map);
+                        } else {
+                            continue;
+                        }
                     } else {
                         continue;
                     }

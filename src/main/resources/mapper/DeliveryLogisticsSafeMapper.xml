@@ -9,10 +9,10 @@
         SELECT xzqh, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_cyry" GROUP BY xzqh
     </select>
     <select id="queryDeliveryRank3" resultType="java.util.Map">
-        SELECT ssfxjmc, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '1' GROUP BY ssfxjmc
+        SELECT ssfxjmc as xzqh, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '1' GROUP BY ssfxjmc
     </select>
     <select id="queryDeliveryRank4" resultType="java.util.Map">
-        SELECT a.ssfxjmc, COALESCE(b.sum, 0) sum
+        SELECT a.ssfxjmc as xzqh, COALESCE(b.sum, 0) sum
         FROM
         (SELECT ssfxjmc FROM rpt."rpt_aqjg_jdwl_dwjcxx" GROUP BY ssfxjmc) a
         LEFT JOIN
@@ -20,10 +20,10 @@
         ON a.ssfxjmc = b.ssfxjmc
     </select>
     <select id="queryDeliveryRank5" resultType="java.util.Map">
-        SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc
+        SELECT fjmc as xzqh, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc
     </select>
     <select id="queryDeliveryRank6" resultType="java.util.Map">
-        SELECT a.fjmc, COALESCE(b.sum, 0) sum
+        SELECT a.fjmc as xzqh, COALESCE(b.sum, 0) sum
         FROM
         (SELECT fjmc FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc) a
         LEFT JOIN
@@ -31,7 +31,7 @@
         ON a.fjmc = b.fjmc
     </select>
     <select id="queryDeliveryRank7" resultType="java.util.Map">
-        SELECT a.fjmc, COALESCE(b.sum, 0) sum
+        SELECT a.fjmc as xzqh, COALESCE(b.sum, 0) sum
         FROM
         (SELECT fjmc FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc) a
         LEFT JOIN
@@ -66,19 +66,19 @@
         SELECT sspcsmc, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" WHERE zrsqd = '1' AND xzqh = #{fjmc} GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
     </select>
     <select id="queryHiddenNumAnalysisFind" resultType="java.util.Map">
-        SELECT jcxmc, sum(yhsl) FROM "rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' GROUP BY jcxmc
+        SELECT jcxmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' GROUP BY jcxmc
     </select>
     <select id="queryHiddenNumAnalysisHandler" resultType="java.util.Map">
-        SELECT jcxmc, sum(yhsl) FROM "rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' AND ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3')) GROUP BY jcxmc
+        SELECT jcxmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' AND ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3')) GROUP BY jcxmc
     </select>
     <select id="queryHiddenCompanyLevelDw" resultType="java.util.Map">
-        SELECT dwdjmc, sum(zbsl) FROM "rpt_aqjg_jdwl_lcjg_sydw" GROUP BY dwdjmc
+        SELECT dwdjmc, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" GROUP BY dwdjmc
     </select>
     <select id="queryHiddenCompanyLevelYh" resultType="java.util.Map">
-        SELECT dwdj, sum(yhsl) FROM "rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' GROUP BY dwdj
+        SELECT dwdj, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' GROUP BY dwdj
     </select>
     <select id="queryImpTop" resultType="java.util.Map">
-        SELECT jcxmc, sum(yhsl) FROM "rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' AND jbdj IN ('1','2','3') GROUP BY jcxmc ORDER BY sum desc LIMIT 5
+        SELECT jcxmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' AND jbdj IN ('1','2','3') GROUP BY jcxmc ORDER BY sum desc LIMIT 5
     </select>
     <select id="queryAnalysisNum" resultType="java.util.Map">
 
