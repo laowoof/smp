@@ -60,7 +60,7 @@ public class DeliverylogisticsController {
         return apiResult;
     }
 
-    @ApiOperation(value = "从业人员类型分析", notes = "", httpMethod = "POST")
+    @ApiOperation(value = "隐患类型分析", notes = "", httpMethod = "POST")
     @PostMapping("yhlx")
     public ApiResult yhlx() {
         ApiResult apiResult = new ApiResult();
@@ -100,6 +100,7 @@ public class DeliverylogisticsController {
         return apiResult;
     }
 
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
     @PostMapping("jdryfl")
     public ApiResult jdryfl(@RequestBody Queryparems queryparems) {
         ApiResult apiResult = new ApiResult();
@@ -119,6 +120,7 @@ public class DeliverylogisticsController {
         return apiResult;
     }
 
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
     @PostMapping("jcgfl")
     public ApiResult jcgfl(@RequestBody Queryparems queryparems) {
         ApiResult apiResult = new ApiResult();
@@ -246,6 +248,26 @@ public class DeliverylogisticsController {
         String message = "";
         try {
             List<Map<String, Object>> cyry = deliverylogisticsService.dwjc(queryparems);
+            apiResult.setData(cyry);
+            isSuccess = true;
+            message = "查询成功";
+            apiResult.setCode(200);
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "寄递物流以及从业人员单位人员分析", notes = "", httpMethod = "POST")
+    @PostMapping("smsj")
+    public ApiResult smsj(@RequestBody Queryparems queryparems){
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            List<Map<String, Object>> cyry = deliverylogisticsService.smsj(queryparems);
             apiResult.setData(cyry);
             isSuccess = true;
             message = "查询成功";

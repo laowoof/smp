@@ -1,5 +1,6 @@
 package com.oceansoft.szga.smp.service.impl;
 
+import com.alibaba.excel.util.StringUtils;
 import com.oceansoft.szga.smp.entity.Queryparems;
 import com.oceansoft.szga.smp.mapper.DeliverylogisticsMapper;
 import com.oceansoft.szga.smp.service.DeliverylogisticsService;
@@ -94,25 +95,23 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
     @Override
     public List<Map<String, Object>> jdadnryfl(Queryparems queryparems) {
-        List<Map<String, Object>> list =new ArrayList<>();
+        List<Map<String, Object>> list;
+        String mc = queryparems.getMc();
+        List<String> fjmcList = null;
+        if (!StringUtils.isEmpty(mc)) {
+            String[] split = mc.split(",");
+            fjmcList = Arrays.asList(split);
+        }
         if (queryparems.getType().equals("jdfl")){
-            list= mapper.jdfl(queryparems.getMc());
+            list= mapper.jdfl(fjmcList);
         }else {
-            list= mapper.ryfl(queryparems.getMc());
+            list= mapper.ryfl(fjmcList);
         }
         int he =0;
         List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
         List<Map<String, Object>> resultList = new ArrayList<>();
-        for (int i =0 ;i<orderList.size();i++){
-            for (int k = 0; k < list.size(); k++) {
-                String xzqh = String.valueOf(list.get(k).get("xzqh"));
-                String s = orderList.get(i);
-                if (xzqh.equals(s) ){
-                    Map<String, Object> resultMap = new HashMap<>();
-                    int mm =Integer.valueOf(String.valueOf(list.get(k).get("num")));
-                    he+= mm;
-                }
-            }
+        for (int k = 0; k < list.size(); k++) {
+            he+=Integer.valueOf(String.valueOf(list.get(k).get("num")));
         }
         for (int i =0 ;i<orderList.size();i++){
             for (int k = 0; k < list.size(); k++) {
@@ -129,6 +128,12 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                     int p=getRoundNum(res);
                     resultMap.put("bl",p);
                     resultList.add(resultMap);
+                }else {
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
+                    resultMap.put("value", "0");
+                    resultMap.put("bl","0");
+                    resultList.add(resultMap);
                 }
             }
         }
@@ -137,7 +142,13 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
     @Override
     public List<Map<String, Object>> dwdj(Queryparems queryparems) {
-        List<Map<String, Object>> dwfx = mapper.dwdj(queryparems);
+        String mc = queryparems.getXzqhs();
+        List<String> fjmcList = null;
+        if (!StringUtils.isEmpty(mc)) {
+            String[] split = mc.split(",");
+            fjmcList = Arrays.asList(split);
+        }
+        List<Map<String, Object>> dwfx = mapper.dwdj(fjmcList);
         List<Map<String, Object>> list =new ArrayList<>();
         int he =0;
         for (int i =0;i<dwfx.size();i++){
@@ -159,24 +170,30 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
     @Override
     public List<Map<String, Object>> zabw() {
-        List<Map<String, Object>> list =mapper.zabw();
+        List<Map<String, Object>> zabw = mapper.zabw();
         List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
         List<Map<String, Object>> resultList = new ArrayList<>();
         Integer he = mapper.zabwzsl();
         for (int i =0 ;i<orderList.size();i++){
-            for (int k = 0; k < list.size(); k++) {
-                String xzqh = String.valueOf(list.get(k).get("xzqh"));
+            for (int k = 0; k < zabw.size(); k++) {
+                String xzqh = String.valueOf(zabw.get(k).get("xzqh"));
                 String s = orderList.get(i);
                 if (xzqh.equals(s) ){
                     Map<String, Object> resultMap = new HashMap<>();
-                    int mm =Integer.valueOf(String.valueOf(list.get(k).get("num")));
-                    String name = String.valueOf(list.get(k).get("xzqh"));
+                    int mm =Integer.valueOf(String.valueOf(zabw.get(k).get("num")));
+                    String name = String.valueOf(zabw.get(k).get("xzqh"));
                     name =name.substring(0,name.length()-2);
                     resultMap.put("name", name);
-                    resultMap.put("value", list.get(k).get("num"));
+                    resultMap.put("value", zabw.get(k).get("num"));
                     float res= (float) mm /he *100;
                     int p=getRoundNum(res);
                     resultMap.put("bl",p);
+                    resultList.add(resultMap);
+                }else {
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
+                    resultMap.put("value", "0");
+                    resultMap.put("bl","0");
                     resultList.add(resultMap);
                 }
             }
@@ -189,28 +206,38 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
     @Override
     public List<Map<String, Object>> aqzr() {
-        List<Map<String, Object>> list =mapper.aqzr();
         List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
         List<Map<String, Object>> resultList = new ArrayList<>();
-        Integer he = mapper.aqzrzsl();
-        for (int i =0 ;i<orderList.size();i++)
+        Queryparems queryparems =new Queryparems();
+        for (int i =0 ;i<orderList.size();i++){
+            String s = orderList.get(i);
+            queryparems.setXzqhs(s);
+            Integer he = mapper.aqzrzsl(queryparems);
+            List<Map<String, Object>> list =mapper.aqzr(queryparems);
             for (int k = 0; k < list.size(); k++) {
                 String xzqh = String.valueOf(list.get(k).get("xzqh"));
-                String s = orderList.get(i);
                 if (xzqh.equals(s)) {
                     Map<String, Object> resultMap = new HashMap<>();
                     int mm = Integer.valueOf(String.valueOf(list.get(k).get("num")));
                     String name = String.valueOf(list.get(k).get("xzqh"));
                     name =name.substring(0,name.length()-2);
                     resultMap.put("name", name);
-                    resultMap.put("value", list.get(k).get("num"));
+                    resultMap.put("value1", list.get(k).get("num"));
+                    resultMap.put("value2",he);
                     float res = (float) mm / he * 100;
                     int p = getRoundNum(res);
                     resultMap.put("bl", p);
                     resultList.add(resultMap);
+                }else {
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
+                    resultMap.put("value1", "0");
+                    resultMap.put("value2", "0");
+                    resultMap.put("bl","0");
+                    resultList.add(resultMap);
                 }
             }
-        Map<String, Object> map = new HashMap<>();
+        }
         return resultList;
     }
 
@@ -219,7 +246,6 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
         List<Map<String, Object>> resultList = new ArrayList<>();
         List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
         String jclxdm = queryparems.getJclxdm();
-        System.out.println("dsfghferwrrgfh"+jclxdm);
         List<Map<String, Object>> dwjc1 = mapper.dwjc("0",jclxdm);
         List<Map<String, Object>> dwjc2 = mapper.dwjc("1",jclxdm);
         List<Map<String, Object>> dwjc3 = mapper.dwjc("2",jclxdm);
@@ -235,11 +261,19 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                             String xzqh4 = String.valueOf(dwjc4.get(e).get("name"));
                             if (orderList.get(i).equals(xzqh1) && xzqh1.equals(xzqh2) && xzqh2.equals(xzqh3) && xzqh3.equals(xzqh4)) {
                                 Map<String, Object> resultMap = new HashMap<>();
-                                resultMap.put("name", xzqh1);
+                                resultMap.put("name", xzqh1.substring(0,xzqh1.length()-2));
                                 resultMap.put("yjcs", dwjc2.get(k).get("num"));
                                 resultMap.put("djcs", dwjc1.get(q).get("num"));
                                 resultMap.put("qjcs", dwjc3.get(w).get("num"));
                                 resultMap.put("jcs", dwjc4.get(e).get("num"));
+                                resultList.add(resultMap);
+                            }else {
+                                Map<String, Object> resultMap = new HashMap<>();
+                                resultMap.put("name", orderList.get(i).substring(0,orderList.size()-2));
+                                resultMap.put("yjcs", "0");
+                                resultMap.put("djcs", "0");
+                                resultMap.put("qjcs", "0");
+                                resultMap.put("jcs", "0");
                                 resultList.add(resultMap);
                             }
                         }
@@ -252,7 +286,13 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
     @Override
     public List<Map<String, Object>> dwfx(Queryparems queryparems) {
-        List<Map<String, Object>> dwfx = mapper.dwfx(queryparems);
+        String mc = queryparems.getXzqhs();
+        List<String> fjmcList = null;
+        if (!StringUtils.isEmpty(mc)) {
+            String[] split = mc.split(",");
+            fjmcList = Arrays.asList(split);
+        }
+        List<Map<String, Object>> dwfx = mapper.dwfx(fjmcList);
         List<Map<String, Object>> list =new ArrayList<>();
         int he =0;
         for (int i =0;i<dwfx.size();i++){
@@ -345,14 +385,72 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     }
     }
 
+    @Override
+    public List<Map<String, Object>> smsj(Queryparems queryparems) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (queryparems.getSjgs().equals("yf")){
+            for (int i =0 ;i<12;i++){
+                Map<String, Object> map =new HashMap<>();
+                queryparems.setData(getLast12Month(i));
+                List<Float> smsj = mapper.smsj(queryparems);
+                int hs = hs(smsj);
+                String last7Day = getLast12Month(i);
+                String ll =last7Day.substring(0,4)+"-"+last7Day.substring(4,6);
+                map.put("sj",ll);
+                map.put("bl",hs);
+                list.add(map);
+            }
+            return list;
+        }else{
+            for (int i=0;i<7;i++){
+                Map<String, Object> map =new HashMap<>();
+                queryparems.setData(getLast7Day(i));
+                List<Float> smsj = mapper.smsj(queryparems);
+                int hs = hs(smsj);
+                String last7Day = getLast7Day(i);
+                String ll =last7Day.substring(0,4)+"-"+last7Day.substring(4,6)+"-"+last7Day.substring(6,8);
+                map.put("sj",ll);
+                map.put("bl",hs);
+                list.add(map);
+            }
+            return list;
+        }
+    }
 
-
+    public int hs(List<Float> num){
+        float sum =0;
+        for (int i = 0;i<num.size(); i++) {
+            sum+=num.get(i);
+        }
+        float pingjun=sum/num.size();
+        int p=getRoundNum1(pingjun);
+        return p;
+    }
 
     public String getLast12Months(int i) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         c.add(Calendar.MONTH, -i);
+        Date m = c.getTime();
+        return sdf.format(m);
+    }
+
+
+    public String getLast12Month(int i) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, -i);
+        Date m = c.getTime();
+        return sdf.format(m);
+    }
+
+    public String getLast7Day(int i) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DAY_OF_WEEK, -i);
         Date m = c.getTime();
         return sdf.format(m);
     }
@@ -376,6 +474,15 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
             return  (int)(n+0.5f);
         }
     }
+
+    public int getRoundNum1(float num){
+        float n= num+0.49f;
+        int k =(int) n;
+        return k;
+    }
+
+
+
 
 
 

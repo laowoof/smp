@@ -9,7 +9,7 @@ import java.util.Map;
 @Mapper
 public interface DeliverylogisticsService {
 
-    Map<String,Object> sumDeliverylogistics();
+    Map<String, Object> sumDeliverylogistics();
 
     List<Map<String, Object>> dwfl();
 
@@ -32,4 +32,8 @@ public interface DeliverylogisticsService {
     List<Map<String, Object>> aqzr();
 
     List<Map<String, Object>> dwjc(Queryparems queryparems);
+
+    List<Map<String, Object>> smsj(Queryparems queryparems);
+
 }
+

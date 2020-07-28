@@ -31,18 +31,22 @@
     <select id="jdfl" resultType="map">
         select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW
         where 1=1
-        <if test="mc !=null and mc !=''">
-                and dwflmc in <foreach item="item"  collection="mc" open="(" separator="," close=")"> #{item}
+        <if test="mc != null">
+            AND dwflmc IN
+            <foreach item="item" index="index" collection="mc" open="(" separator="," close=")">
+                #{item}
             </foreach>
         </if>
         group by 1
     </select>
 
     <select id="ryfl" resultType="map">
-        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_CYRY
-        <if test="mc !=null and mc !=''">
-            and rylb in <foreach item="item"  collection="mc" open="(" separator="," close=")"> #{item}
-        </foreach>
+        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_CYRY where 1=1
+        <if test="mc != null">
+            AND rylb IN
+            <foreach item="item" index="index" collection="mc" open="(" separator="," close=")">
+                #{item}
+            </foreach>
         </if>
         group by xzqh
     </select>
@@ -50,7 +54,7 @@
     <select id="dwfx" resultType="map">
         select COALESCE(dwfl,'无'),COALESCE(dwflmc,'无') as name,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where 1=1
         <if test="xzqhs !=null ">
-          and xzqh in <foreach item="item"  collection="xzqhs" open="(" separator="," close=")"> #{item}
+          and xzqh in <foreach item="item"  index="index" collection="xzqhs" open="(" separator="," close=")"> #{item}
             </foreach>
         </if>
         group by 1,2
@@ -73,7 +77,7 @@
     <select id="dwdj" resultType="map">
         select COALESCE(dwdj,'无') as dwdj,COALESCE(dwdjmc,'无') as name,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where dwflmc='末端网点'
         <if test="xzqhs !=null ">
-            and xzqh in <foreach item="item"  collection="xzqhs" open="(" separator="," close=")"> #{item}
+            and xzqh in <foreach item="item"  index="index" collection="xzqhs" open="(" separator="," close=")"> #{item}
         </foreach>
         </if>
         group by 1,2
@@ -88,11 +92,11 @@
     </select>
 
     <select id="aqzr" resultType="map">
-        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1' group by 1
+        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1'and xzqh=#{xzqhs} group by 1
     </select>
 
     <select id="aqzrzsl" resultType="int">
-        select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1'
+        select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW where xzqh=#{xzqhs}
     </select>
     
     <select id="dwjc" resultType="map">
@@ -100,7 +104,7 @@
         <if test="jcztdm !=null and jcztdm != ''">
             and  jcztdm =#{jcztdm}
         </if>
-        <if test="jclxdm !=null and jclxdm != ''">
+        <if test="jclxdm !=null and jclxdm != '' ">
             and  jclxdm =#{jclxdm}
         </if>
          group by 1
@@ -120,6 +124,10 @@
 
     <select id="cgrq" resultType="int">
         select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq like #{data} ||'%'
+    </select>
+    
+    <select id="smsj" resultType="java.lang.Float">
+        select sml from ods.ods_manu_smsj where riqi like  #{data} ||'%'
     </select>
 
 

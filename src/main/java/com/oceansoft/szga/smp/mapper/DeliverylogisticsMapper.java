@@ -18,11 +18,11 @@ public interface DeliverylogisticsMapper {
 
     List<Map<String, Object>> yhlx();
 
-    List<Map<String, Object>> jdfl(@Param("mc") String[] mc);
+    List<Map<String, Object>> jdfl(@Param("mc") List<String> mc);
 
-    List<Map<String, Object>> ryfl(@Param("mc") String[] mc);
+    List<Map<String, Object>> ryfl(@Param("mc") List<String> mc);
 
-    List<Map<String, Object>> dwfx(Queryparems queryparems);
+    List<Map<String, Object>> dwfx(@Param("xzqhs") List<String> xzqhs);
 
     Integer dwfltsyf(Queryparems queryparems);
 
@@ -32,15 +32,15 @@ public interface DeliverylogisticsMapper {
 
     Integer ryfltsrq(Queryparems queryparems);
 
-    List<Map<String, Object>> dwdj(Queryparems queryparems);
+    List<Map<String, Object>> dwdj(@Param("xzqhs") List<String> xzqhs);
 
     List<Map<String, Object>> zabw();
 
     Integer zabwzsl();
 
-    List<Map<String, Object>> aqzr();
+    List<Map<String, Object>> aqzr(Queryparems queryparems);
 
-    Integer aqzrzsl();
+    Integer aqzrzsl(Queryparems queryparems);
 
     List<Map<String, Object>> dwjc(@Param("jcztdm") String jcztdm,@Param("jclxdm") String jclxdm);
 
@@ -51,5 +51,7 @@ public interface DeliverylogisticsMapper {
     Integer cgyf(Queryparems queryparems);
 
     Integer cgrq(Queryparems queryparems);
+
+    List<Float> smsj (Queryparems queryparems);
 
 }

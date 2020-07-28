@@ -35,9 +35,9 @@ public class  Queryparems  implements Serializable {
     // 隐患处理数
     private String sumyhcl;
 
-    private String[] xzqhs;
+    private String xzqhs;
 
-    private String[] mc;
+    private String mc;
 
     private String type;
 

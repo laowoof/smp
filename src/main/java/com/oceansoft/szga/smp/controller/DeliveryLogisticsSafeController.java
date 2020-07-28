@@ -86,6 +86,7 @@ public class DeliveryLogisticsSafeController {
         return apiResult;
     }
 
+
     @ApiOperation(value = "隐患分析/单位等级隐患数量分析", notes = "", httpMethod = "POST")
     @PostMapping("hidden/company-level")
     public ApiResult queryHiddenCompanyLevel() {
