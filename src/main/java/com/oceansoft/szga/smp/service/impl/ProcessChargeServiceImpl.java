@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 流程监管实现层
@@ -87,19 +85,19 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         Map<String, Object> map = processChargeMapper.queryRoadSafePointById(id);
         if (!StringUtils.isEmpty(map.get("lczt").toString())) {
             if (map.get("lczt").toString().equals("1")) {
-                map.put("dqlcjd", "民警录入");
+                map.put("dqlcjd", "民警");
             }
             if (zdCheck.contains(Integer.valueOf(map.get("lczt").toString()))) {
-                map.put("dqlcjd", "中队审核");
+                map.put("dqlcjd", "中队");
             }
             if (ddCheck.contains(Integer.valueOf(map.get("lczt").toString()))) {
-                map.put("dqlcjd", "大队审核");
+                map.put("dqlcjd", "大队");
             }
             if (ywCheck.contains(Integer.valueOf(map.get("lczt").toString()))) {
-                map.put("dqlcjd", "业务部门审核");
+                map.put("dqlcjd", "业务部门");
             }
             if (detachmentCheck.contains(Integer.valueOf(map.get("lczt").toString()))) {
-                map.put("dqlcjd", "支队审核");
+                map.put("dqlcjd", "支队");
             }
         }
         getPointName(map);
@@ -526,7 +524,14 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
 
     @Override
     public Map<String, Object> queryTrafficData() {
-        Map<String, Object> map = processChargeMapper.queryTrafficData();
+        Calendar currCal=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.YEAR,currCal.get(Calendar.YEAR));
+        Date time = calendar.getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String firstDay = format.format(time);
+        Map<String, Object> map = processChargeMapper.queryTrafficData(firstDay);
         return map;
     }
 

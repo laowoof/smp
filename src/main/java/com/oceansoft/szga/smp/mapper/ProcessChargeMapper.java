@@ -27,5 +27,5 @@ public interface ProcessChargeMapper {
 
     List<Map<String, Object>> queryDeliveryTable(Page<Map<String, Object>> page, @Param("questionQueryBean") QuestionQueryBean questionQueryBean);
 
-    Map<String, Object> queryTrafficData();
+    Map<String, Object> queryTrafficData(String firstDay);
 }

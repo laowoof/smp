@@ -155,125 +155,125 @@
     <select id="queryTrafficData" resultType="java.util.Map">
         SELECT
 --464
-(select count(1) 中队处理中
+(select count(1) zdclz
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 1
    and y.LSZT is not null),
 --3151
-(select count(1) 中队待处理
+(select count(1) zddcl
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 1
    and y.LSZT is null),
 --2
- (select count(1) 中队查否
+ (select count(1) zdcf
    from ods.ods_rt_jj_v_tb_yhpc y
-  where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+  where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
     and y.SFYX = 1
     and y.LCZT = 2),
 -- 837
- (select count(1) 中队自行处理
+ (select count(1) zdzxcl
    from ods.ods_rt_jj_v_tb_yhpc y
-  where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+  where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
     and y.SFYX = 1
     and y.LCZT = 3),
 -- 3
- (select count(1) 中队提交职能部门
+ (select count(1) zdtjznbm
    from ods.ods_rt_jj_v_tb_yhpc y
-  where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+  where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
     and y.SFYX = 1
     and y.LCZT = 5),
 --962
- (select count(1) 中队提交大队
+ (select count(1) zdtjdd
    from ods.ods_rt_jj_v_tb_yhpc y
-  where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+  where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
     and y.SFYX = 1
     and y.LCZT = 4),
 ----------------------大队--------------------------
 --0
-(select count(1) 大队录入
+(select count(1) ddlr
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 27),
 --962
-(select count(1) 大队待处理
+(select count(1) dddcl
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 4
    and y.LSZT is null),
 --0
-(select count(1) 大队查否
+(select count(1) dzcf
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 6),
 --96
-(select count(1) 大队自行处理
+(select count(1) ddzxcl
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 7),
 --3
-(select count(1) 大队提交业务部门
+(select count(1) ddtjywbm
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 8),
 --0
-(select count(1) 大队提交职能部门
+(select count(1) ddtjznbm
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 9),
 ----------------------业务部门--------------------------
 --0
-(select count(1) 业务部门录入
+(select count(1) ywbmlr
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 26),
 --3
-(select count(1) 业务部门待处理
+(select count(1) ywbmdcl
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 8
    and y.LSZT is null),
 --4
-(select count(1) 业务部门查否
+(select count(1) ywbmcf
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 10),
 --0
-(select count(1) 业务部门自行处理
+(select count(1) ywbmzxcl
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 11),
 --0
-(select count(1) 业务部门提交支队
+(select count(1) ywbmtjzd
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 12),
 ----------------------支队--------------------------
 --0
-(select count(1) 支队待处理
+(select count(1) zddcl
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 12
    and y.LSZT is null),
 --0
-(select count(1) 支队审核通过
+(select count(1) zdshtg
   from ods.ods_rt_jj_v_tb_yhpc y
- where y.cjsj >= to_date('2020-01-01', 'yyyy-mm-dd')
+ where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 20)
     </select>
