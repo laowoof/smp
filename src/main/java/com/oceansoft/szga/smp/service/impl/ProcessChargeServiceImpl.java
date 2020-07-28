@@ -524,6 +524,12 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> queryTrafficData() {
+        Map<String, Object> map = processChargeMapper.queryTrafficData();
+        return map;
+    }
+
     /**
      * 获取节点名称
      * 1-中队录入 2-中队查否 3-中队自行处理 4-中队提交大队 5-中队提交职能部门 6-大队查否 7-大队自行处理 8-大队提交业务部门 9-大队提交职能部门 10-业务部门查否 11-业务部门自行处理

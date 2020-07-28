@@ -182,6 +182,26 @@ public class ProcessChargeController {
         return apiResult;
     }
 
+    @ApiOperation(value = "交警流程数据", notes = "", httpMethod = "POST")
+    @PostMapping("traffic-data")
+    public ApiResult queryTrafficData() {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = processChargeService.queryTrafficData();
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
 
 
 

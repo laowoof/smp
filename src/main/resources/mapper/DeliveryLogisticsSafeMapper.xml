@@ -54,13 +54,13 @@
         SELECT sspcsmc, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '2' AND ssfxjmc = #{fjmc} GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10
     </select>
     <select id="queryDrillRank5" resultType="java.util.Map">
-        SELECT pcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
+        SELECT pcsmc as sspcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
     </select>
     <select id="queryDrillRank6" resultType="java.util.Map">
-        SELECT pcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx = '4' AND clzt = '3' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
+        SELECT pcsmc as sspcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx = '4' AND clzt = '3' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
     </select>
     <select id="queryDrillRank7" resultType="java.util.Map">
-        SELECT pcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx != '4' AND clzt != '3' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
+        SELECT pcsmc as sspcsmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx != '4' AND clzt != '3' AND fjmc = #{fjmc} GROUP BY pcsmc ORDER BY sum DESC LIMIT 10
     </select>
     <select id="queryDrillRank8" resultType="java.util.Map">
         SELECT sspcsmc, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" WHERE zrsqd = '1' AND xzqh = #{fjmc} GROUP BY sspcsmc ORDER BY sum DESC LIMIT 10

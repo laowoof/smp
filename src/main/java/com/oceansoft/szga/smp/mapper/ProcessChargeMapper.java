@@ -26,4 +26,6 @@ public interface ProcessChargeMapper {
     Map<String, Object> queryImpProcessPic(@Param("type") Integer type);
 
     List<Map<String, Object>> queryDeliveryTable(Page<Map<String, Object>> page, @Param("questionQueryBean") QuestionQueryBean questionQueryBean);
+
+    Map<String, Object> queryTrafficData();
 }
