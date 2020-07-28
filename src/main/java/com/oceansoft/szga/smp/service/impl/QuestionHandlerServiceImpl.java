@@ -9,6 +9,7 @@ import com.oceansoft.szga.smp.service.QuestionHandlerService;
 import com.oceansoft.szga.smp.szsh.core.vo.system.SysUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -20,6 +21,7 @@ import java.util.*;
  * @Date 2020/7/2 0002 上午 11:52
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class QuestionHandlerServiceImpl implements QuestionHandlerService {
 
     @Autowired
@@ -260,6 +262,49 @@ public class QuestionHandlerServiceImpl implements QuestionHandlerService {
         if (questionRecordEntity == null) {
             throw new RuntimeException("获取问题记录失败");
         }
+        //保存4个tab页签记录
+        boolean success=true;
+        if(questionExecuteTaskBean.getQuestionPlanEntity()!=null){
+            if(StringUtils.isEmpty(questionExecuteTaskBean.getQuestionPlanEntity().getGuid())){
+                success = addQuestionPlan(questionExecuteTaskBean.getQuestionPlanEntity());
+            }else{
+                success = updateQuestionPlan(questionExecuteTaskBean.getQuestionPlanEntity());
+            }
+            if(!success){
+                throw new RuntimeException("保存问题增改方案失败");
+            }
+        }
+        if(questionExecuteTaskBean.getQuestionResponseEntity()!=null){
+            if(StringUtils.isEmpty(questionExecuteTaskBean.getQuestionResponseEntity().getGuid())){
+                success = addQuestionResponse(questionExecuteTaskBean.getQuestionResponseEntity());
+            }else{
+                success = updateQuestionResponse(questionExecuteTaskBean.getQuestionResponseEntity());
+            }
+            if(!success){
+                throw new RuntimeException("保存问题复函失败");
+            }
+        }
+        if(questionExecuteTaskBean.getQuestionImplementionEntity()!=null){
+            if(StringUtils.isEmpty(questionExecuteTaskBean.getQuestionImplementionEntity().getGuid())){
+                success = addQuestionImplemention(questionExecuteTaskBean.getQuestionImplementionEntity());
+            }else{
+                success = updateQuestionImplemention(questionExecuteTaskBean.getQuestionImplementionEntity());
+            }
+            if(!success){
+                throw new RuntimeException("保存问题整改落实失败");
+            }
+        }
+        if(questionExecuteTaskBean.getQuestionLookBackEntity()!=null){
+            if(StringUtils.isEmpty(questionExecuteTaskBean.getQuestionLookBackEntity().getGuid())){
+                success = addQuestionLookBack(questionExecuteTaskBean.getQuestionLookBackEntity());
+            }else{
+                success = addQuestionLookBack(questionExecuteTaskBean.getQuestionLookBackEntity());
+            }
+            if(!success){
+                throw new RuntimeException("保存问题回头看失败");
+            }
+        }
+
         if (operation.equals("反馈结果")) {
             try {
                 // 根据guid获取当前记录，更新状态和待处理部门编码

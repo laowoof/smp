@@ -11,6 +11,7 @@ import com.oceansoft.szga.smp.service.QuestionHandlerService;
 import com.oceansoft.szga.smp.szsh.core.service.system.impl.SysUserServiceImpl;
 import com.oceansoft.szga.smp.szsh.core.vo.system.SysUserVO;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -91,6 +92,33 @@ public class OprQuestionHandlerController {
     }
 
     /**
+     * 保存问题增改方案
+     */
+    @ApiOperation(value = "保存问题增改方案", notes = "", httpMethod = "POST")
+    @PostMapping("save-plan")
+    public ApiResult saveQuestionPlan(@RequestBody QuestionPlanEntity questionPlanEntity) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            if(StringUtils.isEmpty(questionPlanEntity.getGuid())){
+                isSuccess = questionHandlerService.addQuestionPlan(questionPlanEntity);
+            }else{
+                isSuccess = questionHandlerService.updateQuestionPlan(questionPlanEntity);
+            }
+            if (isSuccess) {
+                message = "保存成功";
+            }
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setData(questionPlanEntity);
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+    /**
      * 新增问题增改方案
      */
     @ApiOperation(value = "新增问题增改方案", notes = "", httpMethod = "POST")
@@ -130,6 +158,31 @@ public class OprQuestionHandlerController {
         } catch (Exception e) {
             message = e.getMessage();
         }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "保存问题复函", notes = "", httpMethod = "POST")
+    @PostMapping("save-response")
+    public ApiResult saveQuestionResponse(@RequestBody QuestionResponseEntity questionResponseEntity) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            if(StringUtils.isEmpty(questionResponseEntity.getGuid())){
+                isSuccess = questionHandlerService.addQuestionResponse(questionResponseEntity);
+            }else{
+                isSuccess = questionHandlerService.updateQuestionResponse(questionResponseEntity);
+            }
+            if (isSuccess) {
+                message = "保存成功";
+            }
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setData(questionResponseEntity);
         apiResult.setCode(200);
         apiResult.setMsg(message);
         apiResult.setSucc(isSuccess);
@@ -182,6 +235,31 @@ public class OprQuestionHandlerController {
         return apiResult;
     }
 
+    @ApiOperation(value = "保存问题整改落实", notes = "", httpMethod = "POST")
+    @PostMapping("save-implemention")
+    public ApiResult saveQuestionImplemention(@RequestBody QuestionImplementionEntity questionImplementionEntity) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            if(StringUtils.isEmpty(questionImplementionEntity.getGuid())){
+                isSuccess = questionHandlerService.addQuestionImplemention(questionImplementionEntity);
+            }else{
+                isSuccess = questionHandlerService.updateQuestionImplemention(questionImplementionEntity);
+            }
+            if (isSuccess) {
+                message = "保存成功";
+            }
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setData(questionImplementionEntity);
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
     /**
      * 新增问题整改落实
      */
@@ -228,6 +306,33 @@ public class OprQuestionHandlerController {
         return apiResult;
     }
 
+
+
+    @ApiOperation(value = "保存问题回头看", notes = "", httpMethod = "POST")
+    @PostMapping("save-lookback")
+    public ApiResult saveQuestionLookBack(@RequestBody QuestionLookBackEntity questionLookBackEntity) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            if(StringUtils.isEmpty(questionLookBackEntity.getGuid())){
+                isSuccess = questionHandlerService.addQuestionLookBack(questionLookBackEntity);
+            }else{
+                isSuccess = questionHandlerService.updateQuestionLookBack(questionLookBackEntity);
+            }
+
+            if (isSuccess) {
+                message = "保存成功";
+            }
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setData(questionLookBackEntity);
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
     /**
      * 新增问题回头看
      */

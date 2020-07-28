@@ -1,5 +1,10 @@
 package com.oceansoft.szga.smp.entity.bean;
 
+import com.oceansoft.szga.smp.entity.QuestionImplementionEntity;
+import com.oceansoft.szga.smp.entity.QuestionLookBackEntity;
+import com.oceansoft.szga.smp.entity.QuestionPlanEntity;
+import com.oceansoft.szga.smp.entity.QuestionResponseEntity;
+
 import java.util.Date;
 
 /**
@@ -39,6 +44,12 @@ public class QuestionExecuteTaskBean {
 
     // 节点名称 派发/接收人签收/问题处置/结果确认
     private String executeNodeName;
+
+
+    private QuestionPlanEntity questionPlanEntity;
+    private QuestionResponseEntity questionResponseEntity;
+    private QuestionImplementionEntity questionImplementionEntity;
+    private QuestionLookBackEntity questionLookBackEntity;
 
     public Date getExecuteDate() {
         return executeDate;
@@ -118,5 +129,37 @@ public class QuestionExecuteTaskBean {
 
     public void setExecuteNodeName(String executeNodeName) {
         this.executeNodeName = executeNodeName;
+    }
+
+    public QuestionPlanEntity getQuestionPlanEntity() {
+        return questionPlanEntity;
+    }
+
+    public void setQuestionPlanEntity(QuestionPlanEntity questionPlanEntity) {
+        this.questionPlanEntity = questionPlanEntity;
+    }
+
+    public QuestionResponseEntity getQuestionResponseEntity() {
+        return questionResponseEntity;
+    }
+
+    public void setQuestionResponseEntity(QuestionResponseEntity questionResponseEntity) {
+        this.questionResponseEntity = questionResponseEntity;
+    }
+
+    public QuestionImplementionEntity getQuestionImplementionEntity() {
+        return questionImplementionEntity;
+    }
+
+    public void setQuestionImplementionEntity(QuestionImplementionEntity questionImplementionEntity) {
+        this.questionImplementionEntity = questionImplementionEntity;
+    }
+
+    public QuestionLookBackEntity getQuestionLookBackEntity() {
+        return questionLookBackEntity;
+    }
+
+    public void setQuestionLookBackEntity(QuestionLookBackEntity questionLookBackEntity) {
+        this.questionLookBackEntity = questionLookBackEntity;
     }
 }
