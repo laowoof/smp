@@ -50,13 +50,26 @@
         (select COALESCE(sum(dwsl),0) from rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl where tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 企业单位总数,
         (SELECT COALESCE(sum(dwsl),0) FROM rpt.rpt_aqjg_zdmb_lzfxtj_sydwsl WHERE jbdjdm IN ('1','2','3','8') AND tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重点单位总数,
         (SELECT COALESCE(sum(dwsl),0) FROM rpt.rpt_aqjg_zdmb_zysssl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重要设施总数,
-        (SELECT COALESCE(sum(zddwcyrys),0) FROM rpt.rpt_aqjg_zdmb_zddwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 重点单位人员数,
+        (SELECT COALESCE(zddwcyrys,0) FROM rpt.rpt_aqjg_zdmb_zddwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd') LIMIT 1) as 重点单位人员数,
         (SELECT COALESCE(sum(yhsl),0) FROM rpt.rpt_aqjg_zdmb_lzfxtj_yhsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患发现量,
         (SELECT COALESCE(sum(yhcldwsl),0) FROM rpt.rpt_aqjg_zdmb_yhdwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')) as 隐患处理量,
-        (SELECT COALESCE(yhsl-yhcldwsl,0) as 隐患待处理量 FROM
-        (SELECT
-        (SELECT sum(yhsl) yhsl FROM rpt.rpt_aqjg_zdmb_lzfxtj_yhsl WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd')),
-        (SELECT sum(yhcldwsl) yhcldwsl FROM rpt.rpt_aqjg_zdmb_yhdwtj WHERE tjrq = to_char(CURRENT_DATE,'yyyy-MM-dd'))) t)
+        (SELECT COALESCE
+	( yhsl - yhcldwsl, 0 ) AS 隐患待处理量
+FROM
+	(
+	SELECT
+		( SELECT SUM ( CAST ( yhsl AS INT ) ) FROM ods.ods_rt_zypt_jcrw_new_yhxx WHERE jcdbm = '2' ) yhsl,
+		(
+		SELECT SUM
+			( CAST ( yhsl AS INT ) )
+		FROM
+			ods.ods_rt_zypt_jcrw_new_yhxx
+		WHERE
+			jcdbm = '2'
+			AND ( jclx IN ( '1', '2', '3' ) AND clzt = '1' )
+			OR ( jclx = '4' AND clzt IN ( '3', '5', '6' ) )
+		) yhcldwsl
+	) t)
     </select>
     <select id="getImpTargetPie" resultType="java.util.Map">
         SELECT

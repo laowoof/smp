@@ -207,7 +207,7 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
             // 设置精确到小数点后2位
             numberFormat.setMaximumFractionDigits(2);
             String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("value").toString())/ (float)count* 100);//所占百分比
-            map.put("percent", result+"%");
+            stringObjectMap.put("percent", result+"%");
         }
         map.put("mapList", mapList);
         return map;
