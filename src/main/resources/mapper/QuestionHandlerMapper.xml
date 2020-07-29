@@ -165,6 +165,7 @@
             r.duty_unit,
             r.finish_date,
             r.STATE,
+            r.performance,
             e.execute_date
         FROM
         rpt.question_record r
