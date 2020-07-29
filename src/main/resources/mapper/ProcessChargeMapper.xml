@@ -270,7 +270,7 @@
    and y.LCZT = 4
    and y.LSZT is null),
 --0
-(select count(1) dzcf
+(select count(1) ddcf
   from ods.ods_rt_jj_v_tb_yhpc y
  where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
@@ -327,14 +327,14 @@
    and y.LCZT = 12),
 ----------------------支队--------------------------
 --0
-(select count(1) zddcl
+(select count(1) zhddcl
   from ods.ods_rt_jj_v_tb_yhpc y
  where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
    and y.LCZT = 12
    and y.LSZT is null),
 --0
-(select count(1) zdshtg
+(select count(1) zhdshtg
   from ods.ods_rt_jj_v_tb_yhpc y
  where y.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
    and y.SFYX = 1
