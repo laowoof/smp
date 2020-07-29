@@ -108,13 +108,13 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         List<Map<String, Object>> outerRingList = deliveryLogisticsSafeMapper.queryHiddenNumAnalysisFind();
         if (!CollectionUtils.isEmpty(outerRingList)) {
             for (Map<String, Object> stringObjectMap : outerRingList) {
-                outerRingCount = outerRingCount + Integer.valueOf(stringObjectMap.get("name").toString());
+                outerRingCount = outerRingCount + Integer.valueOf(stringObjectMap.get("value").toString());
             }
             for (Map<String, Object> stringObjectMap : outerRingList) {
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 // 设置精确到小数点后2位
                 numberFormat.setMaximumFractionDigits(2);
-                String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("name").toString())/ (float)outerRingCount* 100);//所占百分比
+                String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("value").toString())/ (float)outerRingCount* 100);//所占百分比
                 map.put("percent", result+"%");
             }
         }
@@ -122,13 +122,13 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         List<Map<String, Object>> innerRingList = deliveryLogisticsSafeMapper.queryHiddenNumAnalysisHandler();
         if (!CollectionUtils.isEmpty(innerRingList)) {
             for (Map<String, Object> stringObjectMap : innerRingList) {
-                innerRingCount = innerRingCount + Integer.valueOf(stringObjectMap.get("name").toString());
+                innerRingCount = innerRingCount + Integer.valueOf(stringObjectMap.get("value").toString());
             }
             for (Map<String, Object> stringObjectMap : innerRingList) {
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 // 设置精确到小数点后2位
                 numberFormat.setMaximumFractionDigits(2);
-                String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("name").toString())/ (float)innerRingCount* 100);//所占百分比
+                String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("value").toString())/ (float)innerRingCount* 100);//所占百分比
                 map.put("percent", result+"%");
             }
         }
@@ -145,6 +145,9 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         Integer innerCount = 0;
         if (!CollectionUtils.isEmpty(innerRingList)) {
             for (Map<String, Object> map : innerRingList) {
+                if (map.get("name") == null) {
+                    map.put("name", "");
+                }
                 innerCount = innerCount + Integer.valueOf(map.get("value").toString());
             }
             for (Map<String, Object> map : innerRingList) {
@@ -160,7 +163,9 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         Integer outerCount = 0;
         if (!CollectionUtils.isEmpty(outerRingList)) {
             for (Map<String, Object> map : outerRingList) {
-                if (map.get("dwdj").equals("0")) {
+                if (map.get("dwdj") == null) {
+                    map.put("name", "");
+                } else if (map.get("dwdj").equals("0")) {
                     map.put("name", "A级");
                 } else if (map.get("dwdj").equals("1")) {
                     map.put("name", "B级");
@@ -168,8 +173,6 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
                     map.put("name", "C级");
                 } else if (map.get("dwdj").equals("3")) {
                     map.put("name", "不定级");
-                } else if (map.get("dwdj").equals("")) {
-                    map.put("name", "");
                 }
                 outerCount = outerCount + Integer.valueOf(map.get("value").toString());
             }
@@ -193,6 +196,9 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         Integer count = 0;
         if (!CollectionUtils.isEmpty(mapList)) {
             for (Map<String, Object> stringObjectMap : mapList) {
+                if (stringObjectMap.get("name") == null) {
+                    stringObjectMap.put("name", "");
+                }
                 count = count + Integer.valueOf(stringObjectMap.get("value").toString());
             }
         }

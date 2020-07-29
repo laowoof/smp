@@ -85,9 +85,9 @@
         GROUP BY dwdj
     </select>
     <select id="queryImpTop" resultType="java.util.Map">
-        SELECT jcxmc as name, sum(yhsl) as value FROM rpt."rpt_aqjg_jdwl_yhmx"
+        SELECT jcxmc as name, coalesce(sum(yhsl), 0) as value FROM rpt."rpt_aqjg_jdwl_yhmx"
 --         WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' AND jbdj IN ('1','2','3')
-        GROUP BY jcxmc ORDER BY sum desc LIMIT 5
+        GROUP BY jcxmc ORDER BY value desc LIMIT 5
     </select>
     <select id="queryAnalysisNum" resultType="java.util.Map">
 
