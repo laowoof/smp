@@ -167,7 +167,9 @@
 --             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt = '6') AS fk,
 --             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('3','5','6')) AS yhczwc,
 --             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' AND clzt IN ('01','1','2','4')) AS yhczwwc
-            WITH yhxx as (SELECT * FROM ods.ods_rt_zypt_jcrw_new_yhxx WHERE jcdbm = '6')
+            WITH yhxx as (SELECT * FROM ods.ods_rt_zypt_jcrw_new_yhxx WHERE jcdbm = '6'
+--             AND jcd IN ('烟花爆竹单位检查表','剧毒化学品单位检查表','放射性同位素单位检查','枪支弹药单位检查表','易制毒化学品单位检查表')
+            )
             SELECT
             (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx != '4') AS yhsb,
             (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx != '4' and jczt='1' and gljcjg ='ZADCZG') AS dczg,
