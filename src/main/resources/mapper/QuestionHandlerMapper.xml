@@ -166,7 +166,7 @@
             r.finish_date,
             r.STATE,
             r.performance,
-            r.address
+            r.address,
             e.execute_date
         FROM
         rpt.question_record r
