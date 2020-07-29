@@ -37,9 +37,11 @@ public interface DeliverylogisticsService {
 
     List<Map<String, Object>> yhlxmx(Queryparems queryparems);
 
-    List<Map<String, Object>> kdcl();
+    List<Map<String, Object>> kdcl(Queryparems queryparems);
 
     List<Map<String, Object>> yhlxmxqy();
+
+    List<Map<String, Object>> tbzs();
 
 }
 

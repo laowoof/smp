@@ -6,7 +6,6 @@ import com.oceansoft.szga.smp.mapper.DeliverylogisticsMapper;
 import com.oceansoft.szga.smp.service.DeliverylogisticsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -172,28 +171,28 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     @Override
     public List<Map<String, Object>> zabw() {
         List<Map<String, Object>> resultList = new ArrayList<>();
-        Map<String, Object> resultMap1 = new HashMap<>();
-        resultMap1.put("name","常熟");resultMap1.put("value","9");resultMap1.put("bl","7");resultList.add(resultMap1);
-        Map<String, Object> resultMap2 = new HashMap<>();
-        resultMap2.put("name","高新区");resultMap2.put("value","13");resultMap2.put("bl","10");resultList.add(resultMap2);
-        Map<String, Object> resultMap3 = new HashMap<>();
-        resultMap3.put("name","姑苏");resultMap3.put("value","5");resultMap3.put("bl","4");resultList.add(resultMap3);
-        Map<String, Object> resultMap4 = new HashMap<>();
-        resultMap4.put("name","昆山");resultMap4.put("value","7");resultMap4.put("bl","5");resultList.add(resultMap4);
-        Map<String, Object> resultMap5 = new HashMap<>();
-        resultMap5.put("name","太仓");resultMap5.put("value","10");resultMap5.put("bl","8");resultList.add(resultMap5);
-        Map<String, Object> resultMap6 = new HashMap<>();
-        resultMap6.put("name","吴江");resultMap6.put("value","18");resultMap6.put("bl","14");resultList.add(resultMap6);
-        Map<String, Object> resultMap7 = new HashMap<>();
-        resultMap7.put("name","吴中");resultMap7.put("value","16");resultMap7.put("bl","12");resultList.add(resultMap7);
-        Map<String, Object> resultMap8 = new HashMap<>();
-        resultMap8.put("name","相城");resultMap8.put("value","10");resultMap8.put("bl","8");resultList.add(resultMap8);
-        Map<String, Object> resultMap9 = new HashMap<>();
-        resultMap9.put("name","园区");resultMap9.put("value","29");resultMap9.put("bl","22");resultList.add(resultMap9);
         Map<String, Object> resultMap10 = new HashMap<>();
-        resultMap10.put("name","张家港");resultMap10.put("value","16");resultMap10.put("bl","12");resultList.add(resultMap10);
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("value","133");resultList.add(resultMap);
+        Map<String, Object> resultMap1 = new HashMap<>();
+        Map<String, Object> resultMap2 = new HashMap<>();
+        Map<String, Object> resultMap3 = new HashMap<>();
+        Map<String, Object> resultMap4 = new HashMap<>();
+        Map<String, Object> resultMap5 = new HashMap<>();
+        Map<String, Object> resultMap6 = new HashMap<>();
+        Map<String, Object> resultMap8 = new HashMap<>();
+        Map<String, Object> resultMap7 = new HashMap<>();
+        Map<String, Object> resultMap9 = new HashMap<>();
+        resultMap10.put("name","张家港");resultMap10.put("value","16");resultMap10.put("bl","12");resultList.add(resultMap10);
+        resultMap1.put("name","常熟");resultMap1.put("value","9");resultMap1.put("bl","7");resultList.add(resultMap1);
+        resultMap4.put("name","昆山");resultMap4.put("value","7");resultMap4.put("bl","5");resultList.add(resultMap4);
+        resultMap5.put("name","太仓");resultMap5.put("value","10");resultMap5.put("bl","8");resultList.add(resultMap5);
+        resultMap6.put("name","吴江");resultMap6.put("value","18");resultMap6.put("bl","14");resultList.add(resultMap6);
+        resultMap9.put("name","园区");resultMap9.put("value","29");resultMap9.put("bl","22");resultList.add(resultMap9);
+        resultMap3.put("name","姑苏");resultMap3.put("value","5");resultMap3.put("bl","4");resultList.add(resultMap3);
+        resultMap2.put("name","高新区");resultMap2.put("value","13");resultMap2.put("bl","10");resultList.add(resultMap2);
+        resultMap7.put("name","吴中");resultMap7.put("value","16");resultMap7.put("bl","12");resultList.add(resultMap7);
+        resultMap8.put("name","相城");resultMap8.put("value","10");resultMap8.put("bl","8");resultList.add(resultMap8);
+        resultMap.put("zsl","133");resultList.add(resultMap);
         return resultList;
 //        List<Map<String, Object>> zabw = mapper.zabw();
 //        List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
@@ -377,6 +376,8 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     @Override
     public List<Map<String, Object>> jcg(Queryparems queryparems) {
         List<Map<String, Object>> list = new ArrayList<>();
+        int jgzsl =0;
+        int cgzsl =0;
         if (queryparems.getSjgs().equals("yf")){
             for (int i =0 ;i<12;i++){
                 Map<String, Object> map =new HashMap<>();
@@ -384,8 +385,10 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                 Integer dwflts =0;
                 if (queryparems.getType().equals("jg")){
                     dwflts= mapper.jgyf(queryparems);
+                    jgzsl+=dwflts;
                 }else {
                     dwflts= mapper.cgyf(queryparems);
+                    cgzsl+=dwflts;
                 }
                 map.put("yf",getLast12Months(i));
                 map.put("sl",dwflts);
@@ -397,9 +400,11 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                 queryparems.setData(getLast7Days(i));
                 Integer dwflts =0;
                 if (queryparems.getType().equals("jg")){
+                    jgzsl+=dwflts;
                     dwflts= mapper.jgrq(queryparems);
                 }else {
                     dwflts= mapper.cgrq(queryparems);
+                    cgzsl+=dwflts;
                 }
                 map.put("rq",getLast7Days(i));
                 map.put("sl",dwflts);
@@ -407,42 +412,49 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
             }
         }
         Map<String, Object> map1 =new HashMap<>();
-        map1.put("sl",mapper.jgzs());list.add(map1);
-        Map<String, Object> map2 =new HashMap<>();
-        map2.put("sl",mapper.cgzs());list.add(map2);
+        if (queryparems.getType().equals("jg")){
+            map1.put("zsl",jgzsl);
+        }else {
+            map1.put("zsl",cgzsl);
+        }
+        list.add(map1);
         return list;
     }
 
     @Override
     public List<Map<String, Object>> smsj(Queryparems queryparems) {
         List<Map<String, Object>> list = new ArrayList<>();
+        int sjl =0;
         if (queryparems.getSjgs().equals("yf")){
             for (int i =0 ;i<12;i++){
                 Map<String, Object> map =new HashMap<>();
                 queryparems.setData(getLast12Month(i));
                 List<Float> smsj = mapper.smsj(queryparems);
                 int hs = hs(smsj);
+                sjl=Zh(hs,12);
                 String last7Day = getLast12Month(i);
                 String ll =last7Day.substring(0,4)+"-"+last7Day.substring(4,6);
                 map.put("sj",ll);
                 map.put("bl",hs);
                 list.add(map);
             }
-            return list;
         }else{
             for (int i=0;i<7;i++){
                 Map<String, Object> map =new HashMap<>();
                 queryparems.setData(getLast7Day(i));
                 List<Float> smsj = mapper.smsj(queryparems);
                 int hs = hs(smsj);
+                sjl=Zh(hs,7);
                 String last7Day = getLast7Day(i);
                 String ll =last7Day.substring(0,4)+"-"+last7Day.substring(4,6)+"-"+last7Day.substring(6,8);
                 map.put("sj",ll);
                 map.put("bl",hs);
                 list.add(map);
             }
-            return list;
         }
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("sjl",sjl);list.add(resultMap);
+        return list;
     }
 
     @Override
@@ -477,36 +489,6 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     }
 
     @Override
-    public List<Map<String, Object>> kdcl() {
-        List<Map<String, Object>> resultList = new ArrayList<>();
-        Map<String, Object> resultMap1 = new HashMap<>();
-        resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","5456");resultMap1.put("bl","44");resultList.add(resultMap1);
-        Map<String, Object> resultMap2 = new HashMap<>();
-        resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","953");resultMap2.put("bl","8");resultList.add(resultMap2);
-        Map<String, Object> resultMap3 = new HashMap<>();
-        resultMap3.put("name","江苏德邦物流有限公司");resultMap3.put("value","714");resultMap3.put("bl","6");resultList.add(resultMap3);
-        Map<String, Object> resultMap4 = new HashMap<>();
-        resultMap4.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap4.put("value","698");resultMap4.put("bl","6");resultList.add(resultMap4);
-        Map<String, Object> resultMap5 = new HashMap<>();
-        resultMap5.put("name","苏州中通速递有限公司");resultMap5.put("value","522");resultMap5.put("bl","4");resultList.add(resultMap5);
-        Map<String, Object> resultMap6 = new HashMap<>();
-        resultMap6.put("name","苏州申通物流有限公司");resultMap6.put("value","397");resultMap6.put("bl","3");resultList.add(resultMap6);
-        Map<String, Object> resultMap7 = new HashMap<>();
-        resultMap7.put("name","昆山中通速递服务有限公司");resultMap7.put("value","265");resultMap7.put("bl","2");resultList.add(resultMap7);
-        Map<String, Object> resultMap8 = new HashMap<>();
-        resultMap8.put("name","昆山华通速递有限公司");resultMap8.put("value","250");resultMap8.put("bl","2");resultList.add(resultMap8);
-        Map<String, Object> resultMap9 = new HashMap<>();
-        resultMap9.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap9.put("value","240");resultMap9.put("bl","2");resultList.add(resultMap9);
-        Map<String, Object> resultMap10 = new HashMap<>();
-        resultMap10.put("name","中国邮政速递物流股份有限公司苏州市分公司");resultMap10.put("value","238");resultMap10.put("bl","2");resultList.add(resultMap10);
-        Map<String, Object> resultMap11 = new HashMap<>();
-        resultMap11.put("name","其他品牌");resultMap11.put("value","2528");resultMap11.put("bl","21");resultList.add(resultMap11);
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("value","5456");resultList.add(resultMap);
-        return resultList;
-    }
-
-    @Override
     public List<Map<String, Object>> yhlxmxqy() {
         List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
         List<Map<String, Object>> resultList = new ArrayList<>();
@@ -533,6 +515,29 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
             }
         }
         return resultList;
+    }
+
+    @Override
+    public List<Map<String, Object>> tbzs() {
+        List<Map<String, Object>> list =new ArrayList<>();
+        Map<String, Object> map =new HashMap<>();
+        Integer jgzs = mapper.jgzs();
+        Integer cgzs = mapper.cgzs();
+        map.put("jgzsl",jgzs);
+        map.put("cgzsl",cgzs);
+        map.put("kdclzsl","12261");
+        list.add(map);
+        return list;
+    }
+
+    public int Zh(int a,int b){
+        if (b==0){
+            return 0;
+        }else {
+            float res=(float) a/b;
+            int ss =(int) res;
+            return ss;
+        }
     }
 
     public int hs(List<Float> num){
@@ -604,7 +609,111 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
 
 
 
-
+    @Override
+    public List<Map<String, Object>> kdcl(Queryparems queryparems) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        Map<String, Object> resultMap1 = new HashMap<>();
+        Map<String, Object> resultMap2 = new HashMap<>();
+        Map<String, Object> resultMap3 = new HashMap<>();
+        Map<String, Object> resultMap4 = new HashMap<>();
+        Map<String, Object> resultMap5 = new HashMap<>();
+        Map<String, Object> resultMap6 = new HashMap<>();
+        Map<String, Object> resultMap7 = new HashMap<>();
+        Map<String, Object> resultMap8 = new HashMap<>();
+        Map<String, Object> resultMap9 = new HashMap<>();
+        Map<String, Object> resultMap10 = new HashMap<>();
+        Map<String, Object> resultMap11 = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
+        if(queryparems.getFjmc().equals("")){
+            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","5456");resultMap1.put("bl","44");resultList.add(resultMap1);
+            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","953");resultMap2.put("bl","8");resultList.add(resultMap2);
+            resultMap3.put("name","江苏德邦物流有限公司");resultMap3.put("value","714");resultMap3.put("bl","6");resultList.add(resultMap3);
+            resultMap4.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap4.put("value","698");resultMap4.put("bl","6");resultList.add(resultMap4);
+            resultMap5.put("name","苏州中通速递有限公司");resultMap5.put("value","522");resultMap5.put("bl","4");resultList.add(resultMap5);
+            resultMap6.put("name","苏州申通物流有限公司");resultMap6.put("value","397");resultMap6.put("bl","3");resultList.add(resultMap6);
+            resultMap7.put("name","昆山中通速递服务有限公司");resultMap7.put("value","265");resultMap7.put("bl","2");resultList.add(resultMap7);
+            resultMap8.put("name","昆山华通速递有限公司");resultMap8.put("value","250");resultMap8.put("bl","2");resultList.add(resultMap8);
+            resultMap9.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap9.put("value","240");resultMap9.put("bl","2");resultList.add(resultMap9);
+            resultMap10.put("name","中国邮政速递物流股份有限公司苏州市分公司");resultMap10.put("value","238");resultMap10.put("bl","2");resultList.add(resultMap10);
+            resultMap11.put("name","其他品牌");resultMap11.put("value","2528");resultMap11.put("bl","21");resultList.add(resultMap11);
+            resultMap.put("zsl","5456");resultList.add(resultMap);
+        }else if(queryparems.getFjmc().equals("常熟")){
+            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","420");resultMap1.put("bl","48");resultList.add(resultMap1);
+            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","108");resultMap2.put("bl","12");resultList.add(resultMap2);
+            resultMap3.put("name","中国邮政速递物流股份有限公司江苏省常熟市分公司");resultMap3.put("value","57");resultMap3.put("bl","7");resultList.add(resultMap3);
+            resultMap4.put("name","江苏德邦物流有限公司");resultMap4.put("value","55");resultMap4.put("bl","6");resultList.add(resultMap4);
+            resultMap5.put("name","常熟捷思兔供应链有限公司");resultMap5.put("value","53");resultMap5.put("bl","6");resultList.add(resultMap5);
+            resultMap6.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap6.put("value","43");resultMap6.put("bl","5");resultList.add(resultMap6);
+            resultMap7.put("name","常熟市神舟实业有限公司");resultMap7.put("value","40");resultMap7.put("bl","5");resultList.add(resultMap7);
+            resultMap8.put("name","常熟市中通吉快递有限公司");resultMap8.put("value","40");resultMap8.put("bl","5");resultList.add(resultMap8);
+            resultMap9.put("name","常熟市海航天天快递有限公司");resultMap9.put("value","20");resultMap9.put("bl","2");resultList.add(resultMap9);
+            resultMap10.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap10.put("value","9");resultMap10.put("bl","1");resultList.add(resultMap10);
+            resultMap11.put("name","其他品牌");resultMap11.put("value","24");resultMap11.put("bl","28");resultList.add(resultMap11);
+            resultMap.put("zsl","869");resultList.add(resultMap);
+        }else if(queryparems.getFjmc().equals("昆山")){
+            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","1176");resultMap1.put("bl","36");resultList.add(resultMap1);
+            resultMap2.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap2.put("value","280");resultMap2.put("bl","8");resultList.add(resultMap2);
+            resultMap3.put("name","昆山中通速递服务有限公司");resultMap3.put("value","265");resultMap3.put("bl","8");resultList.add(resultMap3);
+            resultMap4.put("name","昆山华通速递有限公司");resultMap4.put("value","250");resultMap4.put("bl","8");resultList.add(resultMap4);
+            resultMap5.put("name","昆山申通杨光快递有限公司");resultMap5.put("value","223");resultMap5.put("bl","7");resultList.add(resultMap5);
+            resultMap6.put("name","江苏德邦物流有限公司");resultMap6.put("value","218");resultMap6.put("bl","7");resultList.add(resultMap6);
+            resultMap7.put("name","中国邮政集团公司苏州市分公司");resultMap7.put("value","189");resultMap7.put("bl","6");resultList.add(resultMap7);
+            resultMap8.put("name","昆山市全天候商贸有限公司");resultMap8.put("value","135");resultMap8.put("bl","4");resultList.add(resultMap8);
+            resultMap9.put("name","昆山韵达速递有限公司");resultMap9.put("value","101");resultMap9.put("bl","3");resultList.add(resultMap9);
+            resultMap10.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap10.put("value","94");resultMap10.put("bl","3");resultList.add(resultMap10);
+            resultMap11.put("name","其他品牌");resultMap11.put("value","377");resultMap11.put("bl","11");resultList.add(resultMap11);
+            resultMap.put("zsl","3308");resultList.add(resultMap);
+        }else if(queryparems.getFjmc().equals("苏州")){
+            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","2654");resultMap1.put("bl","42");resultList.add(resultMap1);
+            resultMap2.put("name","苏州中通速递有限公司");resultMap2.put("value","522");resultMap2.put("bl","8");resultList.add(resultMap2);
+            resultMap3.put("name","江苏德邦物流有限公司");resultMap3.put("value","424");resultMap3.put("bl","7");resultList.add(resultMap3);
+            resultMap4.put("name","苏州申通物流有限公司");resultMap4.put("value","402");resultMap4.put("bl","6");resultList.add(resultMap4);
+            resultMap5.put("name","中国邮政集团公司苏州市分公司");resultMap5.put("value","384");resultMap5.put("bl","6");resultList.add(resultMap5);
+            resultMap6.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap6.put("value","310");resultMap6.put("bl","5");resultList.add(resultMap6);
+            resultMap7.put("name","中国邮政速递物流股份有限公司苏州市分公司");resultMap7.put("value","238");resultMap7.put("bl","4");resultList.add(resultMap7);
+            resultMap8.put("name","苏州市蔓升物流有限公司");resultMap8.put("value","200");resultMap8.put("bl","3");resultList.add(resultMap8);
+            resultMap9.put("name","苏州万国货运有限公司");resultMap9.put("value","136");resultMap9.put("bl","2");resultList.add(resultMap9);
+            resultMap10.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap10.put("value","131");resultMap10.put("bl","2");resultList.add(resultMap10);
+            resultMap11.put("name","其他品牌");resultMap11.put("value","906");resultMap11.put("bl","13");resultList.add(resultMap11);
+            resultMap.put("zsl","6307");resultList.add(resultMap);
+        } else if(queryparems.getFjmc().equals("太仓")){
+            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","267");resultMap1.put("bl","58");resultList.add(resultMap1);
+            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","55");resultMap2.put("bl","12");resultList.add(resultMap2);
+            resultMap3.put("name","中国邮政速递物流股份有限公司江苏省太仓市分公司");resultMap3.put("value","44");resultMap3.put("bl","10");resultList.add(resultMap3);
+            resultMap4.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap4.put("value","40");resultMap4.put("bl","9");resultList.add(resultMap4);
+            resultMap5.put("name","江苏德邦物流有限公司");resultMap5.put("value","30");resultMap5.put("bl","6");resultList.add(resultMap5);
+            resultMap6.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap6.put("value","9");resultMap6.put("bl","2");resultList.add(resultMap6);
+            resultMap7.put("name","苏州苏宁物流有限公司");resultMap7.put("value","9");resultMap7.put("bl","2");resultList.add(resultMap7);
+            resultMap8.put("name","太仓市韵达快递有限公司");resultMap8.put("value","6");resultMap8.put("bl","1");resultList.add(resultMap8);
+            resultMap9.put("name","太仓市中通兴华速递服务有限公司");resultMap9.put("value","4");resultMap9.put("bl","1");resultList.add(resultMap9);
+            resultMap10.put("name","江苏品骏物流有限公司");resultMap10.put("value","3");resultMap10.put("bl","1");resultList.add(resultMap10);
+            resultMap.put("zsl","467");resultList.add(resultMap);
+        }else if(queryparems.getFjmc().equals("吴江")){
+            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","508");resultMap1.put("bl","63");resultList.add(resultMap1);
+            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","106");resultMap2.put("bl","13");resultList.add(resultMap2);
+            resultMap3.put("name","吴江申通企业发展有限公司");resultMap3.put("value","45");resultMap3.put("bl","6");resultList.add(resultMap3);
+            resultMap4.put("name","苏州捷高物流有限公司");resultMap4.put("value","35");resultMap4.put("bl","4");resultList.add(resultMap4);
+            resultMap5.put("name","江苏德邦物流有限公司");resultMap5.put("value","33");resultMap5.put("bl","4");resultList.add(resultMap5);
+            resultMap6.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap6.put("value","22");resultMap6.put("bl","3");resultList.add(resultMap6);
+            resultMap7.put("name","中国邮政速递物流股份有限公司苏州市吴江区分公司");resultMap7.put("value","16");resultMap7.put("bl","2");resultList.add(resultMap7);
+            resultMap8.put("name","江苏品骏物流有限公司");resultMap8.put("value","15");resultMap8.put("bl","3");resultList.add(resultMap8);
+            resultMap9.put("name","苏州市海达跃速递有限公司");resultMap9.put("value","8");resultMap9.put("bl","1");resultList.add(resultMap9);
+            resultMap10.put("name","南京跨越速运有限公司苏州分公司");resultMap10.put("value","7");resultMap10.put("bl","1");resultList.add(resultMap10);
+            resultMap11.put("name","其他品牌");resultMap11.put("value","17");resultMap11.put("bl","1");resultList.add(resultMap11);
+            resultMap.put("zsl","812");resultList.add(resultMap);
+        }else if(queryparems.getFjmc().equals("张家港")){
+            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","432");resultMap1.put("bl","71");resultList.add(resultMap1);
+            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","111");resultMap2.put("bl","18");resultList.add(resultMap2);
+            resultMap3.put("name","江苏德邦物流有限公司");resultMap3.put("value","37");resultMap3.put("bl","6");resultList.add(resultMap3);
+            resultMap4.put("name","江苏品骏物流有限公司");resultMap4.put("value","7");resultMap4.put("bl","1");resultList.add(resultMap4);
+            resultMap5.put("name","南京跨越速运有限公司苏州分公司");resultMap5.put("value","7");resultMap5.put("bl","1");resultList.add(resultMap5);
+            resultMap6.put("name","上海宅急送物流有限公司张家港分公司");resultMap6.put("value","5");resultMap6.put("bl","1");resultList.add(resultMap6);
+            resultMap7.put("name","张家港江通速递有限公司");resultMap7.put("value","4");resultMap7.put("bl","1");resultList.add(resultMap7);
+            resultMap8.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap8.put("value","3");resultMap8.put("bl","1");resultList.add(resultMap8);
+            resultMap.put("zsl","606");resultList.add(resultMap);
+        }
+        return resultList;
+    }
 
 
 

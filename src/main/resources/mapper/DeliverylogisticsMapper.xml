@@ -59,6 +59,7 @@
           and xzqh in <foreach item="item"  index="index" collection="xzqhs" open="(" separator="," close=")"> #{item}
             </foreach>
         </if>
+        and dwflmc != ''
         group by 1,2
     </select>
     
@@ -77,7 +78,7 @@
     </select>
 
     <select id="dwdj" resultType="map">
-        select COALESCE(dwdj,'无') as dwdj,COALESCE(dwdjmc,'无') as name,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where dwflmc='末端网点'
+        select COALESCE(dwdj,'无') as dwdj,COALESCE(dwdjmc,'未评定') as name,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where dwflmc='末端网点'
         <if test="xzqhs !=null ">
             and xzqh in <foreach item="item"  index="index" collection="xzqhs" open="(" separator="," close=")"> #{item}
         </foreach>
