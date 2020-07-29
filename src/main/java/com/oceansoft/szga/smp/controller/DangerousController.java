@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -155,6 +156,7 @@ public class DangerousController {
     public JSONObject api(@RequestBody JSONObject json) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccessControlRequestMethod(HttpMethod.GET);
         HttpEntity request = new HttpEntity( headers);
         return restTemplate.postForObject(json.getString("url"), request, JSONObject.class);
     }
