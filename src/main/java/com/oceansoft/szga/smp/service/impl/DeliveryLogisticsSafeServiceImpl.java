@@ -108,13 +108,13 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         List<Map<String, Object>> outerRingList = deliveryLogisticsSafeMapper.queryHiddenNumAnalysisFind();
         if (!CollectionUtils.isEmpty(outerRingList)) {
             for (Map<String, Object> stringObjectMap : outerRingList) {
-                outerRingCount = outerRingCount + Integer.valueOf(stringObjectMap.get("sum").toString());
+                outerRingCount = outerRingCount + Integer.valueOf(stringObjectMap.get("name").toString());
             }
             for (Map<String, Object> stringObjectMap : outerRingList) {
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 // 设置精确到小数点后2位
                 numberFormat.setMaximumFractionDigits(2);
-                String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("sum").toString())/ (float)outerRingCount* 100);//所占百分比
+                String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("name").toString())/ (float)outerRingCount* 100);//所占百分比
                 map.put("percent", result+"%");
             }
         }
@@ -122,13 +122,13 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         List<Map<String, Object>> innerRingList = deliveryLogisticsSafeMapper.queryHiddenNumAnalysisHandler();
         if (!CollectionUtils.isEmpty(innerRingList)) {
             for (Map<String, Object> stringObjectMap : innerRingList) {
-                innerRingCount = innerRingCount + Integer.valueOf(stringObjectMap.get("sum").toString());
+                innerRingCount = innerRingCount + Integer.valueOf(stringObjectMap.get("name").toString());
             }
             for (Map<String, Object> stringObjectMap : innerRingList) {
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 // 设置精确到小数点后2位
                 numberFormat.setMaximumFractionDigits(2);
-                String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("sum").toString())/ (float)innerRingCount* 100);//所占百分比
+                String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("name").toString())/ (float)innerRingCount* 100);//所占百分比
                 map.put("percent", result+"%");
             }
         }
@@ -145,13 +145,13 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         Integer innerCount = 0;
         if (!CollectionUtils.isEmpty(innerRingList)) {
             for (Map<String, Object> map : innerRingList) {
-                innerCount = innerCount + Integer.valueOf(map.get("sum").toString());
+                innerCount = innerCount + Integer.valueOf(map.get("value").toString());
             }
             for (Map<String, Object> map : innerRingList) {
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 // 设置精确到小数点后2位
                 numberFormat.setMaximumFractionDigits(2);
-                String result = numberFormat.format((float)  Integer.valueOf(map.get("sum").toString())/ (float)innerCount* 100);//所占百分比
+                String result = numberFormat.format((float)  Integer.valueOf(map.get("value").toString())/ (float)innerCount* 100);//所占百分比
                 map.put("percent", result+"%");
             }
         }
@@ -161,24 +161,24 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         if (!CollectionUtils.isEmpty(outerRingList)) {
             for (Map<String, Object> map : outerRingList) {
                 if (map.get("dwdj").equals("0")) {
-                    map.put("dwdjmc", "A级");
+                    map.put("name", "A级");
                 } else if (map.get("dwdj").equals("1")) {
-                    map.put("dwdjmc", "B级");
+                    map.put("name", "B级");
                 } else if (map.get("dwdj").equals("2")) {
-                    map.put("dwdjmc", "C级");
+                    map.put("name", "C级");
                 } else if (map.get("dwdj").equals("3")) {
-                    map.put("dwdjmc", "不定级");
+                    map.put("name", "不定级");
                 } else if (map.get("dwdj").equals("")) {
-                    map.put("dwdjmc", "");
+                    map.put("name", "");
                 }
-                outerCount = outerCount + Integer.valueOf(map.get("sum").toString());
+                outerCount = outerCount + Integer.valueOf(map.get("value").toString());
             }
         }
         for (Map<String, Object> map : outerRingList) {
             NumberFormat numberFormat = NumberFormat.getInstance();
             // 设置精确到小数点后2位
             numberFormat.setMaximumFractionDigits(2);
-            String result = numberFormat.format((float)  Integer.valueOf(map.get("sum").toString())/ (float)outerCount* 100);//所占百分比
+            String result = numberFormat.format((float)  Integer.valueOf(map.get("value").toString())/ (float)outerCount* 100);//所占百分比
             map.put("percent", result+"%");
         }
         resultMap.put("innerRingList", innerRingList);
@@ -193,14 +193,14 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         Integer count = 0;
         if (!CollectionUtils.isEmpty(mapList)) {
             for (Map<String, Object> stringObjectMap : mapList) {
-                count = count + Integer.valueOf(stringObjectMap.get("sum").toString());
+                count = count + Integer.valueOf(stringObjectMap.get("value").toString());
             }
         }
         for (Map<String, Object> stringObjectMap : mapList) {
             NumberFormat numberFormat = NumberFormat.getInstance();
             // 设置精确到小数点后2位
             numberFormat.setMaximumFractionDigits(2);
-            String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("sum").toString())/ (float)count* 100);//所占百分比
+            String result = numberFormat.format((float)  Integer.valueOf(stringObjectMap.get("value").toString())/ (float)count* 100);//所占百分比
             map.put("percent", result+"%");
         }
         map.put("mapList", mapList);

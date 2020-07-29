@@ -66,16 +66,17 @@
         SELECT gxsj, lzzt, shzt, ffzt, rlzt, zgzt, yhdl FROM ods."ods_rt_czfw_yhxx" WHERE bh = #{id}
     </select>
     <select id="queryImpTable" resultType="java.util.Map">
-        SELECT a.rwzj, a.jcsj, a.jcd, a.dwmc, a.jclx, a.clzt, a.dwdz, a.jzsj FROM ods."ods_rt_zypt_jcrw_new_yhxx" a
-        INNER JOIN ods.ods_rt_zypt_sydw_jbxx b ON a.glzj = b.dwzj
+        SELECT rwzj, jcsj, jcd, dwmc, jclx, clzt, dwdz, jzsj FROM ods."ods_rt_zypt_jcrw_new_yhxx"
         <if test="type == 1">
-        WHERE b.glbm like '%2%' AND b.yyzt = '01' AND b.jbspzt = '3'
+        WHERE jcdbm = '2'
         </if>
         <if test="type == 2">
-            WHERE b.glbm like '%6%' AND b.yyzt = '01' AND b.zawxpspzt = '3' AND b.dwfl like '%14%' and (b.scbs is null or b.scbs = '0')
+--             WHERE b.glbm like '%6%' AND b.yyzt = '01' AND b.zawxpspzt = '3' AND b.dwfl like '%14%' and (b.scbs is null or b.scbs = '0')
+            WHERE jcdbm = '6'
+            --             AND jcd IN ('烟花爆竹单位检查表','剧毒化学品单位检查表','放射性同位素单位检查','枪支弹药单位检查表','易制毒化学品单位检查表')
         </if>
         <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
-            and (a.jcd like concat('%',#{questionQueryBean.keyWord},'%') or a.dwmc like concat('%',#{questionQueryBean.keyWord},'%'))
+            and dwmc like concat('%',#{questionQueryBean.keyWord},'%')
         </if>
         <if test="questionQueryBean.reactionDept != null and questionQueryBean.reactionDept != '' and questionQueryBean.reactionDept == '隐患上报'">
             and jclx IN ('01','1','2','3')
@@ -189,6 +190,23 @@
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' and jczt='1' and gljcjg = 'ZAZLXQZG') b,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg ='100' and clzt='6') c,
             (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg = 'ZAZLXQZG' and clzt='6') d) t)
+        </if>
+        <if test="type == 3">
+            WITH yhxx as (SELECT * FROM ods.ods_rt_zypt_jcrw_new_yhxx WHERE jcdbm = '6'
+            --               AND jcd = '寄递业末端网点检查表'
+            )
+            SELECT
+            (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx != '4') AS yhsb,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx != '4' and jczt='1' and gljcjg ='ZADCZG') AS dczg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx != '4' and jczt='1' and gljcjg ='ZAZLXQZG') AS zlqxzgbcjg,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4') AS fc,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4' and jczt='1' and gljcjg = 'ZAZLXQZG' and clzt='6') AS xzcf,
+            (SELECT COALESCE((a + b + c), 0) as yhclwc
+            FROM
+            (SELECT
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx != '4' and jczt='1' and gljcjg ='ZADCZG') a,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' and jczt='1' and gljcjg ='ZADCZG') b,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)),0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg = 'ZAZLXQZG' and clzt='6') c) t)
         </if>
     </select>
     <select id="queryDeliveryTable" resultType="java.util.Map">
