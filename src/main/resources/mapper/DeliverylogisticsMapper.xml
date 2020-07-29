@@ -143,7 +143,11 @@
 
     <select id="yhlxzsl" resultType="int">
         select COALESCE(sum(yhsl),0) as num from rpt.rpt_aqjg_jdwl_yhmx WHERE 1=1
+<<<<<<< Updated upstream
         and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+=======
+       and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+>>>>>>> Stashed changes
         and tjrq like #{data} ||'%'
         <if test="fjmc !=null and fjmc != '' ">
             and  fjmc =#{fjmc}
@@ -152,7 +156,11 @@
 
     <select id="yhlxyzg" resultType="int">
         select COALESCE(sum(yhsl),0) from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6'))
+<<<<<<< Updated upstream
         and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+=======
+       and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+>>>>>>> Stashed changes
         and tjrq like #{data} ||'%'
         <if test="fjmc !=null and fjmc != '' ">
             and  fjmc =#{fjmc}
@@ -167,7 +175,11 @@
 
     <select id="yhlxyzg1" resultType="map">
         select fjmc,COALESCE(sum(yhsl),0) as num from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6'))
+<<<<<<< Updated upstream
                 and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+=======
+        and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+>>>>>>> Stashed changes
         and fjmc = #{fjmc} group by 1
     </select>
 

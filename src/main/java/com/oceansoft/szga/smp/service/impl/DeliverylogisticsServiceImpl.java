@@ -460,32 +460,18 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     @Override
     public List<Map<String, Object>> yhlxmx(Queryparems queryparems) {
         List<Map<String, Object>> list = new ArrayList<>();
-        if (queryparems.getSjgs().equals("yf")){
-            for (int i =0 ;i<12;i++){
-                Map<String, Object> map =new HashMap<>();
-                queryparems.setData(getLast12Months(i));
-                String last7Day = getLast12Months(i);
-                Integer yhlxyzg = mapper.yhlxyzg(queryparems);
-                Integer yhlxzsl = mapper.yhlxzsl(queryparems);
-                map.put("yzg",yhlxyzg);
-                map.put("wzg",yhlxzsl-yhlxyzg);
-                map.put("rq",last7Day);
-                list.add(map);
+        for (int i =0 ;i<10;i++){
+            Map<String, Object> map =new HashMap<>();
+            queryparems.setData(getLast12Months(i));
+            String last7Day = getLast12Months(i);
+            Integer yhlxyzg = mapper.yhlxyzg(queryparems);
+            Integer yhlxzsl = mapper.yhlxzsl(queryparems);
+            map.put("yzg",yhlxyzg);
+            map.put("wzg",yhlxzsl-yhlxyzg);
+            map.put("rq",last7Day);
+            list.add(map);
             }
-            return list;
-        }else{
-            for (int i=0;i<7;i++){
-                Map<String, Object> map =new HashMap<>();
-                queryparems.setData(getLast7Days(i));
-                Integer yhlxyzg = mapper.yhlxyzg(queryparems);
-                Integer yhlxzsl = mapper.yhlxzsl(queryparems);
-                map.put("yzg",yhlxyzg);
-                map.put("wzg",yhlxzsl-yhlxyzg);
-                map.put("rq",getLast7Days(i));
-                list.add(map);
-            }
-            return list;
-        }
+         return list;
     }
 
     @Override
@@ -625,92 +611,91 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
         Map<String, Object> resultMap11 = new HashMap<>();
         Map<String, Object> resultMap = new HashMap<>();
         if(queryparems.getFjmc().equals("")){
-            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","5456");resultMap1.put("bl","44");resultList.add(resultMap1);
-            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","953");resultMap2.put("bl","8");resultList.add(resultMap2);
-            resultMap3.put("name","江苏德邦物流有限公司");resultMap3.put("value","714");resultMap3.put("bl","6");resultList.add(resultMap3);
-            resultMap4.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap4.put("value","698");resultMap4.put("bl","6");resultList.add(resultMap4);
-            resultMap5.put("name","苏州中通速递有限公司");resultMap5.put("value","522");resultMap5.put("bl","4");resultList.add(resultMap5);
-            resultMap6.put("name","苏州申通物流有限公司");resultMap6.put("value","397");resultMap6.put("bl","3");resultList.add(resultMap6);
-            resultMap7.put("name","昆山中通速递服务有限公司");resultMap7.put("value","265");resultMap7.put("bl","2");resultList.add(resultMap7);
-            resultMap8.put("name","昆山华通速递有限公司");resultMap8.put("value","250");resultMap8.put("bl","2");resultList.add(resultMap8);
-            resultMap9.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap9.put("value","240");resultMap9.put("bl","2");resultList.add(resultMap9);
-            resultMap10.put("name","中国邮政速递物流股份有限公司苏州市分公司");resultMap10.put("value","238");resultMap10.put("bl","2");resultList.add(resultMap10);
-            resultMap11.put("name","其他品牌");resultMap11.put("value","2528");resultMap11.put("bl","21");resultList.add(resultMap11);
-            resultMap.put("zsl","5456");resultList.add(resultMap);
+            resultMap1.put("name","顺丰");resultMap1.put("value","5456");resultMap1.put("bl","44");resultList.add(resultMap1);
+            resultMap2.put("name","邮政");resultMap2.put("value","1391");resultMap2.put("bl","11");resultList.add(resultMap2);
+            resultMap3.put("name","中通");resultMap3.put("value","791");resultMap3.put("bl","6");resultList.add(resultMap3);
+            resultMap4.put("name","德邦");resultMap4.put("value","714");resultMap4.put("bl","6");resultList.add(resultMap4);
+            resultMap5.put("name","京邦达");resultMap5.put("value","698");resultMap5.put("bl","6");resultList.add(resultMap5);
+            resultMap6.put("name","申通");resultMap6.put("value","665");resultMap6.put("bl","5");resultList.add(resultMap6);
+            resultMap7.put("name","华通");resultMap7.put("value","250");resultMap7.put("bl","2");resultList.add(resultMap7);
+            resultMap8.put("name","晟邦");resultMap8.put("value","240");resultMap8.put("bl","2");resultList.add(resultMap8);
+            resultMap9.put("name","蔓升");resultMap9.put("value","200");resultMap9.put("bl","2");resultList.add(resultMap9);
+            resultMap10.put("name","品骏");resultMap10.put("value","180");resultMap10.put("bl","1");resultList.add(resultMap10);
+            resultMap11.put("name","其他");resultMap11.put("value","1676");resultMap11.put("bl","14");resultList.add(resultMap11);
+            resultMap.put("zsl","12261");resultList.add(resultMap);
         }else if(queryparems.getFjmc().equals("常熟")){
-            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","420");resultMap1.put("bl","48");resultList.add(resultMap1);
-            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","108");resultMap2.put("bl","12");resultList.add(resultMap2);
-            resultMap3.put("name","中国邮政速递物流股份有限公司江苏省常熟市分公司");resultMap3.put("value","57");resultMap3.put("bl","7");resultList.add(resultMap3);
-            resultMap4.put("name","江苏德邦物流有限公司");resultMap4.put("value","55");resultMap4.put("bl","6");resultList.add(resultMap4);
-            resultMap5.put("name","常熟捷思兔供应链有限公司");resultMap5.put("value","53");resultMap5.put("bl","6");resultList.add(resultMap5);
-            resultMap6.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap6.put("value","43");resultMap6.put("bl","5");resultList.add(resultMap6);
-            resultMap7.put("name","常熟市神舟实业有限公司");resultMap7.put("value","40");resultMap7.put("bl","5");resultList.add(resultMap7);
-            resultMap8.put("name","常熟市中通吉快递有限公司");resultMap8.put("value","40");resultMap8.put("bl","5");resultList.add(resultMap8);
-            resultMap9.put("name","常熟市海航天天快递有限公司");resultMap9.put("value","20");resultMap9.put("bl","2");resultList.add(resultMap9);
-            resultMap10.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap10.put("value","9");resultMap10.put("bl","1");resultList.add(resultMap10);
-            resultMap11.put("name","其他品牌");resultMap11.put("value","24");resultMap11.put("bl","28");resultList.add(resultMap11);
-            resultMap.put("zsl","869");resultList.add(resultMap);
+            resultMap1.put("name","顺丰");resultMap1.put("value","420");resultMap1.put("bl","51");resultList.add(resultMap1);
+            resultMap2.put("name","邮政");resultMap2.put("value","108");resultMap2.put("bl","20");resultList.add(resultMap2);
+            resultMap3.put("name","捷思兔");resultMap3.put("value","57");resultMap3.put("bl","6");resultList.add(resultMap3);
+            resultMap4.put("name","京邦达");resultMap4.put("value","55");resultMap4.put("bl","5");resultList.add(resultMap4);
+            resultMap5.put("name","神舟");resultMap5.put("value","53");resultMap5.put("bl","6");resultList.add(resultMap5);
+            resultMap6.put("name","中通");resultMap6.put("value","43");resultMap6.put("bl","5");resultList.add(resultMap6);
+            resultMap7.put("name","海航");resultMap7.put("value","40");resultMap7.put("bl","2");resultList.add(resultMap7);
+            resultMap8.put("name","德邦");resultMap8.put("value","40");resultMap8.put("bl","1");resultList.add(resultMap8);
+            resultMap9.put("name","晟邦");resultMap9.put("value","20");resultMap9.put("bl","1");resultList.add(resultMap9);
+            resultMap10.put("name","品骏");resultMap10.put("value","9");resultMap10.put("bl","1");resultList.add(resultMap10);
+            resultMap11.put("name","其他");resultMap11.put("value","16");resultMap11.put("bl","2");resultList.add(resultMap11);
+            resultMap.put("zsl","824");resultList.add(resultMap);
         }else if(queryparems.getFjmc().equals("昆山")){
-            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","1176");resultMap1.put("bl","36");resultList.add(resultMap1);
-            resultMap2.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap2.put("value","280");resultMap2.put("bl","8");resultList.add(resultMap2);
-            resultMap3.put("name","昆山中通速递服务有限公司");resultMap3.put("value","265");resultMap3.put("bl","8");resultList.add(resultMap3);
-            resultMap4.put("name","昆山华通速递有限公司");resultMap4.put("value","250");resultMap4.put("bl","8");resultList.add(resultMap4);
-            resultMap5.put("name","昆山申通杨光快递有限公司");resultMap5.put("value","223");resultMap5.put("bl","7");resultList.add(resultMap5);
-            resultMap6.put("name","江苏德邦物流有限公司");resultMap6.put("value","218");resultMap6.put("bl","7");resultList.add(resultMap6);
-            resultMap7.put("name","中国邮政集团公司苏州市分公司");resultMap7.put("value","189");resultMap7.put("bl","6");resultList.add(resultMap7);
-            resultMap8.put("name","昆山市全天候商贸有限公司");resultMap8.put("value","135");resultMap8.put("bl","4");resultList.add(resultMap8);
-            resultMap9.put("name","昆山韵达速递有限公司");resultMap9.put("value","101");resultMap9.put("bl","3");resultList.add(resultMap9);
-            resultMap10.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap10.put("value","94");resultMap10.put("bl","3");resultList.add(resultMap10);
-            resultMap11.put("name","其他品牌");resultMap11.put("value","377");resultMap11.put("bl","11");resultList.add(resultMap11);
-            resultMap.put("zsl","3308");resultList.add(resultMap);
+            resultMap1.put("name","顺丰");resultMap1.put("value","1176");resultMap1.put("bl","36");resultList.add(resultMap1);
+            resultMap2.put("name","京邦达");resultMap2.put("value","280");resultMap2.put("bl","9");resultList.add(resultMap2);
+            resultMap3.put("name","邮政");resultMap3.put("value","272");resultMap3.put("bl","8");resultList.add(resultMap3);
+            resultMap4.put("name","中通");resultMap4.put("value","265");resultMap4.put("bl","8");resultList.add(resultMap4);
+            resultMap5.put("name","华通");resultMap5.put("value","250");resultMap5.put("bl","8");resultList.add(resultMap5);
+            resultMap6.put("name","申通");resultMap6.put("value","223");resultMap6.put("bl","7");resultList.add(resultMap6);
+            resultMap7.put("name","德邦");resultMap7.put("value","189");resultMap7.put("bl","6");resultList.add(resultMap7);
+            resultMap8.put("name","全天候");resultMap8.put("value","125");resultMap8.put("bl","4");resultList.add(resultMap8);
+            resultMap9.put("name","韵达");resultMap9.put("value","101");resultMap9.put("bl","3");resultList.add(resultMap9);
+            resultMap10.put("name","晟邦");resultMap10.put("value","92");resultMap10.put("bl","3");resultList.add(resultMap10);
+            resultMap11.put("name","其他");resultMap11.put("value","294");resultMap11.put("bl","9");resultList.add(resultMap11);
+            resultMap.put("zsl","3267");resultList.add(resultMap);
         }else if(queryparems.getFjmc().equals("苏州")){
-            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","2654");resultMap1.put("bl","42");resultList.add(resultMap1);
-            resultMap2.put("name","苏州中通速递有限公司");resultMap2.put("value","522");resultMap2.put("bl","8");resultList.add(resultMap2);
-            resultMap3.put("name","江苏德邦物流有限公司");resultMap3.put("value","424");resultMap3.put("bl","7");resultList.add(resultMap3);
-            resultMap4.put("name","苏州申通物流有限公司");resultMap4.put("value","402");resultMap4.put("bl","6");resultList.add(resultMap4);
-            resultMap5.put("name","中国邮政集团公司苏州市分公司");resultMap5.put("value","384");resultMap5.put("bl","6");resultList.add(resultMap5);
-            resultMap6.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap6.put("value","310");resultMap6.put("bl","5");resultList.add(resultMap6);
-            resultMap7.put("name","中国邮政速递物流股份有限公司苏州市分公司");resultMap7.put("value","238");resultMap7.put("bl","4");resultList.add(resultMap7);
-            resultMap8.put("name","苏州市蔓升物流有限公司");resultMap8.put("value","200");resultMap8.put("bl","3");resultList.add(resultMap8);
-            resultMap9.put("name","苏州万国货运有限公司");resultMap9.put("value","136");resultMap9.put("bl","2");resultList.add(resultMap9);
-            resultMap10.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap10.put("value","131");resultMap10.put("bl","2");resultList.add(resultMap10);
-            resultMap11.put("name","其他品牌");resultMap11.put("value","906");resultMap11.put("bl","13");resultList.add(resultMap11);
-            resultMap.put("zsl","6307");resultList.add(resultMap);
+            resultMap1.put("name","顺丰");resultMap1.put("value","2653");resultMap1.put("bl","42");resultList.add(resultMap1);
+            resultMap2.put("name","邮政");resultMap2.put("value","622");resultMap2.put("bl","10");resultList.add(resultMap2);
+            resultMap3.put("name","中通");resultMap3.put("value","522");resultMap3.put("bl","8");resultList.add(resultMap3);
+            resultMap4.put("name","德邦");resultMap4.put("value","424");resultMap4.put("bl","7");resultList.add(resultMap4);
+            resultMap5.put("name","申通");resultMap5.put("value","397");resultMap5.put("bl","6");resultList.add(resultMap5);
+            resultMap6.put("name","京邦达");resultMap6.put("value","310");resultMap6.put("bl","5");resultList.add(resultMap6);
+            resultMap7.put("name","蔓升");resultMap7.put("value","200");resultMap7.put("bl","3");resultList.add(resultMap7);
+            resultMap8.put("name","万国");resultMap8.put("value","136");resultMap8.put("bl","2");resultList.add(resultMap8);
+            resultMap9.put("name","晟邦");resultMap9.put("value","130");resultMap9.put("bl","2");resultList.add(resultMap9);
+            resultMap10.put("name","火隆");resultMap10.put("value","97");resultMap10.put("bl","2");resultList.add(resultMap10);
+            resultMap11.put("name","其他");resultMap11.put("value","803");resultMap11.put("bl","13");resultList.add(resultMap11);
+            resultMap.put("zsl","6294");resultList.add(resultMap);
         } else if(queryparems.getFjmc().equals("太仓")){
-            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","267");resultMap1.put("bl","58");resultList.add(resultMap1);
-            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","55");resultMap2.put("bl","12");resultList.add(resultMap2);
-            resultMap3.put("name","中国邮政速递物流股份有限公司江苏省太仓市分公司");resultMap3.put("value","44");resultMap3.put("bl","10");resultList.add(resultMap3);
-            resultMap4.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap4.put("value","40");resultMap4.put("bl","9");resultList.add(resultMap4);
-            resultMap5.put("name","江苏德邦物流有限公司");resultMap5.put("value","30");resultMap5.put("bl","6");resultList.add(resultMap5);
-            resultMap6.put("name","南京晟邦物流有限公司苏州市姑苏区分公司");resultMap6.put("value","9");resultMap6.put("bl","2");resultList.add(resultMap6);
-            resultMap7.put("name","苏州苏宁物流有限公司");resultMap7.put("value","9");resultMap7.put("bl","2");resultList.add(resultMap7);
-            resultMap8.put("name","太仓市韵达快递有限公司");resultMap8.put("value","6");resultMap8.put("bl","1");resultList.add(resultMap8);
-            resultMap9.put("name","太仓市中通兴华速递服务有限公司");resultMap9.put("value","4");resultMap9.put("bl","1");resultList.add(resultMap9);
-            resultMap10.put("name","江苏品骏物流有限公司");resultMap10.put("value","3");resultMap10.put("bl","1");resultList.add(resultMap10);
+            resultMap1.put("name","顺丰");resultMap1.put("value","267");resultMap1.put("bl","57");resultList.add(resultMap1);
+            resultMap2.put("name","邮政");resultMap2.put("value","99");resultMap2.put("bl","21");resultList.add(resultMap2);
+            resultMap3.put("name","京邦达");resultMap3.put("value","40");resultMap3.put("bl","9");resultList.add(resultMap3);
+            resultMap4.put("name","德邦");resultMap4.put("value","30");resultMap4.put("bl","6");resultList.add(resultMap4);
+            resultMap5.put("name","晟邦");resultMap5.put("value","9");resultMap5.put("bl","2");resultList.add(resultMap5);
+            resultMap6.put("name","苏宁");resultMap6.put("value","9");resultMap6.put("bl","2");resultList.add(resultMap6);
+            resultMap7.put("name","韵达");resultMap7.put("value","6");resultMap7.put("bl","1");resultList.add(resultMap7);
+            resultMap8.put("name","中通");resultMap8.put("value","4");resultMap8.put("bl","1");resultList.add(resultMap8);
+            resultMap9.put("name","品骏");resultMap9.put("value","3");resultMap9.put("bl","1");resultList.add(resultMap9);
             resultMap.put("zsl","467");resultList.add(resultMap);
         }else if(queryparems.getFjmc().equals("吴江")){
-            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","508");resultMap1.put("bl","63");resultList.add(resultMap1);
-            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","106");resultMap2.put("bl","13");resultList.add(resultMap2);
-            resultMap3.put("name","吴江申通企业发展有限公司");resultMap3.put("value","45");resultMap3.put("bl","6");resultList.add(resultMap3);
-            resultMap4.put("name","苏州捷高物流有限公司");resultMap4.put("value","35");resultMap4.put("bl","4");resultList.add(resultMap4);
-            resultMap5.put("name","江苏德邦物流有限公司");resultMap5.put("value","33");resultMap5.put("bl","4");resultList.add(resultMap5);
-            resultMap6.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap6.put("value","22");resultMap6.put("bl","3");resultList.add(resultMap6);
-            resultMap7.put("name","中国邮政速递物流股份有限公司苏州市吴江区分公司");resultMap7.put("value","16");resultMap7.put("bl","2");resultList.add(resultMap7);
-            resultMap8.put("name","江苏品骏物流有限公司");resultMap8.put("value","15");resultMap8.put("bl","3");resultList.add(resultMap8);
-            resultMap9.put("name","苏州市海达跃速递有限公司");resultMap9.put("value","8");resultMap9.put("bl","1");resultList.add(resultMap9);
-            resultMap10.put("name","南京跨越速运有限公司苏州分公司");resultMap10.put("value","7");resultMap10.put("bl","1");resultList.add(resultMap10);
-            resultMap11.put("name","其他品牌");resultMap11.put("value","17");resultMap11.put("bl","1");resultList.add(resultMap11);
+            resultMap1.put("name","顺丰");resultMap1.put("value","508");resultMap1.put("bl","63");resultList.add(resultMap1);
+            resultMap2.put("name","邮政");resultMap2.put("value","122");resultMap2.put("bl","15");resultList.add(resultMap2);
+            resultMap3.put("name","申通");resultMap3.put("value","45");resultMap3.put("bl","6");resultList.add(resultMap3);
+            resultMap4.put("name","捷高");resultMap4.put("value","35");resultMap4.put("bl","4");resultList.add(resultMap4);
+            resultMap5.put("name","德邦");resultMap5.put("value","33");resultMap5.put("bl","4");resultList.add(resultMap5);
+            resultMap6.put("name","京邦达");resultMap6.put("value","22");resultMap6.put("bl","3");resultList.add(resultMap6);
+            resultMap7.put("name","品骏");resultMap7.put("value","15");resultMap7.put("bl","2");resultList.add(resultMap7);
+            resultMap8.put("name","海达跃");resultMap8.put("value","8");resultMap8.put("bl","1");resultList.add(resultMap8);
+            resultMap9.put("name","跨越");resultMap9.put("value","7");resultMap9.put("bl","1");resultList.add(resultMap9);
+            resultMap10.put("name","叮呱呱");resultMap10.put("value","6");resultMap10.put("bl","1");resultList.add(resultMap10);
+            resultMap11.put("name","其他");resultMap11.put("value","11");resultMap11.put("bl","1");resultList.add(resultMap11);
             resultMap.put("zsl","812");resultList.add(resultMap);
         }else if(queryparems.getFjmc().equals("张家港")){
-            resultMap1.put("name","苏州工业园区顺丰速运有限公司");resultMap1.put("value","432");resultMap1.put("bl","71");resultList.add(resultMap1);
-            resultMap2.put("name","中国邮政集团公司苏州市分公司");resultMap2.put("value","111");resultMap2.put("bl","18");resultList.add(resultMap2);
-            resultMap3.put("name","江苏德邦物流有限公司");resultMap3.put("value","37");resultMap3.put("bl","6");resultList.add(resultMap3);
-            resultMap4.put("name","江苏品骏物流有限公司");resultMap4.put("value","7");resultMap4.put("bl","1");resultList.add(resultMap4);
-            resultMap5.put("name","南京跨越速运有限公司苏州分公司");resultMap5.put("value","7");resultMap5.put("bl","1");resultList.add(resultMap5);
-            resultMap6.put("name","上海宅急送物流有限公司张家港分公司");resultMap6.put("value","5");resultMap6.put("bl","1");resultList.add(resultMap6);
-            resultMap7.put("name","张家港江通速递有限公司");resultMap7.put("value","4");resultMap7.put("bl","1");resultList.add(resultMap7);
-            resultMap8.put("name","北京京邦达贸易有限公司苏州第一分公司");resultMap8.put("value","3");resultMap8.put("bl","1");resultList.add(resultMap8);
-            resultMap.put("zsl","606");resultList.add(resultMap);
+            resultMap1.put("name","顺丰");resultMap1.put("value","432");resultMap1.put("bl","72");resultList.add(resultMap1);
+            resultMap2.put("name","邮政");resultMap2.put("value","111");resultMap2.put("bl","19");resultList.add(resultMap2);
+            resultMap3.put("name","德邦");resultMap3.put("value","28");resultMap3.put("bl","5");resultList.add(resultMap3);
+            resultMap4.put("name","品骏");resultMap4.put("value","7");resultMap4.put("bl","1");resultList.add(resultMap4);
+            resultMap5.put("name","跨越");resultMap5.put("value","7");resultMap5.put("bl","1");resultList.add(resultMap5);
+            resultMap6.put("name","宅急送");resultMap6.put("value","5");resultMap6.put("bl","1");resultList.add(resultMap6);
+            resultMap7.put("name","江通");resultMap7.put("value","4");resultMap7.put("bl","1");resultList.add(resultMap7);
+            resultMap8.put("name","京邦达");resultMap8.put("value","3");resultMap8.put("bl","1");resultList.add(resultMap8);
+            resultMap.put("zsl","597");resultList.add(resultMap);
         }
         return resultList;
     }
