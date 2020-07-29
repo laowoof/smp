@@ -63,7 +63,7 @@ cas:
 prop:
   redirect-url: http://localhost:8088/#/casLogin
 file:
-  confirm-url: http://172.17.118.238:9003/storage/confirm
+  confirm-url: http://172.17.100.204:9003/storage/confirm
 ---
 spring:
   profiles: pro
@@ -115,4 +115,4 @@ cas:
 prop:
   redirect-url: http://172.17.118.238:8011/#/casLogin
 file:
-  confirm-url: http://172.17.118.238:9003/storage/confirm
+  confirm-url: http://172.17.100.204:9003/storage/confirm
