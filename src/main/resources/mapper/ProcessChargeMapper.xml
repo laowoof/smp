@@ -66,12 +66,11 @@
         SELECT gxsj, lzzt, shzt, ffzt, rlzt, zgzt, yhdl FROM ods."ods_rt_czfw_yhxx" WHERE bh = #{id}
     </select>
     <select id="queryImpTable" resultType="java.util.Map">
-        SELECT rwzj, jcsj, jcd, dwmc, jclx, clzt, dwdz, jzsj FROM ods."ods_rt_zypt_jcrw_new_yhxx"
+        SELECT rwzj, jcsj, jcd, dwmc, jclx, clzt, dwdz, jzsj, yhsl FROM ods."ods_rt_zypt_jcrw_new_yhxx"
         <if test="type == 1">
         WHERE jcdbm = '2'
         </if>
         <if test="type == 2">
---             WHERE b.glbm like '%6%' AND b.yyzt = '01' AND b.zawxpspzt = '3' AND b.dwfl like '%14%' and (b.scbs is null or b.scbs = '0')
             WHERE jcdbm = '6'
             --             AND jcd IN ('烟花爆竹单位检查表','剧毒化学品单位检查表','放射性同位素单位检查','枪支弹药单位检查表','易制毒化学品单位检查表')
         </if>
@@ -210,7 +209,11 @@
         </if>
     </select>
     <select id="queryDeliveryTable" resultType="java.util.Map">
-        SELECT rwzj, jcsj, jcd, dwmc, jcxmc, jclx, clzt, jczt, fjmc, jzsj FROM rpt.rpt_aqjg_jdwl_yhmx
+        SELECT rwzj, jcsj, jcd, dwmc, jclx, clzt, dwdz, jzsj, yhsl FROM ods."ods_rt_zypt_jcrw_new_yhxx" WHERE jcdbm = '6'
+--         AND jcd = '寄递业末端网点检查表'
+        <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
+            and (jcd like concat('%',#{questionQueryBean.keyWord},'%') or dwmc like concat('%',#{questionQueryBean.keyWord},'%'))
+        </if>
     </select>
     <select id="queryTrafficData" resultType="java.util.Map">
         SELECT
