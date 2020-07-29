@@ -111,7 +111,7 @@
     <update id="updateQuestionLookBack">
         UPDATE rpt.question_look_back SET look_back_user = #{ lookBackUser },
 						look_back_date = #{ lookBackDate },
-						look_back_result = #{ lookBackResult }
+						look_back_result = #{ lookBackResult },
             file_ids = #{ fileIds },
             update_date = now()::timestamp(0)without time zone,
             update_user_id = #{ updateUserId }
