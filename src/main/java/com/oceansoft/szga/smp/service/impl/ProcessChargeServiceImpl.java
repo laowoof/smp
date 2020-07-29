@@ -38,8 +38,15 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
         int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
         int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
 //        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
+        Calendar currCal=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.YEAR,currCal.get(Calendar.YEAR));
+        Date time = calendar.getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String firstDay = format.format(time);
         com.baomidou.mybatisplus.plugins.Page<Map<String, Object>> page = new com.baomidou.mybatisplus.plugins.Page<>(pageNum, pageSize);
-        List<Map<String, Object>> mapList = processChargeMapper.queryRoadSafeTable(page, questionQueryBean);
+        List<Map<String, Object>> mapList = processChargeMapper.queryRoadSafeTable(page, questionQueryBean, firstDay);
         if (!CollectionUtils.isEmpty(mapList)) {
             for (Map<String, Object> objectMap : mapList) {
                 objectMap.put("dept", "交警");
@@ -52,7 +59,7 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
                 }
                 if (!StringUtils.isEmpty(objectMap.get("lczt").toString())) {
                     if (objectMap.get("lczt").toString().equals("1")) {
-                        objectMap.put("dqlcjd", "民警录入");
+                        objectMap.put("dqlcjd", "民警");
                     }
                     if (zdCheck.contains(Integer.valueOf(objectMap.get("lczt").toString()))) {
                         objectMap.put("dqlcjd", "中队审核");

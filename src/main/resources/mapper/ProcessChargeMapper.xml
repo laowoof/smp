@@ -6,9 +6,9 @@
         SELECT a.yhbh, a.cjsj, a.sjly, a.yhddmc, b.mc, a.lczt, a.clzt, c.name, a.wcsj FROM ods."ods_rt_jj_v_tb_yhpc" a
         LEFT JOIN ods."ods_rt_dm_v_yhpc_lx" b ON a.yhlx = b.dm
         LEFT JOIN ods."ods_rt_psms_sec_org" c ON a.mjbm = c.id
-        <where>
+        where a.sfyx = '1' and a.cjsj >= to_date(#{firstDay}, 'yyyy-mm-dd')
             <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
-                (a.sjly like concat('%',#{questionQueryBean.keyWord},'%') or a.yhddmc like concat('%',#{questionQueryBean.keyWord},'%') or b.mc like concat('%',#{questionQueryBean.keyWord},'%'))
+              and (a.sjly like concat('%',#{questionQueryBean.keyWord},'%') or a.yhddmc like concat('%',#{questionQueryBean.keyWord},'%') or b.mc like concat('%',#{questionQueryBean.keyWord},'%'))
             </if>
             <if test="questionQueryBean.reactionDept == '民警录入'">
                 and a.lczt = 1
@@ -25,7 +25,6 @@
             <if test="questionQueryBean.reactionDept == '支队审核'">
                 and a.lczt IN (14,15,16,17)
             </if>
-        </where>
     </select>
     <select id="queryRoadSafePointById" resultType="java.util.Map">
         SELECT cjsj, lczt FROM ods."ods_rt_jj_v_tb_yhpc" WHERE yhbh = #{id}
@@ -131,7 +130,7 @@
             (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg = '100') AS ykgyyzg,
             (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg = '200') AS wzdlyzg,
             (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg = '300') AS yqbzg,
-            (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg IN ('100','200''300')) AS fcsp,
+            (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg IN ('100','200','300')) AS fcsp,
             (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg ='100' and clzt='6') AS xtjj,
             (SELECT COALESCE(sum(CAST(yhsl AS int)), 0) FROM yhxx WHERE jclx = '4' and jczt= '1' and gljcjg IN ('200','300') and clzt='6') AS fk,
             (SELECT COALESCE((a + b + c + d), 0) as yhclwc

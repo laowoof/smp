@@ -11,7 +11,7 @@ import java.util.Map;
 @Repository
 public interface ProcessChargeMapper {
 
-    List<Map<String, Object>> queryRoadSafeTable(Page<Map<String, Object>> page, @Param("questionQueryBean") QuestionQueryBean questionQueryBean);
+    List<Map<String, Object>> queryRoadSafeTable(Page<Map<String, Object>> page, @Param("questionQueryBean") QuestionQueryBean questionQueryBean,@Param("firstDay") String firstDay);
 
     Map<String, Object> queryRoadSafePointById(String id);
 
