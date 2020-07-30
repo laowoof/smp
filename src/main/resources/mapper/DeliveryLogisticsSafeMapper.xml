@@ -3,43 +3,68 @@
 <mapper namespace="com.oceansoft.szga.smp.mapper.DeliveryLogisticsSafeMapper">
 
     <select id="queryDeliveryRank1" resultType="java.util.Map">
-        select xzqh, sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW group by xzqh
+        SELECT a.xzqh as name, COALESCE(b.sum, 0) sum
+        FROM
+        (SELECT xzqh FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" GROUP BY xzqh) a
+        LEFT JOIN
+        (select xzqh, sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW group by xzqh order by sum DESC) b
+        on a.xzqh = b.xzqh order by sum DESC
     </select>
     <select id="queryDeliveryRank2" resultType="java.util.Map">
-        SELECT xzqh, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_cyry" GROUP BY xzqh
+        SELECT a.xzqh as name, COALESCE(b.sum, 0) sum
+        FROM
+        (SELECT xzqh FROM rpt."rpt_aqjg_jdwl_lcjg_cyry" GROUP BY xzqh) a
+        LEFT JOIN
+        (SELECT xzqh, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_cyry" GROUP BY xzqh order by sum DESC) b
+        on a.xzqh = b.xzqh order by sum DESC
     </select>
     <select id="queryDeliveryRank3" resultType="java.util.Map">
-        SELECT ssfxjmc as xzqh, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '1' GROUP BY ssfxjmc
+        SELECT a.ssfxjmc as name, COALESCE(b.sum, 0) sum
+        FROM
+        (SELECT ssfxjmc FROM rpt."rpt_aqjg_jdwl_dwjcxx" GROUP BY ssfxjmc) a
+        LEFT JOIN
+        (SELECT ssfxjmc, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '1' GROUP BY ssfxjmc order by sum DESC) b
+        on a.ssfxjmc = b.ssfxjmc order by sum DESC
     </select>
     <select id="queryDeliveryRank4" resultType="java.util.Map">
-        SELECT a.ssfxjmc as xzqh, COALESCE(b.sum, 0) sum
+        SELECT a.ssfxjmc as name, COALESCE(b.sum, 0) sum
         FROM
         (SELECT ssfxjmc FROM rpt."rpt_aqjg_jdwl_dwjcxx" GROUP BY ssfxjmc) a
         LEFT JOIN
         (SELECT ssfxjmc, sum(sl) FROM rpt."rpt_aqjg_jdwl_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc) b
-        ON a.ssfxjmc = b.ssfxjmc
+        ON a.ssfxjmc = b.ssfxjmc order by sum DESC
     </select>
     <select id="queryDeliveryRank5" resultType="java.util.Map">
-        SELECT fjmc as xzqh, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc
+        SELECT a.fjmc as name, COALESCE(b.sum, 0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc) a
+        left join
+        (SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" where jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' GROUP BY fjmc) b
+        ON a.fjmc = b.fjmc order by sum DESC
     </select>
     <select id="queryDeliveryRank6" resultType="java.util.Map">
-        SELECT a.fjmc as xzqh, COALESCE(b.sum, 0) sum
+        SELECT a.fjmc as name, COALESCE(b.sum, 0) sum
         FROM
         (SELECT fjmc FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc) a
         LEFT JOIN
-        (SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx = '4' AND clzt = '3' GROUP BY fjmc) b
-        ON a.fjmc = b.fjmc
+        (SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6')) and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' GROUP BY fjmc) b
+        ON a.fjmc = b.fjmc order by sum DESC
     </select>
     <select id="queryDeliveryRank7" resultType="java.util.Map">
-        SELECT a.fjmc as xzqh, COALESCE(b.sum, 0) sum
+        SELECT a.fjmc as name, COALESCE(b.sum, 0) sum
         FROM
         (SELECT fjmc FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY fjmc) a
         LEFT JOIN
-        (SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE jclx != '4' AND clzt != '3' GROUP BY fjmc) b
-        ON a.fjmc = b.fjmc
+        (SELECT fjmc, sum(yhsl) FROM rpt."rpt_aqjg_jdwl_yhmx" WHERE ((jclx IN ('1','2','3') AND clzt != '1') OR (jclx = '4' AND clzt != '3') OR (jclx = '4' AND clzt != '5') OR (jclx = '4' AND clzt != '6')) and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0' GROUP BY fjmc) b
+        ON a.fjmc = b.fjmc order by sum DESC
     </select>
     <select id="queryDeliveryRank8" resultType="java.util.Map">
-        SELECT xzqh, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" WHERE zrsqd = '1' GROUP BY xzqh
+        SELECT a.xzqh as name, COALESCE(b.sum, 0) sum
+        FROM
+        (SELECT xzqh FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" GROUP BY xzqh) a
+        LEFT JOIN
+        (SELECT xzqh, sum(zbsl) FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" WHERE zrsqd = '1' GROUP BY xzqh order by sum DESC) b
+        on a.xzqh = b.xzqh order by sum DESC
     </select>
     <select id="queryDrillRank1" resultType="java.util.Map">
         select sspcsmc, sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW WHERE xzqh = #{fjmc} group by sspcsmc ORDER BY sum DESC LIMIT 10
@@ -77,12 +102,22 @@
         GROUP BY jcxmc
     </select>
     <select id="queryHiddenCompanyLevelDw" resultType="java.util.Map">
-        SELECT dwdjmc as name, sum(zbsl) as value FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" GROUP BY dwdjmc
+        SELECT a.dwdjmc as name, b.value
+				FROM
+				(SELECT COALESCE(dwdjmc, '未评定') as dwdjmc FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" GROUP BY dwdjmc) a
+				LEFT JOIN
+				(SELECT COALESCE(dwdjmc, '未评定') as dwdjmc, sum(zbsl) as value FROM rpt."rpt_aqjg_jdwl_lcjg_sydw" GROUP BY dwdjmc) b
+				ON a.dwdjmc = b.dwdjmc
     </select>
     <select id="queryHiddenCompanyLevelYh" resultType="java.util.Map">
-        SELECT dwdj, sum(yhsl) as value FROM rpt."rpt_aqjg_jdwl_yhmx"
-        WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
-        GROUP BY dwdj
+        SELECT a.dwdj as value, b."count"
+        FROM
+        (SELECT COALESCE(dwdj, '未评定') as dwdj FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY dwdj) a
+        LEFT JOIN
+        (SELECT COALESCE(dwdj, '未评定') as dwdj, sum(yhsl) as count FROM rpt."rpt_aqjg_jdwl_yhmx"
+                WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+                GROUP BY dwdj) b
+                        ON a.dwdj = b.dwdj
     </select>
     <select id="queryImpTop" resultType="java.util.Map">
         SELECT jcxmc as name, coalesce(sum(yhsl), 0) as value FROM rpt."rpt_aqjg_jdwl_yhmx"

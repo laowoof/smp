@@ -39,6 +39,7 @@ public class DeliveryLogisticsSafeController {
             message = "查询成功";
         } catch (Exception e) {
             message = e.getMessage();
+            e.printStackTrace();
         }
         apiResult.setCode(200);
         apiResult.setMsg(message);
@@ -100,6 +101,7 @@ public class DeliveryLogisticsSafeController {
             message = "查询成功";
         } catch (Exception e) {
             message = e.getMessage();
+            e.printStackTrace();
         }
         apiResult.setCode(200);
         apiResult.setMsg(message);
