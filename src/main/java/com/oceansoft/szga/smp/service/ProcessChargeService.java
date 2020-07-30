@@ -22,7 +22,7 @@ public interface ProcessChargeService {
 
     Map<String, Object> queryImpProcessPic(Integer type);
 
-    Map<String, Object> queryDeliveryTable(QuestionQueryBean questionQueryBean);
+    Map<String, Object> queryDeliveryTable(QuestionQueryBean questionQueryBean, Integer type);
 
     Map<String, Object> queryTrafficData();
 }

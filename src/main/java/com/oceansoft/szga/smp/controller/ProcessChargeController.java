@@ -164,12 +164,12 @@ public class ProcessChargeController {
 
     @ApiOperation(value = "寄递物流表格", notes = "", httpMethod = "POST")
     @PostMapping("delivery-table")
-    public ApiResult queryDeliveryTable(@RequestBody QuestionQueryBean questionQueryBean) {
+    public ApiResult queryDeliveryTable(@RequestBody QuestionQueryBean questionQueryBean, Integer type) {
         ApiResult apiResult = new ApiResult();
         boolean isSuccess = false;
         String message = "";
         try {
-            Map<String, Object> mapList = processChargeService.queryDeliveryTable(questionQueryBean);
+            Map<String, Object> mapList = processChargeService.queryDeliveryTable(questionQueryBean, type);
             apiResult.setData(mapList);
             isSuccess = true;
             message = "查询成功";

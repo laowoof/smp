@@ -342,60 +342,52 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
 //        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
         com.baomidou.mybatisplus.plugins.Page<Map<String, Object>> page = new com.baomidou.mybatisplus.plugins.Page<>(pageNum, pageSize);
         List<Map<String, Object>> mapList = processChargeMapper.queryImpTable(page, questionQueryBean, type);
-        List<String> jclxList = Arrays.asList("01","1","2","3");
-        List<String> clztList1 = Arrays.asList("01","1","2","4");
-        List<String> clztList2 = Arrays.asList("5","6");
+        // 数据处理
         if (!CollectionUtils.isEmpty(mapList)) {
             for (Map<String, Object> stringObjectMap : mapList) {
                 // 当前流程节点
-                if (stringObjectMap.get("jclx") != null && stringObjectMap.get("clzt") != null) {
-                    if (jclxList.contains(stringObjectMap.get("jclx"))) {
-                        stringObjectMap.put("dqlcjd", "隐患上报");
-                    }
-                    if (stringObjectMap.get("jclx").toString().equals("4") && clztList1.contains(stringObjectMap.get("clzt"))) {
-                        stringObjectMap.put("dqlcjd", "复查");
-                    }
-                    if (stringObjectMap.get("jclx").toString().equals("4") && clztList2.contains(stringObjectMap.get("clzt"))) {
-                        stringObjectMap.put("dqlcjd", "复查审批");
-                    }
-                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").equals("3")) {
-                        stringObjectMap.put("dqlcjd", "隐患处置完成");
-                    }
+                if (!stringObjectMap.get("jclx").toString().equals("4")) {
+                    stringObjectMap.put("dqlcjd","隐患上报");
                     // 检查结果
-                    // 初查
-                    if (jclxList.contains(stringObjectMap.get("jclx")) && (stringObjectMap.get("clzt").toString().equals("1") || stringObjectMap.get("clzt").toString().equals("01"))) {
+                    if (stringObjectMap.get("gljcjg").toString().equals("1")) {
                         stringObjectMap.put("jcjg", "当场改正");
-                        stringObjectMap.put("cljg", "当场改正");
                     }
-                    if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").toString().equals("2")) {
-                        stringObjectMap.put("jcjg", "责令限期整改");
-                        stringObjectMap.put("cljg", "责令限期整改");
+                    if (stringObjectMap.get("gljcjg").toString().equals("2")) {
+                        stringObjectMap.put("jcjg", "责令期限整改");
                     }
-                    if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").toString().equals("3")) {
-                        stringObjectMap.put("jcjg", "责令限期整改并处警告");
-                        stringObjectMap.put("cljg", "责令限期整改并处警告");
+                    if (stringObjectMap.get("gljcjg").toString().equals("3")) {
+                        stringObjectMap.put("jcjg", "责令期限整改并处警告");
                     }
-                    // 复查
-                    if (stringObjectMap.get("jclx").toString().equals("4") && (stringObjectMap.get("clzt").toString().equals("1") || stringObjectMap.get("clzt").toString().equals("01"))) {
-                        stringObjectMap.put("jcjg", "因客观原因整改未达到规定要求");
-                        stringObjectMap.put("cljg", "因客观原因整改未达到规定要求");
+                    // 处理结果
+                    stringObjectMap.put("cljg","暂无");
+                }
+                if (stringObjectMap.get("jclx").toString().equals("4") && !stringObjectMap.get("clzt").toString().equals("6")) {
+                    stringObjectMap.put("dqlcjd","复查");
+                    // 检查结果
+                    // gljcjg='0' or gljcjg is null
+                    if (stringObjectMap.get("gljcjg").toString().equals("0") || stringObjectMap.get("gljcjg") == null) {
+                        stringObjectMap.put("jcjg", "复查整改完成");
                     }
-                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("2")) {
-                        stringObjectMap.put("jcjg", "无正当理由整改未达到规定要求");
-                        stringObjectMap.put("cljg", "无正当理由整改未达到规定要求");
+                    if (stringObjectMap.get("gljcjg").toString().equals("100")) {
+                        stringObjectMap.put("jcjg", "因客观原因整改");
                     }
-                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("4")) {
+                    if (stringObjectMap.get("gljcjg").toString().equals("200")) {
+                        stringObjectMap.put("jcjg", "无正当理由整改");
+                    }
+                    if (stringObjectMap.get("gljcjg").toString().equals("300")) {
                         stringObjectMap.put("jcjg", "逾期不整改");
-                        stringObjectMap.put("cljg", "逾期不整改");
                     }
-                    // 复查审批
-                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("5")) {
-                        stringObjectMap.put("jcjg", "协调解决");
-                        stringObjectMap.put("cljg", "协调解决");
+                    // 处理结果
+                    stringObjectMap.put("cljg","暂无");
+                }
+                if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("6")) {
+                    stringObjectMap.put("dqlcjd","复查审批");
+                    stringObjectMap.put("jcjg", "暂无");
+                    if (stringObjectMap.get("gljcjg").toString().equals("100")) {
+                        stringObjectMap.put("cljg","协调解决");
                     }
-                    if (stringObjectMap.get("jclx").toString().equals("4") && stringObjectMap.get("clzt").toString().equals("6")) {
-                        stringObjectMap.put("jcjg", "罚款");
-                        stringObjectMap.put("cljg", "罚款");
+                    if (stringObjectMap.get("gljcjg").toString().equals("200") || stringObjectMap.get("gljcjg").toString().equals("300")) {
+                        stringObjectMap.put("cljg","罚款");
                     }
                 }
             }
@@ -476,47 +468,37 @@ public class ProcessChargeServiceImpl implements ProcessChargeService {
     }
 
     @Override
-    public Map<String, Object> queryDeliveryTable(QuestionQueryBean questionQueryBean) {
+    public Map<String, Object> queryDeliveryTable(QuestionQueryBean questionQueryBean, Integer type) {
         Map<String, Object> map = new HashMap<>();
         int pageNum = questionQueryBean.getPageNum() == null ? 1 : questionQueryBean.getPageNum();
         int pageSize = questionQueryBean.getPageSize() == null ? 10 : questionQueryBean.getPageSize();
         com.baomidou.mybatisplus.plugins.Page<Map<String, Object>> page = new com.baomidou.mybatisplus.plugins.Page<>(pageNum, pageSize);
-        List<Map<String, Object>> mapList = processChargeMapper.queryDeliveryTable(page, questionQueryBean);
-        List<String> jclxList = Arrays.asList("1","2","3");
+        List<Map<String, Object>> mapList = processChargeMapper.queryDeliveryTable(page, questionQueryBean, type);
         if (!CollectionUtils.isEmpty(mapList)) {
             for (Map<String, Object> stringObjectMap : mapList) {
-                if (stringObjectMap.get("jclx") != null && stringObjectMap.get("clzt") != null) {
-                    if (jclxList.contains(stringObjectMap.get("jclx"))) {
-                        stringObjectMap.put("dqlcjd", "隐患上报");
-                    }
-                    if (stringObjectMap.get("jclx").equals("4") && !stringObjectMap.get("clzt").equals("3")) {
-                        stringObjectMap.put("dqlcjd", "复查");
-                    }
-                    if (stringObjectMap.get("jclx").equals("4") && stringObjectMap.get("clzt").equals("3")) {
-                        stringObjectMap.put("dqlcjd", "隐患处置完成");
-                    }
-                    if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").equals("1")) {
+                if (!stringObjectMap.get("jclx").toString().equals("4")) {
+                    stringObjectMap.put("dqlcjd","隐患上报");
+                    // 检查结果
+                    if (stringObjectMap.get("gljcjg").toString().equals("ZADCZG") || stringObjectMap.get("gljcjg").toString().equals("1")) {
                         stringObjectMap.put("jcjg", "当场改正");
                     }
-                    if (jclxList.contains(stringObjectMap.get("jclx")) && stringObjectMap.get("clzt").equals("3")) {
-                        stringObjectMap.put("jcjg", "责令15天内限期整改并处警告");
-                    }
-                    if (stringObjectMap.get("jclx").equals("4") && !stringObjectMap.get("clzt").equals("3")) {
-                        stringObjectMap.put("jcjg", "行政处罚");
-                    }
-                    if (stringObjectMap.get("jclx").equals("4") && stringObjectMap.get("clzt").equals("3")) {
-                        stringObjectMap.put("dqlcjd", "已整改");
+                    if (stringObjectMap.get("gljcjg").toString().equals("ZAZLXQZG") || stringObjectMap.get("gljcjg").toString().equals("2") || stringObjectMap.get("gljcjg").toString().equals("3")) {
+                        stringObjectMap.put("jcjg", "责令期限整改并警告");
                     }
                 }
-                if (stringObjectMap.get("jczt") != null) {
-                    if (stringObjectMap.get("jczt").equals("0")) {
-                        stringObjectMap.put("jcztname", "待检查");
-                    }
-                    if (stringObjectMap.get("jczt").equals("1")) {
-                        stringObjectMap.put("jcztname", "已检查");
-                    }
-                    if (stringObjectMap.get("jczt").equals("2")) {
-                        stringObjectMap.put("jcztname", "缺检查");
+                if (stringObjectMap.get("jclx").toString().equals("4")) {
+                    stringObjectMap.put("dqlcjd","复查");
+                    if (stringObjectMap.get("clzt").toString().equals("6")) {
+                        if (stringObjectMap.get("gljcjg").toString().equals("ZAZGYWC") || stringObjectMap.get("gljcjg").toString().equals("0")) {
+                            stringObjectMap.put("jcjg", "复查整改完成");
+                        }
+                        if (stringObjectMap.get("gljcjg").toString().equals("ZAXZCF") ||
+                                stringObjectMap.get("gljcjg").toString().equals("100") || stringObjectMap.get("gljcjg").toString().equals("200") ||
+                                stringObjectMap.get("gljcjg").toString().equals("300")) {
+                            stringObjectMap.put("jcjg", "行政处罚");
+                        }
+                    } else {
+                        stringObjectMap.put("jcjg", "待检查");
                     }
                 }
             }
