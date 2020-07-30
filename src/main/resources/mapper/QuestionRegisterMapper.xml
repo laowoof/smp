@@ -231,7 +231,7 @@
             <if test="createDeptCode != null">
                 #{createDeptCode,jdbcType=VARCHAR},
             </if>
-            questionType,
+            #{questionType},
         </trim>
     </insert>
     <insert id="addTask">
