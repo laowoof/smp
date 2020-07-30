@@ -123,6 +123,8 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
             throw new RuntimeException("未找到问题记录");
         }
         questionRecordEntity.setState(1);
+        questionRecordEntity.setReceiveDeptName(questionExecuteTaskBean.getReceiveDeptName());
+        questionRecordEntity.setReceiveDeptCode(questionExecuteTaskBean.getReceiveDeptCode());
         questionRecordEntity.setExecuteDeptCode(questionExecuteTaskBean.getExecuteDeptCode());
         try {
             questionRegisterMapper.updateRecordStateAndCode(questionRecordEntity);

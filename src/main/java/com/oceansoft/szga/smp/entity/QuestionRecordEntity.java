@@ -69,6 +69,26 @@ public class QuestionRecordEntity implements Serializable {
     /**问题类型1省安监问题流转2一般问题流转,默认1**/
     private String questionType = "1";
 
+    /**接收部门名称**/
+    private String receiveDeptName;
+    private String receiveDeptCode;
+
+    public String getReceiveDeptName() {
+        return receiveDeptName;
+    }
+
+    public void setReceiveDeptName(String receiveDeptName) {
+        this.receiveDeptName = receiveDeptName;
+    }
+
+    public String getReceiveDeptCode() {
+        return receiveDeptCode;
+    }
+
+    public void setReceiveDeptCode(String receiveDeptCode) {
+        this.receiveDeptCode = receiveDeptCode;
+    }
+
     public String getQuestionType() {
         return questionType;
     }

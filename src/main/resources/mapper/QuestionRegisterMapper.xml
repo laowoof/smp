@@ -49,7 +49,7 @@
         where question_guid = #{guid} and state = 1 order by create_date ASC
     </select>
     <select id="queryPageRecord" resultType="java.util.Map">
-        select guid, create_date, source, area, duty_unit, finish_date, state
+        select guid, create_date, source, area, duty_unit, finish_date, state,receive_dept_name
         from rpt.question_record
         where create_dept_code = #{departmentId} and state != -1 and question_type = #{questionQueryBean.questionType}
         <if test="integerList != null">
