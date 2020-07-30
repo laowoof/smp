@@ -15,7 +15,7 @@ public interface QuestionRegisterService {
 
     boolean addQuestionRecord(QuestionRecordEntity questionRecordEntity, QuestionExecuteTaskBean questionExecuteTaskBean, Integer type, SysUserVO userData);
 
-    boolean confirmDistribute(String guid, QuestionExecuteTaskBean questionExecuteTaskBean);
+    boolean confirmDistribute(String guid, QuestionExecuteTaskBean questionExecuteTaskBean, SysUserVO userData);
 
     boolean removeRecord(String guid);
 

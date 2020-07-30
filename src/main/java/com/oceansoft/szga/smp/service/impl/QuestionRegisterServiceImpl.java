@@ -115,7 +115,7 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
      * @return
      */
     @Override
-    public boolean confirmDistribute(String guid, QuestionExecuteTaskBean questionExecuteTaskBean) {
+    public boolean confirmDistribute(String guid, QuestionExecuteTaskBean questionExecuteTaskBean, SysUserVO userData) {
         if (StringUtils.isEmpty(guid) || questionExecuteTaskBean == null) {
             throw new RuntimeException("guid和任务不能为空");
         }
@@ -133,14 +133,21 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
         } catch (Exception e) {
             throw new RuntimeException("更新失败");
         }
+        // 判断任务表里的个数如果是1则是第一次派发，如果大于1则是退回派发
         // 更新任务表 注：状态为1
-        QuestionExecuteTaskEntity executeTaskEntity = questionRegisterMapper.getExecuteTaskEntity(guid);
-        executeTaskEntity = setTaskValue(executeTaskEntity, questionExecuteTaskBean);
-        executeTaskEntity.setState(1);
-        try {
-            questionRegisterMapper.updateExecuteTask(executeTaskEntity);
-        } catch (Exception e) {
-            throw new RuntimeException("更新失败");
+        Integer count = questionRegisterMapper.getTaskCountBy(guid);
+        if (count == 1) {
+            QuestionExecuteTaskEntity executeTaskEntity = questionRegisterMapper.getExecuteTaskEntity(guid);
+            executeTaskEntity = setTaskValue(executeTaskEntity, questionExecuteTaskBean);
+            executeTaskEntity.setState(1);
+            try {
+                questionRegisterMapper.updateExecuteTask(executeTaskEntity);
+            } catch (Exception e) {
+                throw new RuntimeException("更新失败");
+            }
+        } else {
+            QuestionExecuteTaskEntity questionExecuteTaskEntity = new QuestionExecuteTaskEntity();
+            addExecuteTask(questionExecuteTaskEntity, questionExecuteTaskBean, questionRecordEntity, userData);
         }
         return true;
     }

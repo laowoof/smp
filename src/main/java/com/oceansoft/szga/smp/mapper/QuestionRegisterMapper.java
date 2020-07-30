@@ -34,4 +34,6 @@ public interface QuestionRegisterMapper {
     int updateRecordStateByGuid(@Param("guid") String guid, @Param("state") int state);
 
     List<Map<String, Object>> queryPageRecord(Page<Map<String, Object>> page, @Param("questionQueryBean") QuestionQueryBean questionQueryBean, @Param("departmentId") String departmentId, @Param("integerList") List<Integer> integerList);
+
+    Integer getTaskCountBy(String guid);
 }

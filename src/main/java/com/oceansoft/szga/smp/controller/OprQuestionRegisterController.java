@@ -94,7 +94,8 @@ public class OprQuestionRegisterController {
         boolean isSuccess = false;
         String message = "";
         try {
-            isSuccess = questionRegisterService.confirmDistribute(guid, questionExecuteTaskBean);
+            SysUserVO userData = sysUserService.getCurrentUser();
+            isSuccess = questionRegisterService.confirmDistribute(guid, questionExecuteTaskBean, userData);
             if (isSuccess) {
                 message = "操作成功";
             }

@@ -65,6 +65,9 @@
             and create_date between #{questionQueryBean.startTime} and #{questionQueryBean.startTime}
         </if>
     </select>
+    <select id="getTaskCountBy" resultType="java.lang.Integer">
+        select count(*) from rpt.question_execute_task where question_guid = #{guid}
+    </select>
     <update id="updateRecordStateAndCode">
         update rpt.question_record
         set state = #{state},
