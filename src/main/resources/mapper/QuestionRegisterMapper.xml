@@ -20,11 +20,12 @@
         <result column="state" jdbcType="INTEGER" property="state" />
         <result column="execute_dept_code" jdbcType="VARCHAR" property="executeDeptCode" />
         <result column="create_dept_code" jdbcType="VARCHAR" property="createDeptCode" />
+        <result column="question_type" jdbcType="VARCHAR" property="questionType" />
     </resultMap>
     <sql id="Record_Column_List">
     guid, source, happen_date, area, duty_unit, finish_date, address, performance,
     file_ids, create_date, create_user_name, create_user_id, create_dept_name, state,
-    execute_dept_code, create_dept_code
+    execute_dept_code, create_dept_code,question_type
   </sql>
     <update id="deleteRecord">
         update rpt.question_record set state = -1 where guid = #{guid}
@@ -50,7 +51,7 @@
     <select id="queryPageRecord" resultType="java.util.Map">
         select guid, create_date, source, area, duty_unit, finish_date, state
         from rpt.question_record
-        where create_dept_code = #{departmentId} and state != -1
+        where create_dept_code = #{departmentId} and state != -1 and question_type = #{questionType}
         <if test="integerList != null">
             and state IN
             <foreach item="item" index="index" collection="integerList" open="(" separator="," close=")">
@@ -179,6 +180,7 @@
             <if test="createDeptCode != null">
                 create_dept_code,
             </if>
+            question_type,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="guid != null">
@@ -229,6 +231,7 @@
             <if test="createDeptCode != null">
                 #{createDeptCode,jdbcType=VARCHAR},
             </if>
+            questionType,
         </trim>
     </insert>
     <insert id="addTask">

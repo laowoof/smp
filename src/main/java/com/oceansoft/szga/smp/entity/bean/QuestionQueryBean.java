@@ -1,5 +1,7 @@
 package com.oceansoft.szga.smp.entity.bean;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -32,6 +34,16 @@ public class QuestionQueryBean {
 
     // 反应部门
     private String reactionDept;
+    /**问题类型1省安监问题流转2一般问题流转,默认1**/
+    private String questionType = "1";
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
 
     public Integer getPageNum() {
         return pageNum;
@@ -88,4 +100,5 @@ public class QuestionQueryBean {
     public void setReactionDept(String reactionDept) {
         this.reactionDept = reactionDept;
     }
+
 }

@@ -66,6 +66,17 @@ public class QuestionRecordEntity implements Serializable {
     // 创建人部门编码
     private String createDeptCode;
 
+    /**问题类型1省安监问题流转2一般问题流转,默认1**/
+    private String questionType = "1";
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
     public String getSource() {
         return source;
     }
