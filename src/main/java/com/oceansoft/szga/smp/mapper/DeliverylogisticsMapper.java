@@ -58,6 +58,8 @@ public interface DeliverylogisticsMapper {
 
     List<Float> smsj (Queryparems queryparems);
 
+    String smsjzjrq ();
+
     Integer yhlxzsl(Queryparems queryparems);
 
     Integer yhlxyzg(Queryparems queryparems);
@@ -65,7 +67,5 @@ public interface DeliverylogisticsMapper {
     List<Map<String,Object>> yhlxzsl1(Queryparems queryparems);
 
     List<Map<String,Object>> yhlxyzg1(Queryparems queryparems);
-
-
 
 }

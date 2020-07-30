@@ -398,29 +398,37 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
         List<Map<String, Object>> list = new ArrayList<>();
         int sjl =0;
         if (queryparems.getSjgs().equals("yf")){
+            int k =0;
             for (int i =11 ;i>=0;i--){
                 Map<String, Object> map =new HashMap<>();
                 queryparems.setData(getLast12Month(i));
                 List<Float> smsj = mapper.smsj(queryparems);
-                int hs = hs(smsj);
-                sjl=Zh(hs,12);
-                String last7Day = getLast12Month(i);
-                String ll =last7Day.substring(0,4)+"-"+last7Day.substring(4,6);
-                map.put("sj",ll);
-                map.put("bl",hs);
-                list.add(map);
+                for(int v=0;v<smsj.size();v++){
+                    Float aFloat = smsj.get(v);
+                }
+
+                if (smsj!=null){
+                    k++;
+                    int hs = hs(smsj);
+                    String last7Day = getLast12Month(i);
+                    String ll =last7Day.substring(0,4)+"-"+last7Day.substring(4,6);
+                    map.put("sj",ll);
+                    map.put("bl",hs);
+                    list.add(map);
+                }
             }
         }else{
-            for (int i=6;i>=0;i--){
+            for (int i=0;i<7;i++){
                 Map<String, Object> map =new HashMap<>();
-                queryparems.setData(getLast7Day(i));
-                List<Float> smsj = mapper.smsj(queryparems);
-                int hs = hs(smsj);
-                sjl=Zh(hs,7);
-                String last7Day = getLast7Day(i);
-                String ll =last7Day.substring(0,4)+"-"+last7Day.substring(4,6)+"-"+last7Day.substring(6,8);
-                map.put("sj",ll);
-                map.put("bl",hs);
+                String smsjzjrq = mapper.smsjzjrq();
+                Integer smsj = Integer.valueOf(smsjzjrq);
+                smsj--;
+                smsjzjrq =String.valueOf(smsj);
+                smsjzjrq =smsjzjrq.substring(0,4)+"-"+smsjzjrq.substring(4,6)+"-"+smsjzjrq.substring(6,8);
+                queryparems.setData(smsjzjrq);
+                List<Float> smsj1 = mapper.smsj(queryparems);
+                map.put("sj",smsjzjrq);
+                map.put("bl",smsj1.get(i));
                 list.add(map);
             }
         }
