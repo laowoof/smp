@@ -110,11 +110,11 @@
 				ON a.dwdjmc = b.dwdjmc
     </select>
     <select id="queryHiddenCompanyLevelYh" resultType="java.util.Map">
-        SELECT a.dwdj, b."value"
+        SELECT a.dwdj as value, b."count"
         FROM
         (SELECT COALESCE(dwdj, '未评定') as dwdj FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY dwdj) a
         LEFT JOIN
-        (SELECT COALESCE(dwdj, '未评定') as dwdj, sum(yhsl) as value FROM rpt."rpt_aqjg_jdwl_yhmx"
+        (SELECT COALESCE(dwdj, '未评定') as dwdj, sum(yhsl) as count FROM rpt."rpt_aqjg_jdwl_yhmx"
                 WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
                 GROUP BY dwdj) b
                         ON a.dwdj = b.dwdj
