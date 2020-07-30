@@ -212,7 +212,7 @@
         AND jcd = '寄递业末端网点检查表'
         </if>
         <if test="questionQueryBean.keyWord != null and questionQueryBean.keyWord != ''">
-            and (jcd like concat('%',#{questionQueryBean.keyWord},'%') or dwmc like concat('%',#{questionQueryBean.keyWord},'%'))
+            and (jcd like concat('%',#{questionQueryBean.keyWord},'%') or dwmc like concat('%',#{questionQueryBean.keyWord},'%') or dwdz like concat('%',#{questionQueryBean.keyWord},'%'))
         </if>
         <if test="questionQueryBean.reactionDept == '隐患上报'">
             and jclx != '4'
