@@ -142,25 +142,60 @@
          GROUP BY wpmc ORDER BY sum(sl) desc LIMIT 10
     </select>
     <select id="queryCompanyRank" resultType="java.util.Map">
-        SELECT fjmc,sum(sl) FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc
+        SELECT a.fjmc as name, coalesce(b.sum,0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc,sum(sl) FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc order by sum desc) b
+        on a.fjmc = b.fjmc order by sum desc
     </select>
     <select id="queryImpPostRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' GROUP BY fjmc
+        SELECT a.fjmc as name, coalesce(b.sum,0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_ryxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' GROUP BY fjmc order by sum desc) b
+        on a.fjmc = b.fjmc order by sum desc
     </select>
     <select id="queryCompanyCheckRank" resultType="java.util.Map">
-        SELECT ssfxjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc
+        SELECT a.ssfxjmc as name, coalesce(b.sum,0) sum
+        FROM
+        (SELECT ssfxjmc FROM rpt."rpt_aqjg_za_dwjcxx" GROUP BY ssfxjmc) a
+        LEFT JOIN
+        (SELECT ssfxjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwjcxx" WHERE jcztdm = '2' GROUP BY ssfxjmc order by sum desc) b
+        on a.ssfxjmc = b.ssfxjmc order by sum desc
     </select>
     <select id="queryHiddenDiscoverRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" GROUP BY fjmc
+        SELECT a.fjmc as name, coalesce(b.sum,0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_dwyhxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" GROUP BY fjmc order by sum desc) b
+        on a.fjmc = b.fjmc order by sum desc
     </select>
     <select id="queryHiddenHandleRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE sfzg = '1' GROUP BY fjmc
+        SELECT a.fjmc as name, coalesce(b.sum,0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_dwyhxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE sfzg = '1' GROUP BY fjmc order by sum desc) b
+        ON a.fjmc = b.fjmc order by sum desc
     </select>
     <select id="queryHiddenNoHandleRank" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE sfzg = '0' GROUP BY fjmc
+        SELECT a.fjmc as name, coalesce(b.sum,0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_dwyhxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_dwyhxx" WHERE sfzg = '0' GROUP BY fjmc order by sum desc) b
+        ON a.fjmc = b.fjmc order by sum desc
     </select>
     <select id="queryEarlyHandleRank" resultType="java.util.Map">
-        SELECT fjmc,sum(sl) FROM rpt."rpt_aqjg_za_yjxx" GROUP BY fjmc
+        SELECT a.fjmc as name, coalesce(b.sum,0) sum
+        FROM
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_yjxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (SELECT fjmc,sum(sl) FROM rpt."rpt_aqjg_za_yjxx" GROUP BY fjmc order by sum desc) b
+        ON a.fjmc = b.fjmc order by sum desc
     </select>
     <select id="queryNumAnalysisZg" resultType="java.util.Map">
         SELECT fjmc, SUM ( sl ) zgl FROM rpt."rpt_aqjg_za_dwyhxx" WHERE hwlb LIKE concat('%',#{hwlb},'%') AND sfzg = '1'

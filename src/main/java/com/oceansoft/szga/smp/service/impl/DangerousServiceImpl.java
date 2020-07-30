@@ -303,9 +303,47 @@ public class DangerousServiceImpl implements DangerousService {
     @Override
     public List<Map<String, Object>> queryCompanyRank() {
         List<Map<String, Object>> mapList = dangerousMapper.queryCompanyRank();
-        List<Map<String, Object>> resultList = orderMethod(mapList);
+        List<Map<String, Object>> resultList = nameMethod(mapList);
         return resultList;
     }
+
+    private List<Map<String, Object>> nameMethod(List<Map<String, Object>> mapList) {
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","虎丘","吴中","相城","度假区");
+        if (!CollectionUtils.isEmpty(mapList)) {
+            for (String name : orderList) {
+                for (Map<String, Object> map : mapList) {
+                    if (map.get("name") != null && map.get("name") != "") {
+                        if (map.get("name").toString().contains(name)) {
+                            map.put("fjmc", name);
+                        }
+                    } else {
+                        map.put("fjmc", "暂无");
+                    }
+                }
+            }
+        }
+        return mapList;
+    }
+
+    private List<Map<String, Object>> nameMethod1(List<Map<String, Object>> mapList) {
+        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","虎丘","吴中","相城","度假区");
+        if (!CollectionUtils.isEmpty(mapList)) {
+            for (String name : orderList) {
+                for (Map<String, Object> map : mapList) {
+                    if (map.get("name") != null && map.get("name") != "") {
+                        if (map.get("name").toString().contains(name)) {
+                            map.put("ssfxjmc", name);
+                        }
+                    } else {
+                        map.put("fjmc", "暂无");
+                    }
+                }
+            }
+        }
+        return mapList;
+    }
+
+
 
     private List<Map<String, Object>> orderMethod(List<Map<String, Object>> mapList) {
         List<Map<String, Object>> resultList = new ArrayList<>();
@@ -327,57 +365,58 @@ public class DangerousServiceImpl implements DangerousService {
     @Override
     public List<Map<String, Object>> queryImpPostRank() {
         List<Map<String, Object>> mapList = dangerousMapper.queryImpPostRank();
-        List<Map<String, Object>> resultList = orderMethod(mapList);
+        List<Map<String, Object>> resultList = nameMethod(mapList);
         return resultList;
     }
 
     @Override
     public List<Map<String, Object>> queryCompanyCheckRank() {
         List<Map<String, Object>> mapList = dangerousMapper.queryCompanyCheckRank();
-        List<Map<String, Object>> resultList = new ArrayList<>();
-        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
-        if (!CollectionUtils.isEmpty(mapList)) {
-            for (String name : orderList) {
-                for (Map<String, Object> map : mapList) {
-                    if (map.get("ssfxjmc").toString().contains(name)) {
-                        Map<String, Object> resultMap = new HashMap<>();
-                        resultMap.put("ssfxjmc", map.get("ssfxjmc"));
-                        resultMap.put("sum", map.get("sum"));
-                        resultList.add(resultMap);
-                    } else {
-                        continue;
-                    }
-                }
-            }
-        }
+        List<Map<String, Object>> resultList = nameMethod1(mapList);
+//        List<Map<String, Object>> resultList = new ArrayList<>();
+//        List<String> orderList = Arrays.asList("张家港","常熟","昆山","太仓","吴江","园区","姑苏","高新区","吴中","相城","度假区");
+//        if (!CollectionUtils.isEmpty(mapList)) {
+//            for (String name : orderList) {
+//                for (Map<String, Object> map : mapList) {
+//                    if (map.get("ssfxjmc").toString().contains(name)) {
+//                        Map<String, Object> resultMap = new HashMap<>();
+//                        resultMap.put("ssfxjmc", map.get("ssfxjmc"));
+//                        resultMap.put("sum", map.get("sum"));
+//                        resultList.add(resultMap);
+//                    } else {
+//                        continue;
+//                    }
+//                }
+//            }
+//        }
         return resultList;
     }
 
     @Override
     public List<Map<String, Object>> queryHiddenDiscoverRank() {
         List<Map<String, Object>> mapList = dangerousMapper.queryHiddenDiscoverRank();
-        List<Map<String, Object>> resultList = orderMethod(mapList);
+        List<Map<String, Object>> resultList = nameMethod(mapList);
         return resultList;
     }
 
     @Override
     public List<Map<String, Object>> queryHiddenHandleRank() {
         List<Map<String, Object>> mapList = dangerousMapper.queryHiddenHandleRank();
-        List<Map<String, Object>> resultList = orderMethod(mapList);
+        List<Map<String, Object>> resultList = nameMethod(mapList);
         return resultList;
     }
 
     @Override
     public List<Map<String, Object>> queryHiddenNoHandleRank() {
         List<Map<String, Object>> mapList = dangerousMapper.queryHiddenNoHandleRank();
-        List<Map<String, Object>> resultList = orderMethod(mapList);
+        List<Map<String, Object>> resultList = nameMethod(mapList);
         return resultList;
     }
 
     @Override
     public List<Map<String, Object>> queryEarlyHandleRank() {
         List<Map<String, Object>> mapList = dangerousMapper.queryEarlyHandleRank();
-        List<Map<String, Object>> resultList = orderMethod(mapList);
+        List<Map<String, Object>> resultList = nameMethod(mapList);
         return resultList;
     }
 
