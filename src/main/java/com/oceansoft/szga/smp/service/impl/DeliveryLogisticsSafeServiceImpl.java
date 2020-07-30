@@ -169,28 +169,28 @@ public class DeliveryLogisticsSafeServiceImpl implements DeliveryLogisticsSafeSe
         Integer outerCount = 0;
         if (!CollectionUtils.isEmpty(outerRingList)) {
             for (Map<String, Object> map : outerRingList) {
-                if (map.get("value").equals("未评定")) {
+                if (map.get("dwdj").equals("未评定")) {
                     map.put("name", "未评定");
-                } else if (map.get("value").equals("0")) {
+                } else if (map.get("dwdj").equals("0")) {
                     map.put("name", "A级");
-                } else if (map.get("value").equals("1")) {
+                } else if (map.get("dwdj").equals("1")) {
                     map.put("name", "B级");
-                } else if (map.get("value").equals("2")) {
+                } else if (map.get("dwdj").equals("2")) {
                     map.put("name", "C级");
-                } else if (map.get("value").equals("3")) {
+                } else if (map.get("dwdj").equals("3")) {
                     map.put("name", "不定级");
                 }
                 if (map.get("count") != null) {
-                    outerCount = outerCount + Integer.valueOf(map.get("count").toString());
+                    outerCount = outerCount + Integer.valueOf(map.get("value").toString());
                 }
             }
         }
         for (Map<String, Object> map : outerRingList) {
-            if (map.get("count") != null) {
+            if (map.get("value") != null) {
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 // 设置精确到小数点后2位
                 numberFormat.setMaximumFractionDigits(2);
-                String result = numberFormat.format((float) Integer.valueOf(map.get("count").toString()) / (float) outerCount * 100);//所占百分比
+                String result = numberFormat.format((float) Integer.valueOf(map.get("value").toString()) / (float) outerCount * 100);//所占百分比
                 map.put("percent", result + "%");
             } else {
                 map.put("percent", "0%");

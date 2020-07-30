@@ -110,7 +110,7 @@
 				ON a.dwdjmc = b.dwdjmc
     </select>
     <select id="queryHiddenCompanyLevelYh" resultType="java.util.Map">
-        SELECT a.dwdj as value, b."count"
+        SELECT a.dwdj, coalesce(b."count", 0) as value
         FROM
         (SELECT COALESCE(dwdj, '未评定') as dwdj FROM rpt."rpt_aqjg_jdwl_yhmx" GROUP BY dwdj) a
         LEFT JOIN
