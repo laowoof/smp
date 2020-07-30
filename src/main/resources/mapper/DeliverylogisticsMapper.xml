@@ -69,7 +69,7 @@
           and xzqh in <foreach item="item"  index="index" collection="xzqhs" open="(" separator="," close=")"> #{item}
             </foreach>
         </if>
-        and dwflmc != ''
+        and dwflmc is not null
         group by 1,2
     </select>
     
@@ -139,20 +139,20 @@ ON a.xzqh = b.xzqh
         ON a.fjmc = b.name
     </select>
 
-    <select id="jgyf" resultType="int">
-        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22') and tjrq like #{data} ||'%'
+    <select id="jgyf" resultType="map">
+        select tjrq as yf,sum(sl) as sl from rpt.rpt_aqjg_jdwl_jcgtj tt where tt.lxdm in('16','26') and tt.tjrq &gt;='2020-01' and tt.tjrq &lt;= #{data} group by tjrq ORDER BY tjrq
     </select>
 
-    <select id="jgrq" resultType="int">
-        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('12','22') and tjrq = #{data}
+    <select id="jgrq" resultType="map">
+        select * from (select tjrq as rq,sum(sl) as sl from rpt.rpt_aqjg_jdwl_jcgtj tt where tt.lxdm in('14','24') and tt.tjrq &lt;= #{data} group by tjrq ORDER BY tjrq desc limit 7 ) t ORDER BY t.rq
     </select>
 
-    <select id="cgyf" resultType="int">
-        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq = #{data}
+    <select id="cgyf" resultType="map">
+        select tjrq as yf,sum(sl) as sl from rpt.rpt_aqjg_jdwl_jcgtj tt where tt.lxdm in('15','25') and tt.tjrq &gt;='2020-01' and tt.tjrq &lt;= #{data} group by tjrq ORDER BY tjrq
     </select>
 
-    <select id="cgrq" resultType="int">
-        select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21') and tjrq like #{data} ||'%'
+    <select id="cgrq" resultType="map">
+        select * from (select tjrq as rq,sum(sl) as sl from rpt.rpt_aqjg_jdwl_jcgtj tt where tt.lxdm in('14','24') and tt.tjrq &lt;= #{data} group by tjrq ORDER BY tjrq desc limit 7 ) t ORDER BY t.rq
     </select>
 
     <select id="jgzs" resultType="int">
@@ -163,8 +163,12 @@ ON a.xzqh = b.xzqh
         select COALESCE(sum(sl),0) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','21')
     </select>
     
-    <select id="smsj" resultType="java.lang.Float">
-        select sml from ods.ods_manu_smsj where riqi like  #{data} ||'%'
+    <select id="smsj" resultType="map">
+        select riqi,sml as bl from(select riqi,sml from ods.ods_manu_smsj where riqi &lt;=#{data} order by riqi desc limit 7) t order by riqi
+    </select>
+
+    <select id="smsjyf" resultType="map">
+        select riqi,sml as bl from(select riqi,sml from ods.ods_manu_smsj where riqi &lt;=#{data} order by riqi desc limit 7) t order by riqi
     </select>
 
     <select id="smsjzjrq" resultType="java.lang.String">

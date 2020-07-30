@@ -134,6 +134,7 @@ public class DeliverylogisticsController {
             apiResult.setCode(200);
         } catch (Exception e) {
             message = e.getMessage();
+            e.printStackTrace();
         }
         apiResult.setMsg(message);
         apiResult.setSucc(isSuccess);
@@ -274,6 +275,7 @@ public class DeliverylogisticsController {
             apiResult.setCode(200);
         } catch (Exception e) {
             message = e.getMessage();
+            e.printStackTrace();
         }
         apiResult.setMsg(message);
         apiResult.setSucc(isSuccess);

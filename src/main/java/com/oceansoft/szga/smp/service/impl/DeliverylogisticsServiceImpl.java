@@ -7,6 +7,7 @@ import com.oceansoft.szga.smp.service.DeliverylogisticsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -349,46 +350,43 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     public List<Map<String, Object>> jcg(Queryparems queryparems) {
         List<Map<String, Object>> list = new ArrayList<>();
         int jgzsl =0;
-        int cgzsl =0;
         if (queryparems.getSjgs().equals("yf")){
-            for (int i =11 ;i>=0;i--){
-                Map<String, Object> map =new HashMap<>();
-                queryparems.setData(getLast12Months(i));
-                Integer dwflts =0;
-                if (queryparems.getType().equals("jg")){
-                    dwflts= mapper.jgyf(queryparems);
-                    jgzsl+=dwflts;
-                }else {
-                    dwflts= mapper.cgyf(queryparems);
-                    cgzsl+=dwflts;
-                }
-                map.put("yf",getLast12Months(i));
-                map.put("sl",dwflts);
-                list.add(map);
-            }
+             Integer dwflts =0;
+             if (queryparems.getType().equals("jg")){
+                 queryparems.setData(getLast12Months(0));
+                 list= mapper.jgyf(queryparems);
+                 for (Map<String, Object> map:list){
+                     Integer sl = Integer.valueOf(String.valueOf(map.get("sl")));
+                     jgzsl += sl;
+                 }
+             }else {
+                 queryparems.setData(getLast12Months(0));
+                 list= mapper.cgyf(queryparems);
+                 for (Map<String, Object> map:list){
+                     Integer sl = Integer.valueOf(String.valueOf(map.get("sl")));
+                     jgzsl += sl;
+                 }
+             }
         }else{
-            for (int i=6;i>=0;i--){
-                Map<String, Object> map =new HashMap<>();
-                queryparems.setData(getLast7Days(i));
-                Integer dwflts =0;
                 if (queryparems.getType().equals("jg")){
-                    jgzsl+=dwflts;
-                    dwflts= mapper.jgrq(queryparems);
+                    queryparems.setData(getLast7Days(0));
+                    list= mapper.jgrq(queryparems);
+                    for (Map<String, Object> map:list){
+                        Integer sl = Integer.valueOf(String.valueOf(map.get("sl")));
+                        jgzsl += sl;
+                    }
                 }else {
-                    dwflts= mapper.cgrq(queryparems);
-                    cgzsl+=dwflts;
+                    queryparems.setData(getLast7Days(0));
+                    list= mapper.cgrq(queryparems);
+                    for (Map<String, Object> map:list){
+                        Integer sl = Integer.valueOf(String.valueOf(map.get("sl")));
+                        jgzsl += sl;
+                    }
                 }
-                map.put("rq",getLast7Days(i));
-                map.put("sl",dwflts);
-                list.add(map);
             }
-        }
+
         Map<String, Object> map1 =new HashMap<>();
-        if (queryparems.getType().equals("jg")){
-            map1.put("zsl",jgzsl);
-        }else {
-            map1.put("zsl",cgzsl);
-        }
+        map1.put("zsl",jgzsl);
         list.add(map1);
         return list;
     }
@@ -396,44 +394,25 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     @Override
     public List<Map<String, Object>> smsj(Queryparems queryparems) {
         List<Map<String, Object>> list = new ArrayList<>();
-        int sjl =0;
+        float sjl =0;
         if (queryparems.getSjgs().equals("yf")){
-            int k =0;
-            for (int i =11 ;i>=0;i--){
-                Map<String, Object> map =new HashMap<>();
-                queryparems.setData(getLast12Month(i));
-                List<Float> smsj = mapper.smsj(queryparems);
-                for(int v=0;v<smsj.size();v++){
-                    Float aFloat = smsj.get(v);
-                }
-
-                if (smsj!=null){
-                    k++;
-                    int hs = hs(smsj);
-                    String last7Day = getLast12Month(i);
-                    String ll =last7Day.substring(0,4)+"-"+last7Day.substring(4,6);
-                    map.put("sj",ll);
-                    map.put("bl",hs);
-                    list.add(map);
-                }
-            }
+            list = mapper.smsjyf(queryparems);
         }else{
-            for (int i=0;i<7;i++){
-                Map<String, Object> map =new HashMap<>();
-                String smsjzjrq = mapper.smsjzjrq();
-                Integer smsj = Integer.valueOf(smsjzjrq);
-                smsj--;
-                smsjzjrq =String.valueOf(smsj);
-                smsjzjrq =smsjzjrq.substring(0,4)+"-"+smsjzjrq.substring(4,6)+"-"+smsjzjrq.substring(6,8);
-                queryparems.setData(smsjzjrq);
-                List<Float> smsj1 = mapper.smsj(queryparems);
-                map.put("sj",smsjzjrq);
-                map.put("bl",smsj1.get(i));
-                list.add(map);
+            String zjrq = mapper.smsjzjrq();
+            queryparems.setData(zjrq);
+            list = mapper.smsj(queryparems);
+            for (Map<String, Object> map:list
+                 ) {
+                sjl += Float.valueOf(String.valueOf(map.get("bl")));
+                String riqi =map.get("riqi").toString().substring(0,4)+"-"+map.get("riqi").toString().substring(4,6)+"-"+map.get("riqi").toString().substring(6,8);
+                map.put("sj",riqi);
             }
+            DecimalFormat decimalFormat = new DecimalFormat(".00");
+            String p = decimalFormat.format(sjl/7);
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("sjl",p);
+            list.add(resultMap);
         }
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("sjl",sjl);list.add(resultMap);
         return list;
     }
 
@@ -474,7 +453,7 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                         Integer num1 = Integer.valueOf(String.valueOf(list1.get(k).get("num")));
                         Integer num2 = Integer.valueOf(String.valueOf(list2.get(m).get("num")));
                         resultMap.put("yzg",num2);
-                        resultMap.put("wzg",num1);
+                        resultMap.put("wzg",num1-num2);
                         resultList.add(resultMap);
                     }
                 }

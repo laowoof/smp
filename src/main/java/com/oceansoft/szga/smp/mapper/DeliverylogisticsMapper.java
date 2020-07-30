@@ -44,19 +44,20 @@ public interface DeliverylogisticsMapper {
 
     List<Map<String, Object>> dwjc(@Param("jcztdm") String jcztdm,@Param("jclxdm") String jclxdm);
 
-    Integer jgyf(Queryparems queryparems);
+    List<Map<String, Object>> jgyf(Queryparems queryparems);
 
-    Integer jgrq(Queryparems queryparems);
+    List<Map<String, Object>> jgrq(Queryparems queryparems);
 
-    Integer cgyf(Queryparems queryparems);
+    List<Map<String, Object>> cgyf(Queryparems queryparems);
 
-    Integer cgrq(Queryparems queryparems);
+    List<Map<String, Object>> cgrq(Queryparems queryparems);
 
     Integer cgzs();
 
     Integer jgzs();
 
-    List<Float> smsj (Queryparems queryparems);
+    List<Map<String, Object>> smsj (Queryparems queryparems);
+    List<Map<String, Object>> smsjyf (Queryparems queryparems);
 
     String smsjzjrq ();
 
