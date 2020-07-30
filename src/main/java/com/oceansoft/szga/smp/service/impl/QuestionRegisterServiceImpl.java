@@ -78,6 +78,8 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
                     if (updateResult) {
                         // 修改下状态并把派发的部门也更新下
                         questionRecordEntity.setState(1);
+                        questionRecordEntity.setReceiveDeptName(questionExecuteTaskBean.getExecuteDeptName());
+                        questionRecordEntity.setReceiveDeptCode(questionExecuteTaskBean.getExecuteDeptCode());
                         questionRecordEntity.setExecuteDeptCode(questionExecuteTaskBean.getExecuteDeptCode());
                         int total = questionRegisterMapper.updateRecordStateAndCode(questionRecordEntity);
                         if (total > 1) {
@@ -123,8 +125,8 @@ public class QuestionRegisterServiceImpl implements QuestionRegisterService {
             throw new RuntimeException("未找到问题记录");
         }
         questionRecordEntity.setState(1);
-        questionRecordEntity.setReceiveDeptName(questionExecuteTaskBean.getReceiveDeptName());
-        questionRecordEntity.setReceiveDeptCode(questionExecuteTaskBean.getReceiveDeptCode());
+        questionRecordEntity.setReceiveDeptName(questionExecuteTaskBean.getExecuteDeptName());
+        questionRecordEntity.setReceiveDeptCode(questionExecuteTaskBean.getExecuteDeptCode());
         questionRecordEntity.setExecuteDeptCode(questionExecuteTaskBean.getExecuteDeptCode());
         try {
             questionRegisterMapper.updateRecordStateAndCode(questionRecordEntity);

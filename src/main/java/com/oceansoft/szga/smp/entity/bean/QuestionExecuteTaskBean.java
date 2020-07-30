@@ -45,27 +45,6 @@ public class QuestionExecuteTaskBean {
     // 节点名称 派发/接收人签收/问题处置/结果确认
     private String executeNodeName;
 
-
-    /**接收部门名称**/
-    private String receiveDeptName;
-    private String receiveDeptCode;
-
-    public String getReceiveDeptName() {
-        return receiveDeptName;
-    }
-
-    public void setReceiveDeptName(String receiveDeptName) {
-        this.receiveDeptName = receiveDeptName;
-    }
-
-    public String getReceiveDeptCode() {
-        return receiveDeptCode;
-    }
-
-    public void setReceiveDeptCode(String receiveDeptCode) {
-        this.receiveDeptCode = receiveDeptCode;
-    }
-
     private QuestionPlanEntity questionPlanEntity;
     private QuestionResponseEntity questionResponseEntity;
     private QuestionImplementionEntity questionImplementionEntity;

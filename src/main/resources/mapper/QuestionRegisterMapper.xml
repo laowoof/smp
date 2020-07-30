@@ -68,7 +68,9 @@
     <update id="updateRecordStateAndCode">
         update rpt.question_record
         set state = #{state},
-        execute_dept_code = #{executeDeptCode}
+        execute_dept_code = #{executeDeptCode},
+        receive_dept_code = #{receiveDeptCode},
+        reveive_dept_name = #{receiveDeptName}
         where guid = #{guid}
     </update>
     <update id="updateExecuteTask">
