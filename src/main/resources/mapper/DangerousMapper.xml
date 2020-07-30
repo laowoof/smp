@@ -21,27 +21,25 @@
         SELECT sum(sl) FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' and sfczy = '1'
     </select>
     <select id="queryDangerousDw" resultType="java.util.Map">
-        SELECT
-            fjmc,
-        sum ( sl )
+        SELECT a.fjmc as fjmc, COALESCE(b.num, 0) as sum
         FROM
-        rpt."rpt_aqjg_za_dwxx"
-        WHERE
-            yyzt = '01'
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc) a LEFT JOIN
+        (SELECT fjmc, sum ( sl ) as num  FROM rpt."rpt_aqjg_za_dwxx" WHERE yyzt = '01'
         <if test="zawxpdjdmList != null">
             AND zawxpdjdm IN
-        <foreach item="item" index="index" collection="zawxpdjdmList" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        </if>
-        <if test="zawxpdjdmList != null">
-            AND hwlb IN
             <foreach item="item" index="index" collection="zawxpdjdmList" open="(" separator="," close=")">
-            #{item}
+                #{item}
+            </foreach>
+        </if>
+        <if test="hwlxList != null">
+            AND hwlb IN
+            <foreach item="item" index="index" collection="hwlxList" open="(" separator="," close=")">
+                #{item}
             </foreach>
         </if>
         GROUP BY
-            fjmc
+        fjmc) b
+        ON a.fjmc = b.fjmc
     </select>
     <select id="queryImportDw" resultType="java.util.Map">
         SELECT
@@ -66,20 +64,21 @@
             fjmc
     </select>
     <select id="queryHighPoison" resultType="java.util.Map">
-        SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY fjmc
+        SELECT a.fjmc as fjmc, COALESCE(b.num, 0) as sum
+        FROM
+        (SELECT DISTINCT(fjmc) as fjmc	FROM rpt."rpt_aqjg_za_wpfx") a LEFT JOIN
+        (SELECT fjmc, sum(sl) as num  FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY fjmc) b
+        ON a.fjmc = b.fjmc
     </select>
     <select id="queryEasyBoom" resultType="java.util.Map">
         SELECT fjmc, sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '2' GROUP BY fjmc
     </select>
-    <select id="queryHighPoisonLine" resultType="java.util.Map">
-        <choose>
-        <when test="type == 1">
-            SELECT date,sum(sl) FROM (SELECT year||'-'||mon as date, sl FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1')t GROUP BY date ORDER BY date ASC
-        </when>
-        <otherwise>
-            SELECT year,sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY year order by year
-        </otherwise>
-        </choose>
+    <select id="queryHighPoisonLine1" resultType="java.util.Map">
+        SELECT date,sum(sl) FROM (SELECT year||'-'||mon as date, sl FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1')t
+        where date like #{date} GROUP BY date ORDER BY date ASC
+    </select>
+    <select id="queryHighPoisonLine2" resultType="java.util.Map">
+        SELECT year,sum(sl) FROM rpt."rpt_aqjg_za_wpfx" WHERE sjlx = '51' and wpdl = '1' GROUP BY year order by year
     </select>
     <select id="queryEasyBoomLine" resultType="java.util.Map">
         <choose>
@@ -434,15 +433,26 @@
     <select id="queryPeopleRecord" resultType="java.util.Map">
         SELECT fjmc as name,sum(sl) as value FROM rpt."rpt_aqjg_za_ryxx" WHERE sfzx = '0' and ywlxdm = #{ywlxdm} GROUP BY fjmc
     </select>
+
     <select id="queryPeopleNumByDm" resultType="java.util.Map">
         SELECT * FROM (
-        SELECT '管理员' as name, sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfgly = '1' AND ywlxdm = #{ywlxdm}
+        (SELECT '管理员' as name, sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfgly = '1' AND ywlxdm = #{ywlxdm}
+        <if test="fjmc !=null and fjmc != ''">
+            AND fjmc = #{fjmc}
+        </if>)
         UNION
-        SELECT '操作员', sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfczy = '1' AND ywlxdm = #{ywlxdm}
+        (SELECT '操作员', sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfczy = '1' AND ywlxdm = #{ywlxdm}
+        <if test="fjmc !=null and fjmc != ''">
+            AND fjmc = #{fjmc}
+        </if>)
         UNION
-        SELECT '治安保卫员', sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfzabwy = '1' AND ywlxdm = #{ywlxdm}
+        (SELECT '治安保卫员', sum(sl) FROM rpt.rpt_aqjg_za_ryxx WHERE sfzx = '0' AND sfzabwy = '1' AND ywlxdm = #{ywlxdm}
+        <if test="fjmc !=null and fjmc != ''">
+            AND fjmc = #{fjmc}
+        </if>)
         ) t ORDER BY t.sum desc
     </select>
+
     <select id="queryAnalysisFjmc" resultType="java.lang.String">
         SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc
     </select>

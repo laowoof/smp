@@ -30,7 +30,9 @@ public interface DangerousMapper {
 
     List<Map<String, Object>> queryEasyBoom();
 
-    List<Map<String, Object>> queryHighPoisonLine(@Param("type") Integer type);
+    List<Map<String, Object>> queryHighPoisonLine1(@Param("date") String date);
+
+    List<Map<String, Object>> queryHighPoisonLine2();
 
     List<Map<String, Object>> queryEasyBoomLine(@Param("type") Integer type);
 
@@ -116,7 +118,7 @@ public interface DangerousMapper {
 
     List<Map<String, Object>> queryPeopleRecord(String ywlxdm);
 
-    List<Map<String, Integer>> queryPeopleNumByDm(String ywlxdm);
+    List<Map<String, Object>> queryPeopleNumByDm(@Param("ywlxdm")String ywlxdm,@Param("fjmc")String fjmc);
 
     List<String> queryAnalysisFjmc();
 

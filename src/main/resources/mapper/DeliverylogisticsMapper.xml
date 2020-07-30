@@ -9,11 +9,11 @@
         (select count(1) from ods.ods_manu_smsj) AS smsj,
         (select sum(sl) from rpt.rpt_aqjg_jdwl_jcgtj where lxdm in ('11','12','21','22')) AS jcgs,
         (select sum(zbsl) from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1') AS aqzrs,
-        (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '1') AS cgjc,
-        (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '2') AS zdjc,
-        (select count(1) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '3') AS zxjc,
-        (select count(1) from rpt.RPT_AQJG_JDWL_YHMX WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0') AS yhfx,
-        (select count(1) from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6')) and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0') AS yhcl
+        (select sum(sl) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '1') AS cgjc,
+        (select sum(sl) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '2') AS zdjc,
+        (select sum(sl) from rpt.RPT_AQJG_JDWL_DWJCXX WHERE JCLXDM = '3') AS zxjc,
+        (select sum(yhsl) from rpt.RPT_AQJG_JDWL_YHMX WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0') AS yhfx,
+        (select sum(yhsl) from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6')) and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0') AS yhcl
     </select>
 
     <select id="dwfl" resultType="java.util.Map">
@@ -26,12 +26,16 @@
 
     <select id="yhlx" resultType="map">
         select jcxmc as name,count(jcxmc) as num from rpt.rpt_aqjg_jdwl_yhmx
-        WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+   --     WHERE jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
         GROUP BY jcxmc ORDER BY count(jcxmc) DESC
     </select>
 
     <select id="jdfl" resultType="map">
-        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW
+        SELECT a.fjmc as xzqh, COALESCE(b.num, 0) as num
+        from
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW
         where 1=1
         <if test="mc != null">
             AND dwflmc IN
@@ -39,18 +43,24 @@
                 #{item}
             </foreach>
         </if>
-        group by 1
+        group by 1 ) b
+        ON a.fjmc = b.xzqh
     </select>
 
     <select id="ryfl" resultType="map">
-        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_CYRY where 1=1
+        SELECT a.fjmc as xzqh, COALESCE(b.num, 0) as num
+        from
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_CYRY where 1=1
         <if test="mc != null">
             AND rylb IN
             <foreach item="item" index="index" collection="mc" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
-        group by xzqh
+        group by xzqh ) b
+        ON a.fjmc = b.xzqh
     </select>
 
     <select id="dwfx" resultType="map">
@@ -87,7 +97,13 @@
     </select>
 
     <select id="zabw" resultType="map">
-        select xzqh,sum(zbsl) as num from rpt.rpt_aqjg_jdwl_lcjg_sydw where jbdj in('1','2','3') group by 1
+ --       select xzqh,sum(zbsl) as num from rpt.rpt_aqjg_jdwl_lcjg_sydw where jbdj in('1','2','3') group by 1
+ SELECT a.xzqh, COALESCE(b.num, 0)
+FROM
+(SELECT xzqh from rpt.rpt_aqjg_jdwl_lcjg_sydw group by xzqh) a
+LEFT JOIN
+(select xzqh,sum(zbsl) as num from rpt.rpt_aqjg_jdwl_lcjg_sydw where jbdj in('1','2','3') group by 1) b
+ON a.xzqh = b.xzqh
     </select>
 
     <select id="zabwzsl" resultType="int">
@@ -95,7 +111,12 @@
     </select>
 
     <select id="aqzr" resultType="map">
-        select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1'and xzqh=#{xzqhs} group by 1
+       SELECT a.fjmc as xzqh, COALESCE(b.num, 0) as num
+        from
+      (SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc) a
+        LEFT JOIN
+      (select xzqh,sum(zbsl) as num from rpt.RPT_AQJG_JDWL_LCJG_SYDW where zrsqd='1'and xzqh=#{xzqhs} group by 1) b
+       ON a.fjmc = b.xzqh
     </select>
 
     <select id="aqzrzsl" resultType="int">
@@ -103,14 +124,19 @@
     </select>
     
     <select id="dwjc" resultType="map">
-        select ssfxjmc as name,count(ssfxjmc) as num from rpt.rpt_aqjg_jdwl_dwjcxx where ssfxjmc!=''
+        SELECT a.fjmc as name, COALESCE(b.num, 0) as num
+        from
+        (SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc) a
+        LEFT JOIN
+        (select ssfxjmc as name,count(ssfxjmc) as num from rpt.rpt_aqjg_jdwl_dwjcxx where 1=1
         <if test="jcztdm !=null and jcztdm != ''">
             and  jcztdm =#{jcztdm}
         </if>
         <if test="jclxdm !=null and jclxdm != '' ">
             and  jclxdm =#{jclxdm}
         </if>
-         group by 1
+        group by 1) b
+        ON a.fjmc = b.name
     </select>
 
     <select id="jgyf" resultType="int">
@@ -143,7 +169,7 @@
 
     <select id="yhlxzsl" resultType="int">
         select COALESCE(sum(yhsl),0) as num from rpt.rpt_aqjg_jdwl_yhmx WHERE 1=1
-       and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+--       and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
         and tjrq like #{data} ||'%'
         <if test="fjmc !=null and fjmc != '' ">
             and  fjmc =#{fjmc}
@@ -152,7 +178,7 @@
 
     <select id="yhlxyzg" resultType="int">
         select COALESCE(sum(yhsl),0) from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6'))
-        and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+  --      and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
         and tjrq like #{data} ||'%'
         <if test="fjmc !=null and fjmc != '' ">
             and  fjmc =#{fjmc}
@@ -160,15 +186,25 @@
     </select>
 
     <select id="yhlxzsl1" resultType="map">
-        select fjmc,COALESCE(sum(yhsl),0) as num from rpt.rpt_aqjg_jdwl_yhmx WHERE 1=1
-        and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
-        and fjmc = #{fjmc} group by 1
+      SELECT a.fjmc as fjmc, COALESCE(b.num, 0) as num
+      from
+      (SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc) a
+      LEFT JOIN
+      (select fjmc,COALESCE(sum(yhsl),0) as num from rpt.rpt_aqjg_jdwl_yhmx WHERE 1=1
+   --     and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+      and fjmc = #{fjmc} group by 1) b
+      ON a.fjmc = b.fjmc
     </select>
 
     <select id="yhlxyzg1" resultType="map">
-        select fjmc,COALESCE(sum(yhsl),0) as num from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6'))
-        and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
-        and fjmc = #{fjmc} group by 1
+       SELECT a.fjmc as fjmc, COALESCE(b.num, 0) as num
+        from
+      (SELECT fjmc FROM rpt."rpt_aqjg_za_dwxx" GROUP BY fjmc) a
+      LEFT JOIN
+      (select fjmc,COALESCE(sum(yhsl),0) as num from rpt.RPT_AQJG_JDWL_YHMX WHERE ((jclx IN ('1','2','3') AND clzt = '1') OR (jclx = '4' AND clzt = '3') OR (jclx = '4' AND clzt = '5') OR (jclx = '4' AND clzt = '6'))
+ --       and jcd = '寄递业末端网点检查表' AND xxz = '否' AND jcxlx != '0'
+        and fjmc = #{fjmc} group by 1) b
+        ON a.fjmc = b.fjmc
     </select>
 
 

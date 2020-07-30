@@ -68,6 +68,8 @@ public interface DangerousService {
 
     Map<String, Object> queryPeopleRecord(JSONObject jsonObject);
 
+    Map<String, Object> queryPeopleNumByDm(JSONObject jsonObject);
+
     List<String> queryAnalysisFjmc();
 
     Map<String, Object> queryPostKind(JSONObject jsonObject);

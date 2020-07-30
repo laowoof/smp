@@ -11,4 +11,8 @@ import com.oceansoft.szga.smp.config.domain.ApiQueryBase;
     ApiPager pageJjaj(ApiQueryBase query);
 
     ApiPager pageWxjs(ApiQueryBase query);
+
+    ApiPager jdry(ApiQueryBase query);
+
+    ApiPager stwhp(ApiQueryBase query);
 }

@@ -229,4 +229,32 @@ public class WXPFXController {
 //        ApiPager pager = new ApiPager(query.getPs(), query.getPi(),total, list);
         return new ApiResult().success(dataModelService.pageWxjs(query));
     }
+
+    @ApiOperation("寄递物流从业人员背景审查")
+    @RequestMapping("jdry")
+    public ApiResult jdry(@RequestBody ApiQueryBase query){
+        //TODO data 模拟数据，待实现
+//        List<Map<String,Object>> list = Lists.newArrayList();
+//        String temp ="{statisticalTime: '2020-04-20 17:16', source: 'XX系统', caseCategory: '危险驾驶', acceptTime: '2019-12-29', name: '张三', id: '220112199106050112', drivingLicense: '220112199106050112', state: '非吊销', organ: '江苏省苏州市交通警察支队'}";
+//        for (int i = 0; i < 10; i++) {
+//            list.add(JSONObject.parseObject(temp));
+//        }
+//        int total = 12;
+//        ApiPager pager = new ApiPager(query.getPs(), query.getPi(),total, list);
+        return new ApiResult().success(dataModelService.jdry(query));
+    }
+
+    @ApiOperation("省厅危化品从业人员")
+    @RequestMapping("stwhp")
+    public ApiResult stwhp(@RequestBody ApiQueryBase query){
+        //TODO data 模拟数据，待实现
+//        List<Map<String,Object>> list = Lists.newArrayList();
+//        String temp ="{statisticalTime: '2020-04-20 17:16', source: 'XX系统', caseCategory: '危险驾驶', acceptTime: '2019-12-29', name: '张三', id: '220112199106050112', drivingLicense: '220112199106050112', state: '非吊销', organ: '江苏省苏州市交通警察支队'}";
+//        for (int i = 0; i < 10; i++) {
+//            list.add(JSONObject.parseObject(temp));
+//        }
+//        int total = 12;
+//        ApiPager pager = new ApiPager(query.getPs(), query.getPi(),total, list);
+        return new ApiResult().success(dataModelService.stwhp(query));
+    }
 }

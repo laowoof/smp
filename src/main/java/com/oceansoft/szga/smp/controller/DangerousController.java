@@ -120,6 +120,7 @@ public class DangerousController {
             message = "查询成功";
         } catch (Exception e) {
             message = e.getMessage();
+            e.printStackTrace();
         }
         apiResult.setCode(200);
         apiResult.setMsg(message);
@@ -563,6 +564,26 @@ public class DangerousController {
         String message = "";
         try {
             Map<String, Object> mapList = dangerousService.queryPeopleRecord(jsonObject);
+            apiResult.setData(mapList);
+            isSuccess = true;
+            message = "查询成功";
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+        apiResult.setCode(200);
+        apiResult.setMsg(message);
+        apiResult.setSucc(isSuccess);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "重点岗位人员分析/重点岗位人员登记分析", notes = "", httpMethod = "POST")
+    @PostMapping("important/people-numbydm")
+    public ApiResult queryPeopleNumByDm(@RequestBody JSONObject jsonObject) {
+        ApiResult apiResult = new ApiResult();
+        boolean isSuccess = false;
+        String message = "";
+        try {
+            Map<String, Object> mapList = dangerousService.queryPeopleNumByDm(jsonObject);
             apiResult.setData(mapList);
             isSuccess = true;
             message = "查询成功";

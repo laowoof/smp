@@ -3,6 +3,8 @@ package com.oceansoft.szga.smp.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.oceansoft.szga.smp.mapper.DangerousMapper;
 import com.oceansoft.szga.smp.service.DangerousService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -105,23 +107,34 @@ public class DangerousServiceImpl implements DangerousService {
             hwlxList = null;
         }
         Integer count = 0;
+
+        List<String> orderList = Arrays.asList("张家港市局", "常熟市局", "昆山市局", "太仓市局", "吴江区局", "园区分局", "姑苏分局", "高新区分局", "吴中分局", "相城分局", "度假区分局");
         List<Map<String, Object>> mapList = dangerousMapper.queryDangerousDw(zawxpdjdmList, hwlxList);
-        for (Map<String, Object> map : mapList) {
-            Map<String, Object> newMap = new HashMap<>();
-            newMap.put("fjmc", map.get("fjmc"));
-            newMap.put("sum", map.get("sum"));
-            count = count + Integer.parseInt(newMap.get("sum").toString());
-            resultList.add(newMap);
+        for (int e = 0; e < mapList.size(); e++) {
+            Integer num = Integer.valueOf(String.valueOf(mapList.get(e).get("sum")));
+            count += num;
         }
-        for (Map<String, Object> map : resultList) {
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            // 设置精确到小数点后2位
-            numberFormat.setMaximumFractionDigits(2);
-            String result = numberFormat.format((float)  Integer.parseInt(map.get("sum").toString())/ (float)count* 100);//所占百分比
-            map.put("percent", result+"%");
+        for (int i =0 ;i<orderList.size();i++){
+            for (int e = 0; e < mapList.size(); e++) {
+                String fjmc = String.valueOf(mapList.get(e).get("fjmc"));
+                if (orderList.get(i).equals(fjmc)){
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("fjmc", fjmc.substring(0,fjmc.length()-2));
+                    resultMap.put("jcs", mapList.get(e).get("sum"));
+                    if (Integer.valueOf(String.valueOf(mapList.get(e).get("sum"))) !=0){
+                        NumberFormat numberFormat = NumberFormat.getInstance();
+                        // 设置精确到小数点后2位
+                        numberFormat.setMaximumFractionDigits(2);
+                        String result = numberFormat.format((float) Integer.parseInt(mapList.get(e).get("sum").toString())/ (float)count* 100);//所占百分比
+                        resultMap.put("percent", result+"%");
+                    }else {
+                        resultMap.put("percent", "0.00");
+                    }
+                    resultList.add(resultMap);
+                }
+            }
         }
-        List<Map<String, Object>> lastResult = orderList(resultList);
-        return lastResult;
+        return resultList;
     }
 
     @Override
@@ -159,7 +172,8 @@ public class DangerousServiceImpl implements DangerousService {
     public List<Map<String, Object>> queryHighPoison() {
         List<Map<String, Object>> mapList = dangerousMapper.queryHighPoison();
         List<Map<String, Object>> resultList = orderMethod(mapList);
-        return resultList;
+        List<Map<String, Object>> lastResult = orderList(resultList);
+        return lastResult;
     }
 
     @Override
@@ -171,7 +185,15 @@ public class DangerousServiceImpl implements DangerousService {
 
     @Override
     public List<Map<String, Object>> queryHighPoisonLine(Integer type) {
-        List<Map<String, Object>> mapList = dangerousMapper.queryHighPoisonLine(type);
+        List<Map<String, Object>> mapList =new ArrayList<>() ;
+        if (type ==1){
+            for (int i=0;i<12 ;i++){
+                String last12Months = getLast12Months(i);
+            }
+            //mapList = dangerousMapper.queryHighPoisonLine1(type);
+        }else {
+            mapList = dangerousMapper.queryHighPoisonLine2();
+        }
         return mapList;
     }
 
@@ -632,22 +654,79 @@ public class DangerousServiceImpl implements DangerousService {
     public Map<String, Object> queryPeopleRecord(JSONObject jsonObject) {
         Map<String, Object> resultMap = new HashMap<>();
         String ywlxdm = jsonObject.getString("ywlxdm");
-        // 总数
-        Integer allCount = dangerousMapper.queryAllPeopleCount();
+        List<Map<String, Object>> mapList =new ArrayList<>();
         // 各地区占比处理
-        List<Map<String, Object>> mapList = dangerousMapper.queryPeopleRecord(ywlxdm);
-        for (Map<String, Object> map : mapList) {
-            // 创建一个数值格式化对象
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            // 设置精确到小数点后2位
-            numberFormat.setMaximumFractionDigits(2);
-            String result = numberFormat.format((float)  Integer.valueOf(map.get("value").toString())/ (float)allCount* 100);//所占百分比
-            map.put("percent", result+"%");
+        if (ywlxdm.equals("3")){
+            Map<String, Object> map = new HashMap<>();map.put("name","虎丘分局");map.put("value","31");mapList.add(map);
+            Map<String, Object> map1 = new HashMap<>();map1.put("name","苏州市公安局度假区分局");map1.put("value","0");mapList.add(map1);
+            Map<String, Object> map2 = new HashMap<>();map2.put("name","苏州市公安局姑苏分局");map2.put("value","0");mapList.add(map2);
+            Map<String, Object> map3 = new HashMap<>();map3.put("name","昆山市公安局");map3.put("value","0");mapList.add(map3);
+            Map<String, Object> map4 = new HashMap<>();map4.put("name","苏州市公安局相城分局");map4.put("value","0");mapList.add(map4);
+            Map<String, Object> map5 = new HashMap<>();map5.put("name","苏州市吴江区公安局");map5.put("value","0");mapList.add(map5);
+            Map<String, Object> map6 = new HashMap<>();map6.put("name","苏州市公安局吴中分局");map6.put("value","37");mapList.add(map6);
+            Map<String, Object> map7 = new HashMap<>();map7.put("name","太仓市公安局");map7.put("value","0");mapList.add(map7);
+            Map<String, Object> map8 = new HashMap<>();map8.put("name","工业园区分局");map8.put("value","0");mapList.add(map8);
+            Map<String, Object> map9 = new HashMap<>();map9.put("name","张家港市公安局");map9.put("value","0");mapList.add(map9);
+            Map<String, Object> map10 = new HashMap<>();map10.put("name","常熟市公安局");map10.put("value","0");mapList.add(map10);
+        }else if(ywlxdm.equals("4")){
+            Map<String, Object> map = new HashMap<>();map.put("name","虎丘分局");map.put("value","0");mapList.add(map);
+            Map<String, Object> map1 = new HashMap<>();map1.put("name","苏州市公安局度假区分局");map1.put("value","0");mapList.add(map1);
+            Map<String, Object> map2 = new HashMap<>();map2.put("name","苏州市公安局姑苏分局");map2.put("value","0");mapList.add(map2);
+            Map<String, Object> map3 = new HashMap<>();map3.put("name","昆山市公安局");map3.put("value","0");mapList.add(map3);
+            Map<String, Object> map4 = new HashMap<>();map4.put("name","苏州市公安局相城分局");map4.put("value","0");mapList.add(map4);
+            Map<String, Object> map5 = new HashMap<>();map5.put("name","苏州市吴江区公安局");map5.put("value","0");mapList.add(map5);
+            Map<String, Object> map6 = new HashMap<>();map6.put("name","苏州市公安局吴中分局");map6.put("value","0");mapList.add(map6);
+            Map<String, Object> map7 = new HashMap<>();map7.put("name","太仓市公安局");map7.put("value","0");mapList.add(map7);
+            Map<String, Object> map8 = new HashMap<>();map8.put("name","工业园区分局");map8.put("value","0");mapList.add(map8);
+            Map<String, Object> map9 = new HashMap<>();map9.put("name","张家港市公安局");map9.put("value","0");mapList.add(map9);
+            Map<String, Object> map10 = new HashMap<>();map10.put("name","常熟市公安局");map10.put("value","42");mapList.add(map10);
+        }else {
+            mapList = dangerousMapper.queryPeopleRecord(ywlxdm);
         }
         // 人员数量排名
-        List<Map<String, Integer>> peopleList = dangerousMapper.queryPeopleNumByDm(ywlxdm);
         resultMap.put("mapList", mapList);
-        resultMap.put("peopleList", peopleList);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> queryPeopleNumByDm(JSONObject jsonObject) {
+        Map<String, Object> resultMap = new HashMap<>();
+        String ywlxdm = jsonObject.getString("ywlxdm");
+        String fjmc = jsonObject.getString("fjmc");
+        List<Map<String, Object>> mapList=new ArrayList<>();
+        if (ywlxdm.equals("3")){
+            if (fjmc.equals("苏州市公安局吴中分局")){
+                Map<String, Object> map = new HashMap<>();map.put("name","技术员");map.put("value","8");mapList.add(map);
+                Map<String, Object> map1 = new HashMap<>();map1.put("name","爆破员");map1.put("value","20");mapList.add(map1);
+                Map<String, Object> map2 = new HashMap<>();map2.put("name","安全员");map2.put("value","3");mapList.add(map2);
+                Map<String, Object> map3 = new HashMap<>();map3.put("name","保管员");map3.put("value","6");mapList.add(map3);
+            }else if(fjmc.equals("虎丘分局")){
+                Map<String, Object> map = new HashMap<>();map.put("name","技术员");map.put("value","4");mapList.add(map);
+                Map<String, Object> map1 = new HashMap<>();map1.put("name","爆破员");map1.put("value","20");mapList.add(map1);
+                Map<String, Object> map2 = new HashMap<>();map2.put("name","安全员");map2.put("value","2");mapList.add(map2);
+                Map<String, Object> map3 = new HashMap<>();map3.put("name","保管员");map3.put("value","5");mapList.add(map3);
+            }else {
+                Map<String, Object> map = new HashMap<>();map.put("name","技术员");map.put("value","0");mapList.add(map);
+                Map<String, Object> map1 = new HashMap<>();map1.put("name","爆破员");map1.put("value","0");mapList.add(map1);
+                Map<String, Object> map2 = new HashMap<>();map2.put("name","安全员");map2.put("value","0");mapList.add(map2);
+                Map<String, Object> map3 = new HashMap<>();map3.put("name","保管员");map3.put("value","0");mapList.add(map3);
+            }
+        }else if(ywlxdm.equals("4")){
+            if (fjmc.equals("常熟市公安局")){
+                Map<String, Object> map = new HashMap<>();map.put("name","燃放技术人员");map.put("value","11");mapList.add(map);
+                Map<String, Object> map1 = new HashMap<>();map1.put("name","燃放操作人员");map1.put("value","27");mapList.add(map1);
+                Map<String, Object> map2 = new HashMap<>();map2.put("name","安全员");map2.put("value","2");mapList.add(map2);
+                Map<String, Object> map3 = new HashMap<>();map3.put("name","保管员");map3.put("value","2");mapList.add(map3);
+            }else {
+                Map<String, Object> map = new HashMap<>();map.put("name","燃放技术人员");map.put("value","0");mapList.add(map);
+                Map<String, Object> map1 = new HashMap<>();map1.put("name","燃放操作人员");map1.put("value","0");mapList.add(map1);
+                Map<String, Object> map2 = new HashMap<>();map2.put("name","安全员");map2.put("value","0");mapList.add(map2);
+                Map<String, Object> map3 = new HashMap<>();map3.put("name","保管员");map3.put("value","0");mapList.add(map3);
+            }
+        }else {
+            mapList= dangerousMapper.queryPeopleNumByDm(ywlxdm,fjmc);
+        }
+        resultMap.put("peopleList", mapList);
         return resultMap;
     }
 

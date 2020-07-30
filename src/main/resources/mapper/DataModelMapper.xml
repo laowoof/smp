@@ -77,4 +77,72 @@
             and (t.dsr like '%'||#{kw}||'%' or t.jszh like '%'||#{kw}||'%')
         </if>
     </select>
+
+    <select id="stwhp" resultType="java.util.HashMap">
+        SELECT   DISTINCT
+        T3.LABEL -- 重点人员类别
+        ,T1.PSON_NAME -- 姓名
+        ,T1.PSON_IDCARD -- 身份证号
+        ,T1.PSON_REG_TIME -- 登记时间
+        ,T1.COMP_NAME -- 单位名称
+        ,T1.PSON_WORKTYPE_GL as isgly  -- 是否管理人员，0否 1 是
+        ,T1.PSON_WORKTYPE_CZ  as isczy-- 是否操作员，0否 1 是
+        ,T1.PSON_WORKTYPE_BG  as isbgy-- 是否保管员，0否 1 是
+        ,T1.PSON_WORKTYPE_ZB  as iszabwy -- 是否治安保卫员，0否 1 是
+        ,T1.PSON_WORKTYPE_CG  as iscgy-- 是否采购员，0否 1 是
+        ,T1.PSON_WORKTYPE_QT  as isqt-- 是否其他类型人员，0否 1 是
+        FROM      ODS.ODS_RT_V_JSSZ_RENYUAN  T1
+        LEFT JOIN ODS.ODS_RT_ZDRY_RY_ZDRYGLXX T2
+        ON        T1.PSON_IDCARD = T2.GMSFHM
+        LEFT JOIN ODS.ODS_ZDRY_SYS_DICT T3
+        ON        T2.XLGLB = T3.VALUE
+        AND       T3.TYPE = '重点人员人员细类(新)'
+        WHERE     T3.LABEL IS NOT NULL
+    </select>
+
+    <select id="jdry" resultType="java.util.HashMap">
+        SELECT DISTINCT
+	    T3.LABEL -- 重点人员类别
+	,
+	T1.cyry -- 姓名
+	,
+	T1.sfzhm -- 身份证号
+	,
+	T1.djsj -- 登记时间
+	,
+	T1., -- 单位名称
+	,
+    CASE
+		jdhysy
+		WHEN '1' THEN
+		'安全员'
+		WHEN '2' THEN
+		'监督员'
+		WHEN '9' THEN
+		'信息员' ELSE'一般从业人员'
+	END gwlx -- 岗位类型
+      FROM
+	(
+	SELECT
+		dw.dwzj,
+		dw.dwmc,
+		ry.*
+	FROM
+		ods.ods_rt_zypt_sydw_jbxx dw
+		INNER JOIN ods.ods_rt_zypt_t_yw_cyry ry ON dw.dwzj = ry.sgljg_zj
+	WHERE
+		dw.hydl = '2700'
+		AND dw.hyxl = '2711'
+		AND ( dw.scbs IS NULL OR dw.scbs = '0' )
+		AND dw.yyzt = '01'
+	) T1
+	LEFT JOIN ODS.ODS_RT_ZDRY_RY_ZDRYGLXX T2 ON T1.sfzhm = T2.GMSFHM
+	LEFT JOIN ODS.ODS_ZDRY_SYS_DICT T3 ON T2.XLGLB = T3.
+    VALUE
+
+	AND T3.TYPE = '重点人员人员细类(新)'
+    WHERE
+	T3.LABEL IS NOT NULL
+    </select>
+
 </mapper>
