@@ -167,12 +167,13 @@
             r.STATE,
             r.performance,
             r.address,
-            e.execute_date
+            e.execute_date,
+            r.receive_dept_name
         FROM
         rpt.question_record r
             LEFT JOIN ( SELECT * FROM rpt."question_execute_task" WHERE execute_dept_code = #{departmentId} AND execute_name = '派发' AND "state" = 1 ORDER BY create_date LIMIT 1 ) e ON r.execute_dept_code = e.execute_dept_code
         WHERE
-            r.execute_dept_code = #{departmentId} and r.state != -1
+            r.execute_dept_code = #{departmentId} and r.state != -1 and r.question_type = #{questionQueryBean.questionType}
         <if test="integerList != null">
             and r.state IN
             <foreach item="item" index="index" collection="integerList" open="(" separator="," close=")">
