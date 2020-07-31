@@ -350,6 +350,7 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     @Override
     public List<Map<String, Object>> jcg(Queryparems queryparems) {
         List<Map<String, Object>> list = new ArrayList<>();
+        List<Map<String, Object>> newList = Lists.newArrayList();
         int jgzsl =0;
         if (queryparems.getSjgs().equals("yf")){
              Integer dwflts =0;
@@ -385,11 +386,11 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
                     }
                 }
             }
-
+        newList.addAll(list);
         Map<String, Object> map1 =new HashMap<>();
         map1.put("zsl",jgzsl);
-        list.add(map1);
-        return list;
+        newList.add(map1);
+        return newList;
     }
 
     @Override
