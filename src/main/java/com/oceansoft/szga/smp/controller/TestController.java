@@ -33,7 +33,7 @@ public class TestController{
     }
     @RequestMapping("test1")
     public String test1(ApiQueryBase query){
-       return JSON.toJSONString(query);
+       return JSON.toJSONString(mapper.list());
     }
 
     @RequestMapping("test2")

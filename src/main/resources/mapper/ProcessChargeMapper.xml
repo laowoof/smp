@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oceansoft.szga.smp.mapper.ProcessChargeMapper">
-
+    <cache type="org.apache.ibatis.cache.impl.PerpetualCache"
+           size="1024"
+           eviction="LRU"
+           readOnly="true"/>
     <select id="queryRoadSafeTable" resultType="java.util.Map">
         SELECT a.yhbh, a.cjsj, a.sjly, a.yhddmc, b.mc, a.lczt, a.clzt, c.name, a.wcsj FROM ods."ods_rt_jj_v_tb_yhpc" a
         LEFT JOIN ods."ods_rt_dm_v_yhpc_lx" b ON a.yhlx = b.dm

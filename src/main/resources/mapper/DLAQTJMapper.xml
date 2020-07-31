@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oceansoft.szga.smp.mapper.DLAQTJMapper">
+    <cache type="org.apache.ibatis.cache.impl.PerpetualCache"
+           size="1024"
+           eviction="LRU"
+           readOnly="true"/>
     <!--源头任务统计 大队信息-->
     <select id="YTRWTJ" resultType="com.oceansoft.szga.smp.entity.YTRW" parameterType="java.util.HashMap">
       with zzz as
