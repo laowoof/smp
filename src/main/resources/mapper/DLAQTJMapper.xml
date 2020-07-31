@@ -4,6 +4,7 @@
     <cache type="org.apache.ibatis.cache.impl.PerpetualCache"
            size="1024"
            eviction="LRU"
+           flushInterval="43200000"
            readOnly="true"/>
     <!--源头任务统计 大队信息-->
     <select id="YTRWTJ" resultType="com.oceansoft.szga.smp.entity.YTRW" parameterType="java.util.HashMap">

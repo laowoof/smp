@@ -4,6 +4,7 @@
     <cache type="org.apache.ibatis.cache.impl.PerpetualCache"
            size="1024"
            eviction="LRU"
+           flushInterval="43200000"
            readOnly="true"/>
     <!--基础信息 采集单位总数-->
     <select id="totalNumCJDW" resultType="Integer" parameterType="java.util.HashMap">

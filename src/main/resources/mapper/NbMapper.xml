@@ -4,6 +4,7 @@
     <cache type="org.apache.ibatis.cache.impl.PerpetualCache"
            size="1024"
            eviction="LRU"
+           flushInterval="43200000"
            readOnly="true"/>
    <select id="test" resultType="java.util.HashMap" parameterType="java.util.List">
     select
