@@ -1,6 +1,7 @@
 package com.oceansoft.szga.smp.service.impl;
 
 import com.alibaba.excel.util.StringUtils;
+import com.google.common.collect.Lists;
 import com.oceansoft.szga.smp.entity.Queryparems;
 import com.oceansoft.szga.smp.mapper.DeliverylogisticsMapper;
 import com.oceansoft.szga.smp.service.DeliverylogisticsService;
@@ -394,13 +395,16 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
     @Override
     public List<Map<String, Object>> smsj(Queryparems queryparems) {
         List<Map<String, Object>> list = new ArrayList<>();
+        List<Map<String, Object>> newList = Lists.newArrayList();
         float sjl =0;
         if (queryparems.getSjgs().equals("yf")){
             list = mapper.smsjyf(queryparems);
+            newList.addAll(list);
         }else{
             String zjrq = mapper.smsjzjrq();
             queryparems.setData(zjrq);
             list = mapper.smsj(queryparems);
+            newList.addAll(list);
             for (Map<String, Object> map:list
                  ) {
                 sjl += Float.valueOf(String.valueOf(map.get("bl")));
@@ -411,9 +415,9 @@ public class DeliverylogisticsServiceImpl  implements DeliverylogisticsService {
             String p = decimalFormat.format(sjl/7);
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("sjl",p);
-            list.add(resultMap);
+            newList.add(resultMap);
         }
-        return list;
+        return newList;
     }
 
     @Override
